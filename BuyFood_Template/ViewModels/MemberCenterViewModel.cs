@@ -9,23 +9,31 @@ namespace BuyFood_Template.ViewModels
     public class MemberCenterViewModel
     {
         private TMember iv_member = null;
+        int iv_issueComboCount = 0;
         public MemberCenterViewModel(TMember p_member)
         {
             iv_member = p_member;
+
+
         }
         public MemberCenterViewModel()
         {
             iv_member = new TMember();
+            iv_issueComboCount = 0;
         }
         public vProduct Product { get { return new vProduct(); } }
         public vProdcutCategory ProdcutCategory { get { return new vProdcutCategory(); } }
         public vComboDetail ComboDetail { get { return new vComboDetail(); } }
-        public vMember Member { get {return new vMember(); } }
+        public vMember Member { get { return new vMember(); } }
         public vDeposits Deposits { get { return new vDeposits(); } }
         public vCombo Combos { get { return new vCombo(); } }
-        public int CMemberId { 
+        public int isssueComboCount { get { return iv_issueComboCount; } }
+
+        public int CMemberId
+        {
             get { return iv_member.CMemberId; }
-            set { iv_member.CMemberId = value ; } }
+            set { iv_member.CMemberId = value; }
+        }
         public string CName
         {
             get { return iv_member.CName; }
