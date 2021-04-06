@@ -1,6 +1,15 @@
 連猴子都懂的Git命令
 add 修改加入索引
 pull 取得遠端數據庫的內容
+
 error
 
 error
+
+
+
+
+15132153
+
+qeqweqew
+
