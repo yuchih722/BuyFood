@@ -123,7 +123,7 @@
                                     UserLoginNameForPage = "Login";
                                 }
                             }
-                            <div class="header__top__right__auth">
+                            <div class="header__top__right__auth" id="divLogin">
                                 <a asp-controller="HomePage" asp-action="登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>
                             </div>
                             <div class="header__top__right__auth" style="margin-left:2px;">
@@ -348,8 +348,7 @@
         setInterval(function () {
             let pdtcart_obj = JSON.parse(localStorage.getItem("cart"));
             let price = 0;
-            for (let i = 0; i < pdtcart_obj.length; i++)
-            {
+            for (let i = 0; i < pdtcart_obj.length; i++) {
                 price += (pdtcart_obj[i].cPrice * pdtcart_obj[i].QuantityInCart);
             }
             $("#ItemMoneyTop").html('$' + price);
@@ -358,6 +357,26 @@
         }, 500);
 
     </script>
+
+    <script>
+            $.ajax({
+                url: "/HomePage/BCheckLogin",
+                type: "POST",
+                success: function (data) {
+                    if (data == true) {
+                        text = `<a href="/Member/MemberCenter" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
+
+                        $("#divLogin").html(text);
+                    }
+                    else {
+                        text = `<a href="/HomePage/登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
+
+                        $("#divLogin").html(text);
+                    }
+                }
+            })
+    </script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -48,33 +48,19 @@
 
 
 <div class="signup-content">
-    @*<div class="signup-img">
-            <img src="images/signup-img.jpg" alt="">
-        </div>*@
     <div class="signup-form" style="margin-left:210px; width:100%; box-shadow:4px 4px 8px 8px #cccccc;">
         <form asp-action="Create" enctype="multipart/form-data" method="post" class="register-form" id="register-form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <h2>註冊</h2>
+            <div class="form-group">
+                <input asp-for="CMemberID" class="form-control" style="display:none" value="@ViewBag.FBUSERID" />
+                <span asp-validation-for="CMemberID" class="text-danger"></span>
+            </div>
             <div class="form-row">
                 <div class="form-group">
                     <label asp-for="CName" for="name">*姓名 :</label>
-                    <input asp-for="CName" id="name" required />
+                    <input asp-for="CName" id="name" required value="@ViewBag.FBUSERNAME" />
                     <span asp-validation-for="CName" class="text-danger" id="spname"></span>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label asp-for="CPassword" for="name">*密碼 :</label>
-                    <input asp-for="CPassword" type="password" id="password" required />
-                    <span asp-validation-for="CPassword" class="text-danger" id="sppassword"></span>
-                    <span>((1.不可空白 , 2.至少6個字且必須包含英文字母+數字)</span>
-                    <span id="Wrongpassword"></span>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="name">*確認密碼 :</label>
-                    <input type="password" name="checkPassword" id="checkPassword" required />
                 </div>
             </div>
             <div class="form-radio">
@@ -84,13 +70,13 @@
                     <input asp-for="CGender" id="inlineRadio1">
                 </div>
                 @*<div class="form-check form-check-inline">
-                        <input asp-for="CGender" type="radio" id="inlineRadio1" value="male">
-                        <label class="form-check-label" for="inlineRadio1">男</label>
-                    </div>*@
+                <input asp-for="CGender" type="radio" id="inlineRadio1" value="male">
+                <label class="form-check-label" for="inlineRadio1">男</label>
+            </div>*@
                 @*<div class="form-check form-check-inline">
-                        <input  asp-for="CGender" type="radio" id="inlineRadio2" value="female">
-                        <label class="form-check-label" for="inlineRadio2">女</label>
-                    </div>*@
+                <input  asp-for="CGender" type="radio" id="inlineRadio2" value="female">
+                <label class="form-check-label" for="inlineRadio2">女</label>
+            </div>*@
             </div>
             <div class="form-row">
                 <div class="form-group">
@@ -111,12 +97,6 @@
                     <span asp-validation-for="CPhone" class="text-danger" id="spphone"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="CEmail" for="email" style="position:relative">*Email :</label>
-                <input asp-for="CEmail" id="email" required />
-                <span asp-validation-for="CEmail" class="text-danger" id="spemail"></span>
-                <span id="Wrongemail"></span>
-            </div>
             <label asp-for="CPicture" style="position:relative">上傳頭像 :</label>
             <input type="file" name="img" id="image" style="padding:0px; border:none" />
             <span asp-validation-for="CPicture" class="text-danger" id="spimg"></span>
@@ -136,8 +116,8 @@
             <div class="form-submit">
                 <input type="button" value="Demo" class="btn btn-primary"
                        onclick='(function () {
-    document.getElementById("name").value = "jotaro";
-    document.getElementById("email").value = "jotaro@Gmail.com";
+    document.getElementById("name").value = "jojo";
+    document.getElementById("email").value = "jojo@Gmail.com";
     document.getElementById("password").value = "123";
     document.getElementById("checkPassword").value = "123";
     document.getElementById("inlineRadio1").value = "男";
@@ -177,7 +157,7 @@
         let pwdObjVal = pwdObj.value;
         let spObj = document.getElementById("Wrongpassword");
         let pwdObjValLen = pwdObjVal.length;
-        let flag1 = false, flag2 = false;
+        let flag1 = false, flag2 = false, flag3 = false;
 
         console.log(pwdObjVal);
 
@@ -192,12 +172,19 @@
                     flag1 = true;
                 else if (ch >= "0" && ch <= "9")
                     flag2 = true;
+                else if (ch >= "!" && ch <= "/")
+                    flag3 = true;
+                else if (ch >= ":" && ch <= "@o")
+                    flag3 = true;
+                else if (ch >= "[" && ch <= "`")
+                    flag3 = true;
+                else if (ch >= "{" && ch <= "~")
+                    flag3 = true;
 
-                if (flag1 == true && flag2 == true)
+                if (flag1 && flag2 && flag3)
                     break;
             }
-
-            if (flag1 == true && flag2 == true)
+            if (flag1 && flag2 && flag3)
                 spObj.innerHTML = "密碼格式正確"
             else
                 spObj.innerHTML = "密碼格式錯誤"
@@ -205,31 +192,5 @@
 
     }
 
-    @*function checkEmail() {
-        $.ajax({
-            url: "@Url.Action("checkEmail", "Customer")",
-            data: { "email": $("#email") },
-            type: "POST",
-            success: function (data) {
-                let ObjEmail = document.getElementById("email");
-                let ObjEmailVal = ObjEmail.value;
-                console.log(data);
-
-                if (data == "此信箱可使用") {
-
-                    if (ObjEmailVal.length >= 5 && ObjEmailVal.match(/^[0-9a-zA-Z]([-._]*[0-9a-zA-Z])*"@o"[0-9a-zA-Z]([-._]*[0-9a-zA-Z])*\.+[a-zA-Z]+$/)) {
-                        document.getElementById("Wrongemail").innerHTML = "信箱格式正確"
-                    }
-                    else {
-                        document.getElementById("Wrongemail").innerHTML = "信箱格式錯誤"
-                    }
-
-                }
-                else {
-                    document.getElementById("Wrongemail").innerHTML = data;
-                }
-
-                }
-            })*@
-          //}
+    
 </script>

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BuyFood_Template.Models;
+using BuyFood_Template.ViewModel;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 //using prjBuyFoodCore.Models;
 //using prjBuyFoodCore.ViewModel;
@@ -28,33 +31,226 @@ namespace BuyFood_Template.Controllers
             //ViewBag.ID = "";
             return View();
         }
-        //public IActionResult Create(string id)
+
+        //public IActionResult getFBIdandName(string id,string name)
         //{
-        //    ViewBag.ID = id;
-        //    return View();
+        //    ViewBag.FBUSERID = id;
+        //    ViewBag.FBUSERNAME = name;
+
+        //    return Redirect("Customer/CreateFacebookMember");
         //}
+        public IActionResult CreateFacebookMember(string id, string name)
+        {
+            ViewBag.FBUSERID = id;
+            ViewBag.FBUSERNAME = name;
 
-        //[HttpPost]
-        //public IActionResult Create(CCustomerCreateViewModel newMember)
-        //{
-        //    string photoname = Guid.NewGuid().ToString() + ".jpg";
 
-        //    using (var MemberPhoto = new FileStream(iv_host.WebRootPath + @"\MemberPhoto\" + photoname, FileMode.Create))
-        //    {
-        //        newMember.img.CopyTo(MemberPhoto);
-        //    }
+            return PartialView();
+        }
+        [HttpPost]
+        public IActionResult CreateFacebookMember(CCustomerCreateViewModel newFacebookMember)
+        {
+            string photoname = Guid.NewGuid().ToString() + ".jpg";
 
-        //    newMember.CPicture = @"~\MemberPhoto\" + photoname;
-        //    newMember.CBlackList = 0;
-        //    newMember.CFreezeCount = 0;
-        //    newMember.CDeposit = 0;
+            if (newFacebookMember.img != null)
+            {
+                using (var MemberPhoto = new FileStream(iv_host.WebRootPath + @"\MemberPhoto\" + photoname, FileMode.Create))
+                {
+                    newFacebookMember.img.CopyTo(MemberPhoto);
+                }
+            }
 
-        //    擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-        //    db.TMembers.Add(newMember.member);
-        //    db.SaveChanges();
 
-        //    return Redirect("~/Home/Index");
-        //}
+            string 邀請碼 = 產生邀請碼();
+
+
+            newFacebookMember.CPicture = @"..\MemberPhoto\" + photoname;
+            newFacebookMember.CBlackList = 0;
+            newFacebookMember.CFreezeCount = 0;
+            newFacebookMember.CDeposit = 0;
+
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+
+            var check邀請碼 = from n in db.TMembers
+                           select n.CReferrerCode;
+
+            //抓推薦人
+            if (!string.IsNullOrEmpty(newFacebookMember.code))
+            {
+                var 抓邀請人 = from n in db.TMembers
+                           where n.CReferrerCode == newFacebookMember.code
+                           select n.CMemberId;
+
+                int[] 邀請人ID = 抓邀請人.ToArray();
+                newFacebookMember.CReferrerID = 邀請人ID[0];
+            }
+            else
+            {
+                newFacebookMember.CReferrerID = null;
+            }
+
+            //防止邀請碼重複
+            while (check邀請碼.Any(n => n == 邀請碼) == true)
+            {
+                邀請碼 = 產生邀請碼();
+            }
+
+            newFacebookMember.CReferrerCode = 邀請碼;
+
+            db.TMembers.Add(newFacebookMember.member);
+            db.SaveChanges();
+
+            //註冊折價卷
+            var 新增註冊折價卷 = from n in db.TMembers
+                          where n.CMemberId == newFacebookMember.CMemberID
+                          select n.CReferrerId;
+
+            if (新增註冊折價卷 != null)
+            {
+                int?[] 邀請人ID = 新增註冊折價卷.ToArray();
+
+                TCupon 新增邀請人折價卷 = new TCupon
+                {
+                    CCuponCategoryId = 2,
+                    CMenberId = (int)邀請人ID[0],
+                    CBeUsed = 0,
+                    CReceivedTime = DateTime.Now
+                };
+                TCupon 新增新會員折價卷 = new TCupon
+                {
+                    CCuponCategoryId = 3,
+                    CMenberId = newFacebookMember.CMemberID,
+                    CBeUsed = 0,
+                    CReceivedTime = DateTime.Now
+                };
+                db.TCupons.Add(新增邀請人折價卷);
+                db.TCupons.Add(新增新會員折價卷);
+                db.SaveChanges();
+            }
+
+            var FB註冊後登入 = (from n in db.TMembers.AsEnumerable()
+                           where n.CMemberId == newFacebookMember.CMemberID
+                           select n).FirstOrDefault();
+
+            HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, FB註冊後登入.CName);
+            HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, FB註冊後登入.CPicture);
+
+            return Redirect("~/HomePage/Home");
+        }
+
+        [HttpPost]
+        public IActionResult Create(CCustomerCreateViewModel newMember)
+        {
+            string photoname = Guid.NewGuid().ToString() + ".jpg";
+
+            if (newMember.img != null)
+            {
+                using (var MemberPhoto = new FileStream(iv_host.WebRootPath + @"\MemberPhoto\" + photoname, FileMode.Create))
+                {
+                    newMember.img.CopyTo(MemberPhoto);
+                }
+            }
+
+
+            string 邀請碼 = 產生邀請碼();
+
+
+            newMember.CPicture = @"..\MemberPhoto\" + photoname;
+            newMember.CBlackList = 0;
+            newMember.CFreezeCount = 0;
+            newMember.CDeposit = 0;
+            newMember.CRegisteredTime = DateTime.Now;
+
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+
+            var check邀請碼 = from n in db.TMembers
+                           select n.CReferrerCode;
+
+            //抓推薦人
+            if (!string.IsNullOrEmpty(newMember.code))
+            {
+                var 抓邀請人 = from n in db.TMembers
+                           where n.CReferrerCode == newMember.code
+                           select n.CMemberId;
+
+                int[] 邀請人ID = 抓邀請人.ToArray();
+                newMember.CReferrerID = 邀請人ID[0];
+            }
+            else
+            {
+                newMember.CReferrerID = null;
+            }
+
+            //防止邀請碼重複
+            while (check邀請碼.Any(n => n == 邀請碼) == true)
+            {
+                邀請碼 = 產生邀請碼();
+            }
+
+            newMember.CReferrerCode = 邀請碼;
+
+            db.TMembers.Add(newMember.member);
+            db.SaveChanges();
+
+            //註冊折價卷
+            var 新增註冊折價卷 = from n in db.TMembers
+                          where n.CMemberId == newMember.CMemberID
+                          select n.CReferrerId;
+
+            if (新增註冊折價卷 != null)
+            {
+                int?[] 邀請人ID = 新增註冊折價卷.ToArray();
+
+                TCupon 新增邀請人折價卷 = new TCupon
+                {
+                    CCuponCategoryId = 2,
+                    CMenberId = (int)邀請人ID[0],
+                    CBeUsed = 0,
+                    CReceivedTime = DateTime.Now
+
+                };
+                TCupon 新增新會員折價卷 = new TCupon
+                {
+                    CCuponCategoryId = 3,
+                    CMenberId = newMember.CMemberID,
+                    CBeUsed = 0,
+                    CReceivedTime = DateTime.Now
+                };
+                db.TCupons.Add(新增邀請人折價卷);
+                db.TCupons.Add(新增新會員折價卷);
+                db.SaveChanges();
+            }
+
+            return Redirect("~/HomePage/登入");
+        }
+        public string checkEmail(string email)
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+
+            var check信箱 = from n in db.TMembers
+                          select n.CEmail;
+
+            if (check信箱.Any(n => n == email) == true)
+            {
+                return "此信箱已被註冊";
+            }
+            else
+            {
+                return "此信箱可使用";
+            }
+        }
+        public string 產生邀請碼()
+        {
+            Random r = new Random();
+            string 邀請碼 = r.Next(0, 10).ToString() +
+                r.Next(0, 10).ToString() +
+                r.Next(0, 10).ToString() +
+                r.Next(0, 10).ToString() +
+                r.Next(0, 10).ToString() +
+                r.Next(0, 10).ToString();
+
+            return 邀請碼;
+        }
     }
 }
 

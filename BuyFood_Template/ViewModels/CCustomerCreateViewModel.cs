@@ -35,6 +35,8 @@ namespace BuyFood_Template.ViewModel
         public string CEmail { get { return iv_CreateMember.CEmail; } set { iv_CreateMember.CEmail = value; } }
         [DisplayName("密碼")]
         public string CPassword { get { return iv_CreateMember.CPassword; } set { iv_CreateMember.CPassword = value; } }
+        [DisplayName("生日")]
+        public DateTime? CAge { get { return iv_CreateMember.CAge; } set { iv_CreateMember.CAge = value; } }
         [DisplayName("性別")]
         public string CGender { get { return iv_CreateMember.CGender; } set { iv_CreateMember.CGender = value; } }
         [DisplayName("地址")]
@@ -47,5 +49,9 @@ namespace BuyFood_Template.ViewModel
         public string CPicture { get { return iv_CreateMember.CPicture; } set { iv_CreateMember.CPicture = value; } }
         public IFormFile img { get; set; }
         public int? CFreezeCount { get { return iv_CreateMember.CFreezeCount; } set { iv_CreateMember.CFreezeCount = value; } }
+        public string CReferrerCode { get { return iv_CreateMember.CReferrerCode; } set { iv_CreateMember.CReferrerCode = value; } }
+        public string? code { get; set; }
+        public int? CReferrerID { get { return iv_CreateMember.CReferrerId; } set { iv_CreateMember.CReferrerId = value; } }
+        public DateTime? CRegisteredTime { get { return iv_CreateMember.CRegisteredTime; } set { iv_CreateMember.CRegisteredTime = value; } }
     }
 }
