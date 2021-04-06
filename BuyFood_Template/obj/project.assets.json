@@ -8602,30 +8602,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\alway\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\BuyFood_購物車v3_0405_2300\\BuyFood_購物車v3_0405_1900\\BuyFood_Template\\BuyFood_Template.csproj",
+      "projectUniqueName": "C:\\Users\\alway\\Desktop\\BuyFoodforGit\\BuyFood_Template\\BuyFood_Template.csproj",
       "projectName": "BuyFood_Template",
-      "projectPath": "C:\\Users\\User\\Desktop\\BuyFood_購物車v3_0405_2300\\BuyFood_購物車v3_0405_1900\\BuyFood_Template\\BuyFood_Template.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\BuyFood_購物車v3_0405_2300\\BuyFood_購物車v3_0405_1900\\BuyFood_Template\\obj\\",
+      "projectPath": "C:\\Users\\alway\\Desktop\\BuyFoodforGit\\BuyFood_Template\\BuyFood_Template.csproj",
+      "packagesPath": "C:\\Users\\alway\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\alway\\Desktop\\BuyFoodforGit\\BuyFood_Template\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\alway\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -8691,16 +8681,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "資料夾 'C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\103623~1.1' 包含無效的版本。"
-    }
-  ]
+  }
 }

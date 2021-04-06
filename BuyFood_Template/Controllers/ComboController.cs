@@ -13,55 +13,89 @@ namespace BuyFood_Template.Controllers
 
         public JsonResult getCombo(string id)
         {
-            var data = (new 擺腹BuyFoodContext()).TComboDetails.
+            擺腹BuyFoodContext dbcontext = (new 擺腹BuyFoodContext());
+
+            var data = dbcontext.TComboDetails.
                 Where(n => n.CCombo.CMemberId == int.Parse(id)).
                 Select(n => new
                 {
-                    n.CCombo.CComboId,
-                    n.CCombo.CComboName,
-                    n.CProduct.CPrice
+                    comboID = n.CCombo.CComboId,
+                    comboName = n.CCombo.CComboName,
+                    productID = n.CProduct.CProductId,
+                    price = n.CProduct.CPrice,
+                    productName = n.CProduct.CProductName,
+                    n.CProduct.CIsOnSaleId
                 });
-            var data2 = data.
-                GroupBy(n => n.CComboId).
+
+            var data3 = data.
+                GroupBy(n => n.comboID).
                 Select(n => new
                 {
                     ComboID = n.Key,
-                    ComboName = data.FirstOrDefault(a => a.CComboId == n.Key).CComboName,
-                    TotalPrice = n.Sum(p => p.CPrice),
-                    TotalItems = n.Count()
-                });
+                    ComboName = data.FirstOrDefault(a => a.comboID == n.Key).comboName,
+                    TotalPrice = n.Sum(p => p.price),
+                    TotalItems = n.Count(),
+                    NotSaleItem = n.Count(n => n.CIsOnSaleId == 3),
+                    comboDetail = new List<sTComboDetail>()
+                }).ToList();
 
-            return Json(data2);
+            foreach (var item in data3)
+            {
+                List<sTComboDetail> Details = data.Where(n => n.comboID == item.ComboID)
+                    .GroupBy(n => n.productID).Select(n => new sTComboDetail
+                    {
+                        productID = n.Key,
+                        productName = data.FirstOrDefault(p => p.productID == n.Key).productName,
+                        price = data.FirstOrDefault(p => p.productID == n.Key).price,
+                        qty = n.Count(),
+                        onSale = data.FirstOrDefault(p => p.productID == n.Key).CIsOnSaleId
+                    }).ToList();
+
+                foreach (var Detail in Details)
+                {
+                    item.comboDetail.Add(Detail);
+                }
+            }
+
+
+            return Json(data3);
         }
 
         public JsonResult getComboDetail(string id)
         {
 
-                var data = (new 擺腹BuyFoodContext()).TComboDetails
-                    .Where(n => n.CComboId == int.Parse(id))
-                    .Select(n => new
-                    {
-                        n.CComboId,
-                        n.CCombo.CComboName,
-                        n.CProductId,
-                        n.CProduct.CCategoryId,
-                        n.CProduct.CProductName,
-                        n.CProduct.CPrice
-                    }).OrderByDescending(n => n.CProductId).ThenByDescending(n => n.CCategoryId);
+            var data = (new 擺腹BuyFoodContext()).TComboDetails
+                .Where(n => n.CComboId == int.Parse(id))
+                .Select(n => new
+                {
+                    n.CComboId,
+                    n.CCombo.CComboName,
+                    n.CProductId,
+                    n.CProduct.CCategoryId,
+                    n.CProduct.CProductName,
+                    n.CProduct.CPrice,
+                    n.CProduct.CIsBreakFast,
+                    n.CProduct.CIsLunch,
+                    n.CProduct.CIsDinner,
+                    n.CProduct.CIsOnSaleId
+                }).OrderByDescending(n => n.CProductId).ThenByDescending(n => n.CCategoryId);
 
-                var data2 = data.GroupBy(n => n.CProductId)
-                    .Select(n => new
-                    {
-                        productID = n.Key,
-                        productName = data.FirstOrDefault(a => a.CProductId == n.Key).CProductName,
-                        quantity = n.Count(),
-                        unitPrice = data.FirstOrDefault(a => a.CProductId == n.Key).CPrice,
-                        categoryID = data.FirstOrDefault(a => a.CProductId == n.Key).CCategoryId
-                    });
+            var data2 = data.GroupBy(n => n.CProductId)
+                .Select(n => new
+                {
+                    productID = n.Key,
+                    productName = data.FirstOrDefault(a => a.CProductId == n.Key).CProductName,
+                    quantity = n.Count(),
+                    unitPrice = data.FirstOrDefault(a => a.CProductId == n.Key).CPrice,
+                    categoryID = data.FirstOrDefault(a => a.CProductId == n.Key).CCategoryId,
+                    productOn = data.FirstOrDefault(a => a.CProductId == n.Key).CIsOnSaleId,
+                    br = data.FirstOrDefault(a => a.CProductId == n.Key).CIsBreakFast,
+                    lu = data.FirstOrDefault(a => a.CProductId == n.Key).CIsLunch,
+                    di = data.FirstOrDefault(a => a.CProductId == n.Key).CIsDinner,
+                });
 
-                return Json(data2);
+            return Json(data2);
 
-            //productName,- quantity +, Price, delete
         }
 
 
@@ -91,9 +125,10 @@ namespace BuyFood_Template.Controllers
             }
             else
             {
-                TCombo newcombo = new TCombo {
-                CComboName = list.First().cName,
-                CMemberId = list.First().mID,
+                TCombo newcombo = new TCombo
+                {
+                    CComboName = list.First().cName,
+                    CMemberId = list.First().mID,
                 };
 
                 dbcontext.TCombos.Add(newcombo);

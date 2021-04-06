@@ -159,5 +159,11 @@ namespace BuyFood_Template.Controllers
 
             return Json(hot_product_row);
         }
+        public JsonResult getProductsByCategory(string id, string br, string lu, string di)
+        {
+            var data = (new 擺腹BuyFoodContext()).TProducts.Where(n => n.CCategoryId == int.Parse(id) && n.CIsOnSaleId != 3);
+            return Json(data);
+        }
     }
+
 }

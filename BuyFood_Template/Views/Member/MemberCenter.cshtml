@@ -16,26 +16,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <style>
-        .cwc_left {
-            position: static;
-            width: 350px;
-            height: 650px;
-            text-align: center;
-            background-color:lightgray;
-            float: left;
-            clear: right;
-            
+        .hiddenRow {
+            padding: 0 !important;
         }
 
-        .cwc_right {
-            position: static;
-            width: auto;
-            height: 650px;
-            background-color: yellow;
-            overflow: hidden;
+        .cwc_reminder {
+            height: 20px;
+            width: 20px;
+            background: #7fad39;
+            font-size: 10px;
+            color: #ffffff;
+            line-height: 20px;
+            text-align: center;
+            font-weight: 700;
+            display: inline-block;
+            border-radius: 50%;
+            position: absolute;
+            top: 7px;
+            right: 110px;
         }
+
 
         .inline {
             display: inline;
@@ -49,54 +51,98 @@
     <div id="preloder">
         <div class="loader"></div>
     </div>
-    <div class="cwc_left container ">
-        <div id="cwc_div_ProfilePhoto" class="row justify-content-center" style="width:inherit; padding-right:0px;">
-            <img id="cwc_img_ProfilePhoto" style="border-radius: 50%;width:200px;height:200px;margin-top:20px;margin-bottom:10px" src="~/img/hero/30581778_2162740227072882_842558015222579200_o.jpg" alt="圓形圖" />
-        </div>
-        <div class="row" style="width:inherit;margin-bottom:5px;position:relative;">
-            <input type="file" id="cwc_input_uploadProfilePhoto" onchange="cwc_changeProfilePhoto(@ViewBag.memberID)" style="display:none" />
-            <button id="cwc_button_ReviseProfilePhoto" onclick="cwc_input_uploadProfilePhoto.click()" class="inline btn btn-success" style="width:30px;height:30px;padding:0px;position:absolute;bottom:32px;right:2px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
-                </svg>
-            </button>
-            <button id="cwc_button_ReviseProfile" onclick="cwc_showReviseProfile(@ViewBag.memberID)" class="inline btn btn-success" style="width:30px;height:30px;padding:0px;position:absolute;bottom:0px;right:2px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
-                    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
-                </svg>
-            </button>
-            <span id="cwc_span_ProfileName">@Model.CName</span>
-        </div>
-        <div class="row" style="width:inherit;">
-            <div class="list-group" style="width:inherit;padding-right:0px;">
-                <div class="list-group-item" style="text-align:left;" >
-                    <div class="col inline" style="width:30%; text-align:left;">餘額 :</div>
-                    <div class="col inline" style="width:60%; text-align:center">@Model.CDeposit</div>
-                    <div class="col inline btn btn-success" style="width:auto;" onclick="cwc_showWallet(@ViewBag.memberID)">儲值</div>
+    <div  style="width:100%; height :800px;transition:all 1s;text-align:center">
+        <div id="cwc_i_div_body"  style="width:350px;height:inherit;transition:all 1s;display:inline-block">
+
+            <div  class="container" style=" width: 350px; height: 650px; background-color: #F3F6FA; margin-top: 50px; float: left; transition: all .5s">
+
+                <div id="cwc_div_ProfilePhoto" class="row justify-content-center" style="width:inherit; padding-right:0px">
+                    <img id="cwc_img_ProfilePhoto" style="border-radius: 50%;width:200px;height:200px;margin-top:20px;margin-bottom:10px" src="~/img/hero/30581778_2162740227072882_842558015222579200_o.jpg" alt="圓形圖" />
                 </div>
-                <div class="list-group-item" style="text-align:left;">
-                    <div class="col inline" style="width:30%; text-align:left">信箱 :</div>
-                    <div class="col inline" style="width:auto; text-align:center;">@Model.CEmail</div>
+                <div class="row" style="width:inherit;margin-bottom:5px;position:relative;">
+                    <input type="file" id="cwc_input_uploadProfilePhoto" onchange="cwc_changeProfilePhoto(@ViewBag.memberID)" style="display:none" />
+                    <button id="cwc_button_ReviseProfilePhoto" onclick="cwc_input_uploadProfilePhoto.click()" class="inline btn btn-success" style="width:30px;height:30px;padding:0px;position:absolute;bottom:32px;right:2px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
+                        </svg>
+                    </button>
+                    <button id="cwc_button_ReviseProfile" onclick="cwc_showReviseProfile(@ViewBag.memberID)" class="inline btn btn-success" style="width:30px;height:30px;padding:0px;position:absolute;bottom:0px;right:2px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+                            <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                        </svg>
+                    </button>
+                    <span id="cwc_span_ProfileName">@Model.CName</span>
+                </div>
+                <div class="row" style="width:inherit;">
+                    <div class="list-group" style="width:inherit;padding-right:0px;">
+                        <div class="list-group-item" style="text-align:left;">
+                            <div class="col inline" style="width:30%; text-align:left;">餘額 :</div>
+                            <div class="col inline" style="width:60%; text-align:center">@Model.CDeposit</div>
+                            <div class="col inline btn btn-success cwc_c_btn_showRight" style="width:auto;" onclick="cwc_showWallet(@ViewBag.memberID)">儲值</div>
+                        </div>
+                        <div class="list-group-item" style="text-align:left;">
+                            <div class="col inline" style="width:30%; text-align:left">信箱 :</div>
+                            <div class="col inline" style="width:auto; text-align:center;">@Model.CEmail</div>
+                            <input type="checkbox" disabled="disabled" id="test"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="width:inherit; ">
+                    <div class="list-group" style="width: inherit; padding-right: 0px;">
+                        <button id="cwc_MyCombo" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showCombo(@ViewBag.memberID)">我的套餐</button>
+                        <button id="cwc_Coupon" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showCoupon(@ViewBag.memberID)">優惠券</button>
+                        <button id="cwc_Review" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showReport(@ViewBag.memberID)">個人消費報表檢視</button>
+                        <button id="cwc_changePassword" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_changePassword(@ViewBag.memberID)">修改密碼</button>
+                        <button id="cwc_logout" class="list-group-item list-group-item-action" style="display:inline;" onclick="cwc_logout()">登出</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row" style="width:inherit; ">
-            <div class="list-group" style="width: inherit; padding-right: 0px;">
-                <button id="cwc_MyCombo" class="list-group-item list-group-item-action" onclick="cwc_showCombo(@ViewBag.memberID)">我的套餐</button>
-                <button id="cwc_OrderRecord" class="list-group-item list-group-item-action" onclick="cwc_showOrderRecord(@ViewBag.memberID)">訂單紀錄</button>
-                <button id="cwc_Coupon" class="list-group-item list-group-item-action" onclick="cwc_showCoupon(@ViewBag.memberID)">優惠券</button>
-                <button id="cwc_Review" class="list-group-item list-group-item-action" onclick="cwc_showReport(@ViewBag.memberID)">個人消費報表檢視</button>
-                <button id="cwc_changePassword" class="list-group-item list-group-item-action" onclick="cwc_changePassword(@ViewBag.memberID)">修改密碼</button>
-                <button id="cwc_logout" class="list-group-item list-group-item-action" style="display:inline;" onclick="cwc_logout()">登出</button>
+
+            <div id="head_cwc" class="cwc_c_div_show" style="width: 0; height: 50px; overflow: hidden; transition: all .5s">
+                
+            </div>
+            <div id="content_cwc" class="cwc_c_div_show" style="width: 0;height: 650px; overflow: hidden;padding:20px; transition: all .5s">
+ 
             </div>
         </div>
     </div>
-
-    <div class="cwc_right" id="content_cwc">
-
-    </div> 
     <script>
+
+
+        $(".cwc_c_btn_showRight").click(
+            function () {
+                $("#cwc_i_div_body").css("width", "100%");
+                $(".cwc_c_div_show").css("width", "auto");
+            });
+        
+        console.log($("#test").prop("disabled"));
+        $("#test").prop("disabled", false);
+        console.log($("#test").prop("disabled"));
+
+
+    </script>
+
+
+    <script>
+
+        function updateData(memberID) {
+            $.ajax({
+                url: `/Member/updateMemberCenter?id=${memberID}`,
+                success: function (data) {
+                    var count = 0;
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].issueItem > 0) count++;
+                    }
+                    var result = count >9? `9+`:`${count}`
+                    var txt = count > 0 ? `我的套餐<span id="cwc_span_reminder" class="cwc_reminder">${result}</span>` : `我的套餐`;
+                    var size = count >9? 9:17
+                    $(".cwc_reminder").css("font-size", `${size}`);
+                    $("#cwc_MyCombo").html(txt);
+                }
+            })
+        }
+
         function escapeHtml(unsafe) {
             return unsafe
                 .replace(/&/g, "&amp;")
@@ -118,7 +164,7 @@
         //done
         function cwc_saveReviseProfile(memberID) {
             var newName = $("#cwc_input_ProfileName").val();
-            console.log(newName);
+
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
@@ -128,12 +174,10 @@
                 success: function (data) {
                     $("#cwc_span_ProfileName").html(data.@Model.Member.tName );
                     $("#cwc_button_ReviseProfile").attr("onclick", `cwc_showReviseProfile(${memberID})`);
-
                 }
             })
         }
         @{ #endregion} //done
-
         @{ #region for change Profile Photo}
         function cwc_changeProfilePhoto(memberID) {
             console.log("OK")
@@ -173,26 +217,34 @@
                                 儲值紀錄
                                 </button>
                             </li>
-                    </ul>
-        <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-wallet" role="tabpanel" aria-labelledby="pills-wallet-tab">123</div>
+                    </ul>`;
+        var txtBottom=`<div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-wallet" role="tabpanel" aria-labelledby="pills-wallet-tab">
+                <button class="btn-success" onclick="cwc_deposit(${memberID},1)">500
+                <button class="btn-success" onclick="cwc_deposit(${memberID},2)">1000
+                <button class="btn-success" onclick="cwc_deposit(${memberID},3)">2000
+                <button class="btn-success" onclick="cwc_deposit(${memberID},4)">5000
+            </div>
             <div class="tab-pane fade" id="pills-DepositRecord" role="tabpanel" aria-labelledby="pills-DepositRecord-tab"></div>
         </div>`;
-            $("#content_cwc").html(txt);
+            $("#head_cwc").html(txt);
+            $("#content_cwc").html(txtBottom);
         }
+
 
         function cwc_showDeposits(memberID) {
             $.ajax({
-                url: "/Member/getDeposits?id=" + memberID,
+                url: "/Deposits/getDeposits?id=" + memberID,
                 type: "GET",
                 success: function (data) {
                     var start =
-                        `<table class="table table-success table-striped"><thead><tr><td>儲值時間</td><td>儲值金額</td></tr></thead><tbody>`;
+                        `<table class="table"><thead><tr><td>儲值時間</td><td>儲值金額</td></tr></thead><tbody>`;
                     var end =
                         `</tbody></table>`;
                     var content = "";
                     for (var i = 0; i < data.length; i++) {
-                        content += `<tr><td>${data[i].@Model.Deposits.tDepositTime}<td>${data[i].@Model.Deposits.tDepositAmount}`;
+                        console.log(data);
+                        content += `<tr><td>${data[i].depositTime}<td>${data[i].depositAmount}`;
                     };
                     var txt = start + content + end;
 
@@ -201,6 +253,41 @@
                 }
             })
         }
+        function cwc_deposit(memberID, set) {
+            $.ajax({
+                url: `/Deposits/buildOrderDeposit?id=${memberID}&&set=${set}`,
+                success: function (data) {
+                    console.log(data);
+                    if (data.totalAmount != 0) {
+                        var txt = `<form style="display:none" id="formCreditCard" method="post" accept-charset="UTF-8"
+                      action="https://payment-stage.opay.tw/Cashier/AioCheckOut/V5">
+
+                    <input type="text" name="MerchantID" value="${data.merchantID}" /><br />
+                    <input type="text" name="MerchantTradeNo" value="${data.merchantTradeNo}" /><br />
+                    <input type="text" name="MerchantTradeDate" value="${data.merchantTradeDate}" /><br />
+                    <input type="text" name="PaymentType" value="aio" /><br />
+                    <input type="text" name="TotalAmount" value="${data.totalAmount}" /><br />
+                    <input type="text" name="TradeDesc" value="建立信用卡測試訂單" /><br />
+                    <input type="text" name="ItemName" value="${data.itemName}" /><br />
+                    <input type="text" name="ReturnURL" value="${data.returnURL}" /><br />
+                    <input type="text" name="ChoosePayment" value="Credit" /><br />
+                    <input type="text" name="StoreID" value="${memberID}" /><br />
+                    <input type="text" name="ClientBackURL" value="${data.clientBackURL}" /><br />
+                    <input type="text" name="CreditInstallment" value="" /><br />
+                    <input type="text" name="InstallmentAmount" value="" /><br />
+                    <input type="text" name="Redeem" value="" /><br />
+                    <input type="text" name="EncryptType" value="1" /><br />
+                    <input type="text" name="CheckMacValue" value="${data.checkMacValue}" /><br />
+                    <input type="submit" id="submit"  value="送出訂單" />
+                </form>`
+                        $("#content_cwc").append(txt);
+                        $("#submit").click();
+                    }
+                    else console.log("fail");
+                }
+            });
+        }
+
         @{ #endregion}
         @{ #region for Combo} //done
         function cwc_showCombo(memberID) {
@@ -209,96 +296,77 @@
                 type: "GET",
                 success: function (data) {
                     console.log(data);
-                    
-                    var txt = `<h3>我的套餐</h3><div class="btn btn-success" onclick="cwc_EditCombo(0,'套餐${data.length+1}',${memberID})">新增套餐</div>
-                                      <table class="table table-success table-striped"><thead><tr><td>套餐名稱<td>餐點數量<td>套餐總額<td>修改<td>刪除<tbody>`;
+                    var txthead = `<h3 class="inline">我的套餐</h3><div class="btn btn-success inline" onclick="cwc_EditCombo(0,'套餐${data.length + 1}',${memberID})">新增套餐</div>`
+
+                    var txt = `<table class="table accordion" id="mycombo"><thead><tr><td>套餐名稱<td>餐點數量<td>套餐總額<td>修改<td>刪除<tbody>`;
                     for (var i = 0; i < data.length; i++) {
-                        
-                        txt += `<tr id="cwc_combo_tr_${data[i].comboID}">
-                                        <td>${data[i].comboName}
+                        var issue = data[i].notSaleItem > 0 ? `(部分餐點已停供)` : ``;
+                        txt += `<tr  class="accordion-toggle"
+                                            data-toggle="collapse"
+                                            data-target="#cwc_comboDetail_div_${data[i].comboID}"
+                                            id="cwc_combo_tr_${data[i].comboID}">
+                                        <td>${data[i].comboName}${issue}
                                         <td>${data[i].totalItems}
                                         <td>${data[i].totalPrice}
-                                        <td><div class="btn btn-success" onclick="cwc_EditCombo(${data[i].comboID},'${data[i].comboName}',${memberID})">修改</div>
-                                        <td><div class="btn btn-success" onclick="cwc_deleteCombo(${data[i].comboID})">刪除</div>`;
+                                        <td><div class="btn btn-success btn-sm" onclick="cwc_EditCombo(${data[i].comboID},'${data[i].comboName}',${memberID})">修改</div>
+                                        <td><div class="btn btn-danger btn-sm" onclick="cwc_deleteCombo(${data[i].comboID},${memberID})">刪除</div>
+                                    <tr id="cwc_comboDetail_tr_${data[i].comboID}">
+                                        <td class="hiddenRow" colspan="5">
+                                            <div class="accordian-body collapse" data-parent="#mycombo" id="cwc_comboDetail_div_${data[i].comboID}">
+                                                <table class="table table-success table-sm" style="text-align:center">
+                                                    <thead><tr><td>餐點<td>數量<td>單價
+                                                    <tbody>`;
+                        for (var p = 0; p < data[i].comboDetail.length; p++) {
+                            var issue = data[i].comboDetail[p].onSale == 3? `(停止販售)`:``
+                            txt += `<tr><td>${data[i].comboDetail[p].productName}${issue}<td>${data[i].comboDetail[p].qty}<td>${data[i].comboDetail[p].price}`;
+                        }
+                        txt += `</tbody></thead></table></div>`;
                     }
                     txt += `</tbody>`;
+                    $("#head_cwc").html(txthead);
                     $("#content_cwc").html(txt);
-                }
-            });
-        }
-//todo
-        //function cwc_addNewCombo(memberID) {
-        //    $.ajax({
-        //        url: `/Combo/addCombo?id=${memberID}`,
-        //        success: function (data) {
-        //            console.log(data);
-        //            cwc_EditCombo(0, data.cComboName, data.cMemberId);
-        //        }
-        //    })
-
-        //}
-
-        function cwc_deleteCombo(comboID) {
-
-            $(`#cwc_combo_tr_${comboID}`).remove();
-            $.ajax({
-                url:`Combo/deleteCombo?id=${comboID}`,
-                success: function (data) {
-                    
+                    updateData(memberID);
                 }
             });
         }
 
         function cwc_EditCombo(comboID, comboName, memberID) {
-            $("#content_cwc").css("visibility", "hidden");
-            console.log(comboName);
-            var layoutSet = `<div style="width:50%; height:inherit; float:left">
+            var layoutTopSet = `<div style="width:50%; height:inherit; float:left">
                                                 <div style="height:50px">
                                                     <input id="cwc_input_comboName" class="inline" type="text" value="${escapeHtml(comboName)}"/>
                                                     <div id="cwc_button_saveCombo" class="inline btn btn-success" onclick="cwc_saveCombo(${comboID},${memberID},'${escapeHtml(comboName)}')">儲存</div>
-                                                </div>                                                
-                                                <div id="cwc_combo_leftContent" style="width:100%; height:500px; overflow:scroll"></div>
+                                                </div>
                                             </div>
                                             <div style="width:50%; height:inherit; float:left">
                                                 <div style="height:50px">
-                                                    <h3 class="inline">餐點類型</h3>
+                                                    <span>餐點類型</span>
                                                     <select class="inline" id="cwc_select_Category"></select>
+                                                    <label><input id="cwc_checkbox_b" class="inline" type="checkbox" />7:00~10:30
+                                                    <label><input id="cwc_checkbox_l" class="inline" type="checkbox"  />10:30~14:30
+                                                    <label><input id="cwc_checkbox_d" class="inline" type="checkbox" />14:30~21:00
                                                 </div>
-                                                <div id="cwc_combo_rightContent" style="width:100%; height:500px; overflow:scroll"></div>
+
                                              </div>`;
-            $("#content_cwc").html(layoutSet);
-            
+            var layoutBottomSet = `<div id="cwc_combo_leftContent" style="width:50%; height:inherit; float:left; overflow:scroll"></div>
+                                                        <div id="cwc_combo_rightContent" style="width:50%; height:inherit; float:left; overflow:scroll"></div>`
+            $("#head_cwc").html(layoutTopSet);
+            $("#content_cwc").html(layoutBottomSet);
+
             $.ajax({
                 url: "/Combo/getComboDetail?id=" + comboID,
                 type: "GET",
                 success: function (data) {
-                    
                     var txt = `<table class="table table-success table-striped" style="text-align:center"><thead><tr><td>餐點<td>數量<td>單價<td>刪除
                                         <tbody id="cwc_combo_tbody">`;
                     for (var i = 0; i < data.length; i++) {
-                        txt += `<tr class="cwc_combo_trs" id="cwc_combo_tr_${data[i].productID}">
-                                        <input type="hidden" value="${data[i].productID}"/input>
-                                        <td>${data[i].productName}
-                                        <td>
-                                                <button onclick="cwc_dash('combo_qty_${data[i].productID}')" class="btn btn-success" style="width:30px;height:30px;padding:0px">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
-                                                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-                                                    </svg>
-                                                </button>
-                                                <span id="combo_qty_${data[i].productID}">${data[i].quantity}</span>
-                                                <button onclick="cwc_plus('combo_qty_${data[i].productID}')" class="btn btn-success" style="width:30px;height:30px;padding:0px">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                                                    </svg>
-                                                </button>
-                                        <td>${data[i].unitPrice}
-                                        <td><div class="btn btn-success" onclick="cwc_DeleteProductInCombo(${data[i].productID},${data[i].categoryID},'${data[i].productName}',${data[i].unitPrice})">刪除</div>`;
+                        checkboxChecked(data[i].br, data[i].lu, data[i].di,0);
+                        txt += cwc_new_tr_ProductInCombo(data[i].productID, data[i].categoryID, data[i].productName, data[i].unitPrice, data[i].quantity, data[i].productOn,data[i].br,data[i].lu,data[i].di);
                     }
                     txt += `</tbody>`;
                     $("#cwc_combo_leftContent").html(txt);
                     $.ajax({
-                      url: "/ProductCategory/getAllCategory",
-                                success: function (allCategory) {
+                        url: "/ProductCategory/getAllCategory",
+                        success: function (allCategory) {
                                     var txt = "";
                                     var selectedCategoryID = 1;
                                     for (var i = 0; i < allCategory.length; i++) {
@@ -312,16 +380,79 @@
                                                             ${allCategory[i].@Model.ProdcutCategory.tCategoryName}`;
                                         }
                                     };
-                                    $("#cwc_select_Category").html(txt).attr("onchange", `cwc_Category_selected(this.options[this.options.selectedIndex].value)`);
-                                    cwc_Category_selected(selectedCategoryID);
-                                    $("#content_cwc").css("visibility", "visible");
-                                }
-                            });
+                            $("#cwc_select_Category").html(txt).attr("onchange", `cwc_Category_selected(this.options[this.options.selectedIndex].value)`);
+                            $("#cwc_checkbox_b").attr("onclick", "cwc_checkoffer()");
+                            $("#cwc_checkbox_l").attr("onclick", "cwc_checkoffer()");
+                            $("#cwc_checkbox_d").attr("onclick", "cwc_checkoffer()");
+                               cwc_Category_selected(selectedCategoryID);
+                        }
+                     });
                 }
             });
-            
+        }
 
+        function cwc_deleteCombo(comboID,memberID) {
 
+            $(`#cwc_combo_tr_${comboID}`).remove();
+            $(`#cwc_comboDetail_tr_${comboID}`).remove();
+            $.ajax({
+                url:`Combo/deleteCombo?id=${comboID}`,
+                success: function (data) {
+                    updateData(memberID);
+                }
+            });
+        }
+
+        function cwc_new_tr_ProductInCombo(productID,categoryID,productName,unitPrice,qty,onsale,br,lu,di) {
+            txt = `<tr class="cwc_combo_trs" id="cwc_combo_tr_${productID}">
+                                        <input class="cwc_input_tr_productID" type="hidden" value="${productID}"/input>
+                                        <input class="cwc_input_tr_br" type="hidden" value="${br}"/input>
+                                        <input class="cwc_input_tr_lu" type="hidden" value="${lu}"/input>
+                                        <input class="cwc_input_tr_di" type="hidden" value="${di}"/input>
+                                        <td>${productName}
+                                        <td>
+                                                <button onclick="cwc_dash('combo_qty_${productID}')" class="btn btn-success btn-sm">-</button>
+                                                <span id="combo_qty_${productID}">${qty}</span>
+                                                <button onclick="cwc_plus('combo_qty_${productID}')" class="btn btn-success btn-sm">+</button>
+                                        <td>${unitPrice}
+                                                                                <td><div class="btn btn-danger btn-sm" onclick="cwc_DeleteProductInCombo(
+                                                                                                        ${productID},
+                                                                                                        ${categoryID},
+                                                                                                        '${productName}',
+                                                                                                        ${unitPrice},
+                                                                                                        ${onsale},
+                                                                                                        ${br},
+                                                                                                        ${lu},
+                                                                                                        ${di})">刪除</div>`;
+            return txt;
+        }
+
+        function cwc_new_tr_ProductInOption(productID, categoryID, productName, unitPrice, onsale, br, lu, di) {
+            var availableTime = "";
+            availableTime += br == 1 ? "早" : "";
+            availableTime += lu == 1 ? (availableTime == "" ? "午" : "、午") : "";
+            availableTime += di == 1 ? (availableTime == "" ? "晚" : "、晚") : "";
+
+            var txt = `<tr class="cwc_product_trs" id="cwc_product_tr_${productID}">
+                                        <input type="hidden" value="${productID}"/input>
+                                        <td>${productName}
+                                        <td>${unitPrice}
+                                        <td>${availableTime}
+                                        <td><div class="btn btn-success btn-sm"
+                                                            onclick="cwc_AddProducttoCombo(
+                                                                            ${productID},
+                                                                            '${productName}',
+                                                                            ${unitPrice},
+                                                                            ${categoryID},
+                                                                            ${onsale},
+                                                                            ${br},
+                                                                            ${lu},
+                                                                            ${di})">加入</div>`;
+            return txt;
+        }
+
+        function cwc_checkoffer() {
+            resetProductList();
         }
 
         function cwc_dash(targetID) {
@@ -339,24 +470,43 @@
 
         }
 
-        function cwc_DeleteProductInCombo(productID,categoryID,productName,unitPrice) {
+        function cwc_AddProducttoCombo(productID, productName, unitPrice, categoryID, onsale, br, lu, di) {
+            var txt = cwc_new_tr_ProductInCombo(productID, categoryID, productName, unitPrice, 1, onsale ,br, lu, di);
+            $("#cwc_combo_tbody").append(txt);
+            $(`#cwc_product_tr_${productID}`).remove();
+            checkboxChecked(br, lu, di, 1);
+        }
+
+        function cwc_DeleteProductInCombo(productID,categoryID,productName,unitPrice,onsale,br,lu,di) {
 
             $(`#cwc_combo_tr_${productID}`).remove();
-            if (categoryID ==
-                $("#cwc_select_Category")[0].options[$("#cwc_select_Category")[0].options.selectedIndex].attributes["value"].nodeValue) {
-                var txt = `<tr class="cwc_product_trs" id="cwc_product_tr_${productID}">
-                                        <input type="hidden" value="${productID}"/input>
-                                        <td>${productName}
-                                        <td>${unitPrice}
-                                        <td><div class="btn btn-success"
-                                                            onclick="cwc_AddProducttoCombo(
-                                                                            ${productID},
-                                                                            '${productName}',
-                                                                            ${unitPrice},
-                                                                            ${categoryID})">加入套餐</div>`;
+            if (onsale != 3) {
+                var doublebr = br == 0 ? true : false;
+                var doublelu = lu == 0 ? true : false;
+                var doubledi = di == 0 ? true : false;
+                for (var i = 0; i < $(`.cwc_combo_trs`).length; i++) {
+                    var brcheck = $(`.cwc_combo_trs`).children(".cwc_input_tr_br")[i].attributes["value"].nodeValue;
+                    var lucheck = $(`.cwc_combo_trs`).children(".cwc_input_tr_lu")[i].attributes["value"].nodeValue;
+                    var dicheck = $(`.cwc_combo_trs`).children(".cwc_input_tr_di")[i].attributes["value"].nodeValue;
+                    doublebr = (brcheck == 0) ? false : doublebr;
+                    doublelu = (lucheck == 0) ? false : doublelu;
+                    doubledi = (dicheck == 0) ? false : doubledi;
+                }
+                if (doublebr || doublelu || doubledi) {
+                    if (doublebr) $("#cwc_checkbox_b").prop("disabled",false);
+                    if (doublelu) $("#cwc_checkbox_l").prop("disabled", false);
+                    if (doubledi) $("#cwc_checkbox_d").prop("disabled", false);
+                    resetProductList();
 
-                $("#cwc_product_tbody").append(txt);
-            };
+                }
+                else {
+                    if (categoryID ==
+                        $("#cwc_select_Category")[0].options[$("#cwc_select_Category")[0].options.selectedIndex].attributes["value"].nodeValue) {
+                        var txt = cwc_new_tr_ProductInOption(productID, categoryID, productName, unitPrice,onsale, br, lu, di);
+                        $("#cwc_product_tbody").append(txt);
+                    }
+                }
+            }
         }
 
         function cwc_saveCombo(comboID, memberID,comboName) {
@@ -364,7 +514,7 @@
             var newcomboName = $("#cwc_input_comboName").val() == "" ? escapeHtml(comboName) : escapeHtml($("#cwc_input_comboName").val());
             var db = new Array();
             for (var i = 0; i < $(`.cwc_combo_trs`).length; i++) {
-                var productID = $(`.cwc_combo_trs`).children("input")[i].attributes["value"].nodeValue;
+                var productID = $(`.cwc_combo_trs`).children(".cwc_input_tr_productID")[i].attributes["value"].nodeValue;
                 var qty = $(`#combo_qty_${productID}`).html();
                 var data = {};
                 data.cID = comboID;
@@ -374,7 +524,7 @@
                 data.cName = `${newcomboName}`;
                 db.push(data);
             }
-            console.log(db);
+
             if (db.length == 0) {
                 if (comboID == 0)
                     cwc_showCombo(memberID);
@@ -383,6 +533,7 @@
                         url: `Combo/deleteCombo?id=${comboID}`,
                         success: function () {
                             cwc_showCombo(memberID);
+                            updateData(memberID);
                         }
                     });
                 }
@@ -394,67 +545,81 @@
                     url: "/Combo/saveCombo",
                     data: JSON.stringify(db),
                     success: function (data) {
-                        cwc_showCombo(memberID)
+                        cwc_showCombo(memberID);
+                        updateData(memberID);
                     }
                 });
             }
-        }
 
-        function cwc_AddProducttoCombo(productID, productName, unitPrice, CategoryID) {
 
-            var txt = `<tr class="cwc_combo_trs" id="cwc_combo_tr_${productID}">
-                                        <input type="hidden" value="${productID}"/input>
-                                        <td>${productName}
-                                        <td>
-                                                <button onclick="cwc_dash('combo_qty_${productID}')" class="btn btn-success" style="width:30px;height:30px;padding:0px">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
-                                                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-                                                    </svg>
-                                                </button>
-                                                <span id="combo_qty_${productID}">1</span>
-                                                <button onclick="cwc_plus('combo_qty_${productID}')" class="btn btn-success" style="width:30px;height:30px;padding:0px">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                                                    </svg>
-                                                </button>
-                                        <td>${unitPrice}
-                                        <td><div class="btn btn-success" onclick="cwc_DeleteProductInCombo(${productID},${CategoryID},'${productName}',${unitPrice})">刪除</div>`;
-            $("#cwc_combo_tbody").append(txt);
-            $(`#cwc_product_tr_${productID}`).remove();
         }
 
         function cwc_Category_selected(CategoryID) {
+            var br = $("#cwc_checkbox_b").prop("disabled")
+            var lu = $("#cwc_checkbox_l").prop("disabled")
+            var di = $("#cwc_checkbox_d").prop("disabled")
+
+            var selectb = $("#cwc_checkbox_b").prop("checked") ? 1 : 0;
+            var selectl = $("#cwc_checkbox_l").prop("checked") ? 1 : 0;
+            var selectd = $("#cwc_checkbox_d").prop("checked") ? 1 : 0;
+
             $.ajax({
                 url: `/ProductDetail/getProductsByCategory?id=${CategoryID}`,
                 success: function (ProductList) {
-                    console.log(ProductList);
-                    var txt = `<table class="table table-success table-striped" style="text-align:center"><thead><tr><td>餐點<td>單價<td>新增
-                                        <tbody id="cwc_product_tbody">`;
-                    for (var i = 0; i < ProductList.length; i++) {
-                        var doubleP = false;
-                        for (var x = 0; x < $(`.cwc_combo_trs`).length; x++) {
-                            if (ProductList[i].@Model.Product.tProductId == parseInt($(`.cwc_combo_trs`).children("input")[x].attributes["value"].nodeValue)) {
-                                doubleP = !doubleP;
-                            }
-                        };
 
-                        if (!doubleP) {
-                            txt += `<tr class="cwc_product_trs" id="cwc_product_tr_${ProductList[i].@Model.Product.tProductId }">
-                                        <input type="hidden" value="${ProductList[i].@Model.Product.tProductId}"/input>
-                                        <td>${ProductList[i].@Model.Product.tProductName}
-                                        <td>${ProductList[i].@Model.Product.tPrice}
-                                        <td><div class="btn btn-success"
-                                                            onclick="cwc_AddProducttoCombo(
-                                                                            ${ProductList[i].@Model.Product.tProductId},
-                                                                            '${ProductList[i].@Model.Product.tProductName}',
-                                                                            ${ProductList[i].@Model.Product.tPrice},
-                                                                            ${CategoryID})">加入套餐</div>`;
-                        };
-                    }
+                    var txt = `<table class="table table-success table-striped" style="text-align:center"><thead><tr><td>餐點<td>單價<td>供餐時段<td>新增
+                                        <tbody id="cwc_product_tbody">`;
+
+                    for (var i = 0; i < ProductList.length; i++) {
+
+                        var b = selectb == 1 ? ProductList[i].cIsBreakFast == 1 ? true : false : true;
+                        var l = selectl == 1 ? ProductList[i].cIsLunch == 1 ? true : false : true;
+                        var d = selectd == 1 ? ProductList[i].cIsDinner == 1 ? true : false : true;
+
+                        if (b && l && d) {
+                            var a = cwc_new_tr_ProductInOption(ProductList[i].cProductId, CategoryID, ProductList[i].cProductName,
+                                ProductList[i].cPrice, ProductList[i].cIsOnSaleId, ProductList[i].cIsBreakFast, ProductList[i].cIsLunch, ProductList[i].cIsDinner)
+
+                            var doubleP = false;
+                            for (var x = 0; x < $(`.cwc_combo_trs`).length; x++) {
+                                if (ProductList[i].@Model.Product.tProductId == parseInt($(`.cwc_combo_trs`).children(".cwc_input_tr_productID")[x].attributes["value"].nodeValue)) {
+                                    doubleP = !doubleP;
+                                }
+                            };
+
+                            if (!doubleP) {
+                                txt += ((br == true && ProductList[i].cIsBreakFast == 1) || (lu == true && ProductList[i].cIsLunch == 1) || (di == true && ProductList[i].cIsDinner == 1)) ?
+                                    ((br == false && ProductList[i].cIsBreakFast == 1) || (lu == false && ProductList[i].cIsLunch == 1) || (di == false && ProductList[i].cIsDinner == 1)) ? a : ""
+                                    : a;
+                            }
+                        }
+                    };
+
                     txt += `</tbody>`;
                     $("#cwc_combo_rightContent").html(txt);
                 }
             });
+        }
+
+        function checkboxChecked(br, lu, di, state) {
+            checkBoxDisabled($("#cwc_checkbox_b"), br, state);
+            checkBoxDisabled($("#cwc_checkbox_l"), lu, state);
+            checkBoxDisabled($("#cwc_checkbox_d"), di, state);
+        }
+
+        function checkBoxDisabled(target, targetAvailable, state) {
+            var current = target.prop("disabled");
+            var after = targetAvailable == 1 ? current : true;
+            if (!current == after) {
+                target.prop("disabled", true);
+                if (state == 1) {
+                    resetProductList()
+                }
+            }
+        }
+        function resetProductList() {
+            var CategoryID = $("#cwc_select_Category")[0].options[$("#cwc_select_Category")[0].options.selectedIndex].value;
+            cwc_Category_selected(CategoryID);
         }
         @{ #endregion}
         @{ #region for Coupon}
@@ -473,7 +638,7 @@
                                                 role="tab"
                                                 aria-controls="pills-unuse"
                                                 aria-selected="true"
-                                                onclick="cwc_showCouponsUnuse(${memberID})">
+                                                onclick="cwc_showCoupons(${memberID},0)">
                                 未使用
                                 </button>
                             </li>
@@ -486,42 +651,44 @@
                                                 role="tab"
                                                 aria-controls="pills-used"
                                                 aria-selected="false"
-                                                onclick="cwc_showCouponsUsed(${memberID})">
+                                                onclick="cwc_showCoupons(${memberID},1)">
                                 已使用
                                 </button>
                             </li>
-                    </ul>
-        <div class="tab-content" id="pills-tabContent">
+                    </ul>`;
+        var txtBottom = `<div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-unuse" role="tabpanel" aria-labelledby="pills-unuse-tab"></div>
             <div class="tab-pane fade" id="pills-used" role="tabpanel" aria-labelledby="pills-used-tab"></div>
         </div>`;
-            $("#content_cwc").html(txt);
-            cwc_showCouponsUnuse(memberID);
+            $("#head_cwc").html(txt);
+            $("#content_cwc").html(txtBottom);
+            cwc_showCoupons(memberID,0);
         }
-        function cwc_showCouponsUnuse(memberID) {
+        function cwc_showCoupons(memberID,used) {
             $.ajax({
-        url: "/Member/getUnuseCoupons?id=" + memberID,
-        type: "GET",
-        success: function (data) {
-            var start =
-                `<table class="table table-success table-striped"><thead><tr><td>儲值時間</td><td>儲值金額</td></tr></thead><tbody>`;
-            var end =
-                `</tbody></table>`;
-            var content = "";
-            for (var i = 0; i < data.length; i++) {
-                content += `<tr><td>${data[i].@Model.Deposits.tDepositTime}<td>${data[i].@Model.Deposits.tDepositAmount}`;
+                url: `/Coupon/getCoupons?id=${memberID}&used=${used}`,
+                type: "GET",
+                success: function (data) {
+                    var start =
+                        `<table class="table"><thead>
+                            <tr><td>優惠券名稱</td>
+                                    <td>領取日</td>
+                                    <td>到期日</td></tr></thead><tbody>`;
+                    var end =
+                        `</tbody></table>`;
+                    var content = "";
+                    for (var i = 0; i < data.length; i++) {
+                        content += `<tr><td>${data[i].categoryName} <td>${data[i].rdate}<td>${data[i].edate}`;
                     };
                     var txt = start + content + end;
 
-                    $("#pills-DepositRecord").html(txt);
-
+                    if (used == 0)
+                        $("#pills-unuse").html(txt);
+                    else $("#pills-used").html(txt);
                 }
             })
 
         }
-        function cwc_showCouponsUsed(memberID) {
-
-                }
         @{ #endregion}
         function cwc_logout() {
 
@@ -604,3 +771,6 @@
 </body>
 
 </html>
+<script>
+    updateData(@ViewBag.memberID);
+</script>
