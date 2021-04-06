@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "_LayoutAd";
+}
+@model BuyFood_Template.ViewModels.MemberManagementViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<p><h1>新增會員</h1></p>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="CName" class="control-label"></label>
+                <input asp-for="CName" class="form-control" />
+                <span asp-validation-for="CName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CEmail" class="control-label"></label>
+                <input asp-for="CEmail" class="form-control" />
+                <span asp-validation-for="CEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CPassword" class="control-label"></label>
+                <input asp-for="CPassword" class="form-control" />
+                <span asp-validation-for="CPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CGender" class="control-label"></label>
+                <input asp-for="CGender" class="form-control" />
+                <span asp-validation-for="CGender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CAddress" class="control-label"></label>
+                <input asp-for="CAddress" class="form-control" />
+                <span asp-validation-for="CAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CBlackList" class="control-label"></label>
+                <input asp-for="CBlackList" class="form-control" />
+                <span asp-validation-for="CBlackList" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CDeposit" class="control-label"></label>
+                <input asp-for="CDeposit" class="form-control" />
+                <span asp-validation-for="CDeposit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CPhone" class="control-label"></label>
+                <input asp-for="CPhone" class="form-control" />
+                <span asp-validation-for="CPhone" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="CPicture" class="control-label"></label>
+                    <input asp-for="CPicture" class="form-control" />
+                    <span asp-validation-for="CPicture" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CFreezeCount" class="control-label"></label>
+                    <input asp-for="CFreezeCount" class="form-control" />
+                    <span asp-validation-for="CFreezeCount" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <input type="submit" value="送出" class="btn btn-primary" /> <a asp-action="List" class="btn btn-primary">回會員列表</a>
+            </div>
+        </form>
+    </div>
+</div>

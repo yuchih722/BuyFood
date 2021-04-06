@@ -1,0 +1,152 @@
+﻿@{
+    Layout = "_LayoutAd";
+}
+@model IEnumerable<BuyFood_Template.ViewModels.yuActivityViewModel>
+
+<div class="box-module">
+    <div class="box-title">狀態分類</div>
+    <div class="box-content padding15">
+        <a href="#">
+            <div class="clearfix col-xs-6 col-sm-2 padding5">
+                <div class="statusbox bg-green">
+                    <div class="status_amount">15</div>
+                    <div class="status_name bg_color_green">所有活動</div>
+                </div>
+            </div>
+        </a>
+        <a href="#">
+            <div class="clearfix col-xs-6 col-sm-2 padding5">
+                <div class="statusbox bg-red">
+                    <div class="status_amount">3</div>
+                    <div class="status_name bg_color_red">首頁輪播中</div>
+                </div>
+            </div>
+        </a>
+        <a href="#">
+            <div class="clearfix col-xs-6 col-sm-2 padding5">
+                <div class="statusbox bg-azure">
+                    <div class="status_amount">10</div>
+                    <div class="status_name bg_color_azure">活動進行中</div>
+                </div>
+            </div>
+        </a>
+        <a href="#">
+            <div class="clearfix col-xs-6 col-sm-2 padding5">
+                <div class="statusbox bg-orange">
+                    <div class="status_amount">2</div>
+                    <div class="status_name bg_color_orange">已截止</div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+
+<div class="input-group mb-3">
+    <b style="font-size:20px;">關鍵字</b><input type="text" placeholder="搜尋">
+    <div class="input-group-append">
+        <button class="btn btn-success">Go</button>
+    </div>
+</div>
+
+<div class="ibox">
+    <div class="ibox-head">
+        <div class="ibox-title">
+            <a asp-action="ActivityCreat" class="btn btn-primary  btn-rounded" onclick="">新增活動</a>
+            <a class="btn btn-danger btn-rounded" onclick="">刪除多筆</a>
+            <a class="btn btn-Silver btn-rounded" onclick="">取消</a>
+        </div>
+    </div>
+
+    <div class="ibox-body">
+        <table class="table table-hover">
+            <thead class="thead-default" style="text-align:center">
+                <tr style="text-align:center">
+                    <th width="50px" style="text-align:center">
+                        <label class="ui-checkbox">
+                            <input type="checkbox" id="chElt" onclick="checkOrCancelAll();">
+                            <span class="input-span"></span>
+                        </label>
+                    </th>
+                    <th style="text-align:center">@Html.DisplayNameFor(model => model.CRank)</th>
+                    <th style="text-align:center">@Html.DisplayNameFor(model => model.CActivityName)</th>
+                    <th style="text-align:center">@Html.DisplayNameFor(model => model.CDescription)</th>
+                    <th style="text-align:center">@Html.DisplayNameFor(model => model.CPicture)</th>
+                    <th style="text-align:center">@Html.DisplayNameFor(model => model.CLink)</th>
+                    <th style="text-align:center">@Html.DisplayNameFor(model => model.CTime)</th>
+                    <th style="text-align:center">狀態</th>
+                    <th style="text-align:center">操作</th>
+                </tr>
+            </thead>
+            <tbody id="yuActivitytbody">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- BEGIN PAGA BACKDROPS-->
+<div class="sidenav-backdrop backdrop"></div>
+<div class="preloader-backdrop">
+    <div class="page-preloader">Loading</div>
+</div>
+<!-- END PAGA BACKDROPS-->
+
+<script>
+    //進入此頁面執行
+    $(function () {
+        $.ajax({
+            url: "/yuActivity/ActivityListJson",
+            type: "GET",
+            success: function (data) {
+                console.log(data);
+                var txt = "";
+                var shobtn = "";
+
+                for (let i = 0; i <= data.length - 1; i++) {
+                    if (data[i].cStatus == 1)
+                        shobtn = '<button class="btn btn-Success " onclick="#">顯示</button >'
+                    else
+                        shobtn = '<button class="btn btn-Grey " onclick="#">關閉</button >'
+                    txt += '<tr style="text-align:center"><td style="vertical-align: middle;"><label class="ui-checkbox"><input type="checkbox" name="interest"><span class="input-span">'
+                    txt += '<td style="vertical-align: middle;">' + data[i].cRank
+                    txt += '<td style="vertical-align: middle;">' + data[i].cActivityName
+                    txt += '<td style="vertical-align: middle;">' + data[i].cDescription
+                    txt += '<td style="vertical-align: middle;"><img src="' + data[i].cPicture + '" alt="your image" width="300" height="150" />'
+                    txt += '<td style="vertical-align: middle;"><a class="btn btn-info" href="' + data[i].cLink + '">測試連結'
+                    txt += '<td style="vertical-align: middle;">' + data[i].cTime
+                    txt += '<td>' + shobtn
+                    txt += '<td style="vertical-align: middle;">'
+                    txt += '<button class="btn btn-Success btn-xs m-r-5" onclick="#"><i class="fa fa-pencil font-18">編輯'
+                    txt += '<button id="delee" class="btn btn-Danger btn-xs" onclick="#"><i class="fa fa-trash font-18">刪除'
+                }
+                $("#yuActivitytbody").html(txt);
+            }
+        });
+    });
+    function checkOrCancelAll() {
+        //1.獲取checkbo的元素對象
+        var chElt = document.getElementById("chElt");
+        //2.獲取選中狀態
+        var checkedElt = chElt.checked;
+        console.log(checkedElt)
+        //3.若checked=true,將所有的復選框選中,checked=false,將所有的復選框取消
+        var allCheck = document.getElementsByName("interest");
+        //4.循環遍歷取出每一個復選框中的元素
+        //var mySpan=document.getElementById("mySpan");
+        if (checkedElt) {
+            //全選
+            for (var i = 0; i < allCheck.length; i++) {
+                //設置復選框的選中狀態
+                allCheck[i].checked = true;
+            }
+            //mySpan.innerHTML="取消全選";
+        } else {
+            //取消全選
+            for (var i = 0; i < allCheck.length; i++) {
+                allCheck[i].checked = false;
+            }
+            //mySpan.innerHTML="全選";
+        }
+    };
+
+</script>

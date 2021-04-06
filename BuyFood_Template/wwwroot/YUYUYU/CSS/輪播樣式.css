@@ -1,0 +1,66 @@
+﻿
+ #runpage{
+    position: relative;
+}
+
+#runpage div {
+    height: 431px;
+    width: 825px;
+    float: left;
+}
+
+.yuUsingUl {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+}
+
+.yuUsingLi {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.dot {
+    bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+    .dot .yuUsingLi {
+        border: 1px solid #ff0000;
+        /*        border-radius: 50%;*/
+        margin: 10px 5px;
+        width: 30px;
+        height: 15px;
+    }
+
+.slide_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    color: #fff;
+    position: absolute;
+    font-size: 60px;
+}
+
+#prevSlide {
+    left: 10px;
+}
+
+#nextSlide {
+    right: 10px;
+}
+
+.slide_btn i {
+    color: rgba(255,255,255,.6);
+    transition: .5s;
+}
+
+.slide_btn:hover i {
+    color: rgba(255,255,255,1);
+}

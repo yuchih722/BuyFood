@@ -1,0 +1,516 @@
+﻿
+@{
+    ViewData["Title"] = "Order";
+}
+
+
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ogani | Template</title>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+    <!-- Css Styles -->
+
+</head>
+
+<body>
+    <!-- Page Preloder -->
+
+    @*遮罩頁面的標籤*@
+    <div id="cover_page" class="mask_page">
+        <img id="loading_gif" class="loading_image" src="~/Images/loading_2.gif" />
+    </div>
+    <!-- Header Section End -->
+    <!-- Hero Section Begin -->
+    @*<section class="hero hero-normal">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9" style="margin-left:auto">
+                        <div class="hero__search">
+                            <div class="hero__search__form">
+                                <form action="#">
+                                    <div class="hero__search__categories">
+                                        All Categories
+                                        <span class="arrow_carrot-down"></span>
+                                    </div>
+                                    <input type="text" placeholder="What do yo u need?">
+                                    <button type="submit" class="site-btn">SEARCH</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>*@
+    <!-- Hero Section End -->
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="@Url.Content("~/img/breadcrumb.jpg")">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>訂單最後確認</h2>
+                        <div class="breadcrumb__option">
+                            @*<a href="./index.html">Home</a>
+                                <span>Checkout</span>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h6 style="color:black">
+                        <span class="icon_tag_alt"></span> 你有未使用的折價券嗎?
+                        <a class="label_link_type" style="color:black" href="/ShoppingCart/CurrentCartItem">點擊回到購物車</a> 選擇您的折價券
+                    </h6>
+                </div>
+            </div>
+            <div class="checkout__form">
+                <h4>帳單確認</h4>
+                <form action="#">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-6">
+                            <div style="background-color:#ebe6e6;border-radius:10px;padding-left:10px">
+                                <p style="color:black">付款方式<span style="color:red">*</span></p>
+                                <div>
+                                    <label><input type="radio" name="pay" value="1" checked>電子錢包</label>
+                                </div>
+                                <div>
+                                    <label><input type="radio" name="pay" value="2">歐付寶支付</label>
+                                </div>
+                            </div>
+                            <div class="checkout__input">
+                                <p>送餐地址<span>*</span></p>
+                                <input style="color:black" id="input_address" type="text">
+                            </div>
+                            <h6 id="current_address">目前輸入的地點為:無</h6>
+                            <input class="site-btn" style="margin-bottom:30px" type="button" id="search_address" value="確認地址位置" />
+                            <div class="text_inline" id="estimate_time"></div>   @*顯示車程時間*@
+                            <div class="map_size" id="map"></div>   @*生成地圖*@
+                            <script>
+                                function initMap() {
+                                    var initlocation = { lat: 25.033942297235797, lng: 121.54340761133165 };  //大安資策會經緯度
+                                    var map = new google.maps.Map(document.getElementById('map'), {
+                                        zoom: 14,
+                                        center: initlocation
+                                    });
+                                    var marker = new google.maps.Marker({
+                                        position: initlocation,	  //地圖標籤的放置位置
+                                        map: map                  //這邊的map指的是第四行的map變數
+                                    });
+                                }
+                            </script>
+                            <script async
+                                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCze3Hg9q7iwJLgF7jED88CAXe2kawQLKA&callback=initMap">
+                            </script>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="checkout__order">
+                                <h4>您的訂單金額小計</h4>
+                                <div class="checkout__order__products">總金額: <span id="origin_price"></span></div>
+                                <div class="checkout__order__subtotal">折扣金額: <span id="discount_price"></span></div>
+                                <div class="checkout__order__total">結帳金額: <span id="total_price"></span></div>
+                                @*<div class="checkout__input__checkbox">
+                                        <label for="acc-or">
+                                            Create an account?
+                                            <input type="checkbox" id="acc-or">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>*@
+                                @*<p>
+                                        Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
+                                        ut labore et dolore magna aliqua.
+                                    </p>*@
+                                @*<div class="checkout__input__checkbox">
+                                        <label for="payment">
+                                            Check Payment
+                                            <input type="checkbox" id="payment">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>*@
+                                @*<div class="checkout__input__checkbox">
+                                        <label for="paypal">
+                                            Paypal
+                                            <input type="checkbox" id="paypal">
+                                            <span class="checkmark"></span>
+                                        </label> class="site-btn"
+                                    </div>*@
+                                <button id="confirm_order" class="btn_enable_style" disabled type="button">確認購買</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    @*確認通知視窗*@
+    <div id="dialog-confirm" title="送出訂單" style="display:none;">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>訂單內容檢查無誤後請點擊確定</p>
+    </div>
+
+    @*歐付寶方式*@
+    @{
+        <form id="formWebATM" method="post" accept-charset="UTF-8"
+              action="https://payment-stage.opay.tw/Cashier/AioCheckOut/V5" style="display:none">
+
+            MerchantID 商店代號:
+            <input type="text" name="MerchantID" value="2000132" /><br />
+
+            MerchantTradeNo 商店交易編號:
+            <input id="transaction_NO" type="text" name="MerchantTradeNo" value="DX202104022138228291" /><br />
+            @{ DateTime OrderDate = DateTime.Now;}
+            MerchantTradeDate 商店交易時間:
+            <input id="order_date" type="text" name="MerchantTradeDate" value="@OrderDate.ToString("yyyy/MM/dd HH:mm:ss")" /><br />
+
+            PaymentType 交易類型:
+            <input type="text" name="PaymentType" value="aio" /><br />
+
+            TotalAmount 交易金額:
+            <input id="total_amount" type="text" name="TotalAmount" value="9" /><br />
+
+            TradeDesc 交易描述:
+            <input type="text" name="TradeDesc" value="建立全金流測試訂單" /><br />
+
+            ItemName 商品名稱:
+            <input id="product_name" type="text" name="ItemName" value="MacBook 30元X2#iPhone6s 40元X1" /><br />
+
+            ReturnURL 付款完成通知回傳網址:
+            <input type="text" name="ReturnURL" value="https://developers.opay.tw/AioMock/MerchantReturnUrl" /><br />
+
+            ChoosePayment 預設付款方式:
+            <input type="text" name="ChoosePayment" value="ALL" /><br />
+
+            會員商店代碼:
+            <input type="text" name="StoreID" value="" /><br />
+
+            ChooseSubPayment 預設子付款方式:
+            <input type="text" name="ChooseSubPayment" value="" /><br />
+
+            ClientBackURL Client端返回廠商網址:
+            <input type="text" name="ClientBackURL" value="https://localhost:44398/ViewProduct/ShowProduct" /><br />
+
+            CheckMacValue 簽章類型:
+            <input type="text" name="EncryptType" value="1" /><br />
+
+            CheckMacValue 檢查碼:
+            <input id="check_mac_value" type="text" name="CheckMacValue" value="6475250D4965F6223187AD693D99AD84A1A681EAED2BFF7237BCCD3CCB829202" /><br />
+
+            <input id="send_to_opay" type="submit" value="送出訂單" />
+
+        </form>
+
+    }
+    <!-- Checkout Section End -->
+    <!-- Footer Section Begin -->
+    <footer class="footer spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__about__logo">
+                            <a href="./index.html"><img src="~/img/logo.png" alt=""></a>
+                        </div>
+                        <ul>
+                            <li>Address: 60-49 Road 11378 New York</li>
+                            <li>Phone: +65 11.188.888</li>
+                            <li>Email: hello@colorlib.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                    <div class="footer__widget">
+                        <h6>Useful Links</h6>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">About Our Shop</a></li>
+                            <li><a href="#">Secure Shopping</a></li>
+                            <li><a href="#">Delivery infomation</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Our Sitemap</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="#">Who We Are</a></li>
+                            <li><a href="#">Our Services</a></li>
+                            <li><a href="#">Projects</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Innovation</a></li>
+                            <li><a href="#">Testimonials</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="footer__widget">
+                        <h6>Join Our Newsletter Now</h6>
+                        <p>Get E-mail updates about our latest shop and special offers.</p>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your mail">
+                            <button type="submit" class="site-btn">Subscribe</button>
+                        </form>
+                        <div class="footer__widget__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer__copyright">
+                        <div class="footer__copyright__text">
+                            <p>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                Copyright &copy;
+                                <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            </p>
+                        </div>
+                        <div class="footer__copyright__payment"><img src="~/img/payment-item.png" alt=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        let pdtcart = JSON.parse(localStorage.getItem("cart"));             //從localStorage讀取購物車內的資料
+        let pdtcart_obj = JSON.parse(localStorage.getItem("cart_price"));   //取得購物車內的價格
+        let sum_total_time = 0;      //儲存訂單需要的製作時間及路程時間總和
+        let input_location = "";     //儲存輸入的地址位置
+        console.log(pdtcart_obj.couponId);
+        //將金額顯示在html中
+        $(function () {
+            $("#total_price").text('$' + pdtcart_obj.total);
+            $("#discount_price").text('$' + pdtcart_obj.discount);
+            $("#origin_price").text('$' + pdtcart_obj.origin);
+        });
+        //送出訂單
+        $("#confirm_order").click(function () {
+            if (input_location == "") {
+                window.alert("請輸入要指定的地點");
+                return;
+            }
+            //加入遮罩效果
+            $("#cover_page").css({
+                "height": $(document).height(),
+                "width": $(document).width(),
+                "display": "initial"
+            });
+            let radio_value = parseInt($("input[name=pay]:checked").val());
+            //console.log(radio_value);
+            if (radio_value == 1) {
+                //建立一個物件將資料轉為json傳回伺服器端
+                let obj_cart_order = {
+                    cartOrder: pdtcart,
+                    couponSelected: pdtcart_obj.couponId,
+                    address: input_location,
+                    transportTime: sum_total_time,
+                    payType: radio_value
+                };
+                console.log(obj_cart_order);
+                $.ajax({
+                    url: "/CheckCart/InsertOrderToDB",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(obj_cart_order),
+                    success: function (data) {
+                        window.alert(data);
+                        if (data == "已收到訂單，請稍後") {
+                            window.location.assign("/ViewProduct/ShowProduct");
+                            localStorage.removeItem("cart");
+                            localStorage.removeItem("cart_price");
+                        }
+                        //取消遮罩效果
+                        $("#cover_page").css({ "display": "none" });
+                    }
+                })      
+            } else if (radio_value == 2) {
+                let product_item = "";
+                for (let i = 0; i < pdtcart.length; i++) {
+                    product_item += pdtcart[i].cProductName + " X " + pdtcart[i].QuantityInCart + " ";
+                }
+                var NowDate = new Date();
+                //用日期時間當作商品編號
+                let order_No = NowDate.getFullYear().toString() + NowDate.getMonth().toString() + NowDate.getDate().toString() + NowDate.getHours().toString()
+                    + NowDate.getMinutes().toString() + NowDate.getSeconds().toString() + NowDate.getMilliseconds().toString();
+
+                let ordertime = $("#order_date").val();
+                //console.log(order_No);
+                $("#product_name").val(product_item);
+                //console.log($("#product_name").val());
+                $("#total_amount").val(pdtcart_obj.total);
+                //console.log($("#total_amount").val());
+                $("#transaction_NO").val("DZ" + order_No);
+                //console.log($("#transaction_NO").val());
+                let CheckMacValue = `HashKey=5294y06JbISpM5x9&ChoosePayment=ALL&ChooseSubPayment=&ClientBackURL=https://localhost:44398/ViewProduct/ShowProduct&EncryptType=1&ItemName=${$("#product_name").val()}&MerchantID=2000132&MerchantTradeDate=${ordertime}&MerchantTradeNo=${$("#transaction_NO").val()}&PaymentType=aio&ReturnURL=https://developers.opay.tw/AioMock/MerchantReturnUrl&StoreID=&TotalAmount=${pdtcart_obj.total}&TradeDesc=建立全金流測試訂單&HashIV=v77hoKGq4kWxNNIS`;               
+                //console.log(CheckMacValue);
+                CheckMacValue = encodeURIComponent(CheckMacValue).replaceAll("%20", '+');
+                CheckMacValue = CheckMacValue.toLowerCase()
+                //console.log(CheckMacValue);
+                console.log(sha256(CheckMacValue));
+
+                const result = new Promise((resolve, reject) => {
+                    resolve(sha256(CheckMacValue));
+                });
+                result.then((res) => {
+                    let toUpper = res.toUpperCase();
+                    $("#check_mac_value").val(toUpper);
+                    //console.log($("#check_mac_value").val()); // 執行成功
+                });
+
+                //顯示確認通知
+                $("#dialog-confirm").dialog({
+                    resizable: false,
+                    height: "auto",
+                    width: 400,
+                    modal: true,
+                    buttons: {
+                        "確定": function () {                          
+                            $(this).dialog("close");
+                            //建立一個物件將資料轉為json傳回伺服器端
+                            let obj_cart_order = {
+                                cartOrder: pdtcart,
+                                couponSelected: pdtcart_obj.couponId,
+                                address: input_location,
+                                transportTime: sum_total_time,
+                                payType: radio_value
+                            };
+                            console.log(obj_cart_order);
+                            $.ajax({
+                                url: "/CheckCart/InsertOrderToDB",
+                                type: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(obj_cart_order),
+                                success: function () {
+                                    $("#send_to_opay").click();
+                                    localStorage.removeItem("cart");
+                                    localStorage.removeItem("cart_price");                                    
+                                    //取消遮罩效果
+                                    $("#cover_page").css({ "display": "none" });
+                                }
+                            })
+                        },
+                        "取消": function () {
+                            $(this).dialog("close");
+                            $("#cover_page").css({ "display": "none" });
+                        }
+                    }
+                });
+
+            }
+            
+        })
+
+        //點擊"確認地址"的按鈕事件
+        $("#search_address").click(
+            function () {
+                var input_address = $("#input_address").val();
+                console.log(input_address);
+                //檢查是否有輸入地址
+                if (input_address == "") {
+                    window.alert("請輸入要指定的地點");
+                    $("#estimate_time").html("");
+                    return;
+                }
+                //加入遮罩效果
+                $("#cover_page").css({
+                    "height": $(document).height(),
+                    "width": $(document).width(),
+                    "display": "initial"
+                });
+
+                var origin1 = '106台北市大安區復興南路一段390號2樓';
+                var directionsService = new google.maps.DirectionsService();
+                var directionsRenderer = new google.maps.DirectionsRenderer();
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 14,
+                    center: { lat: 25.0342831, lng: 121.5447801 }
+                });
+                directionsRenderer.setMap(map);
+                var request = {
+                    origin: { 'query': origin1 },
+                    destination: { 'query': input_address },
+                    travelMode: 'DRIVING',
+                    avoidHighways: true,
+                    avoidTolls: true
+                };
+                //繪製兩個地點間的路線
+                directionsService.route(request, function (result, status) {
+                    if (status == 'OK') {
+                        directionsRenderer.setDirections(result);
+                        //console.log(result);
+                    } else {
+                        window.alert("找不到該輸入的位置");
+                        return;
+                        //console.log(status);
+                    }
+                });
+                //設定路線的基本條件
+                var service = new google.maps.DistanceMatrixService();
+                service.getDistanceMatrix(
+                    {
+                        origins: [origin1],               //出發位置 (需用陣列型態)
+                        destinations: [input_address],    //目的地位置
+                        travelMode: 'DRIVING',
+                        unitSystem: google.maps.UnitSystem.METRIC,
+                        avoidHighways: true,
+                        avoidTolls: true,
+                    }, callback);
+                //取得路線資訊後取出預估時間
+                function callback(response, status) {
+                    if (status == 'OK') {
+                        //console.log(response.rows[0].elements[0].duration.text);
+                        input_location = response.destinationAddresses[0];
+                        let duration_time = Math.round((response.rows[0].elements[0].duration.value) / 60);
+                        sum_total_time = duration_time + pdtcart_obj.finishTime    //將路程與製作時間相加
+                        let text = "預估時間為" + sum_total_time + "鐘";
+                        let text_address = "目前輸入的地點為:" + input_location;
+                        $("#estimate_time").html(text);                //將預估時間顯示在畫面上
+                        $("#confirm_order").prop('disabled', false);   //啟用'確認購買'的按鈕
+                        $("#current_address").html(text_address);      //顯示目前輸入的地址
+                        $("#confirm_order").css('background-color', '#7FAD39');
+                        $("#cover_page").css({ "display": "none" });   //取消遮罩效果
+                    }
+                }
+            }
+        )
+
+    </script>
+    <script>
+        //編譯成雜湊碼
+        async function sha256(message) {
+            // encode as UTF-8
+            const msgBuffer = new TextEncoder().encode(message);
+            // hash the message
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            // convert ArrayBuffer to Array
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            // convert bytes to hex string
+            const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+            return hashHex;
+        }
+
+    </script>
+    <!-- Footer Section End -->
+    <!-- Js Plugins -->
+</body>
+
+</html>
+

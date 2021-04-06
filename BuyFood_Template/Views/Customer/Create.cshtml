@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form by Colorlib</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="~/fonts/create_material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="~/css/create_style.css">
+
+    <style>
+
+        body{
+            padding:0px;
+            background-color:white;
+        }
+        .header_top{
+            background-color:#F5F5F5;
+        }
+        .col-lg-6 div{
+            background-color: #F5F5F5;
+        }
+        .col-md-6{
+            background-color: #F5F5F5;
+        }
+        input[type=radio]{
+            margin:1px;
+        }
+      
+ 
+    </style>
+
+</head>
+
+
+    
+            <div class="signup-content"  >
+                @*<div class="signup-img">
+                    <img src="images/signup-img.jpg" alt="">
+                </div>*@
+                <div class="signup-form" style="margin-left:210px; width:100%; box-shadow:4px 4px 8px 8px #cccccc;">
+                    <form method="POST" class="register-form" id="register-form">
+                        <h2>註冊</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">姓名 :</label>
+                                <input type="text" name="name" id="name" required />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">密碼 :</label>
+                                <input type="password" name="password" id="password" required />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">確認密碼 :</label>
+                                <input type="password" name="checkPassword" id="checkPassword" required />
+                            </div>
+                        </div>
+                        <div class="form-radio">
+                            <label for="gender" style="padding-right:20px;">性別 :</label>
+                            <div class="form-check form-check-inline">
+                                <input type="radio"  name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                <label class="form-check-label" for="inlineRadio1">男</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio"  name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                <label class="form-check-label" for="inlineRadio2">女</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">地址 :</label>
+                            <input type="text" name="address" id="address" required />
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">手機 :</label>
+                                <input type="text" name="phone" id="phone" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" style="position:relative">Email :</label>
+                            <input type="email" name="email" id="email" />
+                        </div>
+                            <label for="img" style="position:relative">上傳頭像 :</label>
+                            <input type="file" name="image" id="image" style="padding:0px; border:none" />
+                      
+                        <div class="form-submit">
+                            <input type="submit" value="Reset All" class="submit" name="reset" id="reset" />
+                            <input type="submit" value="Submit Form" class="submit" name="submit" id="submit" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+     
+
+    <!-- JS -->
+    <script src="~/vendor/jquery/create_jquery.min.js"></script>
+    <script src="~/js/create_main.js"></script>
+<!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+    <script>
+        $(function closeChat() {
+            $("#sidebar_secondary").css("display", "none")
+            $("#addClass").css("display", "none")
+        })
+    </script>
+</html>

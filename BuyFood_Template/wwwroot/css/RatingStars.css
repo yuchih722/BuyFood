@@ -1,0 +1,8 @@
+﻿.rating-loading {
+    width: 25px;
+    height: 25px;
+    font-size: 0;
+    color: #fff;
+    background: url(../img/loading.gif) top left no-repeat;
+    border: none;
+}

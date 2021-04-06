@@ -1,0 +1,436 @@
+﻿@{
+    Layout = "_LayoutAd";
+}
+<link href="~/assets/NEW CSS/NEWCSS.css" rel="stylesheet" />
+<link href="~/assets/NEW CSS/page.css" rel="stylesheet" />
+
+<div class="box-module">
+    <div class="box-title">狀態分類</div>
+    <div class="box-content padding15">
+        <div class="clearfix col-xs-6 col-sm-2 padding5">
+            <div class="statusbox bg-green">
+                <div class="status_amount">8888</div>
+                <div class="status_name bg_color_green">全部留言</div>
+            </div>
+        </div>
+        <div class="clearfix col-xs-6 col-sm-2 padding5">
+            <div class="statusbox bg-red">
+                <div class="status_amount">776</div>
+                <div class="status_name bg_color_red">五星</div>
+            </div>
+        </div>
+        <div class="clearfix col-xs-6 col-sm-2 padding5">
+            <div class="statusbox bg-azure">
+                <div class="status_amount">54</div>
+                <div class="status_name bg_color_azure">四星</div>
+            </div>
+        </div>
+        <div class="clearfix col-xs-6 col-sm-2 padding5">
+            <div class="statusbox bg-orange">
+                <div class="status_amount">6</div>
+                <div class="status_name bg_color_orange">三星</div>
+            </div>
+        </div>
+        <div class="clearfix col-xs-6 col-sm-2 padding5">
+            <div class="statusbox bg-purple">
+                <div class="status_amount">8</div>
+                <div class="status_name bg_color_purple">二星</div>
+            </div>
+        </div>
+        <div class="clearfix col-xs-6 col-sm-2 padding5">
+            <div class="statusbox bg-bule">
+                <div class="status_amount">6</div>
+                <div class="status_name bg_color_bule">一星</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box-module">
+    <div class="box-title">訂單列表</div>
+    <div class="box-content padding15">
+        <div class="operation  clearfix  relative mb15">
+            <div class="cell-item col-xs-12 col-sm-7 margin0 col-sm-4">
+                <label class="cell-left label_name">搜索：</label>
+                <div class="cell-right">
+                    <input name="" type="text" class="col-xs-6 col-lg-12 mr10">
+                    <button type="button" href="javascript:void(0)" class="btn button_btn btn-danger" onclick="">搜索</button>
+                </div>
+            </div>
+            <div class="l_f clearfix"><button type="button" href="javascript:void(0)" class="btn button_btn btn-danger" onclick="">刪除選中</button></div>
+            <span class="sumQuantity">合計數量：<em id="quantity">20</em>條</span>
+        </div>
+        <div id="orderlist">
+            <table class="table  table_striped table-bordered border" id="tableList">
+                <thead>
+                    <tr>
+                        <th width="50px" style="text-align:center">
+                            <label class="ui-checkbox">
+                                <input type="checkbox" id="chElt" onclick="checkOrCancelAll();">
+                                <span class="input-span"></span>
+                            </label>
+                        </th>
+                        <th class="align" width="10%">訂單號</th>
+                        <th class="align" width="5%">會員編號</th>
+                        <th width="5%" class="align">產品名稱</th>
+                        <th class="align" width="25%">留言內容</th>
+                        <th width="10%" class="align">留言相片</th>
+                        <th class="align" width="5%">留言評分</th>
+                        <th width="10%" class="align">留言時間</th>
+                        <th class="align" width="20%">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="vertical-align: middle;">
+                            <label class="ui-checkbox">
+                                <input type="checkbox" name="interest">
+                                <span class="input-span"></span>
+                            </label>
+                        </td>
+                        <td>
+                            8
+                        </td>
+                        <td class="padding0">4</td>
+                        <td>5643</td>
+                        <td><span class="tabletitle">Apple iPhone XS Max (A2104) 64GB 金色 移動聯通電信4G手機 雙卡雙待</span></td>
+                        <td><img src="~/imgs/香蕉.jpg" /></td>
+                        <td>5</td>
+                        <td>2019-03-14 19:29</td>
+                        <td><button class="btn btn-danger padding10" onclick="deletebtn(this,0)">刪除</button> </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: middle;">
+                            <label class="ui-checkbox">
+                                <input type="checkbox" name="interest">
+                                <span class="input-span"></span>
+                            </label>
+                        </td>
+                        <td>
+                            8
+                        </td>
+                        <td class="padding0">4</td>
+                        <td>5643</td>
+                        <td><span class="tabletitle">Apple iPhone XS Max (A2104) 64GB 金色 移動聯通電信4G手機 雙卡雙待</span></td>
+                        <td><img src="~/imgs/香蕉.jpg" /></td>
+                        <td>5</td>
+                        <td>2019-03-14 19:29</td>
+                        <td><button class="btn btn-danger padding10" onclick="deletebtn(this,0)">刪除</button> </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: middle;">
+                            <label class="ui-checkbox">
+                                <input type="checkbox" name="interest">
+                                <span class="input-span"></span>
+                            </label>
+                        </td>
+                        <td>
+                            8
+                        </td>
+                        <td class="padding0">4</td>
+                        <td>5643</td>
+                        <td><span class="tabletitle">Apple iPhone XS Max (A2104) 64GB 金色 移動聯通電信4G手機 雙卡雙待</span></td>
+                        <td><img src="~/imgs/香蕉.jpg" /></td>
+                        <td>5</td>
+                        <td>2019-03-14 19:29</td>
+                        <td><button class="btn btn-danger padding10" onclick="deletebtn(this,0)">刪除</button> </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: middle;">
+                            <label class="ui-checkbox">
+                                <input type="checkbox" name="interest">
+                                <span class="input-span"></span>
+                            </label>
+                        </td>
+                        <td>
+                            8
+                        </td>
+                        <td class="padding0">4</td>
+                        <td>5643</td>
+                        <td><span class="tabletitle">Apple iPhone XS Max (A2104) 64GB 金色 移動聯通電信4G手機 雙卡雙待</span></td>
+                        <td><img src="~/imgs/香蕉.jpg" /></td>
+                        <td>5</td>
+                        <td>2019-03-14 19:29</td>
+                        <td><button class="btn btn-danger padding10" onclick="deletebtn(this,0)">刪除</button> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class=" padding10 Paging clearfix" id="Paging"><button type="button" id="firstPage" class="turnPage first-page">首页</button><button class="turnPage" id="prePage">上一页</button><div class="pageWrap" style="width:100px"><ul id="pageSelect" style="transition:all 600ms"><li class="sel-page">1</li><li>2</li></ul></div><button class="turnPage" id="nextPage">下一页</button><button type="button" id="lastPage" class="last-page">尾页</button><input type="text" placeholder="1" class="jump-text" id="jumpText"><button type="button" class="jump-button" id="jumpBtn">跳转</button><p class="total-pages">共&nbsp;2&nbsp;页</p><p class="total-count">合計20條數據</p></div>
+    </div>
+</div>
+
+<div id="deliverystyle" style="display: none;">
+    <ul class="clearfix add_style padding15" id="VerifyTips">
+        <li class="cell-item">
+            <label class="cell-left label_name">訂單號:</label>
+            <div class="cell-right font-size14 colorgreen" id="order_number"></div>
+        </li>
+        <li class="cell-item">
+            <label class="cell-left label_name">快遞單號:</label>
+            <div class="cell-right"><input data-name="快遞單號" id="express_order" name="Required" data-number="express_order" data-verify="verify" type="text" class="col-xs-6 col-lg-12"></div>
+        </li>
+        <li class="cell-item">
+            <label class="cell-left label_name">快遞公司:</label>
+            <div class="cell-right" id="kuaidiname"></div>
+        </li>
+        <li class="cell-item">
+            <label class="cell-left label_name">備註:</label>
+            <div class="cell-right">
+                <textarea data-name="備註" name="Required" class="form-textarea textarea-info" id="form_textarea" placeholder=""></textarea>
+            </div>
+        </li>
+    </ul>
+</div>
+
+
+<script>
+    $(function () {
+        $("#pagestyle").Hupage({
+            slide: '#breadcrumb',
+            scrollbar: function (e) {
+                e.niceScroll({
+                    cursorcolor: "#dddddd",
+                    cursoropacitymax: 1,
+                    touchbehavior: false,
+                    cursorwidth: "3px",
+                    cursorborder: "0",
+                    cursorborderradius: "3px",
+                });
+            },
+            expand: function (thisBox, settings) {
+                settings.scrollbar(thisBox); //設置當前頁滾動樣式
+            }
+        });
+    });
+    //編輯數據
+    var orderlist = function (callback) {
+        $.ajax({
+            url: "json/products.json",
+            type: "GET",
+            dataType: 'json',
+            success: function (ret) {
+                typeof callback == 'function' && callback(ret);
+            },
+        });
+    };
+    orderlist(function (listArr) {
+        $.ajax({
+            url: "html/order/table.html",
+            type: "GET",
+            dataType: "html",
+            success: function (result) {
+                $('body').append("<script id='orderlisthtml' type='text/html'>" + result + "</script\>");
+                var listhtml = $('#orderlist');
+                var s = listArr.order.length;
+                $("#quantity").html(s);
+                var setTotalCount = s;
+                var pagenum = 10;
+                $('#Paging').paging({
+                    initPageNo: 1, // 初始頁碼
+                    totalPages: Math.round(setTotalCount / pagenum), //總頁數
+                    totalCount: '合計' + setTotalCount + '條數據', // 條目總數
+                    slideSpeed: 600, // 緩動速度。單位毫秒
+                    jump: true, //是否支持跳轉
+                    callback: function (page) {
+                        var currentPages = page * pagenum < s ? pagenum : s - (page - 1) * pagenum;
+                        var html = template('orderlisthtml', {
+                            page: page, //當前頁數
+                            pagenum: pagenum, //顯示數量
+                            pagenumber: currentPages, //頁碼
+                            order: listArr.order,
+                            product: listArr.data,
+                            status: listArr.orderstatus
+                        });
+                        listhtml.html('');
+                        listhtml.append(html);
+                        new TableSorter("tableList", 3, 4, 5, 6); //設置
+                        $("#orderlisthtml").remove(); //加載完畢刪除模版路徑
+
+                    } // 回調函數
+                });
+
+            }
+        });
+    });
+    //按鈕操作
+    //按鈕操作
+    function editorbtn(obj, id) {
+        var url = $(obj).attr("data-url");
+        window.location.href = url;
+
+    }
+    //發貨處理
+    function fahuobtn(obj, id) {
+        var fahuocontent = function (callback) {
+            $.ajax({
+                url: "json/products.json",
+                type: "GET",
+                dataType: 'json',
+                success: function (ret) {
+                    typeof callback == 'function' && callback(ret);
+                },
+            });
+        };
+        fahuocontent(function (dataArr) {
+            var name = dataArr.order.filter(function (e) {
+                return e.id == id;
+            });
+            var d = name[0].ordernumber;
+            document.getElementById("order_number").innerHTML = d;
+            var kuaidi = document.getElementById("kuaidiname");
+            var selects = document.createElement("select");
+            kuaidi.appendChild(selects).className = "selectList";
+            for (var i = 0; i < dataArr.kuaidi.length; i++) {
+                var options = document.createElement("option");
+                selects.appendChild(options).value = dataArr.kuaidi[i].id;
+                selects.appendChild(options).dataset.code = dataArr.kuaidi[i].code;
+                selects.appendChild(options).innerText = dataArr.kuaidi[i].name;
+                var express_order = document.getElementById("express_order");
+            }
+            express_order.onkeyup = function () {
+                var munber = express_order.value;
+                var sub = munber.substring(0, 3);
+                if (munber.length >= 3) {
+                    for (var s = 0; s < selects.options.length; s++) {
+                        if (sub == selects.options[s].dataset.code) {
+                            selects.options[s].selected = true;
+                            return false;
+                        }
+                    }
+                    var b = document.body.querySelector(".box_Bullet");
+                    if (!b) {
+                        var box = document.createElement("div");
+                        document.body.appendChild(box).className = "box_Bullet";
+                        document.body.appendChild(box).innerHTML = "該快遞號格式不正確，請從新輸入!";
+                        box.style.cssText = "margin-left:" + (-box.offsetWidth / 2) + "px" + ";" + "margin-top:" + (-box.offsetHeight / 2) + "px";
+                        var int = setInterval(function () {
+                            clock()
+                        }, 1000);
+                        var num = 2;
+
+                        function clock() {
+                            num > 0 ? num-- : clearInterval(int);
+                            if (num == 0) {
+                                clearInterval(int);
+                                document.body.removeChild(box);
+                                return
+                            }
+                        }
+                    }
+                }
+            };
+
+            layer.open({
+                type: 1,
+                title: '訂單發貨',
+                area: ['500px', '400px'],
+                shadeClose: true,
+                content: $('#deliverystyle'),
+                btn: ['發貨', '取消'],
+                yes: function (index, layero) {
+                    new huprompt("VerifyTips");
+                }
+            });
+
+        })
+
+    }
+</script>
+<script src="js/common.js" type="text/javascript"></script><div id="ascrail2000" class="nicescroll-rails" style="width: 3px; z-index: auto; cursor: default; position: fixed; top: 0px; height: 100%; right: 0px; display: block; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 3px; height: 258px; background-color: rgb(221, 221, 221); border: 0px; background-clip: padding-box; border-radius: 3px;"></div></div><div id="ascrail2000-hr" class="nicescroll-rails" style="height: 3px; z-index: auto; position: fixed; left: 0px; width: 100%; bottom: 0px; cursor: default; display: none; opacity: 0;"><div style="position: relative; top: 0px; height: 3px; width: 1336px; background-color: rgb(221, 221, 221); border: 0px; background-clip: padding-box; border-radius: 3px;"></div></div>
+<script id="orderlisthtml" type="text/html">
+    <table class="table  table_striped table-bordered border" id="tableList">
+        <thead>
+            <tr>
+                <th class="align" width="5%"><label class="checkbox relative"><input type="checkbox" class="ace"><span class="lbl"></span></label></th>
+                <th class="align" width="10%">訂單號</th>
+                <th class="align" width="25%">商品</th>
+                <th class="align" width="5%">總價</th>
+                <th width="5%" class="align">數量</th>
+                <th width="10%" class="align">購買時間</th>
+                <th width="10%" class="align">付款時間</th>
+                <th class="align" width="5%">狀態</th>
+                <th class="align" width="20%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(var i = 0; i < pagenumber; i++) { %>
+            <% var num = (page - 1) * pagenum + i; %>
+            <tr>
+                <td><label class="checkbox relative"><input type="checkbox" class="ace" name="checkbox"><span class="lbl"></span></label></td>
+                <td>
+                    <%=order[num].ordernumber%>
+                </td>
+                <td class="padding0">
+                    <table class="table table_striped producttable">
+                        <% for(var j = 0; j < order[num].commodity.length; j++) { %>
+                        <tr>
+                            <td>
+                                <img src="images/product_img/<%=order[num].commodity[j].img%>" class="tableimg">
+                                <span class="tabletitle"><%=order[num].commodity[j].name%></span>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </table>
+                </td>
+                <td>
+                    <%=order[num].Totalprice%>
+                </td>
+                <td>
+                    <%=order[num].quantity%>
+                </td>
+                <td>
+                    <%=timestamp(order[num].ordertime,'yyyy-MM-dd hh:mm')%>
+                </td>
+                <td>
+                    <%=timestamp(order[num].Paymenttime,'yyyy-MM-dd hh:mm')%>
+                </td>
+                <td>
+                    <% for(var j = 0; j < status.length; j++) { %>
+                    <% if(order[num].status==status[j].id){ %>
+                    <%=status[j].name%>
+                    <% } %>
+                    <% } %>
+
+                </td>
+                <td>
+                    <% if(order[num].status==1){ %>
+                    <button type="buttom" class="btn btn-blue padding10" onclick="fahuobtn(this,<%=order[num].id%>)">發貨</button>
+                    <% } else if(order[num].status==5) {%>
+                    <button type="buttom" class="btn btn-danger padding10" onclick="pingjiabtn(this,<%=order[num].id%>)">評價</button>
+                    <%}%>
+                    <button type="buttom" class="btn btn-green padding10" data-url="order_detailed.html?detailsid=<%=order[num].id%>" onclick="editorbtn(this)">詳細</button>
+                    <button type="buttom" class="btn btn-info padding10" onclick="deletebtn(this,<%=order[num].id%>)">刪除</buttom>
+
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+</script>
+<script>
+    function checkOrCancelAll() {
+        //1.獲取checkbo的元素對象
+        var chElt = document.getElementById("chElt");
+        //2.獲取選中狀態
+        var checkedElt = chElt.checked;
+        console.log(checkedElt)
+        //3.若checked=true,將所有的復選框選中,checked=false,將所有的復選框取消
+        var allCheck = document.getElementsByName("interest");
+        //4.循環遍歷取出每一個復選框中的元素
+        //var mySpan=document.getElementById("mySpan");
+        if (checkedElt) {
+            //全選
+            for (var i = 0; i < allCheck.length; i++) {
+                //設置復選框的選中狀態
+                allCheck[i].checked = true;
+            }
+            //mySpan.innerHTML="取消全選";
+        } else {
+            //取消全選
+            for (var i = 0; i < allCheck.length; i++) {
+                allCheck[i].checked = false;
+            }
+            //mySpan.innerHTML="全選";
+        }
+    };
+</script>

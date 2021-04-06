@@ -1,0 +1,54 @@
+﻿
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet"><!-- Google Font -->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+@*上方圖片*@
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("~/img/breadcrumb.jpg")">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>擺腹活動中心</h2>
+                    <div class="breadcrumb__option">
+                        <span>想要更了解food 不如親自走一趟</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Blog Section Begin -->
+<section class="blog spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-5">
+                <div class="blog__sidebar" >
+
+                    @* 健康新聞 RSS 這邊只方最近的五筆資料*@
+                    <div class="blog__sidebar__item">
+                        <h4>健康相關新聞</h4>
+                        <div class="blog__sidebar__recent" id="RSSNEWS">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-7">
+                <div class="row" id="ActivityPage">
+                    @*活動一頁最多6個*@
+
+                    @*底下頁面 超出6個就多增加一頁*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Section End -->
+<!-- Footer Section Begin -->
+
+<!-- Footer Section End -->
+<script src="~/YUYUYU/JS/客戶活動.js"></script>

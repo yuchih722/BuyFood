@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "_LayoutAd";
+}
+@model IEnumerable<BuyFood_Template.Models.TOrderDetail>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.COrderDetailId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CProductId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.COrderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CPriceAtTheTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COrderDetailId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CProductId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COrderId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CPriceAtTheTime)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

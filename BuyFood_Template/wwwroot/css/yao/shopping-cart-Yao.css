@@ -1,0 +1,65 @@
+﻿.picsize {
+    width: 100px;
+    height: 100px;
+}
+
+.hoverstyle:hover {
+    color: #593fa5;
+    border: 1px solid aliceblue;
+    border-radius: 7px;
+    background-color: aliceblue;
+    box-shadow: 3px 3px 5px 5px #cccccc;
+    transition-duration: 0.5s;
+}
+
+.select_width {
+    width: 150px;
+}
+
+.text_inline {
+    width: 150px;
+    display: inline;
+    margin: 15px;
+    font-family: 'Microsoft YaHei UI';
+    font-size: 20px;
+    font-weight: normal;
+    background-color: #83baec;
+    border: 2px solid #83baec;
+    border-radius: 12px;
+}
+
+.map_size {
+    height: 400px;
+    width: 600px;
+}
+
+.btn_enable_style {
+    color: white;
+    background-color: gray;
+    border-radius: 8px;
+    border: 2px solid gray;
+    height: 50px;
+}
+
+.label_link_type:hover {
+    background-color: #d8efb5;
+    color: #4676e3;
+}
+
+.mask_page {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: white;
+    z-index: 100;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    display: none;
+}
+
+.loading_image {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

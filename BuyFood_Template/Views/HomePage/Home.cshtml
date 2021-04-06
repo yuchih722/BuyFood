@@ -1,0 +1,329 @@
+﻿
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ogani | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+        #slider_homepage {
+            z-index: 0;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    @*<div id="preloder">
+            <div class="loader"></div>
+        </div>*@
+
+    <!-- Header Section End -->
+    <!-- Hero Section Begin -->
+    <section class="hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3" id="sideBar">
+                    @*類別Bar*@
+                    <div class="hero__categories">
+                        <div class="hero__categories__all">
+                            <i class="fa fa-bars"></i>
+                            <span>食品類別</span>
+                        </div>
+                        <ul id="sideBarCategory">
+
+                        </ul>
+                        <script src="~/js/adri/HomePage/SideBarCategory.js?randomId=<%=Math.random()%>"></script>
+                    </div>
+                </div>
+                <div class="col-lg-9" id="SearchChange">
+                    @*搜尋*@
+                    <div class="hero__search" style="overflow:visible;">
+                        <div @*class="hero__search__form"*@ style="">
+                            <div id="formDeleted" style="width: 100%;margin:0%">
+                                <script src="~/js/adri/ComboBoxOfCategories.js"></script>
+                                <div class="hero__search__categories" style="height:100%;width:100%;margin-right:5px">
+
+                                    <input type="text" id="SearchKeyInputMinPrice" placeholder="最低價格~" class="hero__search__form" style="width:10%;height:45.49px;">
+                                    <input type="text" id="SearchKeyInputMaxPrice" placeholder="最高價格" class="hero__search__form" style="width:10%;height:45.49px;">
+                                    <input type="text" id="SearchKeyInput" placeholder="輸入關鍵字" class="hero__search__form" style="width:50%;height:45.49px;">
+                                    <button id="searchBtn" type="submit" class="site-btn" style="height:100%">搜尋</button>
+
+                                    <div class="form-check form-check-inline">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="CheckboxForBreakFast" value="早餐">
+                                            <label class="form-check-label" for="CheckboxForBreakFast">早餐</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="CheckboxForLunch" value="午餐">
+                                            <label class="form-check-label" for="CheckboxForLunch">午餐</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="CheckboxForDinner" value="晚餐">
+                                            <label class="form-check-label" for="CheckboxForDinner">晚餐</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="hero__search__phone" >
+                                <div class="hero__search__phone__icon">
+                                    <i class="fa fa-phone"></i>
+                                </div>
+                                <div class="hero__search__phone__text">
+                                    <h5>+65 11.188.888</h5>
+                                    <span>support 24/7 time</span>
+                                </div>
+                            </div>*@
+                    </div>
+                    @*<div class="hero__item set-bg" data-setbg="img/hero/banner.jpg" id="slider_homepage">*@
+                    @*廣告牆*@
+                    <div id="addsome" style="height:431px; width: 825px;overflow:hidden">
+                        <div id="runpage">
+
+
+
+
+                        </div>
+                    </div>
+
+                    <link href="~/YUYUYU/CSS/輪播樣式.css" rel="stylesheet" />
+                    <script src="~/YUYUYU/JS/輪播.js"></script>
+
+                </div>
+            </div>
+        </div>
+    </section><div style="background-image: url('img/featured/feature-1.jpg')"></div>
+    <!-- Hero Section End -->
+    <script src="~/js/adri/AutoCompleteForSearchBar.js"></script>
+
+    <!-- 搜尋 Section Begin -->
+    <div id="divforSearch">
+        <!-- 搜尋 slider Begin -->
+        <!-- 搜尋 slider End -->
+        <!-- 搜尋 Section End -->
+    </div>
+    <script src="~/js/adri/SearchProducts.js?randomId=<%=Math.random()%>"></script>
+
+    <!-- Categories Section Begin -->
+
+    <section class="categories">
+        <div class="container">
+            <div class="row">
+                <div class="categories__slider owl-carousel">
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="images/86f6b20d-2a3f-4420-8f4b-1d7cb670113b.jpg">
+                            <h5><a href="#featureProductsForLocation" onclick="sideBarClick(0)">麵食</a></h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="images/141284cc-fd84-45e4-868f-0df8df45e587.jpg">
+                            <h5><a href="#featureProductsForLocation" onclick="sideBarClick(1)">飯食</a></h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="images/38fcbbf4-ff4e-4e7b-9668-1171974668b5.jpg">
+                            <h5><a href="#featureProductsForLocation" onclick="sideBarClick(2)">飲品</a></h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="images/00ba3b13-9ad5-43e7-b94e-71a635ff8b06.jpg">
+                            <h5><a href="#featureProductsForLocation" onclick="sideBarClick(3)">甜點</a></h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="Images/a72d9565-0826-44f7-bc33-adc42dbec17d.jpg">
+                            <h5><a href="#featureProductsForLocation" onclick="sideBarClick(5)">炸物</a></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Categories Section End -->
+    <!-- Featured Section Begin -->
+    <section class="featured spad">
+        <div class="container" id="tryappend">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2 id="featureProductsForLocation">特色商品</h2>
+                    </div>
+
+                    @*增加產品分類*@
+                    <div class="featured__controls" id="push_procategory"> </div>
+
+                </div>
+            </div>
+
+            @*增加產品*@
+            <div class="row featured__filter" id="many_products"></div>
+
+        </div>
+    </section>
+
+    <script src="~/YUYUYU/JS/首頁產生商品.js?randomId=<%=Math.random()%>"></script>
+    
+    <!-- Featured Section End -->
+    <!-- Banner Begin -->
+    <div class="banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="banner__pic">
+                        <img src="~/img/banner/AdForHomePage.jpg" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="banner__pic">
+                        <img src="~/img/banner/AdForHomePage2.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Banner End -->
+    <!-- Latest Product Section Begin -->
+    <section class="latest-product spad">
+        <div class="container">
+            <div class="row" id="ProductSliderForAnime"></div>
+        
+        </div>
+    </section>
+
+    <script src="~/js/adri/HomePage/LastProducts.js"></script>
+    <script src="~/js/adri/HomePage/TopRatedProducts.js"></script>
+    <script src="~/js/adri/HomePage/ReviewProducts.js"></script>
+
+
+
+
+    <!-- Latest Product Section End -->
+    <!-- Blog Section Begin -->
+    <section class="from-blog spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title from-blog__title">
+                        <h2>相關活動</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="activityHomePage">
+                <script>
+                    var txtActivity = "";
+                    $.ajax({
+                        url: "/HomePage/getActivity/",
+                        type: "POST",
+                        success: function (data) {
+
+                            for (var i = 0; i < data.length; i++) {
+
+                                txtActivity += `                <div class="col-lg-4 col-md-4 col-sm-6">
+                                                    <div class="blog__item">
+                                                        <div class="blog__item__pic">
+                                                            <img src="${data[i].cPicture.replace("..", "")}" alt="">
+                                                        </div>
+                                                        <div class="blog__item__text">
+                                                            <ul>
+                                                                <li><i class="fa fa-calendar-o"></i>${data[i].cTime}</li>
+                                                            </ul>
+                                                            <h5><a href="${data[i].cLink}">${data[i].cActivityName}</a></h5>
+                                                        </div>
+                                                    </div>
+                                                </div>`;
+
+
+                            }
+                            $("#activityHomePage").append(txtActivity);
+
+                        }
+
+                    });
+
+
+                </script>
+
+
+
+
+
+            </div>
+        </div>
+    </section>
+    <!-- Blog Section End -->
+    <!-- Footer Section Begin -->
+    <footer class="footer spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__about__logo">
+                            <a href="./index.html"><img src="~/img/logo.png" alt=""></a>
+                        </div>
+                        <ul>
+                            <li>地址: 106台北市大安區復興南路一段390號2樓</li>
+                            <li>手機: 0983622454</li>
+                            <li>Email: BuyFood@buyfood.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                    <div class="footer__widget">
+                        <h6>相關連結</h6>
+                        <ul>
+                            <li><a href="#">關於我們</a></li>
+                            <li><a href="#">關於我們的商店</a></li>
+                            <li><a href="#">運送資訊</a></li>
+                            <li><a href="#">隱私規定</a></li>
+                            <li><a href="#">我們的位置</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="#">我們是誰</a></li>
+                            <li><a href="#">我們的服務</a></li>
+                            <li><a href="#">相關企劃</a></li>
+                            <li><a href="#">聯絡資訊</a></li>
+                            <li><a href="#">創新</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="footer__widget">
+                        <h6>訂閱電報</h6>
+                        <p>隨時都能收取最新優惠資訊</p>
+                        <form action="#">
+                            <input type="text" placeholder="輸入Email">
+                            <button type="submit" class="site-btn">訂閱</button>
+                        </form>
+                        <div class="footer__widget__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            @*分頁function*@
+            <script></script>
+            <script src="~/js/adri/HomePage/Pagination.js"></script>
+    </footer>
+    <!-- Footer Section End -->
+
+
+</body>
+
+</html>

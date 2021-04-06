@@ -1,0 +1,231 @@
+﻿@model BuyFood_Template.Models.TProduct
+@using Newtonsoft.Json;
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+<!-- Page Preloder -->
+<!-- Header Section End -->
+<!-- Breadcrumb Section Begin -->
+<input id="getid" style="display:none" value="@Model.CProductId" />
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("~/img/breadcrumb.jpg")">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>精選美食</h2>
+                    <div class="breadcrumb__option">
+
+                        <span>Buy Food</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        <img class="product__details__pic__item--large" id="pdtImage" src="@Url.Content(Model.CPicture)" style="height:436px">
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__text">
+                    <h3 id="pdtName">@Model.CProductName</h3>
+
+                    @*右邊星星+幾筆留言*@
+                    <div class="product__details__rating" id="productstert"></div>
+
+
+                    <div id="pdtPrice" class="product__details__price">$@Convert.ToDecimal(Model.CPrice).ToString("0,#")</div>
+                    <p>
+                        @Model.CDescription
+                    </p>
+                    <div class="product__details__quantity">
+                        <div class="quantity">
+                            <div class="pro-qty">
+                                <span class="dec qtybtn" onclick="decbtn()">-</span>
+                                <input onchange="ChangeQuantity()" id="productcount" type="text" value="1">
+                                <span class="dec qtybtn" onclick="incbtn()">+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="button" class="primary-btn" onclick="addCart(@Model.CProductId)" value="加入購物車">
+                    <a id="smelltitle" href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+
+                    @*小標題*@
+
+
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="true" style="font-size:40px;">商品評價 </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <div class="product-rating-overview" style="margin-bottom:60px">
+
+                                    @*星星*@
+                                    <div style=" width: 100%; height: 70px;margin: auto; text-align: center;padding-bottom:20px;">
+
+                                        @*下方按鈕旁星星*@
+                                        <div style="float:left;width: 30%;height: 100%;" id="Bigstert"> </div>
+
+                                        @*星星按鈕*@
+                                        <div id="btnstar"></div>
+
+                                    </div>
+                                </div>
+
+
+
+                                @*留言區*@
+                                <div id="proBoards"></div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<!-- Product Details Section End -->
+<!-- Related Product Section Begin -->
+<section class="related-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title related__product__title">
+                    <h2>熱 門 商 品</h2>
+                </div>
+            </div>
+        </div>
+
+        @*底頁加入熱門商品*@
+        <div class="row" id="hot_product"></div>
+
+    </div>
+</section>
+<!-- Related Product Section End -->
+<!-- Js Plugins -->
+
+<script src="~/YUYUYU/JS/產品詳細版面.js"></script>
+<script src="~/YUYUYU/JS/按愛心加入購物車.js"></script>
+<script src="~/YUYUYU/JS/留言內容.js"></script>
+
+<script>
+    let product_name = $("#pdtName").text();
+    let product_count = $("#productcount").val();
+    let product_price = parseFloat($("#pdtPrice").text().replace('$', ''));
+    let product_image = $("#pdtImage").attr("src")
+    let pdtcart_quantity = [];
+    //console.log(product_price);
+    //console.log(product_image);
+    //載入商品細表時抓取現有庫存量
+    $(function () {
+        let pdt_ID = parseInt($("#getid").val());
+        let pdtIDquantity = [];
+        let pdtInCart = pdt_ID
+        pdtIDquantity.push(pdtInCart);
+
+        $.ajax({
+            url: "/ShoppingCart/CurrentItemCount",
+            data: JSON.stringify(pdtIDquantity),
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                pdtcart_quantity = data;    //回傳的商品ID尚無用途
+            }
+        });
+    })
+    //手動輸入數量
+    function ChangeQuantity() {
+        let count = $("#productcount").val();
+        if (count > pdtcart_quantity[0].quantityInCart) {   //檢查產品現有可製作的份量
+            window.alert("已超過現有可製作的份量");
+            count = pdtcart_quantity[0].quantityInCart;
+        }
+        $("#productcount").val(count);
+        product_count = count;
+    }
+    //按下-按鈕數量-1
+    function decbtn() {
+        var quantity = $("#productcount").val();
+        if (quantity > 1)
+            var count = parseFloat(quantity) - 1;
+        else
+            var count = 1;
+        $("#productcount").val(count);
+        product_count = count;
+    }
+    //按下+按鈕數量+1
+    function incbtn() {
+        var quantity = $("#productcount").val();
+        var count = parseFloat(quantity) + 1;
+        if (count > pdtcart_quantity[0].quantityInCart) {
+            window.alert("已超過現有可製作的份量");
+            count -= 1;
+        }
+        $("#productcount").val(count);
+        product_count = count;
+    }
+
+    var cart = [];
+    //判斷購物車內是否有商品
+    function isExist(id) {
+        cart = JSON.parse(localStorage.getItem("cart"));
+        for (let i = 0; i < cart.length; i++) {
+            if (cart[i].cProductId === id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    //加入購物車方法
+    var pdtItem = null;
+    function addCart(id) {
+        if (localStorage.getItem("cart")) {
+            let pdtindex = isExist(id);
+            if (pdtindex != -1) {
+                window.alert("此商品已在購物車中");
+            } else {
+                addItemInCart(id);
+            }
+        } else {
+            addItemInCart(id);
+        }
+    }
+    //若購物車內無該商品則加入
+    function addItemInCart(id) {
+        let cartItem = {
+            cProductId: id,
+            cProductName: product_name,
+            cPrice: product_price,
+            cPicture: product_image,
+            QuantityInCart: product_count,
+            ProductAmount: product_price * product_count
+        };
+        cart.push(cartItem);
+        window.alert("已加入購物車");
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+</script>
+
+
+
