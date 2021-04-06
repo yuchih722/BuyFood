@@ -1,5 +1,12 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@model BuyFood_Template.ViewModel.CCustomerCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<!DOCTYPE html>
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,104 +18,218 @@
 
     <!-- Main css -->
     <link rel="stylesheet" href="~/css/create_style.css">
-
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <style>
 
-        body{
-            padding:0px;
-            background-color:white;
+        body {
+            padding: 0px;
+            background-color: white;
         }
-        .header_top{
-            background-color:#F5F5F5;
-        }
-        .col-lg-6 div{
+
+        .header_top {
             background-color: #F5F5F5;
         }
-        .col-md-6{
+
+        .col-lg-6 div {
             background-color: #F5F5F5;
         }
-        input[type=radio]{
-            margin:1px;
+
+        .col-md-6 {
+            background-color: #F5F5F5;
         }
-      
- 
+
+        input[type=radio] {
+            margin: 1px;
+        }
     </style>
 
 </head>
 
 
-    
-            <div class="signup-content"  >
-                @*<div class="signup-img">
-                    <img src="images/signup-img.jpg" alt="">
-                </div>*@
-                <div class="signup-form" style="margin-left:210px; width:100%; box-shadow:4px 4px 8px 8px #cccccc;">
-                    <form method="POST" class="register-form" id="register-form">
-                        <h2>註冊</h2>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="name">姓名 :</label>
-                                <input type="text" name="name" id="name" required />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="name">密碼 :</label>
-                                <input type="password" name="password" id="password" required />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="name">確認密碼 :</label>
-                                <input type="password" name="checkPassword" id="checkPassword" required />
-                            </div>
-                        </div>
-                        <div class="form-radio">
-                            <label for="gender" style="padding-right:20px;">性別 :</label>
-                            <div class="form-check form-check-inline">
-                                <input type="radio"  name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                <label class="form-check-label" for="inlineRadio1">男</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input type="radio"  name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">女</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="address">地址 :</label>
-                            <input type="text" name="address" id="address" required />
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="name">手機 :</label>
-                                <input type="text" name="phone" id="phone" required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" style="position:relative">Email :</label>
-                            <input type="email" name="email" id="email" />
-                        </div>
-                            <label for="img" style="position:relative">上傳頭像 :</label>
-                            <input type="file" name="image" id="image" style="padding:0px; border:none" />
-                      
-                        <div class="form-submit">
-                            <input type="submit" value="Reset All" class="submit" name="reset" id="reset" />
-                            <input type="submit" value="Submit Form" class="submit" name="submit" id="submit" />
-                        </div>
-                    </form>
+
+<div class="signup-content">
+    @*<div class="signup-img">
+            <img src="images/signup-img.jpg" alt="">
+        </div>*@
+    <div class="signup-form" style="margin-left:210px; width:100%; box-shadow:4px 4px 8px 8px #cccccc;">
+        <form asp-action="Create" enctype="multipart/form-data" method="post" class="register-form" id="register-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <h2>註冊</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="CName" for="name">*姓名 :</label>
+                    <input asp-for="CName" id="name" required />
+                    <span asp-validation-for="CName" class="text-danger" id="spname"></span>
                 </div>
             </div>
-     
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="CPassword" for="name">*密碼 :</label>
+                    <input asp-for="CPassword" type="password" id="password" required />
+                    <span asp-validation-for="CPassword" class="text-danger" id="sppassword"></span>
+                    <span>((1.不可空白 , 2.至少6個字且必須包含英文字母+數字)</span>
+                    <span id="Wrongpassword"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">*確認密碼 :</label>
+                    <input type="password" name="checkPassword" id="checkPassword" required />
+                </div>
+            </div>
+            <div class="form-radio">
+                <label asp-for="CGender" for="gender" style="padding-right:20px;">*性別 :</label>
+                <div class="form-check form-check-inline">
+                    @*暫時替代*@
+                    <input asp-for="CGender" id="inlineRadio1">
+                </div>
+                @*<div class="form-check form-check-inline">
+                        <input asp-for="CGender" type="radio" id="inlineRadio1" value="male">
+                        <label class="form-check-label" for="inlineRadio1">男</label>
+                    </div>*@
+                @*<div class="form-check form-check-inline">
+                        <input  asp-for="CGender" type="radio" id="inlineRadio2" value="female">
+                        <label class="form-check-label" for="inlineRadio2">女</label>
+                    </div>*@
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="CAge" for="age">*生日 :</label>
+                    <input asp-for="CAge" type="date" id="age" required />
+                    <span asp-validation-for="CAge" class="text-danger" id="spage"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="CAddress" for="address">*地址 :</label>
+                <input asp-for="CAddress" id="address" required />
+                <span asp-validation-for="CAddress" class="text-danger" id="spaddress"></span>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="CPhone" for="name">*手機 :</label>
+                    <input asp-for="CPhone" id="phone" required />
+                    <span asp-validation-for="CPhone" class="text-danger" id="spphone"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="CEmail" for="email" style="position:relative">*Email :</label>
+                <input asp-for="CEmail" id="email" required />
+                <span asp-validation-for="CEmail" class="text-danger" id="spemail"></span>
+                <span id="Wrongemail"></span>
+            </div>
+            <label asp-for="CPicture" style="position:relative">上傳頭像 :</label>
+            <input type="file" name="img" id="image" style="padding:0px; border:none" />
+            <span asp-validation-for="CPicture" class="text-danger" id="spimg"></span>
 
-    <!-- JS -->
-    <script src="~/vendor/jquery/create_jquery.min.js"></script>
-    <script src="~/js/create_main.js"></script>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="code">邀請碼 :</label>
+                    <input type="text" name="code" id="code" />
+                </div>
+            </div>
+
+            <div class="form-submit">
+                <input type="submit" value="Reset All" class="submit" name="reset" id="reset" />
+                <input type="submit" value="確認註冊" class="submit" name="submit" id="submit" onclick="return confirm('確定要註冊嗎?')" />
+            </div>
+
+            <div class="form-submit">
+                <input type="button" value="Demo" class="btn btn-primary"
+                       onclick='(function () {
+    document.getElementById("name").value = "jotaro";
+    document.getElementById("email").value = "jotaro@Gmail.com";
+    document.getElementById("password").value = "123";
+    document.getElementById("checkPassword").value = "123";
+    document.getElementById("inlineRadio1").value = "男";
+    document.getElementById("address").value = "Japan";
+    document.getElementById("phone").value = "0912345678";
+                            })()' />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<!-- JS -->
+<script src="~/vendor/jquery/create_jquery.min.js"></script>
+<script src="~/js/create_main.js"></script>
 <!-- This templates was made by Colorlib (https://colorlib.com) -->
 
-    <script>
-        $(function closeChat() {
-            $("#sidebar_secondary").css("display", "none")
-            $("#addClass").css("display", "none")
-        })
-    </script>
-</html>
+<script>
+    $(function closeChat() {
+        $("#sidebar_secondary").css("display", "none")
+        $("#addClass").css("display", "none")
+    })
+</script>
+
+@{
+    string o = "@";
+}
+<script>
+    document.getElementById("password").onblur = checkPwd
+    document.getElementById("email").onblur = checkEmail
+    document.getElementById("phone").onblur = checkPhone
+    document.getElementById("submit").onblur = checkAll
+
+    function checkPwd() {
+        let pwdObj = document.getElementById("password");
+        let pwdObjVal = pwdObj.value;
+        let spObj = document.getElementById("Wrongpassword");
+        let pwdObjValLen = pwdObjVal.length;
+        let flag1 = false, flag2 = false;
+
+        console.log(pwdObjVal);
+
+        if (pwdObjValLen <= 6) {
+            spObj.innerHTML = "密碼必須大於6個字"
+        }
+        if (pwdObjValLen > 6) {
+            for (let i; i < pwdObjValLen; i++) {
+                let ch = pwdObjVal.charAt(i).toUpperCase();
+                let chc = pwdObjVal.charCodeAt(i);
+                if (ch >= "A" && ch <= "Z")
+                    flag1 = true;
+                else if (ch >= "0" && ch <= "9")
+                    flag2 = true;
+
+                if (flag1 == true && flag2 == true)
+                    break;
+            }
+
+            if (flag1 == true && flag2 == true)
+                spObj.innerHTML = "密碼格式正確"
+            else
+                spObj.innerHTML = "密碼格式錯誤"
+        }
+
+    }
+
+    @*function checkEmail() {
+        $.ajax({
+            url: "@Url.Action("checkEmail", "Customer")",
+            data: { "email": $("#email") },
+            type: "POST",
+            success: function (data) {
+                let ObjEmail = document.getElementById("email");
+                let ObjEmailVal = ObjEmail.value;
+                console.log(data);
+
+                if (data == "此信箱可使用") {
+
+                    if (ObjEmailVal.length >= 5 && ObjEmailVal.match(/^[0-9a-zA-Z]([-._]*[0-9a-zA-Z])*"@o"[0-9a-zA-Z]([-._]*[0-9a-zA-Z])*\.+[a-zA-Z]+$/)) {
+                        document.getElementById("Wrongemail").innerHTML = "信箱格式正確"
+                    }
+                    else {
+                        document.getElementById("Wrongemail").innerHTML = "信箱格式錯誤"
+                    }
+
+                }
+                else {
+                    document.getElementById("Wrongemail").innerHTML = data;
+                }
+
+                }
+            })*@
+          //}
+</script>

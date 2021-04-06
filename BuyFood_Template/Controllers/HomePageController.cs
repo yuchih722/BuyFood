@@ -14,8 +14,12 @@ namespace BuyFood_Template.Controllers
     {
         public IActionResult Home()
         {
-            if(!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
+            {
                 ViewBag.USERNAME = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
+                ViewBag.USERPHOTO = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);
+                ViewBag.USERUSERID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);
+            }
             return View();
         }
 
@@ -166,6 +170,7 @@ namespace BuyFood_Template.Controllers
             {
                 HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, CheckMember.CName);
                 HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, CheckMember.CPicture);
+                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, CheckMember.CMemberId.ToString());
 
                 return RedirectToAction("Home");
             }
@@ -173,7 +178,37 @@ namespace BuyFood_Template.Controllers
             return View();
         }
 
+        public bool facebookLogin(string id, string name)
+        {
+            var test = id + name;
 
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            //檢查是否用此帳號登入過
+
+            var checkID = from n in db.TMembers
+                          select n.CFacebookId;
+
+            if (checkID.Any(n => n == id) == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool BCheckLogin()
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
         public JsonResult 輪播牆()
         {
