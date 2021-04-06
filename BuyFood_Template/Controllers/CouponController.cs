@@ -11,7 +11,11 @@ namespace BuyFood_Template.Controllers
     {
         //todo
         public JsonResult getCoupons (string id, string used)
+
+
         {
+
+            int testiii = 1;
             if (used == "0")
             {
                 var data = (new 擺腹BuyFoodContext()).TCupons
