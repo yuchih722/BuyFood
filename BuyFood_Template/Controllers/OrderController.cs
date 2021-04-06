@@ -118,5 +118,31 @@ namespace BuyFood_Template.Controllers
 
             return Json(OrderStatusDate.ToList());
         }
+        public JsonResult getOrderTime()
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            var OrderIDs = db.TOrders.Select(n => n.COrderId).ToList();
+            foreach(var ID in OrderIDs)
+            {
+                var getOrderTime = db.TOrders.Where(n => n.COrderId == ID).Select(n => n.COrderDate).FirstOrDefault();
+                DateTime OrderTime = DateTime.ParseExact(getOrderTime, "yyyy/MM/dd HH:mm:ss",null);
+                var getPrepTime = db.TOrderDetails.Where(n => n.COrderId == ID).OrderByDescending(n => n.CProduct.CFinishedTime).Select(n => n.CProduct.CFinishedTime).FirstOrDefault().GetValueOrDefault();
+                var TransportTIme = db.TOrders.Where(n => n.COrderId == ID).Select(n => n.CTransportMinute).FirstOrDefault().GetValueOrDefault();
+                DateTime TimeOfArrival = OrderTime.AddMinutes((getPrepTime + TransportTIme));
+
+                if (DateTime.Now >= TimeOfArrival)
+                {
+                    var StatusID=db.TOrders.FirstOrDefault(n => n.COrderId == ID);
+                    if (StatusID.COrderStatusId == 1)
+                    {
+                        StatusID.COrderStatusId = 4;
+                        db.SaveChanges();
+                    }
+                }
+                
+            }
+            return Json(null);
+
+        }
     }
 }

@@ -61,6 +61,16 @@
 
                 </tbody>
             </table>
+            <script>
+                $.ajax({
+                    url:"/Order/getOrderTime/",
+                    type: "GET",
+                    success: function (data) {
+                        console.log("changed");
+                    }
+                })
+
+            </script>
             <script src="~/js/adri/ListOrders.js?randomId=<%=Math.random()%>"></script>
         </div>
     </div>
