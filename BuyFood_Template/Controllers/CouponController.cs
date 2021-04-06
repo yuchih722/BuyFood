@@ -12,7 +12,7 @@ namespace BuyFood_Template.Controllers
         //todo
         public JsonResult getCoupons (string id, string used)
         {
-            int testForMerge = 0;
+            int testForMerge = 111;
             if (used == "0")
             {
                 var data = (new 擺腹BuyFoodContext()).TCupons
