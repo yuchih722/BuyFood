@@ -6,7 +6,7 @@
                 var txt = "";
                 var addsome = "";
                 for (let i = 0; i < data.length; i++) {
-                    txt += `<a href="${data[i].cLink}"><div class="hero__item set-bg"  id="slider_homepage" style="background-image: url('${data[i].cPicture}');"></div>`
+                    txt += `<a href="${data[i].cLink}"><div class="hero__item set-bg"  id="slider_homepage" title="${data.cDescription}" style="background-image: url('${data[i].cPicture}');"></div>`
                 }
                 addsome += `<ul  class="dot yuUsingUl">`
                 for (let i = 0; i < data.length; i++) {
