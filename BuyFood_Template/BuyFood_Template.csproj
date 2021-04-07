@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\YUYUYU\CSS\NewFolder\**" />
+    <Content Remove="wwwroot\YUYUYU\CSS\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\YUYUYU\CSS\NewFolder\**" />
+    <None Remove="wwwroot\YUYUYU\CSS\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Views\ProductDetail\ProductData.cshtml" />
     <None Include="Views\ShoppingCart\CurrentCartItem.cshtml" />
     <None Include="Views\ViewProduct\ShowProduct.cshtml" />
