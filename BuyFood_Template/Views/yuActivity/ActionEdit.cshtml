@@ -3,7 +3,7 @@
 }
 @model BuyFood_Template.ViewModels.yuActivityViewModel
 
-<div style="background-color:#857575 ;margin:auto;margin-top:100px;width:1000px">
+<div style="background-color:#ffffff ;margin:auto;margin-top:100px;width:1000px">
 
     <h1 align=" center">修改活動</h1>
     <hr />
@@ -12,36 +12,39 @@
         <input style="display:none" placeholder="活動連結" required asp-for="CActivityId" name="CActivityId" />
         <div class="form-group" style="text-align: center;"><input style="font-size: 25px;padding: 5px;width:550px" placeholder="活動名稱" required asp-for="CActivityName" name="CActivityName" /></div>
         <div class="form-group" style="text-align: center;" id="_imgClick">
-            <img class="upload" id="_imgCga" src="@Url.Content(Model.CPicture)" width="600" height="300" onclick="imggo();" />
+            <img class="upload" id="_imgCga" src="@Url.Content(Model.CPicture)" width="600" height="300" />
             <input type="file" id="editimg" class="addfile-btn" accept="image/gif, image/jpeg, image/png" style="display:none" onchange="readURL(this)" name="img" />
         </div>
-        <div class="form-group" style="text-align: center;"><textarea asp-for="CDescription" name="CDescription" id="memo1" cols="100" rows="6" style="font-size:16px" placeholder="活動內容" required></textarea></div>
-        <div class="form-group" style="text-align: center;"><input style="font-size: 16px;width: 550px;" placeholder="活動連結" required asp-for="CLink" name="CLink" /></div>
+        <div class="form-group" style="text-align: center;"><textarea asp-for="CDescription" name="CDescription" id="memo1" cols="70" rows="6" style="font-size:16px" placeholder="活動內容" required></textarea></div>
+        <div class="form-group" style="text-align: center;"><input style="font-size: 16px;width: 600px;" placeholder="活動連結" required asp-for="CLink" name="CLink" /></div>
+
+        <div class="form-group" style="text-align: center;">
+            <label>活動狀態：</label><select name="CStatus"><option value="0" style="padding-left:20px"> 活動關閉</option><option value="1">活動啟動</option></select>
+        </div>
 
         <div class="form-group" style="text-align: center;margin:10px">
             <input style="margin:10px" type="submit" value="修改" class="btn btn-primary  btn-rounded btn-lg" />
-            <input style="margin:10px" class="btn btn-warning  btn-rounded btn-lg" type="reset" value="重新設定" onclick="reset()">
-            <input style="margin:10px" class="btn btn-Silver  btn-rounded btn-lg" type="button" onclick="javascript:window.history.go(-1);" value="取消">
+            <input style="margin:10px" class="btn btn-Silver  btn-rounded btn-lg" type="button" onclick="javascript:window.history.go(-1);" value="返回上一頁">
         </div>
     </form>
+    <div style="text-align: center;margin:10px">
+        <button style="margin:10px" class="btn btn-warning  btn-rounded btn-lg" onclick="rrreset()">重新設定</button>
+    </div>
 </div>
 
 <script>
-    function imggo(){
+    $("#_imgCga").click(function () {
         $("#editimg").click();
+    })
+
+    function rrreset() {
+        window.location.reload();
     }
-    function reset() {
-        $(":CActivityName").innerHTML =@Model.CActivityName;
-            $(":CDescription").innerHTML =@Model.CDescription;
-        $(":CLink").innerHTML =@Model.CLink;
-        $("#_imgCga").attr("src", @Url.Content(Model.CPicture));
-            }
 
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                console.log()
                 $("#_imgCga").attr('src', e.target.result);
             }
             reader.readAsDataURL(input.files[0]);

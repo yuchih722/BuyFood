@@ -3,126 +3,240 @@
 }
 @model IEnumerable<BuyFood_Template.ViewModels.yuActivityViewModel>
 
+<link href="~/assets/NEW CSS/NEWCSS.css" rel="stylesheet" />
+<link href="~/assets/NEW CSS/page.css" rel="stylesheet" />
+
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
 <div class="box-module">
     <div class="box-title">狀態分類</div>
     <div class="box-content padding15">
-        <a href="#">
+        <a href="#" onclick="Activity('All')">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-green">
-                    <div class="status_amount">15</div>
+                    <div class="status_amount"> @ViewBag.All</div>
                     <div class="status_name bg_color_green">所有活動</div>
                 </div>
             </div>
         </a>
-        <a href="#">
+        <a href="#" id="Going" onclick="Activity('Going')">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-red">
-                    <div class="status_amount">3</div>
-                    <div class="status_name bg_color_red">首頁輪播中</div>
+                    <div class="status_amount">@ViewBag.Going </div>
+                    <div class="status_name bg_color_red">進行中</div>
                 </div>
             </div>
         </a>
-        <a href="#">
+        <a href="#" onclick="Activity('Close')">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-azure">
-                    <div class="status_amount">10</div>
-                    <div class="status_name bg_color_azure">活動進行中</div>
+                    <div class="status_amount">@ViewBag.close</div>
+                    <div class="status_name bg_color_azure">已關閉</div>
                 </div>
             </div>
         </a>
-        <a href="#">
-            <div class="clearfix col-xs-6 col-sm-2 padding5">
-                <div class="statusbox bg-orange">
-                    <div class="status_amount">2</div>
-                    <div class="status_name bg_color_orange">已截止</div>
-                </div>
+        <div class="clearfix col-xs-6 col-sm-2 padding5">
+            <div class="statusbox bg-orange">
+                <div class="status_amount"> @ViewBag.mouth</div>
+                <div class="status_name bg_color_orange">本月活動量</div>
             </div>
-        </a>
-    </div>
-</div>
-
-
-<div class="input-group mb-3">
-    <b style="font-size:20px;">關鍵字</b><input type="text" placeholder="搜尋">
-    <div class="input-group-append">
-        <button class="btn btn-success">Go</button>
-    </div>
-</div>
-
-<div class="ibox">
-    <div class="ibox-head">
-        <div class="ibox-title">
-            <a asp-action="ActivityCreat" class="btn btn-primary  btn-rounded" onclick="">新增活動</a>
-            <a class="btn btn-danger btn-rounded" onclick="">刪除多筆</a>
-            <a class="btn btn-Silver btn-rounded" onclick="">取消</a>
+        </div>
+        <div class="clearfix col-xs-6 col-sm-2 padding5">
+            <div class="statusbox bg-purple">
+                <div class="status_amount"> @ViewBag.year</div>
+                <div class="status_name bg_color_purple">今年活動量</div>
+            </div>
         </div>
     </div>
+</div>
 
-    <div class="ibox-body">
-        <table class="table table-hover">
-            <thead class="thead-default" style="text-align:center">
-                <tr style="text-align:center">
-                    <th width="50px" style="text-align:center">
-                        <label class="ui-checkbox">
-                            <input type="checkbox" id="chElt" onclick="checkOrCancelAll();">
-                            <span class="input-span"></span>
-                        </label>
-                    </th>
-                    <th style="text-align:center">@Html.DisplayNameFor(model => model.CRank)</th>
-                    <th style="text-align:center">@Html.DisplayNameFor(model => model.CActivityName)</th>
-                    <th style="text-align:center">@Html.DisplayNameFor(model => model.CDescription)</th>
-                    <th style="text-align:center">@Html.DisplayNameFor(model => model.CPicture)</th>
-                    <th style="text-align:center">@Html.DisplayNameFor(model => model.CLink)</th>
-                    <th style="text-align:center">@Html.DisplayNameFor(model => model.CTime)</th>
-                    <th style="text-align:center">狀態</th>
-                    <th style="text-align:center">操作</th>
-                </tr>
-            </thead>
-            <tbody id="yuActivitytbody">
-            </tbody>
-        </table>
+<div class="box-module">
+    <div class="box-title">
+        活動列表
+        <a style="margin-left:30px;" asp-action="ActivityCreat" class="btn btn-primary  btn-rounded" onclick="">新增活動</a>
+        <div id="warning" style="background-color: #ffd800;float:left;width:400px;margin-left:40px;display:none;float:right">已開啟操作功能 ，請小心使用。</div>
+    </div>
+
+    <div id="yuActivityt">
+
+
+
     </div>
 </div>
 
-<!-- BEGIN PAGA BACKDROPS-->
-<div class="sidenav-backdrop backdrop"></div>
-<div class="preloader-backdrop">
-    <div class="page-preloader">Loading</div>
-</div>
-<!-- END PAGA BACKDROPS-->
+<div id="test_dialog" title="刪除">確定要刪除嗎 ？</div>
 
+<div id="OK_delete"> 已完成刪除 </div>
+<!-- BEGIN PAGA BACKDROPS-->
+@*<div class="sidenav-backdrop backdrop"></div>
+    <div class="preloader-backdrop">
+        <div class="page-preloader">Loading</div>
+    </div>*@
+<!-- END PAGA BACKDROPS-->
 <script>
-    //進入此頁面執行
-    $(function () {
+    var get_btn_id;
+    $(window).load(
+
+        $("#OK_delete").dialog({
+            autoOpen: false,
+
+            buttons: {
+                "OK": function () {
+                    $(this).dialog("close");
+                }
+            }
+        }),
+        $("#test_dialog").dialog({
+            autoOpen: false,
+            buttons: {
+                "Ok": function () {
+                    $(this).dialog("close");
+                    $.ajax({
+                        url: "/yuActivity/ActionDeletealone?id=" + get_btn_id,
+                        type: "get",
+                        success: function (data) {
+                            $("#OK_delete").dialog("open");
+                            $("#getmytr" + get_btn_id).remove();
+                            tr.parentNode.removeChild(tr_delete); //利用tr的父節點刪除tr
+                        }
+                    })
+                },
+                "Cancel": function () { $(this).dialog("close"); }
+            },
+            hide: "explode",
+            show: "blind",
+        }),
+
+    )
+</script>
+<script>
+
+    function Activity(str) {
         $.ajax({
-            url: "/yuActivity/ActivityListJson",
+            url: "/yuActivity/ActivityListJson?str=" + str,
             type: "GET",
             success: function (data) {
                 console.log(data);
-                var txt = "";
+                var txttable = "";
                 var shobtn = "";
+
+                txttable +=
+                    `<div id="orderlist">
+                            <table class="table table-hover table_striped table-bordered border" id="myTable">
+                            <thead>
+                            <tr>
+                            <th width="50px" style="text-align:center">
+                            <label class="ui-checkbox">
+                            <input type="checkbox" id="chElt" onclick="checkOrCancelAll();" value="">
+                            <span class="input-span"></span>
+                            </label>
+                            </th>
+                             <th class="align" width="10%">活動名稱</th>
+                             <th class="align" width="20%">活動內容</th>
+                             <th width="25%" class="align">活動相片</th>
+                             <th class="align" width="5%">活動連結</th>
+                             <th width="15%" class="align">活動創立時間</th>
+                             <th class="align" width="5%">狀態</th>
+                              <th width="10%" class="align" >操作</th>
+                             </tr>
+                             </thead>
+                             <tbody id="yuActivitytbody">`
 
                 for (let i = 0; i <= data.length - 1; i++) {
                     if (data[i].cStatus == 1)
-                        shobtn = '<button class="btn btn-Success " onclick="#">顯示</button >'
+                        shobtn = `<a class="btn btn-Success " style="background-color:#00ff21" href="/yuActivity/ActionUpDelete?id=${data[i].cActivityId}">進行中`
                     else
-                        shobtn = '<button class="btn btn-Grey " onclick="#">關閉</button >'
-                    txt += '<tr style="text-align:center"><td style="vertical-align: middle;"><label class="ui-checkbox"><input type="checkbox" name="interest"><span class="input-span">'
-                    txt += '<td style="vertical-align: middle;">' + data[i].cRank
-                    txt += '<td style="vertical-align: middle;">' + data[i].cActivityName
-                    txt += '<td style="vertical-align: middle;">' + data[i].cDescription
-                    txt += '<td style="vertical-align: middle;"><img src="' + data[i].cPicture + '" alt="your image" width="300" height="150" />'
-                    txt += '<td style="vertical-align: middle;"><a class="btn btn-info" href="' + data[i].cLink + '">測試連結'
-                    txt += '<td style="vertical-align: middle;">' + data[i].cTime
-                    txt += '<td>' + shobtn
-                    txt += '<td style="vertical-align: middle;">'
-                    txt += '<button class="btn btn-Success btn-xs m-r-5" onclick="#"><i class="fa fa-pencil font-18">編輯'
-                    txt += '<button id="delee" class="btn btn-Danger btn-xs" onclick="#"><i class="fa fa-trash font-18">刪除'
+                        shobtn = `<a class="btn btn-Grey " href="/yuActivity/ActionUpDelete?id=${data[i].cActivityId}" >關閉`
+                    txttable += `<tr id="getmytr${data[i].cActivityId}" style="text-align:center"><td style="vertical-align: middle;"><label class="ui-checkbox"><input id="checkdelete" value="${data[i].cActivityId}" type="checkbox" name="interest"><span class="input-span">
+                                <td style="vertical-align: middle;">${data[i].cActivityName}
+                                <td  ><span class="tabletitle">${data[i].cDescription}
+                                <td style="vertical-align: middle;"><img src="${data[i].cPicture}" alt="your image"  height="150" width="350"/>
+                                <td style="vertical-align: middle;"><a class="btn btn-info" href="${data[i].cLink}">測試連結
+                                <td style="vertical-align: middle;">${data[i].cTime}
+                                <td>${shobtn}
+                                <td style="vertical-align: middle;display:none" name="btnEDIT">
+                                <a   class="btn btn-outline-secondary btn-xs" href="/yuActivity/ActionEdit?id=${data[i].cActivityId}"><i class="fa fa-pencil font-18">編輯</i></a>
+                                <a  class="btn btn-outline-danger btn-xs" onclick="test_getid(${data[i].cActivityId})" ><i class="fa fa-trash font-18">刪除</i></a>`
                 }
-                $("#yuActivitytbody").html(txt);
+                txttable += ` </tbody>
+                                </table>
+                                </div>`
+
+                $("#yuActivityt").html(txttable);
+                $('#myTable').DataTable({
+                    language: {
+                        "emptyTable": "無資料...",
+                        "processing": "處理中...",
+                        "loadingRecords": "載入中...",
+                        "lengthMenu": "每頁 _MENU_ 筆資料",
+                        "zeroRecords": "無搜尋結果",
+                        "info": "_START_ 至 _END_ / 共 _TOTAL_ 筆",
+                        "infoEmpty": "尚無資料",
+                        "infoFiltered": "(從 _MAX_ 筆資料過濾)",
+                        "infoPostFix": "",
+                        "search": "搜尋字串:",
+                        "paginate": {
+                            "first": "首頁",
+                            "last": "末頁",
+                            "next": "下頁",
+                            "previous": "前頁"
+                        },
+                        "aria": {
+                            "sortAscending": ": 升冪",
+                            "sortDescending": ": 降冪"
+                        }
+                    }
+                });
+
+                var newtxt = `<label id="btndelete" style = "display:none"><button type="button" class="btn button_btn btn-danger" onclick="deletemore();">刪除選中</button></label>
+                                        <button id="btnshowEDIT" style="background-color:#4cff00" class="btn btn-Silver btn-rounded">開啟操作功能</button>
+                                        <button id="btnremove"  class="btn btn-outline-success btn-rounded" style="display:none">取消操作</button>`
+
+                $("#myTable_length").append(newtxt);
+
+                $("#btnshowEDIT").click(function () {
+                    $("#warning").show();
+                    $("#btnremove").show();
+                    $("[name='btnEDIT']").show();
+                    $("#btnshowEDIT").hide();
+                })
+                $("#btnremove").click(function () {
+                    $("#warning").hide();
+                    $("#btnshowEDIT").show();
+                    $("[name='btnEDIT']").hide();
+                    $("#btnremove").hide();
+                })
+
+                $("#myTable input[name = interest]").change(function Submit() {
+                    var SelectFalse = false; //用于判断是否被选择条件
+                    var CheckBox = $('input[name = interest]');//得到所的复选框
+                    var ccbb = "#myTable input[type=checkbox]:checked";
+                    for (var i = 0; i < CheckBox.length; i++) {
+                        if (CheckBox[i].checked) {
+                            SelectFalse = true;
+                        }
+                    }
+
+                    if (SelectFalse) {
+                        $("#btndelete").show();
+                    } else {
+                        $("#btndelete").hide();
+                    }
+                }
+                )
             }
         });
-    });
+    };
+
+    function test_getid(id) {
+        get_btn_id = id
+        $("#test_dialog").dialog("open")
+    }
+
     function checkOrCancelAll() {
         //1.獲取checkbo的元素對象
         var chElt = document.getElementById("chElt");
@@ -139,14 +253,51 @@
                 //設置復選框的選中狀態
                 allCheck[i].checked = true;
             }
+            $("#btndelete").show();
             //mySpan.innerHTML="取消全選";
         } else {
             //取消全選
             for (var i = 0; i < allCheck.length; i++) {
                 allCheck[i].checked = false;
             }
+            $("#btndelete").hide();
             //mySpan.innerHTML="全選";
         }
     };
+
+    //全選刪除
+    function deletemore() {
+        var checked = $("#myTable input[type=checkbox]:checked");
+        var $Array = new Array;
+        for (let i = 0; i < checked.length; i++) {
+            var data = {};
+            data.strmember = checked[i].value
+            $Array.push(data);
+        }
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: "/yuActivity/ActionDelete",
+            data: JSON.stringify($Array),
+            success: function (data) {
+                window.location.reload(window.location.href);
+            }
+
+
+
+            //for (let i = 0; i < checked.length; i++) {
+            //    console.log(checked[i].value);
+            //    $.ajax({
+            //        url: "/yuActivity/ActionDelete?id=" + checked[i].value,
+            //        type: "GET",
+
+            //        success: function () {   //請求成功後執行的操作
+            //            window.location.reload();
+            //        }
+        });
+    }
+
+    //進入此頁面執行
+    $(Activity("All"));
 
 </script>

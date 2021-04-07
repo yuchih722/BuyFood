@@ -273,7 +273,7 @@ class WrappedRange {
     const includeAncestor = options && options.includeAncestor;
     const fullyContains = options && options.fullyContains;
 
- 
+    // TODO compare points and sort
     const startPoint = this.getStartPoint();
     const endPoint = this.getEndPoint();
 

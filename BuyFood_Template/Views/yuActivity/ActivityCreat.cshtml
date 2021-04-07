@@ -9,13 +9,17 @@
     <hr />
 
     <form asp-action="ActivityCreat" method="post" enctype="multipart/form-data">
-        <div class="form-group" style="text-align: center;"><input style="font-size: 25px;padding: 5px;width:550px" placeholder="活動名稱" required name="CActivityName" /></div>
+        <div class="form-group" style="text-align: center;"><input style="font-size: 25px;padding: 5px;width:600px" placeholder="活動名稱" required name="CActivityName" /></div>
         <div class="form-group" style="text-align: center;" id="_imgClick">
             <img class="upload" id="_imgCgang" src="#" width="600" height="300" onclick="go()" />
             <input type="file" id="abc" class="addfile-btn" accept="image/gif, image/jpeg, image/png" style="display:none" onchange="readURL(this)" name="img" />
         </div>
-        <div class="form-group" style="text-align: center;"><textarea name="CDescription" cols="100" rows="6" style="font-size:16px" placeholder="活動內容" required></textarea></div>
-        <div class="form-group" style="text-align: center;"><input style="font-size: 16px;width: 550px;" placeholder="活動連結" required name="CLink" /></div>
+        <div class="form-group" style="text-align: center;"><textarea name="CDescription" cols="70" rows="6" style="font-size:16px" placeholder="活動內容" required></textarea></div>
+        <div class="form-group" style="text-align: center;"><input style="font-size: 16px;width: 600px;" placeholder="活動連結" required name="CLink" /></div>
+        <div class="form-group" style="text-align: center;">
+            <label>活動狀態：</label><select name="CStatus"><option value="0" style="padding-left:20px"> 活動關閉</option><option value="1">活動啟動</option></select>
+            <input style="display:none" name="CRank" type="text" value="99" />
+        </div>
 
         <div class="form-group" style="text-align: center;margin:10px">
             <input style="margin:10px" type="submit" value="新增" class="btn btn-primary  btn-rounded btn-lg" />
