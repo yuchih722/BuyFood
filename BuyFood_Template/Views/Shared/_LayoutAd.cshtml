@@ -28,7 +28,7 @@
 
             <!--TIME-->
             <div id="timehtml" style="width: 200px;height: 40px;float: left ;text-align: center;">
-                
+
             </div>
 
             <div class="flexbox flex-1">
@@ -171,7 +171,7 @@
                             <a class="dropdown-item" href="profile.html"><i class="fa fa-cog"></i>設定</a>
                             <a class="dropdown-item" href="javascript:;"><i class="fa fa-support"></i>發送訊息</a>
                             <li class="dropdown-divider"></li>
-                            <a class="dropdown-item" href="login.html"><i class="fa fa-power-off"></i>登出管理</a>
+                            <a class="dropdown-item" onclick="登出()"><i class="fa fa-power-off"></i>登出管理</a>
                         </ul>
                     </li>
                 </ul>
@@ -195,6 +195,12 @@
                         <a class="active" asp-controller="AdmHome" asp-action="AdmHome">
                             <i class="sidebar-item-icon fa fa-th-large"></i>
                             <span class="nav-label">後台首頁</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="active" asp-controller="HomePage" asp-action="Home">
+                            <i class="sidebar-item-icon fa fa-th-large"></i>
+                            <span class="nav-label">前台首頁</span>
                         </a>
                     </li>
                     <li class="heading">管理清單</li>
@@ -225,8 +231,8 @@
                                 <a asp-controller="yuOrder" asp-action="yuorderlist">訂單列表</a>
                             </li>
                             @*<li>
-                                <a asp-controller="#" asp-action="#">發貨管理</a>
-                            </li>*@
+                                    <a asp-controller="#" asp-action="#">發貨管理</a>
+                                </li>*@
                         </ul>
                     </li>
                     <li>
@@ -282,8 +288,8 @@
                                 <a asp-controller="#" asp-action="#">會員列表</a>
                             </li>
                             @*<li>
-                                <a asp-controller="#" asp-action="#">有錢人列表</a>
-                            </li>*@
+                                    <a asp-controller="#" asp-action="#">有錢人列表</a>
+                                </li>*@
                         </ul>
                     </li>
                     <li>
@@ -307,16 +313,16 @@
                         </a>
                     </li>
                     <li>
-                            <a href="javascript:;">
-                                <i class="sidebar-item-icon fa ti-reddit"></i>
-                                <span class="nav-label">廣告管理</span><i class="fa fa-angle-left arrow"></i>
-                            </a>
-                            <ul class="nav-2-level collapse">
-                                <li>
-                                    <a asp-controller="#" asp-action="#">贊助管理</a>
-                                </li>
-                            </ul>
-                        </li>
+                        <a href="javascript:;">
+                            <i class="sidebar-item-icon fa ti-reddit"></i>
+                            <span class="nav-label">廣告管理</span><i class="fa fa-angle-left arrow"></i>
+                        </a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a asp-controller="#" asp-action="#">贊助管理</a>
+                            </li>
+                        </ul>
+                    </li>
 
                     <li>
                         <a href="javascript:;">
@@ -489,9 +495,9 @@
     <!-- END THEME CONFIG PANEL-->
     <!-- BEGIN PAGA BACKDROPS-->
     @*<div class="sidenav-backdrop backdrop"></div>
-    <div class="preloader-backdrop">
-        <div class="page-preloader">Loading</div>
-    </div>*@
+        <div class="preloader-backdrop">
+            <div class="page-preloader">Loading</div>
+        </div>*@
     <!-- END PAGA BACKDROPS-->
     <!-- CORE PLUGINS-->
 
@@ -517,7 +523,7 @@
             var s = NowDate.getSeconds();
             var yyyy = NowDate.getFullYear();
             var mm = NowDate.getMonth() + 1;
-            var dd = NowDate.getDate(); 
+            var dd = NowDate.getDate();
             var day_list = ['日', '一', '二', '三', '四', '五', '六']; var day = NowDate.getDay();
             $("#timehtml").html('<div class="time_display clearfix"><span class="h com-time ">' + h + '</span><b>：</b><span class="m com-time ">' + m + '</span><b>：</b><span class="s com-time ">' + s + '</span></div><div class="date_display clearfix"><span class="years">' + yyyy + '年</span><span class="mot">' + mm + '月</span><span class="day">' + dd + '</span><span>星期' + day_list[day] + '</span></div>');
             setTimeout('ShowTime()', 1000);
@@ -526,3 +532,17 @@
     </script>
 </body>
 </html>
+
+     <script>
+            function 登出() {
+                $.ajax({
+                    url: "/HomePage/SLogout",
+                    type: "POST",
+                    success: function (data) {
+                        window.alert(data);
+                        window.location.assign("/HomePage/登入")
+                    }
+                })
+            }
+       
+    </script>
