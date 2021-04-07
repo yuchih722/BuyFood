@@ -5,11 +5,12 @@
       rel="stylesheet">
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link href="~/YUYUYU/CSS/iconfont.css" rel="stylesheet" />
 
-<div class="bk-con-message message-section leftMessage" id="iframe_box" style="left: 0px; width: 1336px; float: left; position: absolute; height: 320px; padding: 15px;">
+<div class="bk-con-message message-section leftMessage" id="iframe_box" style="left: 0px;width:100%; float: left; position: absolute; padding: 15px;">
     <div class="box-module height100b margin0">
         <div class="box-title">個人便簽</div>
-        <div class="box-content  padding15  notesstyle" style="height: 250px; overflow: hidden; outline: none;" tabindex="5000">
+        <div class="box-content  padding15  notesstyle" style=" overflow: hidden; outline: none;" tabindex="5000">
             <div class="Prompt">提示：添加便簽後，該便簽內容保存在本地，保存期限可以自定義，也可以自己刪除,最多可以添加十條</div>
             <div class="ptb15">
                 <button type="button" class="btn add_Upload bg-deep-blue padding10" id="addNotes"><i class="iconfont"></i>添加便簽</button>
@@ -58,6 +59,7 @@
                 obj.Days = 30;
             }
             obj.date = new Date().getTime();
+            console.log(obj)
             window.localStorage.setItem('time', JSON.stringify(obj));
         });
         if (window.localStorage.getItem('time') != null) {

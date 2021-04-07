@@ -42,7 +42,6 @@
                             <span>食品類別</span>
                         </div>
                         <ul id="sideBarCategory">
-
                         </ul>
                         <script src="~/js/adri/HomePage/SideBarCategory.js?randomId=<%=Math.random()%>"></script>
                     </div>
@@ -175,7 +174,7 @@
     </section>
 
     <script src="~/YUYUYU/JS/首頁產生商品.js?randomId=<%=Math.random()%>"></script>
-    
+
     <!-- Featured Section End -->
     <!-- Banner Begin -->
     <div class="banner">
@@ -199,7 +198,7 @@
     <section class="latest-product spad">
         <div class="container">
             <div class="row" id="ProductSliderForAnime"></div>
-        
+
         </div>
     </section>
 
@@ -232,18 +231,18 @@
                             for (var i = 0; i < data.length; i++) {
 
                                 txtActivity += `                <div class="col-lg-4 col-md-4 col-sm-6">
-                                                    <div class="blog__item">
-                                                        <div class="blog__item__pic">
-                                                            <img src="${data[i].cPicture.replace("..", "")}" alt="">
-                                                        </div>
-                                                        <div class="blog__item__text">
-                                                            <ul>
-                                                                <li><i class="fa fa-calendar-o"></i>${data[i].cTime}</li>
-                                                            </ul>
-                                                            <h5><a href="${data[i].cLink}">${data[i].cActivityName}</a></h5>
-                                                        </div>
-                                                    </div>
-                                                </div>`;
+                                                                    <div class="blog__item">
+                                                                        <div class="blog__item__pic">
+                                                                            <img src="${data[i].cPicture.replace("..", "")}" alt="">
+                                                                        </div>
+                                                                        <div class="blog__item__text">
+                                                                            <ul>
+                                                                                <li><i class="fa fa-calendar-o"></i>${data[i].cTime}</li>
+                                                                            </ul>
+                                                                            <h5><a href="${data[i].cLink}">${data[i].cActivityName}</a></h5>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>`;
 
 
                             }
@@ -316,10 +315,10 @@
                     </div>
                 </div>
             </div>
-            </div>
-            @*分頁function*@
-            <script></script>
-            <script src="~/js/adri/HomePage/Pagination.js"></script>
+        </div>
+        @*分頁function*@
+        <script></script>
+        <script src="~/js/adri/HomePage/Pagination.js"></script>
     </footer>
     <!-- Footer Section End -->
 
