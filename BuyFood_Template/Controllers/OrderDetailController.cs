@@ -116,9 +116,12 @@ namespace BuyFood_Template.Controllers
             DateTime dtNow = DateTime.Now;
             if (dtNow >= getTimeOfArrival)
             {
-                var OrderStatus = db.TOrders.Where(n => n.COrderId == OrderID).Select(n => n.COrderStatusId).FirstOrDefault();
-                OrderStatus = 4;
-                db.SaveChanges();
+                var OrderStatus = db.TOrders.FirstOrDefault(n => n.COrderId == OrderID);
+                if (OrderStatus.COrderStatusId == 1)
+                {
+                    OrderStatus.COrderStatusId = 4;
+                    db.SaveChanges();
+                }
             }
 
             //===比較時間

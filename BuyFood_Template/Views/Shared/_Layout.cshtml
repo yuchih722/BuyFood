@@ -361,25 +361,28 @@
     </script>
 
     <script>
-            $.ajax({
-                url: "/HomePage/BCheckLogin",
-                type: "POST",
-                success: function (data) {
-                    if (data == true) {
-                        text = `<a href="/Member/MemberCenter" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
-                        LogOutTxt = `<input type="button" class="btn btn-light"  onclick="登出();" id="sendButton" style="padding:0;height:100%" value="登出" />`
-                        
-                        $("#divLogin").html(text);
-                        $("#divLogOut").html(LogOutTxt);
-                    }
-                    else {
-                        text = `<a href="/HomePage/登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
-                                       
 
-                        $("#divLogin").html(text);
-                    }
+        $.ajax({
+            url: "/HomePage/BCheckLogin",
+            type: "POST",
+
+            success: function (data) {
+                if (data == true) {
+                    text = `<a href="/Member/MemberCenter" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
+                    LogOutTxt = `<input type="button" class="btn btn-light"  onclick="登出();" id="sendButton" style="padding:0;height:100%" value="登出" />`
+
+                    $("#divLogin").html(text);
+                    $("#divLogOut").html(LogOutTxt);
                 }
-            })
+                else {
+                    text = `<a href="/HomePage/登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
+
+
+                    $("#divLogin").html(text);
+                }
+            }
+        });
+
     </script>
     <script>
         function 登出() {
