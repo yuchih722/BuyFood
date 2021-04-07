@@ -30,6 +30,9 @@
     <!--===============================================================================================-->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
+
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v10.0&appId=2891846024468232&autoLogAppEvents=1" nonce="aGengcrE"></script>
+
 </head>
 <body>
 
@@ -42,7 +45,7 @@
                     <span class="login100-form-title p-b-49">
                         Login
                     </span>
-                    <input type="button" value="Demo" class="btn btn-primary" 
+                    <input type="button" value="Demo" class="btn btn-primary"
                            onclick='(function () {
                                             document.getElementById("iddemo").value = "Rafa@gmail.com";
                                             document.getElementById("passdemo").value = "123";
@@ -80,10 +83,27 @@
                         </span>
                     </div>
 
+                    <div id="fb-root"></div>
                     <div class="flex-c-m">
-                        <a href="#" class="login100-social-item bg1">
+                        <a href="#" onclick=" FB.login(function (response) {
+                                if (response.authResponse) {
+                                    console.log('Welcome!  Fetching your information.... ');
+                                    FB.api('/me', function (response) {
+                                        console.log('Good to see you, ' + response.name + '.');
+                                        console.log(response);
+                                        checkLoginState(response);
+                                    });
+                                } else {
+                                    console.log('User cancelled login or did not fully authorize.');
+                                }
+                            });" class="login100-social-item bg1">
                             <i class="fa fa-facebook"></i>
                         </a>
+
+                        @*<div class="fb-login-button" data-width="" data-size="small" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false"></div>*@
+                        <input type="button" onclick="FB.logout(function(response) {});" value="登出" class="btn btn-primary" />
+
+
 
                         <a href="#" class="login100-social-item bg2">
                             <i class="fa fa-twitter"></i>
@@ -136,6 +156,62 @@
             $("#addClass").css("display", "none")
         })
     </script>
+
+    @*facebook API*@
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '2891846024468232',
+                cookie: true,
+                xfbml: true,
+                version: 'aa62070754689055aa5b06e2a1a31fa7'
+            });
+
+            FB.AppEvents.logPageView();
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+
+        function checkLoginState(response) {
+
+            $.ajax({
+                url: "/HomePage/facebookLogin",
+                data: { "id": response.id, "name": response.name },
+                type: "POST",
+                success: function (data) {
+                    if (data == true) {
+                        window.alert("登入成功,將轉回首頁")
+
+                    }
+                    else {
+                        //$.ajax({
+                        //    url: "/Customer/CreateFacebookMember",
+                        //    data: { "id": response.id, "name": response.name },
+                        //    type: "GET",
+                        //    success: function (data) {
+
+
+                        //    }
+                        //})
+                        window.location.assign("/Customer/CreateFacebookMember")
+
+                    }
+                }
+            });
+
+        }
+    </script>
+
 
 </body>
 </html>

@@ -209,7 +209,14 @@ namespace BuyFood_Template.Controllers
                 return true;
             }
         }
+        public string SLogout()
+        {
+            HttpContext.Session.Remove(CDictionary.CURRENT_LOGINED_USERNAME);
+            HttpContext.Session.Remove(CDictionary.CURRENT_LOGINED_USERPHOTO);
+            HttpContext.Session.Remove(CDictionary.CURRENT_LOGINED_USERID);
 
+            return "登出成功";
+        }
         public JsonResult 輪播牆()
         {
             var run = (new 擺腹BuyFoodContext()).TActivities.Where(n => n.CStatus == 1 && n.CRank != 99).OrderBy(n => n.CRank).Select(n => n);
