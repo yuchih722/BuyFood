@@ -6,7 +6,7 @@ $(function () {
     $.ajax({
         url: "/HomePage/get_categorysname",
         type: "GET",
-/*        async: false,*/
+        async: false,
         success: function (data_category) {
 
             //console.log(data_category);
@@ -21,7 +21,7 @@ $(function () {
                 $.ajax({
                     url: "/HomePage/get_many_products?id=" + data_category[i].cProductCategoryId,
                     type: "GET",
-/*                    async: false,*/
+                    async: false,
                     success: function (data_product) {
                         //console.log(data_product);
                         var products = "";
