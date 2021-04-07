@@ -1,41 +1,13 @@
 ﻿var pdtItemData = null;
 $(function () {
-    //$(window).on('load', function () {
-    //    //$(".loader").fadeOut();
-    //    //$("#preloder").delay(200).fadeOut("slow");
-
-    //    /*------------------
-    //        Gallery filter
-    //    --------------------*/
-    //    $('.featured__controls li').on('click', function () {
-
-    //        $('.featured__controls li').removeClass('active');
-    //        $(this).addClass('active');
-    //    });
-    //    if ($('.featured__filter').length > 0) {
-    //        var containerEl = document.querySelector('.featured__filter');
-    //        var mixer = mixitup(containerEl);
-    //    }
-    //});
-    //====觸發麵食
-    //$(function () {
-    //    setTimeout(function () {
-    //        $("#FirstCate").click();
-    //        console.log('I did it!');
-    //    }, 5000)
-    //});
 
     var arrProduct = {dataCate:[]};
 
     $.ajax({
         url: "/HomePage/get_categorysname",
         type: "GET",
-        async: false,
+/*        async: false,*/
         success: function (data_category) {
-
-
-
-
 
             //console.log(data_category);
             var category_li = `<ul><li class="active"  id="FirstCate" data-filter=".categoryid_${data_category[0].cProductCategoryId}">${data_category[0].cCategoryName}</li>`;
@@ -49,7 +21,7 @@ $(function () {
                 $.ajax({
                     url: "/HomePage/get_many_products?id=" + data_category[i].cProductCategoryId,
                     type: "GET",
-                    async: false,
+/*                    async: false,*/
                     success: function (data_product) {
                         //console.log(data_product);
                         var products = "";
@@ -58,8 +30,6 @@ $(function () {
                         pdtItemData = arrProduct.dataCate;
                         for (let y = 0; y < data_product.length; y++) {
                            
-                            
-
                             products += `<div class="col-lg-3 col-md-4 col-sm-6 mix categoryid_${data_product[y].cCategoryId}">
                                             <div class="featured__item">
                                                 <div class="featured__item__pic set-bg" style="background-image: url(${data_product[y].cPicture.replace("~", "")})">
