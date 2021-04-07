@@ -27,7 +27,7 @@ namespace BuyFood_Template.Controllers
 
             if (str == "All")
             {
-                table = db.TActivities.Where(n => n.CStatus != 0).OrderBy(n => n.CRank).Select(n => n);
+                table = db.TActivities.Where(n => n.CStatus != 0).OrderByDescending(n => n.CActivityId).Select(n => n);
             }
             else if (str == "Going")
             {
@@ -35,7 +35,7 @@ namespace BuyFood_Template.Controllers
             }
             else if (str == "Close")
             {
-                table = db.TActivities.Where(n => n.CStatus != 0 && n.CRank == 99).Select(n => n);
+                table = db.TActivities.Where(n => n.CStatus != 0 && n.CRank == 99).OrderByDescending(n => n.CActivityId).Select(n => n);
             }
 
             if (table != null)
@@ -47,7 +47,7 @@ namespace BuyFood_Template.Controllers
             }
             return Json(activitie);
         }
-        public IActionResult ActionUpRank(int? id)
+        public void ActionUpRank(int? id)
         {
             if (id != null)
             {
@@ -64,7 +64,6 @@ namespace BuyFood_Template.Controllers
                 }
                 db.SaveChanges();
             }
-            return RedirectToAction("yuActivityRun");
         }
         
         [HttpPost]

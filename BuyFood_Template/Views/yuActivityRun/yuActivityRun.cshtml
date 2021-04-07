@@ -9,7 +9,7 @@
 <div class="box-module">
     <div class="box-title">狀態分類</div>
     <div class="box-content padding15">
-        <a href="#" onclick="Activity('All')">
+        <a href="#" id="All">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-green">
                     <div class="status_amount"> @ViewBag.All</div>
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" id="Going" onclick="Activity('Going')">
+        <a href="#" id="Going" >
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-red">
                     <div class="status_amount">@ViewBag.Going </div>
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" onclick="Activity('Close')">
+        <a href="#" id="Close">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-azure">
                     <div class="status_amount">@ViewBag.close</div>
@@ -58,7 +58,11 @@
 
 <script>
     //進入此頁面執行
-    $(Activity("All"));
+    var what_str = "All";
+    $(Activity(what_str));
+    $("#All").click(function () { what_str = "All"; Activity(what_str) })
+    $("#Going").click(function () { what_str = "Going"; Activity(what_str) })
+    $("#Close").click(function () { what_str = "Close"; Activity(what_str) })
 
     function Activity(str) {
 
@@ -89,10 +93,10 @@
                 for (let i = 0; i <= data.length - 1; i++) {
                     var ranknum = ""; var btnUpDown = "";
                     if (data[i].cRank == 99) {
-                        rank = `<a  class="btn btn-Grey " href="/yuActivityRun/ActionUpRank?id=${data[i].cActivityId}">未開啟`
-                        ranknum = `<td style="vertical-align: middle;visibility: hidden"  id="categoryid">${data[i].cRank}`
+                        rank = `<a  class="btn btn-Grey " onclick="Activity_open(${data[i].cActivityId})" >未開啟`
+                        ranknum = `<td style="vertical-align: middle;visibility: hidden" >${data[i].cRank}`
                     } else {
-                        rank = `<a  class="btn " style="background-color:#00ff21" href="/yuActivityRun/ActionUpRank?id=${data[i].cActivityId}">已啟用`
+                        rank = `<a  class="btn " style="background-color:#00ff21" onclick="Activity_close(${data[i].cActivityId})">已啟用`
                         ranknum = `<td style="vertical-align: middle;" name="categoryids">${data[i].cRank}`
                         btnUpDown = '<a href = "javascript: void(0)" class="up" > 上移</a > <a href="javascript: void(0)" class="down"  >下移</a> <a href="javascript: void(0)" class="top">置頂</a>'
                     }
@@ -249,6 +253,8 @@
                 }
 
                 //在此增加更多程式碼
+               
+
 
 
 
@@ -256,6 +262,26 @@
             }
         });
     };
+    function Activity_open(id) {
+        $.ajax({
+            url: "/yuActivityRun/ActionUpRank?id=" + id,
+            type: "get",
+            success: function () {
+                $(Activity(what_str));
+            }
+        })
+    }
+
+    function Activity_close(id) {
+        $.ajax({
+            url: "/yuActivityRun/ActionUpRank?id=" + id,
+            type: "get",
+            success: function () {
+                $(Activity(what_str));
+            }
+        })
+    }
+
 </script>
 
 
