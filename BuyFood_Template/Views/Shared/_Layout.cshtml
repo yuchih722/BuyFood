@@ -126,9 +126,12 @@
                             <div class="header__top__right__auth" id="divLogin">
                                 <a asp-controller="HomePage" asp-action="登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>
                             </div>
-                            <div class="header__top__right__auth" style="margin-left:2px;">
-                                <a asp-controller="Home" asp-action="Index"><i class="fa fa-user"></i> 後台管理</a>
-                            </div>
+                            <div class="header__top__right__auth" id="divLogOut">
+
+                                </div>
+                                <div class="header__top__right__auth" style="margin-left:2px;">
+                                    <a asp-controller="Home" asp-action="Index"><i class="fa fa-user"></i> 後台管理</a>
+                                </div>
                             </div>
                         </div>
                 </div>
@@ -305,7 +308,6 @@
                 <input type="text" placeholder="請輸入訊息" id="messageInput" name="submit_message" class="md-input">
                 <input type="button" class="btn btn-light" id="sendButton" style="padding:0;height:100%" value="送出" />
             </div>
-
             <span class="uk-input-group-addon">
                 <a><i class="glyphicon glyphicon-send"></i></a>
             </span>
@@ -355,7 +357,7 @@
             $("#itemMoney").html('$' + price);
             console.log(price);
         }, 500);
-
+        
     </script>
 
     <script>
@@ -365,16 +367,32 @@
                 success: function (data) {
                     if (data == true) {
                         text = `<a href="/Member/MemberCenter" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
-
+                        LogOutTxt = `<input type="button" class="btn btn-light"  onclick="登出();" id="sendButton" style="padding:0;height:100%" value="登出" />`
+                        
                         $("#divLogin").html(text);
+                        $("#divLogOut").html(LogOutTxt);
                     }
                     else {
                         text = `<a href="/HomePage/登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
+                                       
 
                         $("#divLogin").html(text);
                     }
                 }
             })
+    </script>
+    <script>
+        function 登出() {
+            $.ajax({
+                url: "/HomePage/SLogout",
+                type: "POST",
+                success: function (data) {
+                    window.alert(data);
+                    window.location.reload();
+                }
+            })
+        }
+
     </script>
 
     @RenderSection("Scripts", required: false)
