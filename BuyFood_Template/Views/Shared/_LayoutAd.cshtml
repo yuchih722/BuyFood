@@ -211,14 +211,14 @@
                         </a>
                         <ul class="nav-2-level collapse">
                             <li>
-                                <a asp-controller="#" asp-action="#">商品管理</a>
+                                <a asp-controller="cProduct" asp-action="List">商品管理</a>
                             </li>
-                            <li>
+                            @*<li>
                                 <a asp-controller="#" asp-action="#">種類管理</a>
                             </li>
                             <li>
                                 <a asp-controller="#" asp-action="#">產品統計</a>
-                            </li>
+                            </li>*@
                         </ul>
                     </li>
                     <li>
@@ -228,13 +228,30 @@
                         </a>
                         <ul class="nav-2-level collapse">
                             <li>
-                                <a asp-controller="yuOrder" asp-action="yuorderlist">訂單列表</a>
+                                <a asp-controller="cOrderDetails" asp-action="list">訂單列表</a>
                             </li>
                             @*<li>
-                                    <a asp-controller="#" asp-action="#">發貨管理</a>
-                                </li>*@
+                    <a asp-controller="#" asp-action="#">發貨管理</a>
+                </li>*@
                         </ul>
                     </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="sidebar-item-icon fa ti-bar-chart"></i>
+                            <span class="nav-label">統計分析</span><i class="fa fa-angle-left arrow"></i>
+                        </a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a asp-controller="cSalesAnalysis" asp-action="List">銷售統計</a>
+                            </li>
+                        </ul>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a asp-controller="cCustomerAnalysis" asp-action="List">客戶分析</a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li>
                         <a href="javascript:;">
                             <i class="sidebar-item-icon fa ti-control-play"></i>
@@ -288,8 +305,8 @@
                                 <a asp-controller="#" asp-action="#">會員列表</a>
                             </li>
                             @*<li>
-                                    <a asp-controller="#" asp-action="#">有錢人列表</a>
-                                </li>*@
+                    <a asp-controller="#" asp-action="#">有錢人列表</a>
+                </li>*@
                         </ul>
                     </li>
                     <li>

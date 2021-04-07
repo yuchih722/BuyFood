@@ -1,0 +1,293 @@
+﻿@model IEnumerable<BuyFood_Template.ViewModels.OrderDetailsViewModel>
+
+@{
+    Layout = "_LayoutAd";
+}
+
+<link href="~/assets/NEW CSS/NEWCSS.css" rel="stylesheet" />
+<link href="~/assets/NEW CSS/page.css" rel="stylesheet" />
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+
+
+
+<div class="box-module">
+    <div class="box-title">
+        <h2>訂單檢視</h2>
+
+    </div>
+
+    <div id="yuActivityt">
+
+
+
+    </div>
+
+</div>
+
+
+
+<div id="dialog-confirm" title="送出訂單" style="display:none;">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>確定要取消訂單?</p>
+</div>
+<div id="dialog-confirmCancel" title="送出訂單" style="display:none;">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>訂單已經取消</p>
+</div>
+
+
+
+@*`<div class="input-group mb-3">
+        <div class="l_f clearfix" style="padding-left:20px;"><button type="button" class="btn button_btn btn-danger" onclick="deletemore();">刪除選中</button></div>
+        <span class="sumQuantity">合計數量：<em id="quantity">${data.length}</em>條</span>
+    </div>*@
+<!-- BEGIN PAGA BACKDROPS-->
+<div class="sidenav-backdrop backdrop"></div>
+<div class="preloader-backdrop">
+    <div class="page-preloader">Loading</div>
+</div>
+<!-- END PAGA BACKDROPS-->
+
+<script>
+    function Activity() {
+        $.ajax({
+            url: "/cOrderDetails/cOrderDetailsJson",
+            type: "GET",
+            success: function (data) {
+                /*    console.log(data);*/
+                var txttable = "";
+                var shobtn = "";
+
+                txttable +=
+                    `<div id="orderlist">
+                            <table class="table table-hover table_striped table-bordered border" id="myTable">
+                            <thead>
+                            <tr>
+                            <th width="50px" style="text-align:center">
+                            <label class="ui-checkbox">
+                            <input type="checkbox" id="chElt" onclick="checkOrCancelAll();" value="">
+                            <span class="input-span"></span>
+                            </label>
+                            </th>
+                             <th class="align"  >訂單編號</th>
+                             <th class="align"  >訂單日期</th>
+                             <th class="align"  >會員姓名</th>
+                             <th class="align"  >產品名稱</th>
+                             <th class="align"  >產品數量</th>
+                             <th class="align"  >產品價格</th>
+                             <th class="align"  >訂購總計</th>
+                             <th class="align"  >訂單狀態</th>
+                              <th width="15%" class="align">操作</th>
+                             </tr>
+                             </thead>
+                             <tbody id="yuActivitytbody">`
+
+                for (let i = 0; i <= data.length - 1; i++) {
+                    var totlaprice = (data[i].cQuantity) * (data[i].cPriceAtTheTime);
+
+
+
+
+                    txttable += `<tr style="text-align:center"><td style="vertical-align: middle;"><label class="ui-checkbox"><input id="checkdelete" value="${data[i].cOrderId}" type="checkbox" name="interest"><span class="input-span">
+                                <td style="vertical-align: middle;">${data[i].cOrderId}
+                                <td style="vertical-align: middle;">${data[i].cOrderDate}
+                                <td style="vertical-align: middle;">${data[i].cName}
+                                <td style="vertical-align: middle;">${data[i].cProductName}
+                                <td style="vertical-align: middle;">${data[i].cQuantity}
+                                <td style="vertical-align: middle;">${data[i].cPriceAtTheTime}
+                                <td style="vertical-align: middle;">${totlaprice}
+                                <td style="vertical-align: middle;">${data[i].cOrderStatusName}
+                                <td style="vertical-align: middle;">
+
+
+                                <button   class="btn btn-primary"  onclick="order值完成(${data[i].cOrderId},${data[i].cOrderStatusId})" >完成訂單</button>
+
+                                <button   class="btn btn-danger"   onclick="order值取消(${data[i].cOrderId},${data[i].cOrderStatusId})" >交易取消</button>
+
+
+
+                               `
+                }
+
+                txttable += ` </tbody>
+                                </table>
+                                </div>`
+
+
+                $("#yuActivityt").html(txttable);
+                $('#myTable').DataTable({
+                    language: {
+                        "emptyTable": "無資料...",
+                        "processing": "處理中...",
+                        "loadingRecords": "載入中...",
+                        "lengthMenu": "每頁 _MENU_ 筆資料",
+                        "zeroRecords": "無搜尋結果",
+                        "info": "_START_ 至 _END_ / 共 _TOTAL_ 筆",
+                        "infoEmpty": "尚無資料",
+                        "infoFiltered": "(從 _MAX_ 筆資料過濾)",
+                        "infoPostFix": "",
+                        "search": "搜尋字串:",
+                        "paginate": {
+                            "first": "首頁",
+                            "last": "末頁",
+                            "next": "下頁",
+                            "previous": "前頁"
+                        },
+                        "aria": {
+                            "sortAscending": ": 升冪",
+                            "sortDescending": ": 降冪"
+                        }
+                    }
+                });
+
+                $("#myTable_length").append(`<label id="btndelete" style = "display:none"><button type="button" class="btn button_btn btn-danger" onclick="deletemore();">刪除選中</button></label>`);
+
+
+                $("#myTable input[name = interest]").change(function Submit() {
+                    var SelectFalse = false; //用于判断是否被选择条件
+                    var CheckBox = $('input[name = interest]');//得到所的复选框
+                    var ccbb = "#myTable input[type=checkbox]:checked";
+                    for (var i = 0; i < CheckBox.length; i++) {
+                        if (CheckBox[i].checked) {
+                            SelectFalse = true;
+                        }
+                    }
+
+                    if (SelectFalse) {
+                        $("#btndelete").show();
+                    } else {
+                        $("#btndelete").hide();
+                    }
+                })
+
+
+
+            }
+        });
+    };
+
+
+    //完成訂單
+
+    function order值完成(orid, orstid) {
+
+        $.ajax({
+            url: "/cOrderDetails/ordercomplete",
+            type: "get",
+            data: { "id": orid },
+            success: function (data) {
+            }
+        });
+        setTimeout("Activity()", 2000);
+    };
+
+
+    //交易取消警告視窗
+    function order值取消(orid, orstid) {
+        if (orstid != 3) {
+            $("#dialog-confirm").dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    "確定": function () {
+                        $(this).dialog("close");
+                        //console.log(orid);
+                        //console.log(orstid);
+                        $.ajax({
+                            url: "/cOrderDetails/orderCancel",
+                            type: "get",
+                            data: { "id": orid },
+                            success: function (data) {
+                            }
+                        });
+
+                        setTimeout("Activity()", 2000);
+
+                    },
+                    "取消": function () {
+                        $(this).dialog("close");
+
+                    }
+                }
+            });
+        }
+        else {
+            $("#dialog-confirmCancel").dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    "確定": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        }
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+    function checkOrCancelAll() {
+        //1.獲取checkbo的元素對象
+        var chElt = document.getElementById("chElt");
+        //2.獲取選中狀態
+        var checkedElt = chElt.checked;
+        console.log(checkedElt)
+        //3.若checked=true,將所有的復選框選中,checked=false,將所有的復選框取消
+        var allCheck = document.getElementsByName("interest");
+        //4.循環遍歷取出每一個復選框中的元素
+        //var mySpan=document.getElementById("mySpan");
+        if (checkedElt) {
+            //全選
+            for (var i = 0; i < allCheck.length; i++) {
+                //設置復選框的選中狀態
+                allCheck[i].checked = true;
+            }
+            $("#btndelete").show();
+            //mySpan.innerHTML="取消全選";
+        } else {
+            //取消全選
+            for (var i = 0; i < allCheck.length; i++) {
+                allCheck[i].checked = false;
+            }
+            $("#btndelete").hide();
+            //mySpan.innerHTML="全選";
+        }
+    };
+
+    //全選刪除
+    function deletemore() {
+        var checked = $("#myTable input[type=checkbox]:checked");
+        for (let i = 0; i < checked.length; i++) {
+            console.log(checked[i].value);
+            $.ajax({
+                url: "/yuActivity/ActionDelete?id=" + checked[i].value,
+                type: "GET",
+                success: function () {   //請求成功後執行的操作
+                    window.location.reload();
+                }
+            });
+        }
+    }
+
+    //進入此頁面執行
+    $(Activity());
+
+</script>

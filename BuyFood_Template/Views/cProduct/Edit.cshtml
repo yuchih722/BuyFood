@@ -1,11 +1,13 @@
-﻿@{
-    Layout = "_LayoutAd";
-}
-@model BuyFood_Template.ViewModels.CProductViewModel
+﻿@model BuyFood_Template.ViewModels.CProductViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
+
+@{
+    Layout = "_LayoutAd";
+}
+
 
 <h1>產品修改</h1>
 <div>
@@ -22,37 +24,11 @@
                 <input asp-for="CProductId" class="form-control" />
                 <span asp-validation-for="CProductId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CEatTimeId" class="control-label"></label>
-                <input asp-for="CEatTimeId" class="form-control" />
-                <span asp-validation-for="CEatTimeId" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="CCategoryId" class="control-label"></label>
-                    <input asp-for="CCategoryId" class="form-control" />
-                    <span asp-validation-for="CCategoryId" class="text-danger"></span>
-                </div>*@
+
             <div>
-                @*產品類別
-                    @Html.DropDownListFor(m => m.CategoryIdComBox回傳, Model.CcategoryComBox, new { @class = "form-control" })*@
+                <label class="control-label">產品種類</label>
+                <select asp-for="CCategoryId" class="form-control" id="p產品類別下拉選單"></select>
             </div>
-
-            <select name="CCategoryId">
-
-                @{
-                    擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-                    var q = from n in db.TProductCategories
-                            select n;
-
-                    foreach (var x in q)
-                    {
-                        <option asp-for="CCategoryId" value="@x.CProductCategoryId">@x.CCategoryName</option>
-                    }
-                }
-
-            </select>
-
-
 
             <div class="form-group">
                 <label asp-for="CIsOnSaleId" class="control-label"></label>
@@ -80,7 +56,26 @@
                 <input asp-for="CDescription" class="form-control" />
                 <span asp-validation-for="CDescription" class="text-danger"></span>
             </div>
-
+            <div class="form-group">
+                <label asp-for="CFinishedTime" class="control-label"></label>
+                <input asp-for="CFinishedTime" class="form-control" />
+                <span asp-validation-for="CFinishedTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CIsBreakFast" class="control-label"></label>
+                <input asp-for="CIsBreakFast" class="form-control" />
+                <span asp-validation-for="CIsBreakFast" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CIsLunch" class="control-label"></label>
+                <input asp-for="CIsLunch" class="form-control" />
+                <span asp-validation-for="CIsLunch" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CIsDinner" class="control-label"></label>
+                <input asp-for="CIsDinner" class="form-control" />
+                <span asp-validation-for="CIsDinner" class="text-danger"></span>
+            </div>
             <div>
                 <label for="file-upload" class="custom-file-upload">
                     修改照片 <img src="~/Images/上傳.png" width="80" height="80" />
@@ -95,5 +90,19 @@
     </div>
 </div>
 
+<script>
+    $.ajax({
+        url: "/cProduct/getAllProductCategory",
+        type: "Get",
+        success: function (data) {
+            /*                console.log(data)*/
+            txt = "";
 
+            for (let i = 0; i < data.length; i++) {
+                txt += `<option value="${data[i].cProductCategoryId}">${data[i].cCategoryName}</option>`
+            }
+            document.getElementById("p產品類別下拉選單").innerHTML = txt;
+        }
+    });
+</script>
 

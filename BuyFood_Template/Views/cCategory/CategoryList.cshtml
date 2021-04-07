@@ -1,14 +1,16 @@
-﻿@{
+﻿@model IEnumerable<BuyFood_Template.ViewModels.CCategoryViewModel>
+
+@{
     Layout = "_LayoutAd";
 }
-@model IEnumerable<BuyFood_Template.ViewModels.CCategoryViewModel>
+
 
 
 <div class="ibox" style="z-index:0">
     <div class="ibox-head">
         <div class="ibox-title">
             <a class="btn btn-danger btn-rounded" onclick="">刪除多筆</a>
-            <a asp-controller="product" asp-action="CreateCategory" class="btn btn-primary  btn-rounded" onclick="">新增類別</a>
+            <a asp-controller="cCategory" asp-action="CreateCategory" class="btn btn-primary  btn-rounded" onclick="">新增類別</a>
             @*<a class="btn btn-Silver btn-rounded" onclick="">取消</a>*@
         </div>
     </div>
@@ -50,13 +52,9 @@
                                 @Html.DisplayFor(modelItem => item.CCategoryName)
                             </td>
                             <td>
-                                @Html.ActionLink("修改", "Edit", new { id = item.CProductCategoryId }, new { @class = "btn btn-success" }) |
+                                @Html.ActionLink("修改", "EditCategory", new { id = item.CProductCategoryId }, new { @class = "btn btn-success" }) |
 
                                 @Html.ActionLink("刪除", "Delete", new { id = item.CProductCategoryId }, new { @class = "btn btn-danger" })
-                            </td>
-                            <td>
-                                <button class="btn btn-default btn-xs m-r-5" onclick="clickLink('@Url.Action("ActionName", "ControllerName", new{ /*routeValue*/ })')"><i class="fa fa-pencil font-14"></i></button>
-                                <button class="btn btn-default btn-xs" onclick="clickLink('@Url.Action("ActionName", "ControllerName", new{ /*routeValue*/ })')"><i class="fa fa-trash font-14"></i></button>
                             </td>
                         </tr>
                     }
