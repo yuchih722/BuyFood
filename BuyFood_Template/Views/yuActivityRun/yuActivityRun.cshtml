@@ -93,10 +93,10 @@
                 for (let i = 0; i <= data.length - 1; i++) {
                     var ranknum = ""; var btnUpDown = "";
                     if (data[i].cRank == 99) {
-                        rank = `<a  class="btn btn-Grey " onclick="Activity_open(${data[i].cActivityId})" >未開啟`
+                        rank = `<a  class="btn btn-Grey " onclick="ActivityRun_status(${data[i].cActivityId})" >未開啟`
                         ranknum = `<td style="vertical-align: middle;visibility: hidden" >${data[i].cRank}`
                     } else {
-                        rank = `<a  class="btn " style="background-color:#00ff21" onclick="Activity_close(${data[i].cActivityId})">已啟用`
+                        rank = `<a  class="btn " style="background-color:#00ff21" onclick="ActivityRun_status(${data[i].cActivityId})">已啟用`
                         ranknum = `<td style="vertical-align: middle;" name="categoryids">${data[i].cRank}`
                         btnUpDown = '<a href = "javascript: void(0)" class="up" > 上移</a > <a href="javascript: void(0)" class="down"  >下移</a> <a href="javascript: void(0)" class="top">置頂</a>'
                     }
@@ -262,7 +262,7 @@
             }
         });
     };
-    function Activity_open(id) {
+    function ActivityRun_status(id) {
         $.ajax({
             url: "/yuActivityRun/ActionUpRank?id=" + id,
             type: "get",
@@ -272,15 +272,6 @@
         })
     }
 
-    function Activity_close(id) {
-        $.ajax({
-            url: "/yuActivityRun/ActionUpRank?id=" + id,
-            type: "get",
-            success: function () {
-                $(Activity(what_str));
-            }
-        })
-    }
 
 </script>
 

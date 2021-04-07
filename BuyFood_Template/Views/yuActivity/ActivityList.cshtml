@@ -16,7 +16,7 @@
 <div class="box-module">
     <div class="box-title">狀態分類</div>
     <div class="box-content padding15">
-        <a href="#" onclick="Activity('All')">
+        <a href="#" id="All">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-green">
                     <div class="status_amount"> @ViewBag.All</div>
@@ -24,7 +24,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" id="Going" onclick="Activity('Going')">
+        <a href="#" id="Going">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-red">
                     <div class="status_amount">@ViewBag.Going </div>
@@ -32,7 +32,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" onclick="Activity('Close')">
+        <a href="#" id="Close">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-azure">
                     <div class="status_amount">@ViewBag.close</div>
@@ -69,23 +69,25 @@
     </div>
 </div>
 
-<div id="test_dialog" title="刪除">確定要刪除嗎 ？</div>
+<div id="test_dialog" title="刪除">確定要刪除嗎 ？ </div>
 
 <div id="OK_delete"> 已完成刪除 </div>
-
+<div id="deletemore">確定要刪除多筆資料嗎 ？ </div>
 <script>
     var get_btn_id;
     $(window).load(
 
+
         $("#OK_delete").dialog({
             autoOpen: false,
-
             buttons: {
                 "OK": function () {
                     $(this).dialog("close");
                 }
             }
         }),
+
+
         $("#test_dialog").dialog({
             autoOpen: false,
             buttons: {
@@ -97,9 +99,40 @@
                         success: function (data) {
                             $("#OK_delete").dialog("open");
                             $("#getmytr" + get_btn_id).remove();
-                            tr.parentNode.removeChild(tr_delete); //利用tr的父節點刪除tr
                         }
                     })
+                },
+                "Cancel": function () { $(this).dialog("close"); }
+            },
+            hide: "explode",
+            show: "blind",
+        }),
+
+        $("#deletemore").dialog({
+            autoOpen: false,
+            buttons: {
+                "Ok": function () {
+                    var checked = $("#myTable input[type=checkbox]:checked");
+                    var $Array = new Array;
+                    for (let i = 0; i < checked.length; i++) {
+                        var data = {};
+                        data.strmember = checked[i].value
+                        $Array.push(data);
+                    }
+                    $(this).dialog("close");
+                      //全選刪除
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json;charset=utf-8",
+                        url: "/yuActivity/ActionDelete",
+                        data: JSON.stringify($Array),
+                        success: function (data) {
+                            for (let i = 0; i < checked.length; i++) {
+                                checked[i].parentNode.parentNode.parentNode.remove();  
+                            }
+                            $("#btndelete").hide();
+                        }
+                    });
                 },
                 "Cancel": function () { $(this).dialog("close"); }
             },
@@ -110,6 +143,12 @@
     )
 </script>
 <script>
+    var mystr = "All"
+    $(Activity(mystr));
+    $("#All").click(function () { mystr = "All"; Activity(mystr) })
+    $("#Going").click(function () { mystr = "Going"; Activity(mystr) })
+    $("#Close").click(function () { mystr = "Close"; Activity(mystr) })
+
 
     function Activity(str) {
         $.ajax({
@@ -144,9 +183,9 @@
 
                 for (let i = 0; i <= data.length - 1; i++) {
                     if (data[i].cStatus == 1)
-                        shobtn = `<a class="btn btn-Success " style="background-color:#00ff21" href="/yuActivity/ActionUpDelete?id=${data[i].cActivityId}">進行中`
+                        shobtn = `<a class="btn btn-Success " style="background-color:#00ff21" onclick="Activity_status(${data[i].cActivityId})">進行中`
                     else
-                        shobtn = `<a class="btn btn-Grey " href="/yuActivity/ActionUpDelete?id=${data[i].cActivityId}" >關閉`
+                        shobtn = `<a class="btn btn-Grey " onclick="Activity_status(${data[i].cActivityId})" >關閉`
                     txttable += `<tr id="getmytr${data[i].cActivityId}" style="text-align:center"><td style="vertical-align: middle;"><label class="ui-checkbox"><input id="checkdelete" value="${data[i].cActivityId}" type="checkbox" name="interest"><span class="input-span">
                                 <td style="vertical-align: middle;">${data[i].cActivityName}
                                 <td  ><span class="tabletitle">${data[i].cDescription}
@@ -227,6 +266,9 @@
             }
         });
     };
+    function deletemore() {
+        $("#deletemore").dialog("open")
+    }
 
     function test_getid(id) {
         get_btn_id = id
@@ -261,39 +303,17 @@
         }
     };
 
-    //全選刪除
-    function deletemore() {
-        var checked = $("#myTable input[type=checkbox]:checked");
-        var $Array = new Array;
-        for (let i = 0; i < checked.length; i++) {
-            var data = {};
-            data.strmember = checked[i].value
-            $Array.push(data);
-        }
+
+    function Activity_status(id) {
         $.ajax({
-            type: "POST",
-            contentType: "application/json;charset=utf-8",
-            url: "/yuActivity/ActionDelete",
-            data: JSON.stringify($Array),
-            success: function (data) {
-                window.location.reload(window.location.href);
+            url: "/yuActivity/ActionUpDelete?id=" + id,
+            type: "get",
+            success: function () {
+                $(Activity(mystr));
             }
-
-
-
-            //for (let i = 0; i < checked.length; i++) {
-            //    console.log(checked[i].value);
-            //    $.ajax({
-            //        url: "/yuActivity/ActionDelete?id=" + checked[i].value,
-            //        type: "GET",
-
-            //        success: function () {   //請求成功後執行的操作
-            //            window.location.reload();
-            //        }
-        });
+        })
     }
-
     //進入此頁面執行
-    $(Activity("All"));
+
 
 </script>
