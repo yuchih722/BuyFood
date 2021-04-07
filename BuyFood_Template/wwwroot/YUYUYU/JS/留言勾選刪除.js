@@ -1,9 +1,10 @@
-﻿$("#Board99").click(function () { pagename == 99; $(Board(pagename));})
-$("#Board5").click(function () { pagename == 99; $(Board(pagename)); })
-$("#Board4").click(function () { pagename == 99; $(Board(pagename)); })
-$("#Board3").click(function () { pagename == 99; $(Board(pagename)); })
-$("#Board2").click(function () { pagename == 99; $(Board(pagename)); })
-$("#Board1").click(function () { pagename == 99; $(Board(pagename)); })
+﻿$("#Board99").click(function () { pagename = 99; $(Board(pagename));})
+$("#Board5").click(function () { pagename = 5; $(Board(pagename)); })
+$("#Board4").click(function () { pagename = 4; $(Board(pagename)); })
+$("#Board3").click(function () { pagename = 3; $(Board(pagename)); })
+$("#Board2").click(function () { pagename = 2; $(Board(pagename)); })
+$("#Board1").click(function () { pagename = 1; $(Board(pagename)); })
+
 $("#deletemore").dialog({
         autoOpen: false,
         buttons: {
@@ -23,9 +24,9 @@ $("#deletemore").dialog({
                     url: "/yuBoardsALL/DetailBoardDelete",
                     data: JSON.stringify($Array),
                     success: function (data) {
-                        for (let i = 0; i < checked.length; i++) {
+
                             $(Board(pagename));
-                        }
+
                         $("#btndelete").hide();
                     }
                 });
