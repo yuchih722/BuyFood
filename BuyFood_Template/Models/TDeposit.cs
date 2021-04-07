@@ -11,6 +11,7 @@ namespace BuyFood_Template.Models
         public int CMemberId { get; set; }
         public DateTime CDepositTime { get; set; }
         public decimal CDepositAmount { get; set; }
+        public string CDepositRecordNo { get; set; }
 
         public virtual TMember CMember { get; set; }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,20 +15,7 @@ namespace BuyFood_Template.Controllers
     {
         public IActionResult CurrentCartItem()
         {
-            擺腹BuyFoodContext BuyFoodDB = new 擺腹BuyFoodContext();
-            var result = from i in BuyFoodDB.TCupons
-                         join b in BuyFoodDB.TCuponCategories
-                         on i.CCuponCategoryId equals b.CCuponCategoryId
-                         where i.CMenberId == 7 && i.CBeUsed == 0
-                         orderby i.CCuponCategoryId
-                         select new CouponProperty {
-                             CCuponId = i.CCuponId,
-                             CCuponCategoryId = i.CCuponCategoryId,
-                             CategoryName = b.CategoryName,
-                             CCutPrice = (decimal)b.CCutPrice,     
-                         };
-            //ViewBag.Coupon = result.ToList();
-            return View(result.ToList());
+            return View();
         }
         //抓取對應商品的庫存數量
         [HttpPost]
@@ -47,6 +35,27 @@ namespace BuyFood_Template.Controllers
             }
             return Json(quantityList);
         }
-       
+        [HttpPost]
+        public JsonResult CheckCouponCode([FromBody] string Code)
+        {
+            擺腹BuyFoodContext BuyFoodDB = new 擺腹BuyFoodContext();
+            var result = (from i in BuyFoodDB.TCupons
+                          join k in BuyFoodDB.TCuponCategories
+                          on i.CCuponCategoryId equals k.CCuponCategoryId
+                          where i.CDiscountCode == Code && i.CBeUsed == 0
+                          select new CouponProperty()
+                          {
+                              CCuponId = i.CCuponId,
+                              CCutPrice = (decimal)k.CCutPrice,
+                          }).FirstOrDefault();
+            if (result == null)
+            {
+                return Json("0");
+            }
+            else
+            {
+                return Json(result);
+            }
+        }
     }
 }

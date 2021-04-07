@@ -128,18 +128,12 @@
                 <div class="col-lg-6">
                     <div class="shoping__continue">
                         <div class="shoping__discount">
-                            <h5>目前可使用的折價券</h5>
-                            <form action="#" id="coupon_option">
-                                @*依會員可用的折價券來顯示*@
-                                @{@*var CouponList = ViewBag.Coupon;*@ }
-                                <select id="select_list" onchange="GetDiscountTotalPrice()" class="select_width">
-                                    @foreach (var i in Model)
-                                    {
-                                        <option id="@i.CCuponId" value="@i.CCutPrice">@i.CategoryName</option>
-                                    }
-                                </select>
-                            </form>
-                            @*<button type="submit" class="site-btn" style="margin-left:50px">APPLY COUPON</button>*@
+
+                            <h5>勾選並填入要使用的優惠券</h5>
+                            <input id="check_is_used" type="checkbox" /><br>
+                            <input id="input_coupon_code" type="text" disabled />
+                            <button id="check_coupon" class="site-btn" style="margin-left:50px">檢查優惠券代碼</button>
+                            <h6 id="coupon_discount">目前使用的優惠券金額為: 無</h6>                            
                         </div>
                     </div>               
                 </div>         
@@ -311,9 +305,53 @@
         let discount_price = 0;   //要折扣的金額
         let total_price = 0;      //未含折扣的金額
         let sum_price = 0;        //折扣後的總計
+        let couponId = 1;         //折價券未指定時，使用ID為1的無折扣折價券
+        //檢查優惠券是否可使用
+        $(function () {
+            $("#check_coupon").click(function () {
+                let coupon_code = $("#input_coupon_code").val();
+                console.log(coupon_code);
+                $.ajax({
+                    url: "/ShoppingCart/CheckCouponCode",
+                    data: JSON.stringify(coupon_code),
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (data == "0") {
+                            window.alert("輸入的代碼有誤或此優惠券已被使用");
+
+                        } else {
+                            discount_price = data.cCutPrice;
+                            couponId = data.cCuponId;
+                            let text = "目前優惠券的折價金額為: $" + discount_price;
+                            $("#coupon_discount").html(text);
+
+                            GetDiscountTotalPrice();
+                            window.alert("此優惠券可使用");
+                        }
+                    }
+                })
+            })
+        })
+        //檢查優惠券checkbox是否有勾選
+        $(function () {
+            $("#check_is_used").change(function () {
+                //console.log($("#check_is_used").prop('checked'));
+                if ($("#check_is_used").prop('checked')) {
+                    $("#input_coupon_code").prop('disabled', false);
+                } else {
+                    discount_price = 0;
+                    couponId = 1;
+                    $("#input_coupon_code").val("");
+                    $("#coupon_discount").html("目前優惠券的折價金額為: 無");
+                    $("#input_coupon_code").prop('disabled', true);
+                    GetDiscountTotalPrice();
+                }
+            })
+
+        })
         //取得折價券的面額
         function GetDiscountTotalPrice() {
-            discount_price = Math.floor($("#select_list").val());
             total_price = parseInt($("#origin_price").text().replace('$', ""));
             sum_price = total_price - discount_price;
             $("#off_price").html('$' + discount_price);
@@ -333,35 +371,7 @@
             }
             window.location.assign("/CheckCart/OrderData");
         })
-        //送出訂單
-        //function SendOrder() {
-        //    if (pdtcart === null || pdtcart.length === 0) {
-        //        window.alert("購物車內尚無任何商品");
-        //        return;
-        //    }
-        //    let cart_total_price = parseInt($("#cart_total_price").text().replace('$', ''));
-        //    if (cart_total_price <= 0) {
-        //        window.alert("購物車總計不可低於折扣金額");
-        //        return;
-        //    }
-        //    let couponId = parseInt($("#select_list").children(":selected").attr('id'));
-        //    let obj_cart_order = { cartOrder: pdtcart, couponSelected: couponId };
 
-        //    $.ajax({
-        //        url: "/ShoppingCart/InsertOrderToDB",
-        //        type: "POST",
-        //        contentType: "application/json; charset=utf-8",
-        //        data: JSON.stringify(obj_cart_order),
-        //        success: function (data) {
-        //            window.alert(data);
-        //            if (data == "已收到訂單，請稍後") {
-        //                window.location.assign("/ViewProduct/ShowProduct");
-        //                localStorage.removeItem("cart");
-        //                localStorage.removeItem("cart_price");
-        //            }
-        //        }
-        //    })
-        //}
 
         //離開頁面時儲存當前的商品及數量
         $(window).bind('beforeunload', function () {
@@ -378,9 +388,7 @@
                 }
                 pdt_finishtime = Math.round(((pdt_count/4)+1) * longer_time)   //取得製作時間最長的商品*數量
             }
-            //let origin_price = parseInt($("#origin_price").text().replace('$', ""));  
-            //let discount_price = Math.floor($("#select_list").val());
-            let couponId = parseInt($("#select_list").children(":selected").attr('id'));
+
             let cart_price_obj = {
                 origin: total_price,
                 discount: discount_price,
@@ -390,7 +398,7 @@
             };
             localStorage.setItem("cart_price", JSON.stringify(cart_price_obj));
             localStorage.setItem("cart", JSON.stringify(pdtcart));
-            //localStorage.setItem("cart_time", JSON.stringify(pdt_finishtime));
+
         }
         );
 

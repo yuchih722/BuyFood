@@ -15,6 +15,7 @@ namespace BuyFood_Template.Models
         public int CCuponId { get; set; }
         public int CCuponCategoryId { get; set; }
         public int CMenberId { get; set; }
+        public string CDiscountCode { get; set; }
         public DateTime CValidDate { get; set; }
         public DateTime CReceivedTime { get; set; }
         public int CBeUsed { get; set; }
