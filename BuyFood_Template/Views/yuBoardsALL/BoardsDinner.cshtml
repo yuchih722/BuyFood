@@ -5,10 +5,16 @@
 <link href="~/assets/NEW CSS/NEWCSS.css" rel="stylesheet" />
 <link href="~/assets/NEW CSS/page.css" rel="stylesheet" />
 
+@*這段FOR   dialog*@
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
 <div class="box-module">
     <div class="box-title">狀態分類</div>
     <div class="box-content padding15">
-        <a href="#" onclick="Board(99)">
+        <a href="#" id="Board99">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-green">
                     <div class="status_amount"> @ViewBag.All</div>
@@ -16,7 +22,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" onclick="Board(5)">
+        <a href="#" id="Board5">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-red">
                     <div class="status_amount">@ViewBag.five</div>
@@ -24,7 +30,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" onclick="Board(4)">
+        <a href="#" id="Board4">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-azure">
                     <div class="status_amount">@ViewBag.four</div>
@@ -32,7 +38,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" onclick="Board(3)">
+        <a href="#" id="Board3">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-orange">
                     <div class="status_amount">@ViewBag.three</div>
@@ -40,7 +46,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" onclick="Board(2)">
+        <a href="#" id="Board2">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-purple">
                     <div class="status_amount">@ViewBag.two</div>
@@ -48,7 +54,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" onclick="Board(1)">
+        <a href="#" id="Board1">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-bule">
                     <div class="status_amount">@ViewBag.one</div>
@@ -72,11 +78,8 @@
     </div>
 </div>
 
-<div class="sidenav-backdrop backdrop"></div>
-<div class="preloader-backdrop">
-    <div class="page-preloader">Loading</div>
-</div>
-<!-- END PAGA BACKDROPS-->
+<div id="deletemore">確定要刪除多筆資料嗎 ？ </div>
+<script src="~/YUYUYU/JS/留言勾選刪除.js"></script>
 
 <script>
     function Board(num) {
@@ -208,7 +211,9 @@
             }
         })
     }
-
+    function deletemore() {
+        $("#deletemore").dialog("open")
+    }
     function checkOrCancelAll() {
         //1.獲取checkbo的元素對象
         var chElt = document.getElementById("chElt");
@@ -248,6 +253,7 @@
     }
 
     //進入此頁面執行
-    $(Board(99));
+    var pagename = 99
+    $(Board(pagename));
 
 </script>
