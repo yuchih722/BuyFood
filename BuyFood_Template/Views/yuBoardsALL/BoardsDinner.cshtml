@@ -1,0 +1,253 @@
+﻿@{
+    Layout = "_LayoutAd";
+}
+<link href="~/assets/NEW CSS/iconfont.css" rel="stylesheet" />
+<link href="~/assets/NEW CSS/NEWCSS.css" rel="stylesheet" />
+<link href="~/assets/NEW CSS/page.css" rel="stylesheet" />
+
+<div class="box-module">
+    <div class="box-title">狀態分類</div>
+    <div class="box-content padding15">
+        <a href="#" onclick="Board(99)">
+            <div class="clearfix col-xs-6 col-sm-2 padding5">
+                <div class="statusbox bg-green">
+                    <div class="status_amount"> @ViewBag.All</div>
+                    <div class="status_name bg_color_green">全部留言</div>
+                </div>
+            </div>
+        </a>
+        <a href="#" onclick="Board(5)">
+            <div class="clearfix col-xs-6 col-sm-2 padding5">
+                <div class="statusbox bg-red">
+                    <div class="status_amount">@ViewBag.five</div>
+                    <div class="status_name bg_color_red">五星</div>
+                </div>
+            </div>
+        </a>
+        <a href="#" onclick="Board(4)">
+            <div class="clearfix col-xs-6 col-sm-2 padding5">
+                <div class="statusbox bg-azure">
+                    <div class="status_amount">@ViewBag.four</div>
+                    <div class="status_name bg_color_azure">四星</div>
+                </div>
+            </div>
+        </a>
+        <a href="#" onclick="Board(3)">
+            <div class="clearfix col-xs-6 col-sm-2 padding5">
+                <div class="statusbox bg-orange">
+                    <div class="status_amount">@ViewBag.three</div>
+                    <div class="status_name bg_color_orange">三星</div>
+                </div>
+            </div>
+        </a>
+        <a href="#" onclick="Board(2)">
+            <div class="clearfix col-xs-6 col-sm-2 padding5">
+                <div class="statusbox bg-purple">
+                    <div class="status_amount">@ViewBag.two</div>
+                    <div class="status_name bg_color_purple">二星</div>
+                </div>
+            </div>
+        </a>
+        <a href="#" onclick="Board(1)">
+            <div class="clearfix col-xs-6 col-sm-2 padding5">
+                <div class="statusbox bg-bule">
+                    <div class="status_amount">@ViewBag.one</div>
+                    <div class="status_name bg_color_bule">一星</div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="box-module">
+    <div class="box-title">
+        產品留言列表
+        <div id="warning" style="background-color: #ffd800;float:left;width:400px;margin-left:40px;display:none;float:right">已開啟操作功能 ，請小心使用。</div>
+    </div>
+
+    <div id="yuActivityt">
+
+
+
+    </div>
+</div>
+
+<div class="sidenav-backdrop backdrop"></div>
+<div class="preloader-backdrop">
+    <div class="page-preloader">Loading</div>
+</div>
+<!-- END PAGA BACKDROPS-->
+
+<script>
+    function Board(num) {
+        $.ajax({
+            url: "/yuBoardsALL/BoardsJSONListdinner?num=" + num,
+            type: "GET",
+            success: function (data) {
+                console.log(data);
+                var txttable = "";
+                var shobtn = "";
+
+                txttable +=
+                    `<div id="orderlist">
+                            <table class="table table-hover table_striped table-bordered border" id="myTable">
+                            <thead>
+                            <tr>
+                            <th width="50px" style="text-align:center">
+                            <label class="ui-checkbox">
+                            <input type="checkbox" id="chElt" onclick="checkOrCancelAll();" value="">
+                            <span class="input-span"></span>
+                            </label>
+                            </th>
+                              <th class="align" width="10%">訂單號</th>
+                              <th class="align" width="10%">會員編號</th>
+                              <th width="10%" class="align">產品類別</th>
+                              <th width="10%" class="align">產品名稱</th>
+                              <th class="align" width="25%">評分內容</th>
+                              <th width="10%" class="align">評分星星</th>
+                             <th class="align" width="20%">操作</th>
+                             </tr>
+                             </thead>
+                             <tbody id="yuActivitytbody">`
+
+                for (let i = 0; i <= data.length - 1; i++) {
+                    txttable += `<tr style="text-align:center"><td style="vertical-align: middle;"><label class="ui-checkbox"><input id="checkdelete" value="${data[i].cOrderDetailId}" type="checkbox" name="interest"><span class="input-span">
+                                <td style="vertical-align: middle;">${data[i].cOrderId}
+                                <td style="vertical-align: middle;">${data[i].cMemberId}
+                                <td style="vertical-align: middle;">${data[i].cCategoryName}
+                                <td style="vertical-align: middle;">${data[i].cProductName}
+                                <td ><span class="tabletitle">${data[i].cReview}
+                                <td style="vertical-align: middle;">${data[i].cScores}
+                                <td  style="vertical-align: middle;display:none" name="btnEDIT">
+                                <a id="blacktype${data[i].cOrderDetailId}" class="btn btn-outline-danger btn-xs" onclick="gotoblack(${data[i].cOrderDetailId})" ><i class="fa fa-trash font-18">屏蔽留言`
+                }
+                txttable += ` </tbody>
+                                </table>
+                                </div>`
+
+                $("#yuActivityt").html(txttable);
+                $('#myTable').DataTable({
+                    language: {
+                        "emptyTable": "無資料...",
+                        "processing": "處理中...",
+                        "loadingRecords": "載入中...",
+                        "lengthMenu": "每頁 _MENU_ 筆資料",
+                        "zeroRecords": "無搜尋結果",
+                        "info": "_START_ 至 _END_ / 共 _TOTAL_ 筆",
+                        "infoEmpty": "尚無資料",
+                        "infoFiltered": "(從 _MAX_ 筆資料過濾)",
+                        "infoPostFix": "",
+                        "search": "搜尋字串:",
+                        "paginate": {
+                            "first": "首頁",
+                            "last": "末頁",
+                            "next": "下頁",
+                            "previous": "前頁"
+                        },
+                        "aria": {
+                            "sortAscending": ": 升冪",
+                            "sortDescending": ": 降冪"
+                        }
+                    }
+                });
+
+                var newtxt = `<label id="btndelete" style = "display:none"><button type="button" class="btn button_btn btn-danger" onclick="deletemore();">屏蔽多筆留言</button></label>
+                                        <button id="btnshowEDIT" style="background-color:#4cff00" class="btn btn-Silver btn-rounded">開啟操作功能</button>
+                                        <button id="btngood"  class="btn btn-outline-success btn-rounded" style="display:none">確認操作</button>`
+
+                $("#myTable_length").append(newtxt);
+
+                $("#btnshowEDIT").click(function () {
+                    $("#warning").show();
+                    $("#btngood").show();
+                    $("[name='btnEDIT']").show();
+                    $("#btnshowEDIT").hide();
+                })
+                $("#btngood").click(function () {
+                    $("#warning").hide();
+                    $("#btnshowEDIT").show();
+                    $("[name='btnEDIT']").hide();
+                    $("#btngood").hide();
+                    window.location.reload();
+                })
+
+                $("#myTable input[name = interest]").change(function Submit() {
+                    var SelectFalse = false; //用于判断是否被选择条件
+                    var CheckBox = $('input[name = interest]');//得到所的复选框
+                    var ccbb = "#myTable input[type=checkbox]:checked";
+                    for (var i = 0; i < CheckBox.length; i++) {
+                        if (CheckBox[i].checked) {
+                            SelectFalse = true;
+                        }
+                    }
+
+                    if (SelectFalse) {
+                        $("#btndelete").show();
+                    } else {
+                        $("#btndelete").hide();
+                    }
+                }
+                )
+
+
+            }
+        });
+    };
+    var boo = false;
+    function gotoblack(id) {
+        $.ajax({
+            url: "/yuBoardsALL/gotoblack?id=" + id,
+            type: "get",
+            success: function (data) {
+                boo = !boo;
+                if (boo) {
+                    $("#blacktype" + id).html(`<i class= "font-18" >已將此流言屏蔽,再次點擊回覆`)
+                }
+                else
+                    $("#blacktype" + id).html(`<i class="fa fa-trash font-18">屏蔽留言`)
+            }
+        })
+    }
+
+    function checkOrCancelAll() {
+        //1.獲取checkbo的元素對象
+        var chElt = document.getElementById("chElt");
+        //2.獲取選中狀態
+        var checkedElt = chElt.checked;
+        console.log(checkedElt)
+        //3.若checked=true,將所有的復選框選中,checked=false,將所有的復選框取消
+        var allCheck = document.getElementsByName("interest");
+        //4.循環遍歷取出每一個復選框中的元素
+        //var mySpan=document.getElementById("mySpan");
+        if (checkedElt) {
+            //全選
+            for (var i = 0; i < allCheck.length; i++) {
+                //設置復選框的選中狀態
+                allCheck[i].checked = true;
+            }
+            $("#btndelete").show();
+            //mySpan.innerHTML="取消全選";
+        } else {
+            //取消全選
+            for (var i = 0; i < allCheck.length; i++) {
+                allCheck[i].checked = false;
+            }
+            $("#btndelete").hide();
+            //mySpan.innerHTML="全選";
+        }
+    };
+
+    //全選屏蔽
+    function deletemore() {
+        var checked = $("#myTable input[type=checkbox]:checked");
+        for (let i = 0; i < checked.length; i++) {
+            console.log(checked[i].value);
+            $("#blacktype" + checked[i].value).click();
+
+        }
+    }
+
+    //進入此頁面執行
+    $(Board(99));
+
+</script>
