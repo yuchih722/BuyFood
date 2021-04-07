@@ -14,6 +14,10 @@ namespace BuyFood_Template.Controllers
         // GET: CheckOrderController
         public ActionResult OrderData()
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
+            {
+                return RedirectToAction("登入", "HomePage");
+            }
             return View();
         }
         [HttpPost]
@@ -43,8 +47,8 @@ namespace BuyFood_Template.Controllers
                     return "已超過現有可製作的份量";
                 }
             }
-            
 
+            int GetMemberID = int.Parse(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID));
             decimal CouponPrice = 0;
             var CouponID = BuyFoodDB.TCupons.FirstOrDefault(x => x.CCuponId == CartOrder.couponSelected);
             if (CouponID.CCuponCategoryId != 1)
@@ -55,7 +59,7 @@ namespace BuyFood_Template.Controllers
             //先在資料庫中建立一筆新的訂單
             TOrder DbOrder = new TOrder()
             {
-                CMemberId = 7,
+                CMemberId = GetMemberID,
                 COrderStatusId = 1,
                 CCuponId = CartOrder.couponSelected,
                 CPayTypeId = CartOrder.payType,
@@ -83,7 +87,7 @@ namespace BuyFood_Template.Controllers
                 BuyFoodDB.TOrderDetails.Add(ProductInOrder);
                 TotalPriceInCart += i.QuantityInCart * i.cPrice;
             }
-            var MemberDeposit = BuyFoodDB.TMembers.FirstOrDefault(x => x.CMemberId == 7); //從資料庫中取出該物件
+            var MemberDeposit = BuyFoodDB.TMembers.FirstOrDefault(x => x.CMemberId == GetMemberID); //從資料庫中取出該物件
             MemberDeposit.CDeposit -= (TotalPriceInCart - CouponPrice);   //直接從欄位更改數值才有效果
             BuyFoodDB.SaveChanges();
             return "已收到訂單，請稍後";

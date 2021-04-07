@@ -234,6 +234,7 @@
         $("#confirm_order").click(function () {
             if (input_location == "") {
                 window.alert("請輸入要指定的地點");
+                $("#cover_page").css({ "display": "none" });
                 return;
             }
             //加入遮罩效果

@@ -210,6 +210,11 @@ namespace BuyFood_Template.Models
 
                 entity.Property(e => e.CCuponCategoryId).HasColumnName("cCuponCategoryID");
 
+                entity.Property(e => e.CDiscountCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("cDiscountCode")
+                    .IsFixedLength(true);
+
                 entity.Property(e => e.CMenberId).HasColumnName("cMenberID");
 
                 entity.Property(e => e.CReceivedTime)
@@ -261,6 +266,11 @@ namespace BuyFood_Template.Models
                 entity.Property(e => e.CDepositAmount)
                     .HasColumnType("money")
                     .HasColumnName("cDepositAmount");
+
+                entity.Property(e => e.CDepositRecordNo)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("cDepositRecordNo");
 
                 entity.Property(e => e.CDepositTime)
                     .HasColumnType("datetime")
