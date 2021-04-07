@@ -231,18 +231,18 @@
                             for (var i = 0; i < data.length; i++) {
 
                                 txtActivity += `                <div class="col-lg-4 col-md-4 col-sm-6">
-                                                                    <div class="blog__item">
-                                                                        <div class="blog__item__pic">
-                                                                            <img src="${data[i].cPicture.replace("..", "")}" alt="">
-                                                                        </div>
-                                                                        <div class="blog__item__text">
-                                                                            <ul>
-                                                                                <li><i class="fa fa-calendar-o"></i>${data[i].cTime}</li>
-                                                                            </ul>
-                                                                            <h5><a href="${data[i].cLink}">${data[i].cActivityName}</a></h5>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>`;
+                                                                                                    <div class="blog__item">
+                                                                                                        <div class="blog__item__pic">
+                                                                                                            <img src="${data[i].cPicture.replace("..", "")}" alt="">
+                                                                                                        </div>
+                                                                                                        <div class="blog__item__text">
+                                                                                                            <ul>
+                                                                                                                <li><i class="fa fa-calendar-o"></i>${data[i].cTime}</li>
+                                                                                                            </ul>
+                                                                                                            <h5><a href="${data[i].cLink}">${data[i].cActivityName}</a></h5>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>`;
 
 
                             }
@@ -263,65 +263,9 @@
         </div>
     </section>
     <!-- Blog Section End -->
-    <!-- Footer Section Begin -->
-    <footer class="footer spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="footer__about">
-                        <div class="footer__about__logo">
-                            <a href="./index.html"><img src="~/img/logo.png" alt=""></a>
-                        </div>
-                        <ul>
-                            <li>地址: 106台北市大安區復興南路一段390號2樓</li>
-                            <li>手機: 0983622454</li>
-                            <li>Email: BuyFood@buyfood.com</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
-                    <div class="footer__widget">
-                        <h6>相關連結</h6>
-                        <ul>
-                            <li><a href="#">關於我們</a></li>
-                            <li><a href="#">關於我們的商店</a></li>
-                            <li><a href="#">運送資訊</a></li>
-                            <li><a href="#">隱私規定</a></li>
-                            <li><a href="#">我們的位置</a></li>
-                        </ul>
-                        <ul>
-                            <li><a href="#">我們是誰</a></li>
-                            <li><a href="#">我們的服務</a></li>
-                            <li><a href="#">相關企劃</a></li>
-                            <li><a href="#">聯絡資訊</a></li>
-                            <li><a href="#">創新</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-12">
-                    <div class="footer__widget">
-                        <h6>訂閱電報</h6>
-                        <p>隨時都能收取最新優惠資訊</p>
-                        <form action="#">
-                            <input type="text" placeholder="輸入Email">
-                            <button type="submit" class="site-btn">訂閱</button>
-                        </form>
-                        <div class="footer__widget__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @*分頁function*@
-        <script></script>
-        <script src="~/js/adri/HomePage/Pagination.js"></script>
-    </footer>
-    <!-- Footer Section End -->
 
+    @*分頁function*@
+    <script src="~/js/adri/HomePage/Pagination.js"></script>
 
 </body>
 
