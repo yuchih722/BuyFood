@@ -1,96 +1,96 @@
-﻿@{ 
+﻿@{
     Layout = "_LayoutAd";
 }
 
 <link href="~/assets/NEW CSS/NEWCSS.css" rel="stylesheet" />
 <link href="~/assets/NEW CSS/page.css" rel="stylesheet" />
 
-    <div class="box-module height100b margin0">
-        <div class="box-title">個人信息</div>
-        <div class="box-content padding15">
+<div class="box-module height100b margin0">
+    <div class="box-title">個人信息</div>
+    <div class="box-content padding15">
 
-            <!--個人信息-->
-            <div class="add_content clearfix mt15">
-                <div class="clearfix" id="user_details">
+        <!--個人信息-->
+        <div class="add_content clearfix mt15">
+            <div class="clearfix" id="user_details">
 
-                    <ul class="info_list" id="VerifyTips">
-                        <li class="clearfix content_look mb15">
-                            <label class="label_name">用戶頭像：</label>
-                            <span class="info_data">
-                                <div class="gradeimg-style">
-                                    <div class="Upload-screenshot">
-                                        <img class="addImg" src="images/zjbg_03.png" onerror="this.src='images/zjbg_03.png',this.onerror=null">
-                                        <input name="url" type="file" class="upload_input" accept="image/*">
-                                        <input type="hidden" id="img" name="img">
-                                        <div class="preBlock">
-                                            <img class="preview" alt="" name="pic" onerror="this.src='images/zjbg_03.png',this.onerror=null">
-                                        </div>
-                                        <img class="delete" src="images/delete.png">
+                <ul class="info_list" id="VerifyTips">
+                    <li class="clearfix content_look mb15">
+                        <label class="label_name">用戶頭像：</label>
+                        <span class="info_data">
+                            <div class="gradeimg-style">
+                                <div class="Upload-screenshot">
+                                    <img class="addImg" src="images/zjbg_03.png" onerror="this.src='images/zjbg_03.png',this.onerror=null">
+                                    <input name="url" type="file" class="upload_input" accept="image/*">
+                                    <input type="hidden" id="img" name="img">
+                                    <div class="preBlock">
+                                        <img class="preview" alt="" name="pic" onerror="this.src='images/zjbg_03.png',this.onerror=null">
                                     </div>
+                                    <img class="delete" src="images/delete.png">
                                 </div>
-                            </span>
-                        </li>
-                        <li class=" clearfix content_look mb15">
-                            <label class="label_name"><em style="color:Red;">*</em>用戶名：</label>
-                            <span class="info_data"><input data-name="用戶名" type="text" value="胡海天堂" name="Required" class="text_input col-sm-4" data-verify="verify"></span>
-                        </li>
-                        <li class=" clearfix content_look mb15">
-                            <label class="label_name">性別：</label>
-                            <span class="info_data">
+                            </div>
+                        </span>
+                    </li>
+                    <li class=" clearfix content_look mb15">
+                        <label class="label_name"><em style="color:Red;">*</em>用戶名：</label>
+                        <span class="info_data"><input data-name="用戶名" type="text" value="胡海天堂" name="Required" class="text_input col-sm-4" data-verify="verify"></span>
+                    </li>
+                    <li class=" clearfix content_look mb15">
+                        <label class="label_name">性別：</label>
+                        <span class="info_data">
 
-                                <input data-name="性別" type="text" name="" value="男" class="text_input col-sm-4" data-verify="verify">
+                            <input data-name="性別" type="text" name="" value="男" class="text_input col-sm-4" data-verify="verify">
 
-                            </span>
-                        </li>
-                        <li class=" clearfix content_look mb15">
-                            <label class="label_name">年齡：</label>
-                            <span class="info_data"><input data-name="年齡" type="text" name="" value="28" class="text_input col-sm-4" data-verify="verify"></span>
-                        </li>
-                        <li class=" clearfix content_look mb15">
-                            <label class="label_name"><em style="color:Red;">*</em>部門：</label>
-                            <span class="info_data"><input data-name="部門" name="Required" value="技術部" type="text" class="text_input col-sm-4" data-verify="verify"></span>
-                        </li>
-                        <li class=" clearfix content_look mb15">
-                            <label class="label_name"><em style="color:Red;">*</em>職位：</label>
-                            <span class="info_data"><input data-name="職位" name="Required" value="經理" type="text" class="text_input col-sm-4" data-verify="verify"></span>
-                        </li>
-                        <li class=" clearfix content_look mb15">
-                            <label class="label_name">角色：</label>
-                            <span class="info_data">
-
-
-
-
-                                <input data-name="角色" type="text" class="text_input" value="普通管理員" readonly="readonly">
+                        </span>
+                    </li>
+                    <li class=" clearfix content_look mb15">
+                        <label class="label_name">年齡：</label>
+                        <span class="info_data"><input data-name="年齡" type="text" name="" value="28" class="text_input col-sm-4" data-verify="verify"></span>
+                    </li>
+                    <li class=" clearfix content_look mb15">
+                        <label class="label_name"><em style="color:Red;">*</em>部門：</label>
+                        <span class="info_data"><input data-name="部門" name="Required" value="技術部" type="text" class="text_input col-sm-4" data-verify="verify"></span>
+                    </li>
+                    <li class=" clearfix content_look mb15">
+                        <label class="label_name"><em style="color:Red;">*</em>職位：</label>
+                        <span class="info_data"><input data-name="職位" name="Required" value="經理" type="text" class="text_input col-sm-4" data-verify="verify"></span>
+                    </li>
+                    <li class=" clearfix content_look mb15">
+                        <label class="label_name">角色：</label>
+                        <span class="info_data">
 
 
 
 
-                                <em style="color:#999999; margin-left: 10px;">該角色由最高權限管理員修改</em>
-                            </span>
-                        </li>
-                        <li class=" clearfix content_look mb15">
-                            <label class="label_name"><em style="color:Red;">*</em>手機：</label>
-                            <span class="info_data"><input data-name="手機號碼" name="Required" type="text" value="18923456789" class="text_input col-sm-4" data-prompt="phone" data-verify="verify"></span>
-                        </li>
-                        <li class=" clearfix content_look mb15">
-                            <label class="label_name"><em style="color:Red;">*</em>郵箱：</label>
-                            <span class="info_data"><input data-name="郵箱" name="Required" type="text" value="lux.23454543@xinlian.com" class="text_input col-sm-4" data-prompt="mailbox" data-verify="verify"></span>
-                        </li>
-                        <li class=" clearfix content_look mb15">
-                            <label class="label_name">說明：</label>
-                            <span class="info_data">
-                                <textarea data-name="說明" name="" class="form-textarea textarea-info" id="form_textarea" placeholder="">注意安全操作</textarea>
-                                <span class="word_count">剩余字数 :<em class="colorred number">194</em>字符</span>
-                            </span>
-                        </li>
-                    </ul>
+                            <input data-name="角色" type="text" class="text_input" value="普通管理員" readonly="readonly">
 
-                </div>
-                <div class="buttonstyle"><button type="button" class="btn padding10 bg-deep-blue" onclick="modifybtn()">保存修改</button></div>
+
+
+
+                            <em style="color:#999999; margin-left: 10px;">該角色由最高權限管理員修改</em>
+                        </span>
+                    </li>
+                    <li class=" clearfix content_look mb15">
+                        <label class="label_name"><em style="color:Red;">*</em>手機：</label>
+                        <span class="info_data"><input data-name="手機號碼" name="Required" type="text" value="18923456789" class="text_input col-sm-4" data-prompt="phone" data-verify="verify"></span>
+                    </li>
+                    <li class=" clearfix content_look mb15">
+                        <label class="label_name"><em style="color:Red;">*</em>郵箱：</label>
+                        <span class="info_data"><input data-name="郵箱" name="Required" type="text" value="lux.23454543@xinlian.com" class="text_input col-sm-4" data-prompt="mailbox" data-verify="verify"></span>
+                    </li>
+                    <li class=" clearfix content_look mb15">
+                        <label class="label_name">說明：</label>
+                        <span class="info_data">
+                            <textarea data-name="說明" name="" class="form-textarea textarea-info" id="form_textarea" placeholder="">注意安全操作</textarea>
+                            <span class="word_count">剩余字数 :<em class="colorred number">194</em>字符</span>
+                        </span>
+                    </li>
+                </ul>
+
             </div>
+            <div class="buttonstyle"><button type="button" class="btn padding10 bg-deep-blue" onclick="modifybtn()">保存修改</button></div>
         </div>
     </div>
+</div>
 
 
 <script>
