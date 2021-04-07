@@ -1,29 +1,36 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿
+using BuyFood_Template.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using BuyFood_Template.Models;
 
 namespace BuyFood_Template.ViewModels
 {
-    public class CProductViewModel
+    public class CProductListViewModel
     {
-        private TProduct iv_product = null;
 
-        public CProductViewModel(TProduct p)
+        private TProduct iv_product = null;
+        private TProductCategory iv_productCategory = null;
+        private TIsOnSale iv_isOnSale = null;
+
+        public CProductListViewModel(TProduct p, TProductCategory c, TIsOnSale s)
         {
             iv_product = p;
+            iv_productCategory = c;
+            iv_isOnSale = s;
         }
         public TProduct allProduct { get { return iv_product; } }
+        public TProductCategory allproductCategory { get { return iv_productCategory; } }
+        public TIsOnSale allisOnSale { get { return iv_isOnSale; } }
 
         //新增產品使用
-        public CProductViewModel()
+        public CProductListViewModel()
         {
             iv_product = new TProduct();
+            iv_productCategory = new TProductCategory();
+            iv_isOnSale = new TIsOnSale();
         }
         public int CProductId { get { return iv_product.CProductId; } set { iv_product.CProductId = value; } }
         [DisplayName("販售時段")]
@@ -38,7 +45,6 @@ namespace BuyFood_Template.ViewModels
         public decimal? CPrice { get { return iv_product.CPrice; } set { iv_product.CPrice = value; } }
         [DisplayName("產品庫存")]
         public int? CQuantity { get { return iv_product.CQuantity; } set { iv_product.CQuantity = value; } }
-        [DisplayName("調理時間(分鐘)")]
         public int? CFinishedTime { get { return iv_product.CFinishedTime; } set { iv_product.CFinishedTime = value; } }
         [DisplayName("產品描述")]
         public string CDescription { get { return iv_product.CDescription; } set { iv_product.CDescription = value; } }
@@ -52,22 +58,8 @@ namespace BuyFood_Template.ViewModels
         public int? CIsLunch { get { return iv_product.CIsLunch; } set { iv_product.CIsLunch = value; } }
         [DisplayName("販售時段晚")]
         public int? CIsDinner { get { return iv_product.CIsDinner; } set { iv_product.CIsDinner = value; } }
-        [DisplayName("販售時段晚")]
-
-        public IFormFile Image { get; set; }
-
-
-
-
-
-
-
-        public int CategoryIdComBox回傳 { get { return iv_product.CCategoryId; } set { iv_product.CCategoryId = value; } }
-        public IEnumerable<SelectListItem> CcategoryComBox { get; set; }
-
-        public int? CEatTimeIdComBox回傳 { get { return iv_product.CEatTimeId; } set { iv_product.CEatTimeId = value; } }
-        public IEnumerable<SelectListItem> CEatTimeIdComBox { get; set; }
-        public int CIsOnSaleIdComBox回傳 { get { return iv_product.CIsOnSaleId; } set { iv_product.CIsOnSaleId = value; } }
-        public IEnumerable<SelectListItem> CIsOnSaleIdComBox { get; set; }
+        [DisplayName("產品類別")]
+        public string CCategoryName { get {return iv_productCategory.CCategoryName; } set {iv_productCategory.CCategoryName=value; } }
+        public string CStatusName { get {return iv_isOnSale.CStatusName; } set {iv_isOnSale.CStatusName=value; } }
     }
 }

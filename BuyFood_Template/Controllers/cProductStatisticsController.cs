@@ -8,7 +8,7 @@ namespace BuyFood_Template.Controllers
 {
     public class Product_StatisticsController : Controller
     {
-        public IActionResult Index()
+        public IActionResult List()
         {
             return View();
         }

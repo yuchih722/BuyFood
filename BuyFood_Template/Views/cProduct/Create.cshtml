@@ -1,0 +1,141 @@
+﻿@model BuyFood_Template.ViewModels.CProductViewModel
+
+@{
+        ViewData["Title"] = "Create";
+
+    }
+
+@{
+    Layout = "_LayoutAd";
+}
+
+
+
+<h1>產品新增</h1>
+<div>
+    @Html.ActionLink("返回產品列表", "List", new { }, new { @class = "btn btn-success" })
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div>
+                <label class="control-label">產品種類</label>
+                <select asp-for="CCategoryId" class="form-control" id="p產品類別下拉選單"></select>
+            </div>
+            <div>
+                <label class="control-label">產品狀況</label>
+                <select asp-for="CIsOnSaleId" class="form-control" id="p產品販售狀況下拉選單"></select>
+            </div>
+            @*<div>
+                    產品類別
+                    @Html.DropDownListFor(m => m.CategoryIdComBox回傳, Model.CcategoryComBox, new { @class = "form-control" })
+                </div>
+                    <div>
+                    販售時段
+                    @Html.DropDownListFor(m => m.CEatTimeIdComBox回傳, Model.CEatTimeIdComBox, new { @class = "form-control" })
+                </div>
+                    <div>
+                        產品狀況
+                        @Html.DropDownListFor(m => m.CIsOnSaleIdComBox回傳, Model.CIsOnSaleIdComBox, new { @class = "form-control" })
+                    </div>*@
+
+            <div class="form-group">
+                <label asp-for="CProductName" class="control-label"></label>
+                <input asp-for="CProductName" class="form-control" />
+                <span asp-validation-for="CProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CPrice" class="control-label"></label>
+                <input asp-for="CPrice" class="form-control" />
+                <span asp-validation-for="CPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CQuantity" class="control-label"></label>
+                <input asp-for="CQuantity" class="form-control" />
+                <span asp-validation-for="CQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CDescription" class="control-label"></label>
+                <input asp-for="CDescription" class="form-control" />
+                <span asp-validation-for="CDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CFinishedTime" class="control-label"></label>
+                <input asp-for="CFinishedTime" class="form-control" />
+                <span asp-validation-for="CFinishedTime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CIsBreakFast" class="control-label"></label>
+                <select class="form-control" asp-for="CIsBreakFast">
+                    <option value="1">販售</option>
+                    <option value="0">不販售</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CIsLunch" class="control-label"></label>
+                <select class="form-control" asp-for="CIsLunch">
+                    <option value="1">販售</option>
+                    <option value="0">不販售</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CIsDinner" class="control-label"></label>
+                <select class="form-control" asp-for="CIsDinner">
+                    <option value="1">販售</option>
+                    <option value="0">不販售</option>
+                </select>
+            </div>
+            <div>
+                <label for="file-upload" class="custom-file-upload">
+                    新增照片 <img src="~/Images/上傳.png" width="80" height="80" />
+                </label>
+                <input id="file-upload" name="Image" type="file" style="display:none" />
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="開始新增" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        $.ajax({
+            url: "/cProduct/getAllProductCategory",
+            type: "Get",
+            success: function (data) {
+                /*                console.log(data)*/
+                txt = "";
+
+                for (let i = 0; i < data.length; i++) {
+                    txt += `<option value="${data[i].cProductCategoryId}">${data[i].cCategoryName}</option>`
+                }
+                document.getElementById("p產品類別下拉選單").innerHTML = txt;
+            }
+        });
+
+
+        $.ajax({
+            url: "/cProduct/getAllProductOnSale",
+            type: "Get",
+            success: function (data) {
+                console.log(data)
+                txt = "";
+
+                for (let i = 0; i < data.length; i++) {
+                    txt += `<option value="${data[i].cIsOnSaleId}">${data[i].cStatusName}</option>`
+                }
+                document.getElementById("p產品販售狀況下拉選單").innerHTML = txt;
+            }
+        });
+
+    </script>
+
+</div>
+
+

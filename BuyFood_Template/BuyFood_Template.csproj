@@ -12,6 +12,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\cCategory\CategoryList.cshtml" />
+    <None Include="Views\cCategory\CreateCategory.cshtml" />
+    <None Include="Views\cCategory\EditCategory.cshtml" />
+    <None Include="Views\cCustomerAnalysis\List.cshtml" />
+    <None Include="Views\cOrderDetails\List.cshtml" />
+    <None Include="Views\cProduct\Create.cshtml" />
+    <None Include="Views\cProduct\Edit.cshtml" />
+    <None Include="Views\cProduct\List.cshtml" />
+    <None Include="Views\cSalesAnalysis\List.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\ProductDetail\ProductData.cshtml" />
     <None Include="Views\ShoppingCart\CurrentCartItem.cshtml" />
     <None Include="Views\ViewProduct\ShowProduct.cshtml" />
@@ -39,6 +49,7 @@
     <None Include="wwwroot\.sass-cache\e17f2ac53a8b63135158793a481cf8f239449aec\style.scssc" />
     <None Include="wwwroot\.sass-cache\f49285f1317a1cafa93ab4f5de346f92bbc40d58\main.scssc" />
     <None Include="wwwroot\.sass-cache\f49285f1317a1cafa93ab4f5de346f92bbc40d58\responsive.scssc" />
+    <None Include="wwwroot\assets\js\myjs\ProductList.js" />
     <None Include="wwwroot\fonts\ElegantIcons.svg" />
     <None Include="wwwroot\fonts\fontawesome-webfont.svg" />
     <None Include="wwwroot\fonts\fontawesome-webfont.woff2" />
