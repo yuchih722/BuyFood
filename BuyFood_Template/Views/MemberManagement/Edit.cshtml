@@ -1,7 +1,9 @@
 ﻿@model BuyFood_Template.ViewModel.MemberManagementViewModel
-
 @{
     ViewData["Title"] = "會員管理系統";
+}
+@{
+    Layout = "_LayoutAd";
 }
 
 <p><h1>修改會員資料</h1></p>
@@ -62,10 +64,10 @@
                 <span asp-validation-for="CPicture" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="CFreezeCount" class="control-label"></label>
-                <input asp-for="CFreezeCount" class="form-control" />
-                <span asp-validation-for="CFreezeCount" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="CFreezeCount" class="control-label"></label>
+                    <input asp-for="CFreezeCount" class="form-control" />
+                    <span asp-validation-for="CFreezeCount" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <input type="submit" value="送出" class="btn btn-primary" /> <a asp-action="List" class="btn btn-primary">回會員列表</a>
             </div>
