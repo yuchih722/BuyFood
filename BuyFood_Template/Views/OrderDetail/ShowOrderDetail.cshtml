@@ -91,7 +91,7 @@
         <span class="position-absolute top-0 start-50 translate-middle small" style="width: 7rem;"id="TimeOfTransportation">2021/3/9 11:10</span>
         <span class="position-absolute top-0 start-100 translate-middle small" style="width: 7rem;" id="TimeOfArrival">2021/3/9 11:20</span>
     </div>@*時間*@
-    <script>
+<script>
         $(function () {
             $.ajax({
                 url: "/OrderDetail/getOrderTime/",
@@ -114,11 +114,64 @@
                                 success: function (dataTimeOfArrival) {
                                     //console.log(dataTimeOfArrival);
                                     $("#TimeOfArrival").html(dataTimeOfArrival);
+                                      //===
+                                    $.ajax({
+                                        url: "/OrderDetail/LetBarMove/",
+                                        type: "POST",
+                                        async: false,
+                                        data: { "OrderID":@Model, "ArriveTime": dataTimeOfArrival },
+                                        success: function (data_TimeDistance) {
+                                            //現在時間>=製作餐點時間  開始跑bar
+                                            console.log(data_TimeDistance);//2400
+                                            //現在時間>=到達時間    barProgress= 100%       timeForBar=data_TimeDistance
+                                            $.ajax({
+                                                url: "/OrderDetail/BiggerThanArrival/",
+                                                type: "POST",
+                                                data: { "ArriveTime": dataTimeOfArrival },
+                                                success: function (data_IsBiggerThanAT) {
+                                                    if (data_IsBiggerThanAT == "bigger") {
+                                                        $("#progressBarBlue").css("width", "100%");
+                                                    }
+                                                    else {
+                                                        //現在時間 - 訂單成立時間   秒數
+                                                        setInterval(function () {
+                                                            $.ajax({
+                                                                url: "/OrderDetail/CalTheSecs",
+                                                                type: "POST",
+                                                                data:{ "dataTimeOfPreparing": dataTimeOfPreparing },
+                                                                success: function (dataSeconds) {//時間差距
+                                                                    var widthPercent = (dataSeconds / data_TimeDistance) * 100;//20sec/2400sec
+                                                                    if (widthPercent > 0 && widthPercent<=100) {
+                                                                        var wpPut = widthPercent + '%';
+                                                                        $("#progressBarBlue").css("width", `${wpPut}`);
+                                                                        //if (widthPercent >= 100) {
+                                                                        //    //==進去改變資料狀態
+                                                                        //    $(".theStatusForChange").text('已到達');
+                                                                        //}
+                                                                    }
+                                                                }
+                                                            });
+                                                        }, 500);
+
+
+
+
+                                                    }
+                                                }
+                                            });
+
+
+                                        }
+                                    });
+
+
+
+                                    //===
                                 }
                             })
                         }
                     })
-                    
+
 
 
 
@@ -128,14 +181,14 @@
             });
 
 
-            
+
 
 
 
         })
 
 
-    </script>
+</script>
 
     <div class="container" style="margin:50px;" id="AdressForDetail">
 
