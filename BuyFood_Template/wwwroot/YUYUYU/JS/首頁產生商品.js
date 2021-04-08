@@ -5,7 +5,7 @@ $(function () {
         url: "/HomePage/get_categorysname",
         type: "GET",
         success: function (data_category) {
-
+            
                         var category_li = `<ul><li class="active"  id="FirstCate" data-filter=".categoryid_${data_category[0].cProductCategoryId}">${data_category[0].cCategoryName}</li>`;
                                 for (let i = 1; i < data_category.length; i++) {
                                     category_li += `<li data-filter=".categoryid_${data_category[i].cProductCategoryId}">${data_category[i].cCategoryName}</li>`
@@ -13,17 +13,18 @@ $(function () {
                                  category_li += `</li>`
 
             $("#push_procategory").append(category_li);
-            var products = ""; 
+            pullme = data_category;console.log(pullme);
             for (let i = 0; i < data_category.length; i++) {
+                var products = ""; 
                 for (let y = 0; y < data_category[i].tProducts.length; y++) {
-                    console.log(data_category[i].tProducts[y].cCategoryId);
+                   
                     products += `<div class="col-lg-3 col-md-4 col-sm-6 mix categoryid_${data_category[i].tProducts[y].cCategoryId}">
                                             <div class="featured__item">
                                                 <div class="featured__item__pic set-bg" style="background-image: url(${data_category[i].tProducts[y].cPicture.replace("~", "")})">
                                                     <ul class="featured__item__pic__hover">
                                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                                        <li><a href="javascript: void(0)" onclick="addCart(pdtItemData[${i}][${y}])"><i class="fa fa-shopping-cart"></i></a></li>
+                                                        <li><a href="javascript: void(0)" onclick="addCart(pullme[${i}].tProducts[${y}])"><i class="fa fa-shopping-cart"></i></a></li>
                                                     </ul>
                                                 </div>
                                                 <div class="featured__item__text">
@@ -32,10 +33,10 @@ $(function () {
                                                 </div>
                                             </div>
                                         </div>`
-                        }
-                        $("#many_products").append(products);
-
+                }
+                $("#many_products").append(products);
             }
+
             $('.featured__controls li').on('click', function () {
 
                 $('.featured__controls li').removeClass('active');
@@ -50,7 +51,3 @@ $(function () {
         }
     })
 })
-//點擊麵食
-//$(window).load(function () {
-    
-//})
