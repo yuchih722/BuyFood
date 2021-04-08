@@ -1,19 +1,23 @@
 {
   "format": 1,
   "restore": {
+
     "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj": {}  },
+
   "projects": {
-    "C:\\Users\\User\\Desktop\\BuyFood¥¿¦¡ª©\\BuyFood_Template\\BuyFood_Template.csproj": {      "version": "1.0.0",
+    "C:\\Users\\User\\Desktop\\BuyFoodï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\\BuyFood_Template\\BuyFood_Template.csproj": {      "version": "1.0.0",
       "restore": {
     "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj": {        "projectName": "BuyFood_Template",
         "projectUniqueName": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj",        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\obj\\",        "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
+
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -79,7 +83,9 @@
               "privateAssets": "all"
             }
           },
+
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+
         }
       }
     }

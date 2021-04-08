@@ -8603,32 +8603,31 @@
   },
   "packageFolders": {
     "C:\\Users\\User\\.nuget\\packages\\": {},
+
     "C:\\Microsoft\\Xamarin\\NuGet\\": {},
+
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
+
       "projectUniqueName": "C:\\Users\\User\\Desktop\\Git\\BuyFood_Template\\BuyFood_Template.csproj",
       "projectName": "BuyFood_Template",
       "projectPath": "C:\\Users\\User\\Desktop\\Git\\BuyFood_Template\\BuyFood_Template.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\User\\Desktop\\Git\\BuyFood_Template\\obj\\",
-=======
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj",
-      "projectName": "BuyFood_Template",
-      "projectPath": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\obj\\",
->>>>>>> 8a3560575459ba209569071399c9b090c2421213
+
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
+
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+
+
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -8694,7 +8693,9 @@
             "privateAssets": "all"
           }
         },
+
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+
       }
     }
   }
