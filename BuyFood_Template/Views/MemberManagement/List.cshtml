@@ -1,6 +1,9 @@
 ﻿@model IEnumerable<BuyFood_Template.ViewModel.MemberManagementViewModel>
 <link href="~/assets/NEW CSS/NEWCSS.css" rel="stylesheet" />
 <link href="~/assets/NEW CSS/page.css" rel="stylesheet" />
+@{
+    Layout = "_LayoutAd";
+}
 
 <div class="box-module">
     <div class="box-title">會員分類</div>
@@ -52,7 +55,7 @@
         <div class="rel">
             <a asp-action="Create" class="btn btn-primary">新增會員</a>
         </div>
-    </form>*@ 
+    </form>*@
 
 <div class="box-module">
     <div class="box-title" style="margin-bottom:10px">
@@ -60,7 +63,7 @@
     </div>
     <div id="member">
 
-        
+
     </div>
 </div>
 <!-- BEGIN PAGA BACKDROPS-->
@@ -79,7 +82,7 @@
                 console.log(data);
                 var txttable = "";
                 txttable +=
-                `<div>
+                    `<div>
                         <table class="table table-hover table_striped table-bordered border" id="myTable">
                             <thead>
                                 <tr>
@@ -226,7 +229,7 @@
             type: "POST",
             success: function (data) {
                 console.log(data)
-              
+
                 var txttable = "";
                 txttable +=
                     //`<img src="..\MemberPhoto\60afcb87-81c0-44b9-b570-115da8a65228.jpg">
@@ -253,8 +256,8 @@
                             </thead>
                     <tbody>`
                 for (let i = 0; i <= data.length - 1; i++) {
-                    txttable+=
-                    `<tr>
+                    txttable +=
+                        `<tr>
                             <td>
                                 ${data[i].cArrivedAddress}
                             </td>
@@ -268,13 +271,13 @@
                                 ${data[i].cOrderStatusName}
                             </td>
                              <td>
-                                <img src="${data[i].cPicture}"/>                                
+                                <img src="${data[i].cPicture}"/>
                             </td>
                         </tr>`
                 }
-                
+
                 txttable +=
-                    `</tbody>                
+                    `</tbody>
                 </table>
              </div>`
                 $("#member").html(txttable);
@@ -312,7 +315,7 @@
     /*進入此頁面執行*/
     $(Member("All"));
 
-    
+
 
 </script>
 
