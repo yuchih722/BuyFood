@@ -2,7 +2,8 @@
 $(function () {
 
     var arrProduct = {dataCate:[]};
-
+    var aa = test1;
+    var bb = test2;
     $.ajax({
         url: "/HomePage/get_categorysname",
         type: "GET",
