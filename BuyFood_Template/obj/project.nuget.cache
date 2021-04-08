@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ycS3Lq/ZlVsgJtn6kAzD6iJx2aR/ReZhubZEBUSYN3NXU/KOyvlYpnLVFEXjpZ1xF2OG8UOLXX78WSjzpfxBYA==",
+
+  "dgSpecHash": "8DDOzCQfQfu7QjnO40xuz8J3ecLVFTigD5AYg+Hvf9hGMC9M4pg2oG21ztHXk+uAFgcl6psgzFUh+OKKCiPFhg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
+  "projectFilePath": "C:\\Users\\User\\Desktop\\BuyFood33\\BuyFood_Template\\BuyFood_Template.csproj",
+
   "expectedPackageFiles": [
     "C:\\Users\\alway\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\alway\\.nuget\\packages\\linqkit.microsoft.entityframeworkcore\\5.0.24\\linqkit.microsoft.entityframeworkcore.5.0.24.nupkg.sha512",
