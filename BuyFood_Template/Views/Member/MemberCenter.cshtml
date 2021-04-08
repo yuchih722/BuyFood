@@ -60,17 +60,17 @@
             <div class="container" style=" width: 350px; height: 650px; background-color: #F3F6FA; margin-top: 50px; float: left; transition: all .5s">
 
                 <div id="cwc_div_ProfilePhoto" class="row justify-content-center" style="width:inherit; padding-right:0px">
-                    <img id="cwc_img_ProfilePhoto" style="border-radius: 50%;width:200px;height:200px;margin-top:20px;margin-bottom:10px" src="~/img/hero/30581778_2162740227072882_842558015222579200_o.jpg" alt="圓形圖" />
+                    <img id="cwc_img_ProfilePhoto" style="border-radius: 50%;width:200px;height:200px;margin-top:20px;margin-bottom:10px" src="@ViewBag.userPhoto" alt="圓形圖" />
                 </div>
                 <div class="row" style="width:inherit;margin-bottom:5px;position:relative;">
-                    <input type="file" id="cwc_input_uploadProfilePhoto" onchange="cwc_changeProfilePhoto(@ViewBag.memberID)" style="display:none" />
+                    <input type="file" id="cwc_input_uploadProfilePhoto" onchange="cwc_changeProfilePhoto(@Model.CMemberId)" style="display:none" />
                     <button id="cwc_button_ReviseProfilePhoto" onclick="cwc_input_uploadProfilePhoto.click()" class="inline btn btn-success" style="width:30px;height:30px;padding:0px;position:absolute;bottom:32px;right:2px;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
                             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                             <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
                         </svg>
                     </button>
-                    <button id="cwc_button_ReviseProfile" onclick="cwc_showReviseProfile(@ViewBag.memberID)" class="inline btn btn-success" style="width:30px;height:30px;padding:0px;position:absolute;bottom:0px;right:2px;">
+                    <button id="cwc_button_ReviseProfile" onclick="cwc_showReviseProfile(@Model.CMemberId)" class="inline btn btn-success" style="width:30px;height:30px;padding:0px;position:absolute;bottom:0px;right:2px;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
                             <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
                         </svg>
@@ -82,7 +82,7 @@
                         <div class="list-group-item" style="text-align:left;">
                             <div class="col inline" style="width:30%; text-align:left;">餘額 :</div>
                             <div class="col inline" style="width:60%; text-align:center">@Model.CDeposit</div>
-                            <div class="col inline btn btn-success cwc_c_btn_showRight" style="width:auto;" onclick="cwc_showWallet(@ViewBag.memberID)">儲值</div>
+                            <div class="col inline btn btn-success cwc_c_btn_showRight" style="width:auto;" onclick="cwc_showWallet(@Model.CMemberId)">儲值</div>
                         </div>
                         <div class="list-group-item" style="text-align:left;">
                             <div class="col inline" style="width:30%; text-align:left">信箱 :</div>
@@ -92,11 +92,11 @@
                 </div>
                 <div class="row" style="width:inherit; ">
                     <div class="list-group" style="width: inherit; padding-right: 0px;">
-                        <button id="cwc_MyCombo" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showCombo(@ViewBag.memberID)">我的套餐</button>
-                        <button id="cwc_Coupon" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showCoupon(@ViewBag.memberID)">優惠券</button>
-                        <button id="cwc_Review" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showReport(@ViewBag.memberID)">個人消費報表檢視</button>
-                        <button id="cwc_QRcode" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showQRcode(@ViewBag.memberID)">邀請好友</button>
-                        <button id="cwc_changePassword" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_changePassword(@ViewBag.memberID)">修改密碼</button>
+                        <button id="cwc_MyCombo" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showCombo(@Model.CMemberId)">我的套餐</button>
+                        <button id="cwc_Coupon" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showCoupon(@Model.CMemberId)">優惠券</button>
+                        <button id="cwc_Review" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showReport(@Model.CMemberId)">個人消費報表檢視</button>
+                        <button id="cwc_QRcode" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showQRcode(@Model.CMemberId)">邀請好友</button>
+                        <button id="cwc_changePassword" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_changePassword(@Model.CMemberId)">修改密碼</button>
                         <button id="cwc_logout" class="list-group-item list-group-item-action" style="display:inline;" onclick="cwc_logout()">登出</button>
                         <button id="cwc_logout" class="list-group-item list-group-item-action" style="display:inline;" onclick="test()">測試</button>
 

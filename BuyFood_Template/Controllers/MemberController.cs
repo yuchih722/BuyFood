@@ -27,7 +27,7 @@ namespace BuyFood_Template.Controllers
         }
         public IActionResult MemberCenter()
         {
-
+            int test = 555;
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
             {
                 ViewBag.userName = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
@@ -93,7 +93,7 @@ namespace BuyFood_Template.Controllers
             擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
             TMember targetMember = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(id));
             string head = $"<h1>推薦碼 : {targetMember.CReferrerCode}</h1>";
-            string contenxt = $"/Customer/Create?id={targetMember.CReferrerCode}";
+            string contenxt = $"https://msit129cwwebapp.azurewebsites.net/Customer/Create?id={targetMember.CReferrerCode}";
             List<string> data = new List<string>();
             data.Add(head);
             data.Add(contenxt);
