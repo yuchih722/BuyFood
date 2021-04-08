@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 namespace BuyFood_Template.Controllers
 {
 
-    public class viewmodelforpay
+    public class ViewModelForOPay
     {
         public string MerchantTradeNo { get; set; }
         public string StoreID { get; set; }
@@ -26,22 +26,73 @@ namespace BuyFood_Template.Controllers
             return View();
         }
         [HttpPost]
-        public void saveDepositResult(viewmodelforpay aaa)
+        public void saveDepositResult(ViewModelForOPay returnData)
         {
-            if (aaa.RtnCode == 1)
+            DateTime now = DateTime.Now;
+            擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
+            TMember changeTarget = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(returnData.StoreID));
+            
+            if (returnData.RtnCode == 1)
             {
-                擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
                 TDeposit result = new TDeposit
                 {
-                    CMemberId = int.Parse(aaa.StoreID),
-                    CDepositTime = DateTime.Now,
-                    CDepositAmount = aaa.TradeAmt
+                    CMemberId = int.Parse(returnData.StoreID),
+                    CDepositTime = now,
+                    CDepositAmount = returnData.TradeAmt,
+                    CDepositRecordNo = returnData.MerchantTradeNo
                 };
                 dbcontext.TDeposits.Add(result);
-                TMember changeTarget = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(aaa.StoreID));
-                changeTarget.CDeposit += aaa.TradeAmt;
+                changeTarget.CDeposit += returnData.TradeAmt;
+
+                int couponCategory=0;
+                switch (returnData.TradeAmt)
+                {
+                    case 1000:
+                        couponCategory = 2;
+                        break;
+                    case 2000:
+                        couponCategory = 4;
+                        break;
+                    case 5000:
+                        couponCategory = 7;
+                        break;
+                    default:
+                        break;
+                }
+                if (couponCategory != 0)
+                {
+                    string dsCode = "";
+                    while (dsCode == "")
+                    {
+                        bool check = false;
+                        string newCode = (new ShareFunction()).產生亂數(6);
+                        var data = dbcontext.TCupons;
+                        foreach(var item in data)
+                        {
+                            if (item.CDiscountCode == newCode)
+                            {
+                                check = true;
+                                break;
+                            }
+                        }
+                        if (!check) dsCode = newCode;
+                    }
+                    TCupon newCoupon = new TCupon
+                    {
+                        CCuponCategoryId = couponCategory,
+                        CMenberId = int.Parse(returnData.StoreID),
+                        CDiscountCode = dsCode,
+                        CValidDate = now.AddDays(60),
+                        CReceivedTime = now
+                    };
+                    dbcontext.TCupons.Add(newCoupon);
+                }
                 dbcontext.SaveChanges();
             }
+            string EmailContent = returnData.RtnCode == 1 ?
+                $"已成功於{now.ToString("yyyy/MM/dd")}加值共{returnData.TradeAmt}擺腹幣" :
+                $"加值失敗，請重新加值並確認付款內容。";
+            (new ShareFunction()).sendEmail(changeTarget.CEmail, changeTarget.CName, "通知-加值結果", EmailContent);
         }
 
         public JsonResult buildOrderDeposit(string id, string set)
