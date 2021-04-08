@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModels;
@@ -31,6 +32,24 @@ namespace BuyFood_Template.Controllers
                 pdtTimeList.Add((int)result);
             }
             return Json(pdtTimeList);
+        }
+        [HttpPost]
+        public void GetOpayOrder(OPay OpayData)
+        {
+            SmtpClient smtpClient = new SmtpClient("mail.MyWebsiteDomainName.com", 25);
+
+            smtpClient.Credentials = new System.Net.NetworkCredential("info@MyWebsiteDomainName.com", "myIDPassword");
+            // smtpClient.UseDefaultCredentials = true; // uncomment if you don't want to use the network credentials
+            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtpClient.EnableSsl = true;
+            MailMessage mail = new MailMessage();
+
+            //Setting From , To and CC
+            mail.From = new MailAddress("info@MyWebsiteDomainName", "MyWeb Site");
+            mail.To.Add(new MailAddress("info@MyWebsiteDomainName"));
+            mail.CC.Add(new MailAddress("MyEmailID@gmail.com"));
+
+            smtpClient.Send(mail);
         }
         [HttpPost]
         public string InsertOrderToDB([FromBody] CartOrderJson CartOrder)
