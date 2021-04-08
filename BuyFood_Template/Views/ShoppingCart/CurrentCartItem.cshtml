@@ -122,7 +122,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
-                        <a href="~/ViewProduct/ShowProduct" class="primary-btn cart-btn" style="background-color:lightblue; color:black">繼續購物=></a>
+                        <a asp-controller="HomePage" asp-action="Home" class="primary-btn cart-btn" style="background-color:lightblue; color:black">繼續購物=></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -156,8 +156,8 @@
     <!-- Js Plugins -->
     <div style="font-family:'Ink Free';font-size:50px;padding-top:100px"></div>
     <div style="display:none" class="footer__copyright__payment"><img src="~/img/payment-item.png" alt=""></div>
-
-    <script>
+    <script src="~/js/ShoppingCart_JS/CurrentShoppingCart.js"></script>
+    @*<script>
         let pdtcart = JSON.parse(localStorage.getItem("cart"));  //從localStorage讀取購物車內的資料
         let pdtcart_quantity = [];     //用來存放各個商品的庫存量及製作時間
         //載入購物車時抓取現有庫存量
@@ -402,7 +402,7 @@
         }
         );
 
-    </script>
+    </script>*@
 
 </body>
 

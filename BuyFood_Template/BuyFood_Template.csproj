@@ -54,6 +54,7 @@
     <None Include="wwwroot\fonts\fontawesome-webfont.svg" />
     <None Include="wwwroot\fonts\fontawesome-webfont.woff2" />
     <None Include="wwwroot\js\bootstrap.min.js" />
+    <None Include="wwwroot\js\CheckCart_JS\CheckCart.js" />
     <None Include="wwwroot\js\jquery-3.3.1.min.js" />
     <None Include="wwwroot\js\jquery-ui.min.js" />
     <None Include="wwwroot\js\jquery.nice-select.min.js" />
@@ -62,6 +63,7 @@
     <None Include="wwwroot\js\mixitup.min.js" />
     <None Include="wwwroot\js\owl.carousel.min.js" />
     <None Include="wwwroot\js\RatingStarsJS.js" />
+    <None Include="wwwroot\js\ShoppingCart_JS\CurrentShoppingCart.js" />
     <None Include="wwwroot\js\site.js" />
   </ItemGroup>
 
