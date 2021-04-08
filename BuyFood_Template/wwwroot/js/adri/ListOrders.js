@@ -10,9 +10,10 @@ $.ajax({
             type: "POST",
             data: { MemberName: document.getElementById("getLoginName").childNodes[1].nodeValue },
             success: function (response) {
-                console.log(response);
+                //console.log(data);
+                //console.log(response);
                 for (let i = 0; i < response.length; i++) {
-                    console.log(data[i].cOrderID + data[i].cTotalPrice + response[i].cOrderStatus + response[i].cOrderDate)
+/*                    console.log(data[i].cOrderID + data[i].cTotalPrice + response[i].cOrderStatus + response[i].cOrderDate)*/
                     text += ` <tr>
                                                    <th scope="row">${count}</th>
                                                    <td>${data[i].cOrderID}</td>

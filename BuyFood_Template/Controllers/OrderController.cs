@@ -53,7 +53,7 @@ namespace BuyFood_Template.Controllers
 
             var OrderStatusDate = from o in db.TOrders
                                   where o.CMemberId == memberID
-                                  select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate };
+                                  select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate,cOID=o.COrderId };
 
 
             return Json(OrderStatusDate.ToList());
