@@ -5,6 +5,7 @@ $.ajax({
     type: "POST",
     data: { MemberName: document.getElementById("getLoginName").childNodes[1].nodeValue },
     success: function (data) {
+        console.log(data);
         $.ajax({
             url: "/Order/OrderStatusDate",
             type: "POST",
