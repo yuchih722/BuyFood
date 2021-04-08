@@ -51,6 +51,7 @@ namespace BuyFood_Template.Controllers
                              orderby x.COrderId descending
                              select new
                              {
+                                 COrderDetailId = x.COrderDetailId,
                                  COrderId = x.COrderId,
                                  CMemberId = x.COrder.CMemberId,
                                  CCategoryName = x.CProduct.CCategory.CCategoryName,
@@ -98,6 +99,7 @@ namespace BuyFood_Template.Controllers
                              orderby x.COrderId descending
                              select new
                              {
+                                 COrderDetailId = x.COrderDetailId,
                                  COrderId = x.COrderId,
                                  CMemberId = x.COrder.CMemberId,
                                  CCategoryName = x.CProduct.CCategory.CCategoryName,
@@ -145,6 +147,7 @@ namespace BuyFood_Template.Controllers
                              orderby x.COrderId descending
                              select new
                              {
+                                 COrderDetailId = x.COrderDetailId,
                                  COrderId = x.COrderId,
                                  CMemberId = x.COrder.CMemberId,
                                  CCategoryName = x.CProduct.CCategory.CCategoryName,
@@ -192,6 +195,7 @@ namespace BuyFood_Template.Controllers
                              orderby x.COrderId descending
                              select new
                              {
+                                 COrderDetailId = x.COrderDetailId,
                                  COrderId = x.COrderId,
                                  CMemberId = x.COrder.CMemberId,
                                  CCategoryName = x.CProduct.CCategory.CCategoryName,
@@ -239,6 +243,7 @@ namespace BuyFood_Template.Controllers
                              orderby x.COrderId descending
                              select new
                              {
+                                 COrderDetailId = x.COrderDetailId,
                                  COrderId = x.COrderId,
                                  CMemberId = x.COrder.CMemberId,
                                  CCategoryName = x.CProduct.CCategory.CCategoryName,
@@ -322,9 +327,8 @@ namespace BuyFood_Template.Controllers
                             table.CFeedBackStatus = 0;
                         else
                             table.CFeedBackStatus = 1;
-                        db.Remove(table);
-                        db.SaveChanges();
-                    }
+                    } 
+                    db.SaveChanges();
                 }
             }
         }
