@@ -155,7 +155,7 @@ namespace BuyFood_Template.Controllers
             string 邀請碼 = 產生邀請碼();
 
 
-            newMember.CPicture = @"..\MemberPhoto\" + photoname;
+            newMember.CPicture = @"\MemberPhoto\" + photoname;
             newMember.CBlackList = 0;
             newMember.CFreezeCount = 0;
             newMember.CDeposit = 0;
@@ -169,12 +169,12 @@ namespace BuyFood_Template.Controllers
             //抓推薦人
             if (!string.IsNullOrEmpty(newMember.code))
             {
-                var 抓邀請人 = from n in db.TMembers
+                var 抓推薦人 = from n in db.TMembers
                            where n.CReferrerCode == newMember.code
                            select n.CMemberId;
 
-                int[] 邀請人ID = 抓邀請人.ToArray();
-                newMember.CReferrerID = 邀請人ID[0];
+                int[] 推薦人ID = 抓推薦人.ToArray();
+                newMember.CReferrerID = 推薦人ID[0];
             }
             else
             {
@@ -197,24 +197,27 @@ namespace BuyFood_Template.Controllers
                           where n.CMemberId == newMember.CMemberID
                           select n.CReferrerId;
 
-            if (新增註冊折價卷 != null)
+            int?[] 邀請人ID = 新增註冊折價卷.ToArray();
+
+
+            if (邀請人ID[0] != null)
             {
-                int?[] 邀請人ID = 新增註冊折價卷.ToArray();
 
                 TCupon 新增邀請人折價卷 = new TCupon
                 {
                     CCuponCategoryId = 2,
                     CMenberId = (int)邀請人ID[0],
                     CBeUsed = 0,
-                    CReceivedTime = DateTime.Now
-
+                    CReceivedTime = DateTime.Now,
+                    CValidDate = DateTime.Now.AddDays(60)
                 };
                 TCupon 新增新會員折價卷 = new TCupon
                 {
                     CCuponCategoryId = 3,
                     CMenberId = newMember.CMemberID,
                     CBeUsed = 0,
-                    CReceivedTime = DateTime.Now
+                    CReceivedTime = DateTime.Now,
+                    CValidDate = DateTime.Now.AddDays(60)
                 };
                 db.TCupons.Add(新增邀請人折價卷);
                 db.TCupons.Add(新增新會員折價卷);

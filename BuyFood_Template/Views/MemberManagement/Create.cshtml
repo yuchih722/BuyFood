@@ -1,19 +1,15 @@
-﻿@{
-    Layout = "_LayoutAd";
-}
-@model BuyFood_Template.ViewModels.MemberManagementViewModel
-
+﻿@model BuyFood_Template.ViewModel.MemberManagementViewModel
 @{
     ViewData["Title"] = "Create";
 }
 
-<p><h1>新增會員</h1></p>
+<h1>新增會員</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+     
             <div class="form-group">
                 <label asp-for="CName" class="control-label"></label>
                 <input asp-for="CName" class="form-control" />
@@ -54,16 +50,17 @@
                 <input asp-for="CPhone" class="form-control" />
                 <span asp-validation-for="CPhone" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="CPicture" class="control-label"></label>
+                <input asp-for="CPicture" type="file" name="image"/>
+                @*<input asp-for="CPicture" class="form-control" />*@
+                <span asp-validation-for="CPicture" class="text-danger"></span>
+            </div>
             @*<div class="form-group">
-                    <label asp-for="CPicture" class="control-label"></label>
-                    <input asp-for="CPicture" class="form-control" />
-                    <span asp-validation-for="CPicture" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="CFreezeCount" class="control-label"></label>
-                    <input asp-for="CFreezeCount" class="form-control" />
-                    <span asp-validation-for="CFreezeCount" class="text-danger"></span>
-                </div>*@
+                <label asp-for="CFreezeCount" class="control-label"></label>
+                <input asp-for="CFreezeCount" class="form-control" />
+                <span asp-validation-for="CFreezeCount" class="text-danger"></span>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="送出" class="btn btn-primary" /> <a asp-action="List" class="btn btn-primary">回會員列表</a>
             </div>

@@ -17,14 +17,14 @@
 }
 
 .text_inline {
-    width: 150px;
+    color: #aaaaaa;
+    width: 200px;
     display: inline;
     margin: 15px;
-    font-family: 'Microsoft YaHei UI';
-    font-size: 20px;
+    font-size: 15px;
     font-weight: normal;
-    background-color: #83baec;
-    border: 2px solid #83baec;
+    background-color: #ebebeb;
+    border: 2px solid #ebebeb;
     border-radius: 12px;
 }
 
