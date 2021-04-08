@@ -120,8 +120,8 @@ namespace BuyFood_Template.Controllers
             string MerchantTradeNo = "D"+DateTime.Now.ToString("yyyyMMddHHmmss");
             string MerchantTradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
             string ItemName = "儲值"+depositAmount;
-            string ReturnURL = "https://localhost:44398/Deposits/saveDepositResult";
-            string ClientBackURL = "https://localhost:44398/";
+            string ReturnURL = "https://msit129cwwebapp.azurewebsites.net/Deposits/saveDepositResult";
+            string ClientBackURL = "https://msit129cwwebapp.azurewebsites.net";
 
             var buildOrder = deposit(id, MerchantTradeNo, MerchantTradeDate,depositAmount, ItemName, ReturnURL, ClientBackURL);
             return buildOrder;
