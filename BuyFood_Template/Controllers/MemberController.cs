@@ -27,7 +27,7 @@ namespace BuyFood_Template.Controllers
         }
         public IActionResult MemberCenter()
         {
-
+            int test = 555;
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
             {
                 ViewBag.userName = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
