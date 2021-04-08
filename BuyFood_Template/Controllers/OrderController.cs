@@ -14,6 +14,12 @@ namespace BuyFood_Template.Controllers
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
                 ViewBag.USERNAME = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
+            //{
+            //    return RedirectToAction("登入", "HomePage");
+            //}
+
+
+
 
             return View();
         }
@@ -53,7 +59,7 @@ namespace BuyFood_Template.Controllers
 
             var OrderStatusDate = from o in db.TOrders
                                   where o.CMemberId == memberID
-                                  select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate };
+                                  select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate,cOID=o.COrderId };
 
 
             return Json(OrderStatusDate.ToList());
