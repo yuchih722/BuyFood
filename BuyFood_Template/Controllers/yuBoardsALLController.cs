@@ -1,4 +1,5 @@
 ﻿using BuyFood_Template.Models;
+using BuyFood_Template.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,7 @@ namespace BuyFood_Template.Controllers
                              orderby x.COrderId descending
                              select new
                              {
+                                 COrderDetailId = x.COrderDetailId,
                                  COrderId = x.COrderId,
                                  CMemberId = x.COrder.CMemberId,
                                  CCategoryName = x.CProduct.CCategory.CCategoryName,
@@ -97,6 +99,7 @@ namespace BuyFood_Template.Controllers
                              orderby x.COrderId descending
                              select new
                              {
+                                 COrderDetailId = x.COrderDetailId,
                                  COrderId = x.COrderId,
                                  CMemberId = x.COrder.CMemberId,
                                  CCategoryName = x.CProduct.CCategory.CCategoryName,
@@ -144,6 +147,7 @@ namespace BuyFood_Template.Controllers
                              orderby x.COrderId descending
                              select new
                              {
+                                 COrderDetailId = x.COrderDetailId,
                                  COrderId = x.COrderId,
                                  CMemberId = x.COrder.CMemberId,
                                  CCategoryName = x.CProduct.CCategory.CCategoryName,
@@ -191,6 +195,7 @@ namespace BuyFood_Template.Controllers
                              orderby x.COrderId descending
                              select new
                              {
+                                 COrderDetailId = x.COrderDetailId,
                                  COrderId = x.COrderId,
                                  CMemberId = x.COrder.CMemberId,
                                  CCategoryName = x.CProduct.CCategory.CCategoryName,
@@ -238,6 +243,7 @@ namespace BuyFood_Template.Controllers
                              orderby x.COrderId descending
                              select new
                              {
+                                 COrderDetailId = x.COrderDetailId,
                                  COrderId = x.COrderId,
                                  CMemberId = x.COrder.CMemberId,
                                  CCategoryName = x.CProduct.CCategory.CCategoryName,
@@ -306,6 +312,25 @@ namespace BuyFood_Template.Controllers
                     table.CFeedBackStatus = 1;
             }
             db.SaveChanges();
+        }
+        public void DetailBoardDelete([FromBody] List<yupushstrViewModel> Array)
+        {
+            if (Array != null)
+            {
+                擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+                for (int i = 0; i < Array.Count; i++)
+                {
+                    TOrderDetail table = db.TOrderDetails.FirstOrDefault(a => a.COrderDetailId.ToString() == Array[i].strmember);
+                    if (table != null)
+                    {
+                        if (table.CFeedBackStatus == 1)
+                            table.CFeedBackStatus = 0;
+                        else
+                            table.CFeedBackStatus = 1;
+                    } 
+                    db.SaveChanges();
+                }
+            }
         }
     }
 }

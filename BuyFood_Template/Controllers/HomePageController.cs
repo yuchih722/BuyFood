@@ -257,21 +257,11 @@ namespace BuyFood_Template.Controllers
         public JsonResult get_categorysname()
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var table = db.TProductCategories.Select(n => n);
+            var table = db.TProductCategories.Select(n => new {n.CProductCategoryId,n.CCategoryName, n.TProducts});
+
             return Json(table);
         }
-        public JsonResult get_many_products(int? id)
-        {
-            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var table = db.TProducts.Where(n => n.CCategoryId == id).Select(n => n);
-            List<TProduct> list = new List<TProduct>();
-
-            foreach (var x in table)
-            {
-                list.Add(x);
-            }
-            return Json(list);
-        }
+       
         public JsonResult getLastProducts()
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
