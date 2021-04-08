@@ -14,7 +14,8 @@ $(function () {
 
             $("#push_procategory").append(category_li);
             var products = ""; 
-            for (let i = 0; i < data_category.length; i++) {                for (let y = 0; y < data_category[i].tProducts.length; y++) {
+            for (let i = 0; i < data_category.length; i++) {
+                for (let y = 0; y < data_category[i].tProducts.length; y++) {
                     console.log(data_category[i].tProducts[y].cCategoryId);
                     products += `<div class="col-lg-3 col-md-4 col-sm-6 mix categoryid_${data_category[i].tProducts[y].cCategoryId}">
                                             <div class="featured__item">
