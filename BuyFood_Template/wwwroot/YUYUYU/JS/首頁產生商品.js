@@ -16,7 +16,8 @@ $(function () {
             }
             category_li += `</li>`
             $("#push_procategory").append(category_li);
-
+            var aaa = test;
+            var bbb = test2;
             for (let i = 0; i < data_category.length; i++) {
                 $.ajax({
                     url: "/HomePage/get_many_products?id=" + data_category[i].cProductCategoryId,
@@ -58,15 +59,3 @@ $(function () {
     })
 })
 //點擊麵食
-$(window).load(function () {
-    $('.featured__controls li').on('click', function () {
-
-        $('.featured__controls li').removeClass('active');
-        $(this).addClass('active');
-    });
-    if ($('.featured__filter').length > 0) {
-        var containerEl = document.querySelector('.featured__filter');
-        var mixer = mixitup(containerEl);
-    }
-    $("#FirstCate").click();
-})
