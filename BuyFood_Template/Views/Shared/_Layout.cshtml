@@ -103,14 +103,14 @@
                                 <a href="#"><i class="fa fa-pinterest-p"></i></a>
                             </div>
                             @*<div class="header__top__right__language">
-                                    <img src="~/img/language.png" alt="">
-                                    <div>English</div>
-                                    <span class="arrow_carrot-down"></span>
-                                    <ul>
-                                        <li><a href="#">Spanis</a></li>
-                                        <li><a href="#">English</a></li>
-                                    </ul>
-                                </div>*@
+            <img src="~/img/language.png" alt="">
+            <div>English</div>
+            <span class="arrow_carrot-down"></span>
+            <ul>
+                <li><a href="#">Spanis</a></li>
+                <li><a href="#">English</a></li>
+            </ul>
+        </div>*@
 
                             @{
                                 string UserLoginNameForPage = "";
@@ -122,13 +122,24 @@
                                 {
                                     UserLoginNameForPage = "Login";
                                 }
-                            }
-                            <div class="header__top__right__auth" id="divLogin">
-                                <a asp-controller="HomePage" asp-action="登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>
-                            </div>
-                            <div class="header__top__right__auth" id="divLogOut">
 
+                                string UserLoginImgForPage = "";
+                                if (!string.IsNullOrEmpty(ViewBag.USERPHOTO))
+                                {
+                                    UserLoginImgForPage = ViewBag.USERPHOTO;
+                                }
+                                else
+                                {
+                                    UserLoginImgForPage = "/MemberPhoto/無人頭.jpg";
+                                }
+                            }
+                            <div class="header__top__right__auth" id="divUserImg">
+                                <img src="@UserLoginImgForPage" width="20" height="20" />
                             </div>
+                            <div class="header__top__right__auth" id="divLogin">
+                                @*<a asp-controller="HomePage" asp-action="登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>*@
+                            </div>
+                            <div class="header__top__right__auth" id="divLogOut"></div>
                             <div class="header__top__right__auth" style="margin-left:2px;">
                                 <a asp-controller="Home" asp-action="Index"><i class="fa fa-user"></i> 後台管理</a>
                             </div>
@@ -415,34 +426,42 @@
             }
             $("#ItemMoneyTop").html('$' + price);
             $("#itemMoney").html('$' + price);
-          /*  console.log(price);*/
+            /*  console.log(price);*/
         }, 500);
 
     </script>
 
     <script>
-
         $.ajax({
             url: "/HomePage/BCheckLogin",
             type: "POST",
-
             success: function (data) {
                 if (data == true) {
+                    @*var aa = "@UserLoginImgForPage";
+                    aa.replace('~', '');
+                    console.log(aa);
+                    UserImg = `<img width="20" height="20" src="${aa}" alt="">`*@
+
+                        @*var thispicForMember = @UserLoginImgForPage;
+                    console.log(thispicForMember)
+                    console.log(thispicForMember.replace('~', ''))
+                 //var UserImg=`<img width="20" height="20" src="${thispicForMember.replace('~', '')}" alt="">`;
+                 UserImg = `<img src="${thispicForMember.replace('~', '')}" width="20" height="20"/>`;*@
                     text = `<a href="/Member/MemberCenter" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
                     LogOutTxt = `<input type="button" class="btn btn-light"  onclick="登出();" id="sendButton" style="padding:0;height:100%" value="登出" />`
-
+                    //$("divUserImg").html(UserImg);
                     $("#divLogin").html(text);
                     $("#divLogOut").html(LogOutTxt);
                 }
                 else {
                     text = `<a href="/HomePage/登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
 
-
+                    //$("divUserImg").html();
                     $("#divLogin").html(text);
+                    $("#divLogOut").html();
                 }
             }
         });
-
     </script>
     <script>
         function 登出() {
@@ -451,12 +470,12 @@
                 type: "POST",
                 success: function (data) {
                     window.alert(data);
-                    window.location.reload();
+                    window.location.assign("https://localhost:44398/");
                 }
             })
         }
-
     </script>
+
 
     @RenderSection("Scripts", required: false)
 </body>

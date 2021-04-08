@@ -1,4 +1,4 @@
-﻿using adminCode.Models;
+﻿using BuyFood_Template.Models;
 using Microsoft.AspNetCore.Http; //圖片
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace adminCode.ViewModel
+namespace BuyFood_Template.ViewModel
 {
     public class MemberManagementViewModel
     {        

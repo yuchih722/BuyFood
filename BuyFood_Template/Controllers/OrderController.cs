@@ -14,6 +14,12 @@ namespace BuyFood_Template.Controllers
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
                 ViewBag.USERNAME = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
+            //{
+            //    return RedirectToAction("登入", "HomePage");
+            //}
+
+
+
 
             return View();
         }
