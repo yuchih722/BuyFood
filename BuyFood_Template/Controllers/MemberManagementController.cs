@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using adminCode.Models;
+using BuyFood_Template.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using adminCode.ViewModels;
-using adminCode.ViewModel;
+using BuyFood_Template.ViewModels;
+using BuyFood_Template.ViewModel;
 using Microsoft.AspNetCore.Hosting; //圖片
 using System.IO;
 
