@@ -21,7 +21,7 @@ namespace BuyFood_Template.Controllers
         public JsonResult getOrderAdress(int OrderID)
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var Orders=db.TOrders.Where(n => n.COrderId == OrderID).Select(n => n);
+            var Orders = db.TOrders.Where(n => n.COrderId == OrderID).Select(n => n);
 
 
             return Json(Orders.ToList());
@@ -42,23 +42,23 @@ namespace BuyFood_Template.Controllers
             var Products = db.TOrderDetails.Where(n => n.COrderId == OrderID).Select(n =>
                   new
                   {
-                            n.CProduct.CPicture,
-                            n.CProduct.CProductName,
-                            n.CQuantity,
-                            cLittlePrice=(n.CPriceAtTheTime*n.CQuantity),
-                            n.COrder.COrderStatus.COrderStatusName,
-                            n.CScores,
-                            n.CReview,
-                            n.COrderDetailId,
-                            n.CProductId,
-                            n.CFeedBackStatus
+                      n.CProduct.CPicture,
+                      n.CProduct.CProductName,
+                      n.CQuantity,
+                      cLittlePrice = (n.CPriceAtTheTime * n.CQuantity),
+                      n.COrder.COrderStatus.COrderStatusName,
+                      n.CScores,
+                      n.CReview,
+                      n.COrderDetailId,
+                      n.CProductId,
+                      n.CFeedBackStatus
                   }
             );
 
             return Json(Products.ToList());
         }
 
-        public JsonResult getDetailValue(int StarValue, string ReviewInput,int orderdetailID)
+        public JsonResult getDetailValue(int StarValue, string ReviewInput, int orderdetailID)
         {
             string test = $"{StarValue}分,{ReviewInput},編號{orderdetailID}號";
 
@@ -73,18 +73,18 @@ namespace BuyFood_Template.Controllers
 
         public JsonResult getHowToPay(int OrderID)
         {
-                              //小計
+            //小計
             //折價
-                              //總計
+            //總計
             //付費型態
             //可以拿前端的來計算也行
 
             var getHowToPay = db.TOrderDetails.Where(n => n.COrderId == OrderID).Select(n =>
             new
             {
-               cCutPrice= n.COrder.CCupon.CCuponCategory.CCutPrice,
-               cPayType= n.COrder.CPayType.CPayTypeName
-            }     
+                cCutPrice = n.COrder.CCupon.CCuponCategory.CCutPrice,
+                cPayType = n.COrder.CPayType.CPayTypeName
+            }
             );
 
 
@@ -96,12 +96,12 @@ namespace BuyFood_Template.Controllers
 
             return Json(OrderTIme);
         }
-        public JsonResult getTimeForSalir(string dataTimeOfPreparing,int OrderID)
+        public JsonResult getTimeForSalir(string dataTimeOfPreparing, int OrderID)
         {
-            DateTime TimeOfOrder=DateTime.ParseExact(dataTimeOfPreparing, "yyyy/MM/dd HH:mm:ss", null);
+            DateTime TimeOfOrder = DateTime.ParseExact(dataTimeOfPreparing, "yyyy/MM/dd HH:mm:ss", null);
 
             var PreparingTime = db.TOrderDetails.Where(n => n.COrderId == OrderID).OrderByDescending(n => n.CProduct.CFinishedTime).Select(n => n.CProduct.CFinishedTime).FirstOrDefault().Value;
-            var getTimeOfSalir= TimeOfOrder.AddMinutes(PreparingTime);
+            var getTimeOfSalir = TimeOfOrder.AddMinutes(PreparingTime);
             var StrTimeOfSalir = getTimeOfSalir.ToString("yyyy/MM/dd HH:mm:ss");
             return Json(StrTimeOfSalir);
         }
@@ -128,9 +128,40 @@ namespace BuyFood_Template.Controllers
             var StrTimeOfArrival = getTimeOfArrival.ToString("yyyy/MM/dd HH:mm:ss");
 
             return Json(StrTimeOfArrival);
-           
+
 
         }
+        DateTime nt = DateTime.Now;
+        public JsonResult LetBarMove(int OrderID, string ArriveTime)
+        {
+            var OrderTime = db.TOrders.Where(n => n.COrderId == OrderID).Select(n => n.COrderDate).FirstOrDefault();
+            DateTime oTime = DateTime.ParseExact(OrderTime, "yyyy/MM/dd HH:mm:ss", null);
+            DateTime aTime = DateTime.ParseExact(ArriveTime, "yyyy/MM/dd HH:mm:ss", null);
+            nt = DateTime.Now;
+            var BarPercent = (aTime - oTime).TotalSeconds;
 
+            return Json(BarPercent);
+        }
+        public JsonResult BiggerThanArrival(string ArriveTime)
+        {
+            DateTime AT = DateTime.ParseExact(ArriveTime, "yyyy/MM/dd HH:mm:ss", null);
+            //DateTime nt = DateTime.Now;
+            if (nt >= AT)
+            {
+                return Json("bigger");
+            }
+            else
+            {
+                return Json("sm");
+            }
+
+        }
+        public JsonResult CalTheSecs(string dataTimeOfPreparing)
+        {
+            DateTime tp = DateTime.ParseExact(dataTimeOfPreparing, "yyyy/MM/dd HH:mm:ss", null);
+            DateTime dtc = DateTime.Now;
+            var calResult = (dtc - tp).TotalSeconds;
+            return Json(calResult);
+        }
     }
 }
