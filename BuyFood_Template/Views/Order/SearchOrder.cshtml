@@ -58,9 +58,9 @@
                     </tr>
                 </thead>
                 <tbody id="OrderForList">
-
                 </tbody>
             </table>
+            <script src="~/js/adri/ListOrders.js"></script>
             <script>
                 $.ajax({
                     url:"/Order/getOrderTime/",
@@ -69,9 +69,9 @@
                         console.log("changed");
                     }
                 })
-
+                aaa("@ViewBag.USERNAME");
             </script>
-            <script src="~/js/adri/ListOrders.js?randomId=<%=Math.random()%>"></script>
+
         </div>
     </div>
 </div>

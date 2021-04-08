@@ -10,7 +10,7 @@ using BuyFood_Template.ViewModel;
 using Microsoft.AspNetCore.Hosting; //圖片
 using System.IO;
 
-namespace adminCode.Controllers
+namespace BuyFood_Template.Controllers
 {
     public class MemberManagementController : Controller
     {
