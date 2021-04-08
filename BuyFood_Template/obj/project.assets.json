@@ -8612,11 +8612,12 @@
     "version": "1.0.0",
     "restore": {
 
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\Git\\BuyFood_Template\\BuyFood_Template.csproj",
       "projectName": "BuyFood_Template",
-      "projectPath": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\Git\\BuyFood_Template\\BuyFood_Template.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\Git\\BuyFood_Template\\obj\\",
+
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
