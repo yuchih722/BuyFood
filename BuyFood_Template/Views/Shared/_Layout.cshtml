@@ -342,15 +342,21 @@
             $("#removeClass").click(function () {
                 $('#sidebar_secondary').removeClass('popup-box-on');
             });
+            chatsBefore("@ViewBag.USERNAME");
+
+
+
+
         })
     </script>
     <script>
         setInterval(function () {
             let pdtcart_obj = JSON.parse(localStorage.getItem("cart"));
             let price = 0;
-            if (pdtcart_obj.length == 0) {
+            if (pdtcart_obj == null) {
                 $("#ItemMoneyTop").html('$' + price);
                 $("#itemMoney").html('$' + price);
+                return;
             }
             for (let i = 0; i < pdtcart_obj.length; i++) {
                 price += (pdtcart_obj[i].cPrice * pdtcart_obj[i].QuantityInCart);
