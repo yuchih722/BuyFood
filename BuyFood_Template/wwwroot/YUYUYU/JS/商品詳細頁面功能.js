@@ -72,6 +72,7 @@ var pdtItem = null;
 function addCart(id) {
     //如果沒有登入則跳到登入畫面
     if (member_No == "") {
+        window.alert("請先登入會員");
         window.location.assign("/ShoppingCart/CurrentCartItem");
         return;
     }
