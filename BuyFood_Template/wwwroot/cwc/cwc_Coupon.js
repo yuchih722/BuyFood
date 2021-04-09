@@ -44,16 +44,27 @@ function cwc_showCoupons(memberID, used) {
         url: `/Coupon/getCoupons?id=${memberID}&used=${used}`,
         type: "GET",
         success: function (data) {
-            var start =
+            var start = used == 0 ?
                 `<table class="table"><thead>
                             <tr><td>優惠券名稱</td>
+                                    <td>優惠碼</td>
                                     <td>領取日</td>
-                                    <td>到期日</td></tr></thead><tbody>`;
+                                    <td>到期日</td></tr></thead><tbody>`:
+                `<table class="table"><thead>
+                            <tr><td>優惠券名稱</td>
+                                    <td>優惠碼</td>
+                                    <td>領取日</td>
+                                    <td>到期日</td>
+                                    <td>狀態</td></tr></thead><tbody>`;
             var end =
                 `</tbody></table>`;
             var content = "";
             for (var i = 0; i < data.length; i++) {
-                content += `<tr><td>${data[i].categoryName} <td>${data[i].rdate}<td>${data[i].edate}`;
+                content += used == 0 ?
+                    `<tr><td>${data[i].categoryName} <td>${data[i].code}<td>${data[i].rdate}<td>${data[i].edate}` :
+                    data[i].beused == 1 ?
+                        `<tr><td>${data[i].categoryName} <td>${data[i].code}<td>${data[i].rdate}<td>${data[i].edate}<td>已使用`:
+                        `<tr><td>${data[i].categoryName} <td>${data[i].code}<td>${data[i].rdate}<td>${data[i].edate}<td>過期`;
             };
             var txt = start + content + end;
 

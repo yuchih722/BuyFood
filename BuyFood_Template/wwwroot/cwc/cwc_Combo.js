@@ -38,6 +38,7 @@
 }
 
 function cwc_EditCombo(comboID, comboName, memberID) {
+    console.log(1);
     var layoutTopSet = `<div style="width:50%; height:inherit; float:left">
                                                 <div style="height:50px">
                                                     <input id="cwc_input_comboName" class="inline" type="text" value="${escapeHtml(comboName)}"/>
@@ -74,7 +75,6 @@ function cwc_EditCombo(comboID, comboName, memberID) {
             $.ajax({
                 url: "/ProductCategory/getAllCategory",
                 success: function (allCategory) {
-                    console.log(allCategory)
                     var txt = "";
                     var selectedCategoryID = 1;
                     for (var i = 0; i < allCategory.length; i++) {
@@ -218,6 +218,7 @@ function cwc_DeleteProductInCombo(productID, categoryID, productName, unitPrice,
 }
 
 function cwc_saveCombo(comboID, memberID, comboName) {
+    console.log("in");
     $("#cwc_button_saveCombo").attr("onclick", "");
     var newcomboName = $("#cwc_input_comboName").val() == "" ? escapeHtml(comboName) : escapeHtml($("#cwc_input_comboName").val());
     var db = new Array();
@@ -232,7 +233,7 @@ function cwc_saveCombo(comboID, memberID, comboName) {
         data.cName = `${newcomboName}`;
         db.push(data);
     }
-
+    console.log(123)
     if (db.length == 0) {
         if (comboID == 0)
             cwc_showCombo(memberID);
