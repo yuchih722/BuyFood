@@ -14,50 +14,50 @@
 <div class="box-module">
     <div class="box-title">狀態分類</div>
     <div class="box-content padding15">
-        <a href="#" id="Board99">
+        <a href="javascript: void(0)" id="Board99">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-green">
-                    <div class="status_amount"> @ViewBag.All</div>
+                    <div class="status_amount"> </div>
                     <div class="status_name bg_color_green">全部留言</div>
                 </div>
             </div>
         </a>
-        <a href="#" id="Board5">
+        <a href="javascript: void(0)" id="Board5">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-red">
-                    <div class="status_amount">@ViewBag.five</div>
+                    <div class="status_amount"></div>
                     <div class="status_name bg_color_red">五星</div>
                 </div>
             </div>
         </a>
-        <a href="#" id="Board4">
+        <a href="javascript: void(0)" id="Board4">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-azure">
-                    <div class="status_amount">@ViewBag.four</div>
+                    <div class="status_amount"></div>
                     <div class="status_name bg_color_azure">四星</div>
                 </div>
             </div>
         </a>
-        <a href="#" id="Board3">
+        <a href="javascript: void(0)" id="Board3">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-orange">
-                    <div class="status_amount">@ViewBag.three</div>
+                    <div class="status_amount"></div>
                     <div class="status_name bg_color_orange">三星</div>
                 </div>
             </div>
         </a>
-        <a href="#" id="Board2">
+        <a href="javascript: void(0)" id="Board2">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-purple">
-                    <div class="status_amount">@ViewBag.two</div>
+                    <div class="status_amount"></div>
                     <div class="status_name bg_color_purple">二星</div>
                 </div>
             </div>
         </a>
-        <a href="#" id="Board1">
+        <a href="javascript: void(0)" id="Board1">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-bule">
-                    <div class="status_amount">@ViewBag.one</div>
+                    <div class="status_amount"></div>
                     <div class="status_name bg_color_bule">一星</div>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                                 <td ><span class="tabletitle">${data[i].cReview}
                                 <td style="vertical-align: middle;">${data[i].cScores}
                                 <td  style="vertical-align: middle;display:none" name="btnEDIT">
-                                <a id="blacktype${data[i].cOrderDetailId}" class="btn btn-outline-danger btn-xs" onclick="gotoblack(${data[i].cOrderDetailId})" ><i class="fa fa-trash font-18">屏蔽留言`
+                                <a id="blacktype${data[i].cOrderDetailId}" class="btn btn-outline-danger btn-xs" onclick="gotoblack(${data[i].cOrderDetailId})" ><i class="fa fa-trash font-18">屏蔽留言</i></a>`
                 }
                 txttable += ` </tbody>
                                 </table>
@@ -172,7 +172,7 @@
                     $("#btnshowEDIT").show();
                     $("[name='btnEDIT']").hide();
                     $("#btngood").hide();
-                    window.location.reload();
+                    Board(pagename), updateTOP()
                 })
 
                 $("#myTable input[name = interest]").change(function Submit() {
@@ -197,14 +197,14 @@
             }
         });
     };
-    var boo = false;
+
     function gotoblack(id) {
         $.ajax({
             url: "/yuBoardsALL/gotoblack?id=" + id,
             type: "get",
             success: function (data) {
-                boo = !boo;
-                if (boo) {
+                console.log(data);
+                if (data) {
                     $("#blacktype" + id).html("已將此流言屏蔽,再次點擊回覆")
                 }
                 else
@@ -245,18 +245,24 @@
         }
     };
 
-    //全選屏蔽
-    //function deletemore() {
-    //    var checked = $("#myTable input[type=checkbox]:checked");
-    //    for (let i = 0; i < checked.length; i++) {
-    //        console.log(checked[i].value);
-    //        $("#blacktype" + checked[i].value).click();
-
-    //    }
-    //}
 
     //進入此頁面執行
     var pagename = 99
-    $(Board(pagename));
+    $(Board(pagename), updateTOP());
+
+    function updateTOP() {
+        $.ajax({
+            url: "/yuBoardsALL/BoardsALLTOP",
+            type: "get",
+            success: function (data) {
+                $("#Board99 .status_amount").html(data.all)
+                $("#Board5 .status_amount").html(data.five)
+                $("#Board4 .status_amount").html(data.four)
+                $("#Board3 .status_amount").html(data.three)
+                $("#Board2 .status_amount").html(data.two)
+                $("#Board1 .status_amount").html(data.one)
+            }
+        })
+    }
 
 </script>
