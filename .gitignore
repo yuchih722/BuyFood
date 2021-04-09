@@ -1,3 +1,4 @@
 /.vs
 /BuyFood_Template/bin/Debug
 /BuyFood_Template/obj/Debug
+/BuyFood_Template/obj/BuyFood_Template.csproj.nuget.g.props
