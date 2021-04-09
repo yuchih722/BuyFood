@@ -15,6 +15,10 @@ namespace BuyFood_Template.Controllers
     {
         public IActionResult CurrentCartItem()
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
+            {
+                return RedirectToAction("登入", "HomePage");
+            }
             return View();
         }
         //抓取對應商品的庫存數量

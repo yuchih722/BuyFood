@@ -1,7 +1,9 @@
-﻿var cart = [];
+﻿let member_No = $("#user_member").val();
+let users_cart_No = "cart" + member_No;        //依登入的會員改變localstorage的Key值
+var cart = [];
 //判斷購物車內是否有商品
 function isExist(id) {
-    cart = JSON.parse(localStorage.getItem("cart"));
+    cart = JSON.parse(localStorage.getItem(users_cart_No));
     for (let i = 0; i < cart.length; i++) {
         if (cart[i].cProductId === id) {
             return i;
@@ -13,7 +15,12 @@ function isExist(id) {
 var pdtItem = null;
 //將商品加入到購物車內
 function addCart(obj_product) {
-    if (localStorage.getItem("cart")) {
+    //如果沒有登入則跳到登入畫面
+    if (member_No == "") {
+        window.location.assign("/ShoppingCart/CurrentCartItem");
+        return;
+    }
+    if (localStorage.getItem(users_cart_No)) {
         let pdtindex = isExist(obj_product.cProductId);
         if (pdtindex != -1) {
             window.alert("此商品已在購物車中");
@@ -36,7 +43,7 @@ function addItemInCart(obj_product) {
     };
     cart.push(cartItem);
     window.alert("已加入購物車");
-    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem(users_cart_No, JSON.stringify(cart));
 }
 //分頁function
 function pagesForSearch(page) {
