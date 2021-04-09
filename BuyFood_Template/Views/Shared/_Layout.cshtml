@@ -450,14 +450,14 @@
                     text = `<a href="/Member/MemberCenter" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
                     LogOutTxt = `<input type="button" class="btn btn-light"  onclick="登出();" id="sendButton" style="padding:0;height:100%" value="登出" />`
                     //$("divUserImg").html(UserImg);
-                    $("#divLogin").html(text);
+                    $("#divLogin").html(text1234);
                     $("#divLogOut").html(LogOutTxt);
                 }
                 else {
-                    text = `<a href="/HomePage/登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
+                    text = `<a href="/HomePage/登入" id="getLoginName "><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
 
                     //$("divUserImg").html();
-                    $("#divLogin").html(text);
+                    $("#divLogin").html(text1234);
                     $("#divLogOut").html();
                 }
             }
@@ -465,6 +465,7 @@
     </script>
     <script>
         function 登出() {
+            
             $.ajax({
                 url: "/HomePage/SLogout",
                 type: "POST",
