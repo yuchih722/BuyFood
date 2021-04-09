@@ -45,6 +45,31 @@
         .inlinrB {
             display: inline-block;
         }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black; /* 悬停元素上显示点线 */
+        }
+
+            /* Tooltip 文本 */
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                padding: 5px 0;
+                border-radius: 6px;
+                /* 定位 */
+                position: absolute;
+                z-index: 1;
+            }
+
+            /* 鼠标移动上去后显示提示框 */
+            .tooltip:hover .tooltiptext {
+                visibility: visible;
+            }
     </style>
 
 </head>
@@ -104,7 +129,7 @@
                 </div>
             </div>
 
-            <div id="head_cwc" class="cwc_c_div_show" style="width: 0; height: 50px; overflow: hidden; transition: all .5s">
+            <div id="head_cwc" class="cwc_c_div_show" style="width: 0; height: 50px; overflow: hidden; transition: all .5s;position:relative">
 
             </div>
             <div id="content_cwc" class="cwc_c_div_show" style="width: 0;height: 650px; overflow: hidden;padding:20px; transition: all .5s">
@@ -170,19 +195,26 @@
             $.ajax({
                 url: `/Member/QRcode?id=${memberID}`,
                 success: function (data) {
-                    $("#head_cwc").html(data[0]);
-                    var content = `<p>邀請連結 :${data[1]}</p>
-                                                        <img src="http://www.funcode-tech.com/Encoder_Service/img.aspx?custid=1&username=public&codetype=QR&EClevel=0&data=${data[1]}" width="300"/>`
+                    $("#head_cwc").html("");
+                    var content = `<div>` + data[0] + `</div>` +
+                        `<div>
+                                <span>邀請連結 :</span><span>${data[1]}</span>
+                                <div type="button" class="btn btn-outline-dark btn-sm" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
+                                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                                </svg></div></div>
+                              <img src="http://www.funcode-tech.com/Encoder_Service/img.aspx?custid=1&username=public&codetype=QR&EClevel=0&data=${data[1]}" width="300"/>`
                     $("#content_cwc").html(content);
                 }
             })
         }
     </script>
-
+    
 
 </body>
 
 </html>
 <script>
-    updateData(@ViewBag.memberID);
+    updateData(@Model.CMemberId);
 </script>

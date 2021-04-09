@@ -3,7 +3,7 @@
         url: "/Combo/getCombo?id=" + memberID,
         type: "GET",
         success: function (data) {
-            var txthead = `<h3 class="inline">我的套餐</h3><div class="btn btn-success inline" onclick="cwc_EditCombo(0,'套餐${data.length + 1}',${memberID})">新增套餐</div>`
+            var txthead = `<span style="font-size:30px; line-height:50px;position:absolute;left:30px">我的套餐</span><span class="btn btn-success" style="position:absolute;right:30px" onclick="cwc_EditCombo(0,'套餐${data.length + 1}',${memberID})">新增套餐</span>`
 
             var txt = `<table class="table accordion" id="mycombo"><thead><tr><td>套餐名稱<td>餐點數量<td>套餐總額<td>修改<td>刪除<tbody>`;
             for (var i = 0; i < data.length; i++) {
@@ -38,7 +38,7 @@
 }
 
 function cwc_EditCombo(comboID, comboName, memberID) {
-    console.log(1);
+
     var layoutTopSet = `<div style="width:50%; height:inherit; float:left">
                                                 <div style="height:50px">
                                                     <input id="cwc_input_comboName" class="inline" type="text" value="${escapeHtml(comboName)}"/>
@@ -104,7 +104,7 @@ function cwc_deleteCombo(comboID, memberID) {
     $(`#cwc_combo_tr_${comboID}`).remove();
     $(`#cwc_comboDetail_tr_${comboID}`).remove();
     $.ajax({
-        url: `Combo/deleteCombo?id=${comboID}`,
+        url: `/Combo/deleteCombo?id=${comboID}`,
         success: function (data) {
             updateData(memberID);
         }
@@ -218,7 +218,7 @@ function cwc_DeleteProductInCombo(productID, categoryID, productName, unitPrice,
 }
 
 function cwc_saveCombo(comboID, memberID, comboName) {
-    console.log("in");
+
     $("#cwc_button_saveCombo").attr("onclick", "");
     var newcomboName = $("#cwc_input_comboName").val() == "" ? escapeHtml(comboName) : escapeHtml($("#cwc_input_comboName").val());
     var db = new Array();
@@ -233,13 +233,13 @@ function cwc_saveCombo(comboID, memberID, comboName) {
         data.cName = `${newcomboName}`;
         db.push(data);
     }
-    console.log(123)
+
     if (db.length == 0) {
         if (comboID == 0)
             cwc_showCombo(memberID);
         else {
             $.ajax({
-                url: `Combo/deleteCombo?id=${comboID}`,
+                url: `/Combo/deleteCombo?id=${comboID}`,
                 success: function () {
                     cwc_showCombo(memberID);
                     updateData(memberID);

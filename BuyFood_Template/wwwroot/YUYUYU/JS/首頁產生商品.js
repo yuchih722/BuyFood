@@ -12,7 +12,7 @@ $(function () {
             };
             category_li += `</li>`
             $("#push_procategory").append(category_li);
-            pullme = data_category; console.log(pullme);
+            pullme = data_category;
 
             for (let i = 0; i < data_category.length; i++) {
                 var products = ""; 

@@ -3,7 +3,6 @@ $.ajax({
     url: "/HomePage/getCategory",
     type: "POST",
     success: function (data) {
-        console.log(data);
         for (var i = 0; i < data.length; i++) {
             var catName = data[i].replace(/\s*/g, "");
             textForSideBarCate += `<li><a href="#featureProductsForLocation" onclick="sideBarClick(${i})" style="font-size:17px;margin:10px">${catName}</a></li>`;
