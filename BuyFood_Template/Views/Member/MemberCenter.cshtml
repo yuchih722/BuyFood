@@ -45,6 +45,31 @@
         .inlinrB {
             display: inline-block;
         }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black; /* 悬停元素上显示点线 */
+        }
+
+            /* Tooltip 文本 */
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                padding: 5px 0;
+                border-radius: 6px;
+                /* 定位 */
+                position: absolute;
+                z-index: 1;
+            }
+
+            /* 鼠标移动上去后显示提示框 */
+            .tooltip:hover .tooltiptext {
+                visibility: visible;
+            }
     </style>
 
 </head>
@@ -104,7 +129,7 @@
                 </div>
             </div>
 
-            <div id="head_cwc" class="cwc_c_div_show" style="width: 0; height: 50px; overflow: hidden; transition: all .5s">
+            <div id="head_cwc" class="cwc_c_div_show" style="width: 0; height: 50px; overflow: hidden; transition: all .5s;position:relative">
 
             </div>
             <div id="content_cwc" class="cwc_c_div_show" style="width: 0;height: 650px; overflow: hidden;padding:20px; transition: all .5s">
@@ -113,23 +138,22 @@
         </div>
     </div>
     <script>
-
-
         $(".cwc_c_btn_showRight").click(
             function () {
                 $("#cwc_i_div_body").css("width", "100%");
                 $(".cwc_c_div_show").css("width", "auto");
             });
-
-
-
     </script>
 
     <script type="text/javascript" src="~/cwc/cwc_Combo.js"></script>
+    <script type="text/javascript" src="~/cwc/cwc_Coupon.js"></script>
+    <script type="text/javascript" src="~/cwc/cwc_Deposit.js"></script>
+    <script type="text/javascript" src="~/cwc/cwc_Profile.js"></script>
+
 
     <script>
         function test() {
-            window.location.href="/Member/test"
+            window.location.href = "/Member/test"
         }
         function updateData(memberID) {
             $.ajax({
@@ -139,9 +163,9 @@
                     for (var i = 0; i < data.length; i++) {
                         if (data[i].issueItem > 0) count++;
                     }
-                    var result = count >9? `9+`:`${count}`
+                    var result = count > 9 ? `9+` : `${count}`
                     var txt = count > 0 ? `我的套餐<span id="cwc_span_reminder" class="cwc_reminder">${result}</span>` : `我的套餐`;
-                    var size = count >9? 9:17
+                    var size = count > 9 ? 9 : 17
                     $(".cwc_reminder").css("font-size", `${size}`);
                     $("#cwc_MyCombo").html(txt);
                 }
@@ -156,236 +180,13 @@
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
         }
-        @{ #region for Profile revise }
-        //for Profile done
-        function cwc_showReviseProfile(memberID) {
-            var memberName = $("#cwc_span_ProfileName").html();
-            var txt = `<input id="cwc_input_ProfileName" type="text" value="${escapeHtml(memberName)}" onblur="cwc_saveReviseProfile(${memberID})" style="padding-bottom:0px"/>`
-            $("#cwc_span_ProfileName").html(txt);
-            $("#cwc_button_ReviseProfile").attr("onclick", "");
-            $("#cwc_input_ProfileName").focus();
-        }
-
-        //done
-        function cwc_saveReviseProfile(memberID) {
-            var newName = $("#cwc_input_ProfileName").val();
-
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: "/Member/saveProfile",
-                data: JSON.stringify({ "@Model.Member.CName": `${newName}`, "@Model.Member.CMemberId": memberID }),
-                dataType:"json",
-                success: function (data) {
-                    $("#cwc_span_ProfileName").html(data.@Model.Member.tName );
-                    $("#cwc_button_ReviseProfile").attr("onclick", `cwc_showReviseProfile(${memberID})`);
-                }
-            })
-        }
-        @{ #endregion} //done
-        @{ #region for change Profile Photo}
-        function cwc_changeProfilePhoto(memberID) {
-            console.log("OK")
 
 
-        }
-        @{ #endregion}
-        @{ #region for Wallet}
-        function cwc_showWallet(memberID) {
-            var txt =
-                `<ul class="nav nav-pills mb-3 justify-content-center"
-                        id="pills-tab"
-                        role="tablist">
-                        <li class="nav-item"
-                                role="presentation">
-                                <button class="nav-link active"
-                                                id="pills-wallet-tab"
-                                                data-bs-toggle="pill"
-                                                data-bs-target="#pills-wallet"
-                                                type="button"
-                                                role="tab"
-                                                aria-controls="pills-wallet"
-                                                aria-selected="true">
-                                儲值
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link"
-                                                id="pills-DepositRecord-tab"
-                                                data-bs-toggle="pill"
-                                                data-bs-target="#pills-DepositRecord"
-                                                type="button"
-                                                role="tab"
-                                                aria-controls="pills-DepositRecord"
-                                                aria-selected="false"
-                                                onclick="cwc_showDeposits(${memberID})">
-                                儲值紀錄
-                                </button>
-                            </li>
-                    </ul>`;
-        var txtBottom=`<div class="tab-content" id="pills-tabContent">
-            <div style="height:700px" class="tab-pane fade show active" id="pills-wallet" role="tabpanel" aria-labelledby="pills-wallet-tab">
-                <div>
-                    <div  style="display: inline-block; width:40%; height:250px; margin:10px">
-                        <P style="font-size: 30px;height:100px; line-height:100px">儲值擺腹幣500</P>
-                        <button class="btn btn-success" onclick="cwc_deposit(${memberID},1)">加值
-                     </div>
-                     <div  style="display: inline-block; width:40%; height:250px; margin:10px">
-                        <P style="font-size: 30px; height:50px; line-height:50px">儲值擺腹幣1000</P>
-                        <P style="font-size: 30px; height:50px; line-height:50px">送50折價券</P>
-                        <button class="btn btn-success" onclick="cwc_deposit(${memberID},2)">加值
-                    </div>
-                </div>
-                <div>
-                    <div style="display: inline-block; width:40%; height:250px; margin:10px">
-                        <P style="font-size: 30px; height:50px; line-height:50px">儲值擺腹幣2000</P>
-                        <P style="font-size: 30px; height:50px; line-height:50px">送200折價券</P>
-                         <button class="btn btn-success" onclick="cwc_deposit(${memberID},3)">加值
-                    </div>
-                    <div  style="display: inline-block; width:40%; height:250px; margin:10px">
-                        <P style="font-size: 30px; height:50px; line-height:50px">儲值擺腹幣5000</P>
-                        <P style="font-size: 30px; height:50px; line-height:50px">送500折價券</P>
-                        <button class="btn btn-success" onclick="cwc_deposit(${memberID},4)">加值
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="pills-DepositRecord" role="tabpanel" aria-labelledby="pills-DepositRecord-tab"></div>
-        </div>`;
-            $("#head_cwc").html(txt);
-            $("#content_cwc").html(txtBottom);
-        }
-
-
-        function cwc_showDeposits(memberID) {
-            $.ajax({
-                url: "/Deposits/getDeposits?id=" + memberID,
-                type: "GET",
-                success: function (data) {
-                    var start =
-                        `<table class="table"><thead><tr><td>儲值時間</td><td>儲值金額</td></tr></thead><tbody>`;
-                    var end =
-                        `</tbody></table>`;
-                    var content = "";
-                    for (var i = 0; i < data.length; i++) {
-                        console.log(data);
-                        content += `<tr><td>${data[i].depositTime}<td>${data[i].depositAmount}`;
-                    };
-                    var txt = start + content + end;
-
-                    $("#pills-DepositRecord").html(txt);
-
-                }
-            })
-        }
-        function cwc_deposit(memberID, set) {
-            $.ajax({
-                url: `/Deposits/buildOrderDeposit?id=${memberID}&&set=${set}`,
-                success: function (data) {
-                    console.log(data);
-                    if (data.totalAmount != 0) {
-                        var txt = `<form style="display:none" id="formCreditCard" method="post" accept-charset="UTF-8"
-                      action="https://payment-stage.opay.tw/Cashier/AioCheckOut/V5">
-
-                    <input type="text" name="MerchantID" value="${data.merchantID}" /><br />
-                    <input type="text" name="MerchantTradeNo" value="${data.merchantTradeNo}" /><br />
-                    <input type="text" name="MerchantTradeDate" value="${data.merchantTradeDate}" /><br />
-                    <input type="text" name="PaymentType" value="aio" /><br />
-                    <input type="text" name="TotalAmount" value="${data.totalAmount}" /><br />
-                    <input type="text" name="TradeDesc" value="建立信用卡測試訂單" /><br />
-                    <input type="text" name="ItemName" value="${data.itemName}" /><br />
-                    <input type="text" name="ReturnURL" value="${data.returnURL}" /><br />
-                    <input type="text" name="ChoosePayment" value="Credit" /><br />
-                    <input type="text" name="StoreID" value="${memberID}" /><br />
-                    <input type="text" name="ClientBackURL" value="${data.clientBackURL}" /><br />
-                    <input type="text" name="CreditInstallment" value="" /><br />
-                    <input type="text" name="InstallmentAmount" value="" /><br />
-                    <input type="text" name="Redeem" value="" /><br />
-                    <input type="text" name="EncryptType" value="1" /><br />
-                    <input type="text" name="CheckMacValue" value="${data.checkMacValue}" /><br />
-                    <input type="submit" id="submit"  value="送出訂單" />
-                </form>`
-                        $("#content_cwc").append(txt);
-                        $("#submit").click();
-                    }
-                    else console.log("fail");
-                }
-            });
-        }
-
-        @{ #endregion}
-        @{ #region for Coupon}
-        function cwc_showCoupon(memberID) {
-            var txt =
-                `<ul class="nav nav-pills mb-3 justify-content-center"
-                        id="pills-tab"
-                        role="tablist">
-                        <li class="nav-item"
-                                role="presentation">
-                                <button class="nav-link active"
-                                                id="pills-unuse-tab"
-                                                data-bs-toggle="pill"
-                                                data-bs-target="#pills-unuse"
-                                                type="button"
-                                                role="tab"
-                                                aria-controls="pills-unuse"
-                                                aria-selected="true"
-                                                onclick="cwc_showCoupons(${memberID},0)">
-                                未使用
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link"
-                                                id="pills-used-tab"
-                                               data-bs-toggle="pill"
-                                                data-bs-target="#pills-used"
-                                                type="button"
-                                                role="tab"
-                                                aria-controls="pills-used"
-                                                aria-selected="false"
-                                                onclick="cwc_showCoupons(${memberID},1)">
-                                已使用
-                                </button>
-                            </li>
-                    </ul>`;
-        var txtBottom = `<div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-unuse" role="tabpanel" aria-labelledby="pills-unuse-tab"></div>
-            <div class="tab-pane fade" id="pills-used" role="tabpanel" aria-labelledby="pills-used-tab"></div>
-        </div>`;
-            $("#head_cwc").html(txt);
-            $("#content_cwc").html(txtBottom);
-            cwc_showCoupons(memberID,0);
-        }
-        function cwc_showCoupons(memberID,used) {
-            $.ajax({
-                url: `/Coupon/getCoupons?id=${memberID}&used=${used}`,
-                type: "GET",
-                success: function (data) {
-                    var start =
-                        `<table class="table"><thead>
-                            <tr><td>優惠券名稱</td>
-                                    <td>領取日</td>
-                                    <td>到期日</td></tr></thead><tbody>`;
-                    var end =
-                        `</tbody></table>`;
-                    var content = "";
-                    for (var i = 0; i < data.length; i++) {
-                        content += `<tr><td>${data[i].categoryName} <td>${data[i].rdate}<td>${data[i].edate}`;
-                    };
-                    var txt = start + content + end;
-
-                    if (used == 0)
-                        $("#pills-unuse").html(txt);
-                    else $("#pills-used").html(txt);
-                }
-            })
-
-        }
-        @{ #endregion}
         function cwc_logout() {
             $.ajax({
                 url: "/Member/logout",
                 success: function (data) {
-                    window.location.href="/HomePage/Home"
+                    window.location.href = "/HomePage/Home"
                 }
             })
         }
@@ -394,20 +195,26 @@
             $.ajax({
                 url: `/Member/QRcode?id=${memberID}`,
                 success: function (data) {
-                    console.log(data);
-                    $("#head_cwc").html(data[0]);
-                    var content = `<p>邀請連結 :${data[1]}</p>
-                                                <img src="http://www.funcode-tech.com/Encoder_Service/img.aspx?custid=1&username=public&codetype=QR&EClevel=0&data=${data[1]}" width="300"/>`
+                    $("#head_cwc").html("");
+                    var content = `<div>` + data[0] + `</div>` +
+                        `<div>
+                                <span>邀請連結 :</span><span>${data[1]}</span>
+                                <div type="button" class="btn btn-outline-dark btn-sm" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
+                                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                                </svg></div></div>
+                              <img src="http://www.funcode-tech.com/Encoder_Service/img.aspx?custid=1&username=public&codetype=QR&EClevel=0&data=${data[1]}" width="300"/>`
                     $("#content_cwc").html(content);
                 }
             })
         }
     </script>
-
+    
 
 </body>
 
 </html>
 <script>
-    updateData(@ViewBag.memberID);
+    updateData(@Model.CMemberId);
 </script>

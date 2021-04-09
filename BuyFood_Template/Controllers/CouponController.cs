@@ -14,9 +14,6 @@ namespace BuyFood_Template.Controllers
 
 
         {
-
-            int testForMerge = 111;
-
             if (used == "0")
             {
                 var data = (new 擺腹BuyFoodContext()).TCupons
@@ -27,7 +24,8 @@ namespace BuyFood_Template.Controllers
                 {
                     categoryName = n.CCuponCategory.CategoryName,
                     rdate = n.CReceivedTime.ToString("yyyy/MM/dd"),
-                    edate = n.CValidDate.ToString("yyyy/MM/dd")
+                    edate = n.CValidDate.ToString("yyyy/MM/dd"),
+                    code = n.CDiscountCode
                 }) ;
                 return Json(data);
             }
@@ -41,7 +39,9 @@ namespace BuyFood_Template.Controllers
                 {
                     categoryName = n.CCuponCategory.CategoryName,
                     rdate = n.CReceivedTime.ToString("yyyy/MM/dd"),
-                    edate = n.CValidDate.ToString("yyyy/MM/dd")
+                    edate = n.CValidDate.ToString("yyyy/MM/dd"),
+                    code = n.CDiscountCode,
+                    beused = n.CBeUsed
                 });
                 return Json(data2);
             }
