@@ -334,13 +334,22 @@
     <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/main.js"></script>
     <script type="text/javascript">
+        var flagForChatRoomSwitch = 1;
         $(function () {
             $("#addClass").click(function () {
-                $('#sidebar_secondary').addClass('popup-box-on');
+                if (flagForChatRoomSwitch == 1) {
+                    $('#sidebar_secondary').addClass('popup-box-on');
+                    flagForChatRoomSwitch = 0;
+                } else {
+                    $('#sidebar_secondary').removeClass('popup-box-on');
+                    flagForChatRoomSwitch = 1;
+                }
+               
             });
 
             $("#removeClass").click(function () {
                 $('#sidebar_secondary').removeClass('popup-box-on');
+                flagForChatRoomSwitch = 1;
             });
             chatsBefore("@ViewBag.USERNAME");
 
