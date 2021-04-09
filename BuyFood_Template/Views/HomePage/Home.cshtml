@@ -186,12 +186,7 @@
         </div>
     </section>
 
-    <script src="~/js/adri/HomePage/LastProducts.js"></script>
-    <script src="~/js/adri/HomePage/TopRatedProducts.js"></script>
-    <script src="~/js/adri/HomePage/ReviewProducts.js"></script>
-
-
-
+<script src="~/js/adri/HomePage/getBottomList.js"></script>
 
     <!-- Latest Product Section End -->
     <!-- Blog Section Begin -->
@@ -200,18 +195,18 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title from-blog__title">
-                        <h2>相關活動</h2>
+                        <h2>最新活動</h2>
                     </div>
                 </div>
             </div>
             <div class="row" id="activityHomePage">
                 <script>
-                    var txtActivity = "";
+                   
                     $.ajax({
                         url: "/HomePage/getActivity/",
                         type: "POST",
                         success: function (data) {
-
+                            var txtActivity = "";
                             for (var i = 0; i < data.length; i++) {
 
                                 txtActivity += `                <div class="col-lg-4 col-md-4 col-sm-6">
