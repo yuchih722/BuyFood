@@ -1,8 +1,8 @@
-﻿function aaa(memberName) {
+﻿function ListOrderJS(memberName) {
 
 
-    var count = 1;
-    var text = "";
+    var AdricountLO = 1;
+    var AdritextForLO = "";
 
 
     $.ajax({
@@ -21,17 +21,17 @@
                     console.log(response);
                     for (let i = 0; i < response.length; i++) {
                         /*                    console.log(data[i].cOrderID + data[i].cTotalPrice + response[i].cOrderStatus + response[i].cOrderDate)*/
-                        text += ` <tr>
-                                                   <th scope="row">${count}</th>
+                        AdritextForLO += ` <tr>
+                                                   <th scope="row">${AdricountLO}</th>
                                                    <td>${data[i].cOrderID}</td>
                                                     <td>$${data[i].cTotalPrice}</td>
                                                     <td>${response[i].cOrderStatus}</td>
                                                     <td><a href="/OrderDetail/ShowOrderDetail/${data[i].cOrderID}"><button type="button" class="btn btn-outline-success">訂單詳細</button></a></td>
                                                     <td>${response[i].cOrderDate}</td>
                                                     </tr>`;
-                        count++;
+                        AdricountLO++;
                     }
-                    $("#OrderForList").html(text);
+                    $("#OrderForList").html(AdritextForLO);
 
                 }
             });
@@ -75,8 +75,8 @@
 
     $("#pills-home-tab").on("click", function () {
 
-        var countAll = 1;
-        var textAll = "";
+        var AdricountAll = 1;
+        var AdritextAll = "";
         $.ajax({
             url: "/Order/ListOrder",
             type: "POST",
@@ -90,17 +90,17 @@
                         console.log(response);
                         for (let i = 0; i < response.length; i++) {
                             console.log(data[i].cOrderID + data[i].cTotalPrice + response[i].cOrderStatus + response[i].cOrderDate)
-                            textAll += ` <tr>
-                                                   <th scope="row">${countAll}</th>
+                            AdritextAll += ` <tr>
+                                                   <th scope="row">${AdricountAll}</th>
                                                    <td>${data[i].cOrderID}</td>
                                                     <td>$${data[i].cTotalPrice}</td>
                                                     <td>${response[i].cOrderStatus}</td>
                                                     <td><a href="/OrderDetail/ShowOrderDetail/${data[i].cOrderID}"><button type="button" class="btn btn-outline-success">訂單詳細</button></a></td>
                                                     <td>${response[i].cOrderDate}</td>
                                                     </tr>`;
-                            countAll++;
+                            AdricountAll++;
                         }
-                        $("#OrderForList").html(textAll);
+                        $("#OrderForList").html(AdritextAll);
                     }
                 });
             }
@@ -110,8 +110,8 @@
     //按鈕觸發已完成訂單
 
     $("#pills-contact-tab").on("click", function () {
-        var textFinished = "";
-        var countFinished = 1;
+        var AdritextFinished = "";
+        var AdricountFinished = 1;
         $.ajax({
             url: "/Order/ListOrderFinished",
             type: "POST",
@@ -125,17 +125,17 @@
                     success: function (response) {
 
                         for (let i = 0; i < response.length; i++) {
-                            textFinished += ` <tr>
-                                                   <th scope="row">${countFinished}</th>
+                            AdritextFinished += ` <tr>
+                                                   <th scope="row">${AdricountFinished}</th>
                                                    <td>${data[i].cOrderID}</td>
                                                     <td>$${data[i].cTotalPrice}</td>
                                                     <td>${response[i].cOrderStatus}</td>
                                                     <td><a href="/OrderDetail/ShowOrderDetail/${data[i].cOrderID}"><button type="button" class="btn btn-outline-success">訂單詳細</button></a></td>
                                                     <td>${response[i].cOrderDate}</td>
                                                     </tr>`;
-                            countFinished++;
+                            AdricountFinished++;
                         }
-                        $("#OrderForList").html(textFinished);
+                        $("#OrderForList").html(AdritextFinished);
                     }
                 });
             }
