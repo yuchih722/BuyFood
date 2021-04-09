@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using BuyFood_Template.Controllers
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -47,7 +49,8 @@
             <div class="header__top__right__auth">
                 <a asp-controller="HomePage" asp-action="登入"><i class="fa fa-user"></i> 登入</a>
             </div>
-
+            @{ var userID = Context.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);}
+            <input type="text" id="user_member" style="display:none" value="@userID" />
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
@@ -102,15 +105,6 @@
                                 <a href="#"><i class="fa fa-linkedin"></i></a>
                                 <a href="#"><i class="fa fa-pinterest-p"></i></a>
                             </div>
-                            @*<div class="header__top__right__language">
-            <img src="~/img/language.png" alt="">
-            <div>English</div>
-            <span class="arrow_carrot-down"></span>
-            <ul>
-                <li><a href="#">Spanis</a></li>
-                <li><a href="#">English</a></li>
-            </ul>
-        </div>*@
 
                             @{
                                 string UserLoginNameForPage = "";
@@ -159,15 +153,8 @@
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a asp-controller="HomePage" asp-action="Home">首頁</a></li>
-                            @*<li><a asp-controller="ViewProduct" asp-action="ShowProduct">餐點美食</a></li>*@
                             <li>
                                 <a asp-controller="ShoppingCart" asp-action="CurrentCartItem">購物車</a>
-                                <!--<ul class="header__menu__dropdown">-->
-                                @*<li><a asp-controller="ProductDetail" asp-action="ProductData">商品詳細資訊</a></li>*@
-                                <!--<li><a asp-controller="ShoppingCart" asp-action="CurrentCartItem">購物車明細</a></li>
-            <li><a asp-controller="CheckCart" asp-action="OrderData">送出訂單</a></li>
-            <li><a asp-controller="ActivityDetail" asp-action="ShowActivityDetail">活動詳細說明</a></li>
-        </ul>-->
                             </li>
                             <li><a asp-controller="Activity" asp-action="ShowActivity">活動一覽</a></li>
                             <li><a href="javascript:void(0)" id="cwc_home_btn_memberCenter">會員中心</a></li>
@@ -260,59 +247,59 @@
     </div>
     @*聊天室窗*@
 
-<aside id="sidebar_secondary" class="tabbed_sidebar ng-scope chat_sidebar" style="background-color:gray;z-index:50">
+    <aside id="sidebar_secondary" class="tabbed_sidebar ng-scope chat_sidebar" style="background-color:gray;z-index:50">
 
-    <div class="popup-head">
-        <div class="popup-head-left pull-left">
-            <a Design and Developmenta title="Gurdeep Osahan (Web Designer)" target="_blank">
-                <img class="md-user-image" alt="管理員" title="管理員" src="~/img/adrChatRoom/adm2.jpg" title="管理員" alt="管理員">
-                <h1>客服聯絡視窗</h1><small><br> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>BuyFood管理員</small>
-            </a>
-        </div>
-        <div class="popup-head-right pull-right">
-            <div class="btn-group gurdeepoushan">
-                <ul role="menu" class="dropdown-menu pull-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Photo</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Video</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-headphones" aria-hidden="true"></span> Audio</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Location</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Contact</a></li>
-                </ul>
+        <div class="popup-head">
+            <div class="popup-head-left pull-left">
+                <a Design and Developmenta title="Gurdeep Osahan (Web Designer)" target="_blank">
+                    <img class="md-user-image" alt="管理員" title="管理員" src="~/img/adrChatRoom/adm2.jpg" title="管理員" alt="管理員">
+                    <h1>客服聯絡視窗</h1><small><br> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>BuyFood管理員</small>
+                </a>
             </div>
+            <div class="popup-head-right pull-right">
+                <div class="btn-group gurdeepoushan">
+                    <ul role="menu" class="dropdown-menu pull-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Photo</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Video</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-headphones" aria-hidden="true"></span> Audio</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Location</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Contact</a></li>
+                    </ul>
+                </div>
 
-            <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" style="background-color:white;" type="button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                </svg>
-            </button>
+                <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" style="background-color:white;" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                </button>
+            </div>
         </div>
-    </div>
 
-    @*聊天室開始標籤*@
-    <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
-        <div class="chat_box touchscroll chat_box_colors_a" id="chatStartPoint">
-
-            
-        </div>
-    </div>@*聊天室內容*@
+        @*聊天室開始標籤*@
+        <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
+            <div class="chat_box touchscroll chat_box_colors_a" id="chatStartPoint">
 
 
+            </div>
+        </div>@*聊天室內容*@
 
-    <div class="chat_submit_box">
-        <div class="uk-input-group">
-            <div class="gurdeep-chat-box">
-                <span style="vertical-align: sub;" class="uk-input-group-addon">
-                    <a><i class="fa fa-smile-o"></i></a>
+
+
+        <div class="chat_submit_box">
+            <div class="uk-input-group">
+                <div class="gurdeep-chat-box">
+                    <span style="vertical-align: sub;" class="uk-input-group-addon">
+                        <a><i class="fa fa-smile-o"></i></a>
+                    </span>
+                    <input type="text" placeholder="請輸入訊息" id="messageInput" name="submit_message" class="md-input">
+                    <input type="button" class="btn btn-light" id="sendButton" style="padding:0;height:100%" value="送出" />
+                </div>
+                <span class="uk-input-group-addon">
+                    <a><i class="glyphicon glyphicon-send"></i></a>
                 </span>
-                <input type="text" placeholder="請輸入訊息" id="messageInput" name="submit_message" class="md-input">
-                <input type="button" class="btn btn-light" id="sendButton" style="padding:0;height:100%" value="送出" />
             </div>
-            <span class="uk-input-group-addon">
-                <a><i class="glyphicon glyphicon-send"></i></a>
-            </span>
         </div>
-    </div>
     </aside>
     <script src="~/js/chatsBefore.js"></script>
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
@@ -344,7 +331,7 @@
                     $('#sidebar_secondary').removeClass('popup-box-on');
                     flagForChatRoomSwitch = 1;
                 }
-               
+
             });
 
             $("#removeClass").click(function () {
@@ -359,8 +346,13 @@
         })
     </script>
     <script>
+        let member_No = $("#user_member").val();
+        let users_cart_No = "cart" + member_No;   //依登入的會員改變localstorage的Key值
         setInterval(function () {
-            let pdtcart_obj = JSON.parse(localStorage.getItem("cart"));
+            if (users_cart_No == "") {
+                return;
+            }
+            let pdtcart_obj = JSON.parse(localStorage.getItem(users_cart_No));
             let price = 0;
             if (pdtcart_obj == null) {
                 $("#ItemMoneyTop").html('$' + price);
