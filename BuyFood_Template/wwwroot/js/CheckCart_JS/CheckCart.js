@@ -55,7 +55,7 @@ $("#confirm_order").click(function () {
     } else if (radio_value == 2) {
         let product_item = "";
         for (let i = 0; i < pdtcart.length; i++) {
-            product_item += pdtcart[i].cProductName + " X " + pdtcart[i].QuantityInCart + " ";
+            product_item += "#" + pdtcart[i].cProductName + " X " + pdtcart[i].QuantityInCart;
         }
         var NowDate = new Date();
         //用日期時間當作商品編號

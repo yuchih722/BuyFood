@@ -392,7 +392,7 @@
                     $("#divLogOut").html(LogOutTxt);
                 }
                 else {
-                    text = `<a href="/HomePage/登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
+                    text = `<a href="/HomePage/登入" id="getLoginName "><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
 
                     //$("divUserImg").html();
                     $("#divLogin").html(text);
@@ -403,6 +403,7 @@
     </script>
     <script>
         function 登出() {
+            
             $.ajax({
                 url: "/HomePage/SLogout",
                 type: "POST",
