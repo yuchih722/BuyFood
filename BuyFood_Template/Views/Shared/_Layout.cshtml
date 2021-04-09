@@ -293,77 +293,7 @@
     <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
         <div class="chat_box touchscroll chat_box_colors_a" id="chatStartPoint">
 
-            <!--<div class="chat_message_wrapper">-->
-            @*左邊客服*@
-            <!--<div class="chat_user_avatar">
-                <a target="_blank">
-                    <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="~/img/adrChatRoom/adm2.jpg" class="md-user-image">
-                </a>
-            </div>
-            <ul class="chat_message">-->
-            @*訊息List*@
-            <!--<li>
-                        <p> 歡迎光臨！ </p>
-                    </li>
-                    <li>
-                        <p> 請問能幫您什麼呢？<span class="chat_message_time">13:38</span> </p>
-                    </li>
-                </ul>
-            </div>-->
-            @*左邊客服結束*@
-
-            @*右邊顧客開始*@
-            <!--<div class="chat_message_wrapper chat_message_right">
-                <div class="chat_user_avatar">
-                    <a target="_blank">
-                        <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="~/img/adrChatRoom/Customer_Icon.jpg" class="md-user-image">
-                    </a>
-                </div>
-                <ul class="chat_message" >
-                    <li>
-                        <p>
-                            我想買一杯奶茶，請問這樣多少？
-                            <span class="chat_message_time">13:34</span>
-                        </p>
-                    </li>
-                </ul>
-            </div>-->
-            @*右邊顧客結束*@
-
-
-            @*<div class="chat_message_wrapper">
-                    <div class="chat_user_avatar">
-                        <a target="_blank">
-                            <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="~/img/adrChatRoom/adm2.jpg" class="md-user-image">
-                        </a>
-                    </div>
-                    <ul class="chat_message">
-                        <li>
-                            <p>
-                                如果是普通的珍珠奶茶，定價是$55元哦！
-                                <span class="chat_message_time">23 Jun 1:10am</span>
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="chat_message_wrapper chat_message_right">
-                    <div class="chat_user_avatar">
-                        <a target="_blank">
-                            <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="~/img/adrChatRoom/Customer_Icon.jpg" class="md-user-image">
-                        </a>
-                    </div>
-                    <ul class="chat_message">
-                        <li>
-                            <p> 好的。 </p>
-                        </li>
-                        <li>
-                            <p>
-                                謝謝你的回覆。
-                                <span class="chat_message_time">Friday 13:34</span>
-                            </p>
-                        </li>
-                    </ul>
-                </div>*@
+            
         </div>
     </div>@*聊天室內容*@
 
@@ -383,6 +313,7 @@
             </span>
         </div>
     </div>
+    </aside>
     <script src="~/js/chatsBefore.js"></script>
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/chat.js"></script>
@@ -403,23 +334,38 @@
     <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/main.js"></script>
     <script type="text/javascript">
+        var flagForChatRoomSwitch = 1;
         $(function () {
             $("#addClass").click(function () {
-                $('#sidebar_secondary').addClass('popup-box-on');
+                if (flagForChatRoomSwitch == 1) {
+                    $('#sidebar_secondary').addClass('popup-box-on');
+                    flagForChatRoomSwitch = 0;
+                } else {
+                    $('#sidebar_secondary').removeClass('popup-box-on');
+                    flagForChatRoomSwitch = 1;
+                }
+               
             });
 
             $("#removeClass").click(function () {
                 $('#sidebar_secondary').removeClass('popup-box-on');
+                flagForChatRoomSwitch = 1;
             });
+            chatsBefore("@ViewBag.USERNAME");
+
+
+
+
         })
     </script>
     <script>
         setInterval(function () {
             let pdtcart_obj = JSON.parse(localStorage.getItem("cart"));
             let price = 0;
-            if (pdtcart_obj.length == 0) {
+            if (pdtcart_obj == null) {
                 $("#ItemMoneyTop").html('$' + price);
                 $("#itemMoney").html('$' + price);
+                return;
             }
             for (let i = 0; i < pdtcart_obj.length; i++) {
                 price += (pdtcart_obj[i].cPrice * pdtcart_obj[i].QuantityInCart);
