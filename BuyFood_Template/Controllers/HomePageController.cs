@@ -254,7 +254,7 @@ namespace BuyFood_Template.Controllers
             var getActivity = db.TActivities.Select(n => n).OrderByDescending(n => n).Where(n => n.CStatus == 1).Take(3).ToList();
             return Json(getActivity);
         }
-        public JsonResult get_categorysname()
+        public JsonResult get_categorysname() //抓取所有商品顯示在首頁
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
             var table = db.TProductCategories.Select(n => new {n.CProductCategoryId,n.CCategoryName, n.TProducts});
@@ -262,67 +262,56 @@ namespace BuyFood_Template.Controllers
             return Json(table);
         }
        
-        public JsonResult getLastProducts()
-        {
+        public JsonResult getBottomList()  
+        { 
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var LastProducts = db.TProducts.OrderByDescending(n => n.CProductId).Select(n => n).ToList();
-            return Json(LastProducts);
-        }
-        public JsonResult getTopRatedProducts()
-        {
-            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            #region 最新商品
+            
+            var lastProducts = db.TProducts.OrderByDescending(n => n.CProductId).Select(n => n).Take(6);
 
-            var topProducts = from tp in db.TOrderDetails
+            #endregion
+
+            #region //好評商品
+
+            var gettopProducts = (from tp in db.TOrderDetails
                               group tp by tp.CProductId into g
                               select new
                               {
                                   g.Key,
                                   AvgScore = g.Sum(n => n.CScores) / g.Count()
-                              };
+                              }).OrderByDescending(n=>n.AvgScore).Select(n=>n.Key).ToList().Take(6);
 
-            var topRate = topProducts.OrderByDescending(n => n.AvgScore).Select(n => new
+            List<TProduct> topProducts = new List<TProduct>();
+            foreach (var p in gettopProducts)
             {
-                cProductId = n.Key,
-                n.AvgScore
-            });
-
-            var idList = topProducts.OrderByDescending(n => n.AvgScore).Select(n=>n.Key).ToList().Take(6);
-            List<TProduct> ProductList = new List<TProduct>();
-            foreach(var p in idList)
-            {
-                ProductList.Add(db.TProducts.Where(n => n.CProductId == p).Select(n => n).FirstOrDefault());
+                topProducts.Add(db.TProducts.Where(n => n.CProductId == p).Select(n => n).FirstOrDefault());
             }
 
+            #endregion
 
-            return Json(ProductList);
-        }
-        public JsonResult getReviewProducts()
-        {
-            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var review = from od in db.TOrderDetails
+            #region //熱評商品
+
+            var review = (from od in db.TOrderDetails
                          where od.CReview != null
                          group od by od.CProductId into g
                          select new
                          {
                              g.Key,
                              ReviewCounts = g.Count()
-                         };
+                         }).OrderByDescending(n=>n.ReviewCounts).Select(n=>n.Key).ToList().Take(6);
 
-            var reviewOrderBy = review.OrderByDescending(n => n.ReviewCounts).Select(n => new
+            List<TProduct> ReviewProducts = new List<TProduct>();
+            foreach (var p in review)
             {
-                cProductId = n.Key,
-                n.ReviewCounts
-            });
-            var idList = review.OrderByDescending(n => n.ReviewCounts).Select(n => n.Key).ToList().Take(6);
-            List<TProduct> ListProducts = new List<TProduct>();
-            foreach(var p in idList)
-            {
-                ListProducts.Add(db.TProducts.Where(n => n.CProductId == p).Select(n => n).FirstOrDefault());
+                ReviewProducts.Add(db.TProducts.Where(n => n.CProductId == p).Select(n => n).FirstOrDefault());
             }
 
-            return Json(ListProducts.ToList());
+            #endregion
+
+
+            var table = new { lastProducts = lastProducts, topProducts = topProducts, ReviewProducts = ReviewProducts };
+            return Json(table);
         }
-
-
+       
     }
 }

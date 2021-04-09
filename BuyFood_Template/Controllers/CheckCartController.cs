@@ -36,20 +36,10 @@ namespace BuyFood_Template.Controllers
         [HttpPost]
         public void GetOpayOrder(OPay OpayData)
         {
-            SmtpClient smtpClient = new SmtpClient("mail.MyWebsiteDomainName.com", 25);
-
-            smtpClient.Credentials = new System.Net.NetworkCredential("info@MyWebsiteDomainName.com", "myIDPassword");
-            // smtpClient.UseDefaultCredentials = true; // uncomment if you don't want to use the network credentials
-            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtpClient.EnableSsl = true;
-            MailMessage mail = new MailMessage();
-
-            //Setting From , To and CC
-            mail.From = new MailAddress("info@MyWebsiteDomainName", "MyWeb Site");
-            mail.To.Add(new MailAddress("info@MyWebsiteDomainName"));
-            mail.CC.Add(new MailAddress("MyEmailID@gmail.com"));
-
-            smtpClient.Send(mail);
+            if(OpayData.RtnCode == 1)
+            {
+                //未寫
+            }
         }
         [HttpPost]
         public string InsertOrderToDB([FromBody] CartOrderJson CartOrder)
@@ -103,17 +93,17 @@ namespace BuyFood_Template.Controllers
             //將訂單內的商品一一存入資料庫中
             foreach (var i in CartOrder.cartOrder)
             {
+                var InStoreProduct = BuyFoodDB.TProducts.FirstOrDefault(x => x.CProductId == i.cProductId);
                 TOrderDetail ProductInOrder = new TOrderDetail()
                 {
                     CProductId = i.cProductId,
                     COrderId = DbOrder.COrderId,
                     CQuantity = i.QuantityInCart,
-                    CPriceAtTheTime = i.cPrice,
+                    CPriceAtTheTime = InStoreProduct.CPrice,
                     CScores = null,   //暫時資料會移除
                     CReview = null   //暫時資料會移除
-                };
-                var InStoreCount = BuyFoodDB.TProducts.FirstOrDefault(x => x.CProductId == i.cProductId);
-                InStoreCount.CQuantity -= ProductInOrder.CQuantity;
+                };              
+                InStoreProduct.CQuantity -= ProductInOrder.CQuantity;
                 BuyFoodDB.TOrderDetails.Add(ProductInOrder);
             }
             MemberDeposit.CDeposit -= (TotalPriceInCart - CouponPrice);   //直接從欄位更改數值才有效果

@@ -8688,11 +8688,19 @@
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
       "projectName": "BuyFood_Template",
       "projectPath": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
       "packagesPath": "C:\\Users\\alway\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\obj\\",
+=======
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj",
+      "projectName": "BuyFood_Template",
+      "projectPath": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\obj\\",
+>>>>>>> 8d0813fd959ce6d63ece62036137d0986d17c942
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\alway\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -8765,6 +8773,7 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
       }
     }
+<<<<<<< HEAD
   },
   "logs": [
     {
@@ -8774,4 +8783,7 @@
       "message": "讀取快取檔案 C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\obj\\project.nuget.cache 時發生問題: Invalid property identifier character: <. Path 'version', line 3, position 0."
     }
   ]
+=======
+  }
+>>>>>>> 8d0813fd959ce6d63ece62036137d0986d17c942
 }

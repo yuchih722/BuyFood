@@ -16,42 +16,46 @@
 <div class="box-module">
     <div class="box-title">狀態分類</div>
     <div class="box-content padding15">
-        <a href="#" id="All">
+        <a href="javascript: void(0)" id="All">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-green">
-                    <div class="status_amount"> @ViewBag.All</div>
+                    <div class="status_amount"> </div>
                     <div class="status_name bg_color_green">所有活動</div>
                 </div>
             </div>
         </a>
-        <a href="#" id="Going">
+        <a href="javascript: void(0)" id="Going">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-red">
-                    <div class="status_amount">@ViewBag.Going </div>
+                    <div class="status_amount"></div>
                     <div class="status_name bg_color_red">進行中</div>
                 </div>
             </div>
         </a>
-        <a href="#" id="Close">
+        <a href="javascript: void(0)" id="Close">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-azure">
-                    <div class="status_amount">@ViewBag.close</div>
+                    <div class="status_amount"></div>
                     <div class="status_name bg_color_azure">已關閉</div>
                 </div>
             </div>
         </a>
-        <div class="clearfix col-xs-6 col-sm-2 padding5">
-            <div class="statusbox bg-orange">
-                <div class="status_amount"> @ViewBag.mouth</div>
-                <div class="status_name bg_color_orange">本月活動量</div>
+        <a href="javascript: void(0)" id="mouth">
+            <div class="clearfix col-xs-6 col-sm-2 padding5">
+                <div class="statusbox bg-orange">
+                    <div class="status_amount"> </div>
+                    <div class="status_name bg_color_orange">本月活動量</div>
+                </div>
             </div>
-        </div>
-        <div class="clearfix col-xs-6 col-sm-2 padding5">
-            <div class="statusbox bg-purple">
-                <div class="status_amount"> @ViewBag.year</div>
-                <div class="status_name bg_color_purple">今年活動量</div>
+        </a>
+        <a href="javascript: void(0)" id="year">
+            <div class="clearfix col-xs-6 col-sm-2 padding5">
+                <div class="statusbox bg-purple">
+                    <div class="status_amount"> </div>
+                    <div class="status_name bg_color_purple">今年活動量</div>
+                </div>
             </div>
-        </div>
+            </a>
     </div>
 </div>
 
@@ -99,6 +103,7 @@
                         success: function (data) {
                             $("#OK_delete").dialog("open");
                             $("#getmytr" + get_btn_id).remove();
+                            updateTOP();
                         }
                     })
                 },
@@ -131,6 +136,7 @@
                                 checked[i].parentNode.parentNode.parentNode.remove();  
                             }
                             $("#btndelete").hide();
+                            updateTOP();
                         }
                     });
                 },
@@ -142,14 +148,28 @@
 
     )
 </script>
+
 <script>
+        //進入此頁面執行
     var mystr = "All"
-    $(Activity(mystr));
+    $(Activity(mystr), updateTOP());
     $("#All").click(function () { mystr = "All"; Activity(mystr) })
     $("#Going").click(function () { mystr = "Going"; Activity(mystr) })
     $("#Close").click(function () { mystr = "Close"; Activity(mystr) })
 
-
+   function updateTOP() {
+        $.ajax({
+            url:"/yuActivity/ActivityupdateTOP",
+            type: "get",
+            success: function (data) {
+                $("#All .status_amount").html(data.all)
+                $("#Going .status_amount").html(data.going)
+                $("#Close .status_amount").html(data.close)
+                $("#mouth .status_amount").html(data.mouth)
+                $("#year .status_amount").html(data.year)
+            }
+        })
+    }
     function Activity(str) {
         $.ajax({
             url: "/yuActivity/ActivityListJson?str=" + str,
@@ -310,10 +330,11 @@
             type: "get",
             success: function () {
                 $(Activity(mystr));
+
             }
         })
     }
-    //進入此頁面執行
+
 
 
 </script>

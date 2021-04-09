@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj": {}
   },
   "projects": {
@@ -12,6 +13,19 @@
         "projectPath": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
         "packagesPath": "C:\\Users\\alway\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\obj\\",
+=======
+    "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj",
+        "projectName": "BuyFood_Template",
+        "projectPath": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\obj\\",
+>>>>>>> 8d0813fd959ce6d63ece62036137d0986d17c942
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\alway\\AppData\\Roaming\\NuGet\\NuGet.Config",
