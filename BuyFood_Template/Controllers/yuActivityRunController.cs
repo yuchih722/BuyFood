@@ -13,12 +13,17 @@ namespace BuyFood_Template.Controllers
         擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
         public IActionResult yuActivityRun()
         {
-            ViewBag.All = db.TActivities.Where(n => n.CStatus != 0).OrderBy(n => n.CRank).Count();
-            ViewBag.Going = db.TActivities.Where(n => n.CStatus != 0 && n.CRank != 99).Count();
-            ViewBag.close = db.TActivities.Where(n => n.CStatus != 0 && n.CRank == 99).Count();
             return View();
         }
+        public JsonResult ActivityupdateTOP()
+        {
+            int All = db.TActivities.Where(n => n.CStatus != 0).OrderBy(n => n.CRank).Count();
+            int Going = db.TActivities.Where(n => n.CStatus != 0 && n.CRank != 99).Count();
+            int close = db.TActivities.Where(n => n.CStatus != 0 && n.CRank == 99).Count();
 
+            var my_num = new { All = All, Going = Going, close = close};
+            return Json(my_num);
+        }
         public JsonResult ActivityListJson(string str)
         {
             List<yuActivityViewModel> activitie = new List<yuActivityViewModel>();
