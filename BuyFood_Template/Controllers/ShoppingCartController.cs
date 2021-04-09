@@ -31,7 +31,7 @@ namespace BuyFood_Template.Controllers
                 var result = new 擺腹BuyFoodContext().TProducts.Where(x => x.CProductId == i).FirstOrDefault();
                 CartProductCheckStore CartItem = new CartProductCheckStore()
                 {
-                    cProductId = i,
+                    cProductId = result.CProductId,
                     quantityInCart = (int)result.CQuantity,
                     finishTime = (int)result.CFinishedTime
                 };
