@@ -40,18 +40,18 @@
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__text">
-                    <h3 id="pdtName">@Model.CProductName</h3>
+                    <h3 id="pdtName">@Model.CProductName</h3></span>
 
                     @*右邊星星+幾筆留言*@
-                    <div class="product__details__rating" id="productstert"></div>
+                    <div  class="product__details__rating" id="productstert"></div>
 
 
                     <div id="pdtPrice" class="product__details__price">$@Convert.ToDecimal(Model.CPrice).ToString("0,#")</div>
                     <p>
                         @Model.CDescription
                     </p>
-                    <div class="product__details__quantity">
-                        <div class="quantity">
+                    <div class="product__details__quantity" id="smelltitle">
+                        <div class="quantity" id="btu_check_stock">
                             <div class="pro-qty">
                                 <span class="dec qtybtn" onclick="decbtn()">-</span>
                                 <input onchange="ChangeQuantity()" id="productcount" type="text" value="1">
@@ -59,13 +59,13 @@
                             </div>
                         </div>
                     </div>
-                    <input type="button" class="primary-btn" onclick="addCart(@Model.CProductId)" value="加入購物車">
-                    <a id="smelltitle" href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                    @*<input type="button" class="primary-btn" onclick="addCart(@Model.CProductId)" id="btn_check_stock" value="加入購物車">*@
+                    @*<a id="smelltitle" href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>*@
 
-                    @*小標題*@
+    @*小標題*@
 
 
-                </div>
+</div>
             </div>
             <div class="col-lg-12">
                 <div class="product__details__tab">

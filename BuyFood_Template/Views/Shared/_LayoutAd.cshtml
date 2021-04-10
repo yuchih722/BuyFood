@@ -214,11 +214,11 @@
                                 <a asp-controller="cProduct" asp-action="List">商品管理</a>
                             </li>
                             @*<li>
-                                <a asp-controller="#" asp-action="#">種類管理</a>
-                            </li>
-                            <li>
-                                <a asp-controller="#" asp-action="#">產品統計</a>
-                            </li>*@
+                                    <a asp-controller="#" asp-action="#">種類管理</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="#" asp-action="#">產品統計</a>
+                                </li>*@
                         </ul>
                     </li>
                     <li>
@@ -231,8 +231,8 @@
                                 <a asp-controller="cOrderDetails" asp-action="list">訂單列表</a>
                             </li>
                             @*<li>
-                    <a asp-controller="#" asp-action="#">發貨管理</a>
-                </li>*@
+                                    <a asp-controller="#" asp-action="#">發貨管理</a>
+                                </li>*@
                         </ul>
                     </li>
                     <li>
@@ -305,8 +305,8 @@
                                 <a asp-controller="MemberManagement" asp-action="List">會員列表</a>
                             </li>
                             @*<li>
-                    <a asp-controller="#" asp-action="#">有錢人列表</a>
-                </li>*@
+                                    <a asp-controller="#" asp-action="#">有錢人列表</a>
+                                </li>*@
                         </ul>
                     </li>
                     <li>
@@ -551,16 +551,17 @@
 </body>
 </html>
 
-     <script>
-            function 登出() {
-                $.ajax({
-                    url: "/HomePage/SLogout",
-                    type: "POST",
-                    success: function (data) {
-                        window.alert(data);
-                        window.location.assign("/HomePage/登入")
-                    }
-                })
+<script>
+
+    function 登出() {
+        $.ajax({
+            url: "/HomePage/SLogout",
+            type: "POST",
+            success: function (data) {
+                window.alert(data);
+                window.location.assign("/HomePage/Home")
             }
-       
-    </script>
+        })
+    }
+
+</script>
