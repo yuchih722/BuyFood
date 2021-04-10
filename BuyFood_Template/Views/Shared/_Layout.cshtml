@@ -243,7 +243,7 @@
     </footer>
     <!-- Footer Section End -->
     <div class="round hollow  fixed-bottom    end-0" style="width:50%">
-        <a id="addClass"><button class="open-btn"><i class="fa fa-whatsapp" aria-hidden="true"> </i>聯絡客服</button></a>
+        <button class="open-btn"  id="addClass"><i class="fa fa-whatsapp" aria-hidden="true"> </i>聯絡客服</button>
     </div>
     @*聊天室窗*@
 
@@ -251,10 +251,10 @@
 
         <div class="popup-head">
             <div class="popup-head-left pull-left">
-                <a Design and Developmenta title="Gurdeep Osahan (Web Designer)" target="_blank">
-                    <img class="md-user-image" alt="管理員" title="管理員" src="~/img/adrChatRoom/adm2.jpg" title="管理員" alt="管理員">
+                
+                    <img class="md-user-image" alt="管理員" title="管理員" src="~/img/adrChatRoom/adm2.jpg"  >
                     <h1>客服聯絡視窗</h1><small><br> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>BuyFood管理員</small>
-                </a>
+                
             </div>
             <div class="popup-head-right pull-right">
 
@@ -288,7 +288,7 @@
     </aside>
     @*<script src="~/js/chatsBefore.js"></script>*@
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/chat.js"></script>
+    @*<script src="~/js/chat.js"></script>*@
     @*聊天室窗結束*@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -305,6 +305,97 @@
     <script src="~/js/mixitup.min.js"></script>
     <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/main.js"></script>
+    <script>
+        //聊天室啟動
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+        //Disable send button until connection is established
+        document.getElementById("sendButton").disabled = true;
+
+
+
+
+
+        connection.on("ReceiveMessage", function (user, message) {
+            var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            var when = new Date().toLocaleTimeString();
+            var encodedMsg = /*user + " says " +*/ '<p>' + msg + '<span class="chat_message_time">' + when + '</span></p>';
+            var li = document.createElement("li");
+            li.innerHTML = encodedMsg;
+
+            $.ajax({
+                url: "/adChatRoom/getMessage",
+                type: "POST",
+                data: { MemberName: user, Content: message, MessageTime: when },
+
+            });
+
+
+
+            var Picture = "";
+            if (user == '管理員') {
+                Picture = 'src = "img/adrChatRoom/adm2.jpg" class="md-user-image" >';
+
+            }
+            else {
+                Picture = 'src = "img/adrChatRoom/Customer_Icon.jpg" class="md-user-image">';
+            }
+            if (msg == "") { return; }
+            if (user == @ViewBag.USERNAME) {
+                /*自己都放右邊  */
+                if (自己有沒有連續留言 == 0) {
+
+                    $("#chatStartPoint").append('<div class="chat_message_wrapper chat_message_right">' + '<div class= "chat_user_avatar">' + '<a target="_blank">' + '<img alt="' + user + '" title="' + user + '"' + Picture + '</a>' + '</div>' + '<ul class="chat_message messagesListForClient" >');
+                    /*            document.getElementById("messagesListForClient").appendChild(li);*/
+                    $('ul.messagesListForClient:eq(-1)').append(li);
+
+                    自己有沒有連續留言 = 1;
+                }
+                else {
+                    $('ul.messagesListForClient:eq(-1)').append(li);
+                    /*            document.getElementById("messagesListForClient").appendChild(li);*/
+                }
+                對方有沒有連續留言 = 0;
+                document.getElementById('messageInput').value = '';
+            }
+
+            else {
+                if (對方有沒有連續留言 == 0) {
+                    $("#chatStartPoint").append('<div class="chat_message_wrapper">' + '<div class="chat_user_avatar">' + '<a target="_blank">' + '<img alt="' + user + '" title="' + user + '"' + Picture + '</a>' + '</div>' + '<ul class="chat_message messagesList">');
+                    /*document.getElementById("messagesList").appendChild(li);*/
+                    $('ul.messagesList:eq(-1)').append(li);
+
+                    對方有沒有連續留言 = 1;
+                }
+                else {
+                    $('ul.messagesList:eq(-1)').append(li);
+                    /*            document.getElementById("messagesList").appendChild(li);*/
+                }
+                自己有沒有連續留言 = 0;
+                document.getElementById('messageInput').value = '';
+            }
+        });
+
+        connection.start().then(function () {
+            document.getElementById("sendButton").disabled = false;
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        document.getElementById("sendButton").addEventListener("click", function (event) {
+            var user = @ViewBag.USERNAME;
+            var message = document.getElementById("messageInput").value;
+            connection.invoke("SendMessage", user, message).catch(function (err) {
+                return console.error(err.toString());
+            });
+            event.preventDefault();
+        });
+
+
+
+    </script>
+
     <script type="text/javascript">
         var flagForChatRoomSwitch = 1;
         $(function () {
@@ -323,8 +414,7 @@
                 $('#sidebar_secondary').removeClass('popup-box-on');
                 flagForChatRoomSwitch = 1;
             });
-            chatsBefore("@ViewBag.USERNAME");
-
+            @*chatsBefore("@ViewBag.USERNAME");*@
 
 
 
