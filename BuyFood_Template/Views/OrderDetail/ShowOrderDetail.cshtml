@@ -330,7 +330,7 @@
                                         var count = data[i].cScores;
                                         var oDetailID = data[i].cOrderDetailId;
                                         var Scorebutton = `ScoreIt${oDetailID}`;
-
+                                        let countForEveryLoopInOD = 1;
                                         for (let i = 0; i < count; i++)
                                         {
                                             stars += `<span class="fa fa-star checked"></span>`;
@@ -345,7 +345,7 @@
                                         }
 
                                         text += `<tr>
-                                                        <th scope="row">1</th>
+                                                        <th scope="row">${countForEveryLoopInOD}</th>
                                                         <td class="w-25">
                                                         <img src="${data[i].cPicture.replace("~", "")}" class="img-fluid img-thumbnail" alt="Sheep">
                                                         </td>
@@ -355,7 +355,7 @@
                                                         <td>${data[i].cOrderStatusName}</td>
                                                         <td id="ScoreStatus${oDetailID}">${stars}<p>${data[i].cReview}</p></td>
                                                         </tr>`;
-
+                                        countForEveryLoopInOD+=1;
                                         text +=`<tr>
                                                        <th scope="row"></th>
                                                        <td class="">
