@@ -4,7 +4,7 @@
         url: "/ProductDetail/startJson?id=" + id,
         type: "get",
         success: function (data) {
-            //console.log(data);
+            
             var starforright = "";
             for (let i = 0; i < data.bavg; i++) {
                 starforright += `<span class="fa fa-star checked" style="color: orange;"></span>`
@@ -107,10 +107,17 @@
         type: "get",
         success: function (data) {
             //console.log(data);
-            var productQuantity = data.table.cQuantity <= 0 ? 0 : data.table.cQuantity
+            var productQuantity = data.table.cQuantity <= 0 ? `<span style="color:#ff0000">已售完</span>` : `<span>${data.table.cQuantity}</span>`
+            var productdetail=""
+            if (data.table.cQuantity <= 0) {
+                productdetail+=`<input type = "button" class="btn_enable_style"  value = "此商品已完售" disabled>`
+                $("#btu_check_stock").hide();
+            }
+            else
+                productdetail += `<input type = "button" class="primary-btn" onclick = "addCart(@Model.CProductId)"  value = "加入購物車" >`
 
-            var productdetail = ` <ul>
-                        <li><b>庫存量</b> <span>${productQuantity}</span></li>
+             productdetail += ` <ul>
+                        <li><b>庫存量</b> ${productQuantity}</li>
                         <li><b>類型</b> <span>${data.tablea} </span></li>
                         <li><b>製作時間</b> <span>${data.table.cFinishedTime} 分鐘</span></li>
                         <li>
