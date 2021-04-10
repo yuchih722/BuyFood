@@ -532,36 +532,9 @@
     <script src="~/assets/js/app.min.js" type="text/javascript"></script>
     <!-- PAGE LEVEL SCRIPTS-->
     @*<script src="~/assets/js/scripts/dashboard_1_demo.js" type="text/javascript"></script>*@
-    <script language="JavaScript">
-        function ShowTime() {
-            var NowDate = new Date();
-            var h = NowDate.getHours();
-            var m = NowDate.getMinutes();
-            var s = NowDate.getSeconds();
-            var yyyy = NowDate.getFullYear();
-            var mm = NowDate.getMonth() + 1;
-            var dd = NowDate.getDate();
-            var day_list = ['日', '一', '二', '三', '四', '五', '六']; var day = NowDate.getDay();
-            if (h < 10) h = "0" + h; if (m < 10) m = "0" + m; if (s < 10) s = "0" + s; if (dd < 10) dd = "0" + dd; if (mm < 10) mm = "0" + mm;
-            $("#timehtml").html('<div class="time_display clearfix"><span class="h com-time ">' + h + '</span><b>：</b><span class="m com-time ">' + m + '</span><b>：</b><span class="s com-time ">' + s + '</span></div><div class="date_display clearfix"><span class="years">' + yyyy + '年</span><span class="mot">' + mm + '月</span><span class="day">' + dd + '</span><span>星期' + day_list[day] + '</span></div>');
-            setTimeout('ShowTime()', 1000);
-        }
-        setInterval("ShowTime()", 1000);
-    </script>
+
 </body>
 </html>
 
-<script>
-
-    function 登出() {
-        $.ajax({
-            url: "/HomePage/SLogout",
-            type: "POST",
-            success: function (data) {
-                window.alert(data);
-                window.location.assign("/HomePage/Home")
-            }
-        })
-    }
-
-</script>
+<script src="~/YUYUYU/JS/時間日期顯示.js"></script>
+<script src="~/YUYUYU/JS/登出呼叫登出.js"></script>
