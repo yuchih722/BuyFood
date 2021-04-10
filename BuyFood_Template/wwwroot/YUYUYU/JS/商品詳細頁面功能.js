@@ -9,7 +9,7 @@ let pdtcart_quantity = [];    //存放商品ID和庫存數量
 //console.log(product_image);
 //載入商品細表時抓取現有庫存量
 $(function () {
-    let pdt_ID = parseInt($("#getid").val());
+    let pdt_ID =id
     let pdtIDquantity = [];
     let pdtInCart = pdt_ID
     pdtIDquantity.push(pdtInCart);

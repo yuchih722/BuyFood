@@ -122,13 +122,13 @@
             $("#smelltitle").after(productdetail);
 
             if (data.table.cIsBreakFast == 1) {
-                $("#tagfood").append(` <a href="#" class="btn btn - outline - primary">早</a> `)
+                $("#tagfood").append(` <a href="javascript:void(0)" class="btn btn - outline - primary">早</a> `)
             }
             if (data.table.cIsLunch == 1) {
-                $("#tagfood").append(` <a href="#" class="btn btn - outline - primary">中</a> `)
+                $("#tagfood").append(` <a href="javascript:void(0)" class="btn btn - outline - primary">中</a> `)
             }
             if (data.table.cIsDinner == 1) {
-                $("#tagfood").append(` <a href="#" class="btn btn - outline - primary">晚</a> `)
+                $("#tagfood").append(` <a href="javascript:void(0)" class="btn btn - outline - primary">晚</a> `)
             }
 
         }

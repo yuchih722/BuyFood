@@ -5,19 +5,18 @@ $(function () {
         url: "/HomePage/get_categorysname",
         type: "GET",
         success: function (data_category) {
-            
-                        var category_li = `<ul><li class="active"  id="FirstCate" data-filter=".categoryid_${data_category[0].cProductCategoryId}">${data_category[0].cCategoryName}</li>`;
-                                for (let i = 1; i < data_category.length; i++) {
-                                    category_li += `<li data-filter=".categoryid_${data_category[i].cProductCategoryId}">${data_category[i].cCategoryName}</li>`
-                                 }
-                                 category_li += `</li>`
-
+            var category_li =
+                `<ul><li class="active"  id="FirstCate" data-filter=".categoryid_${data_category[0].cProductCategoryId}">${data_category[0].cCategoryName}</li>`;
+            for (let i = 1; i < data_category.length; i++) {
+                category_li += `<li data-filter=".categoryid_${data_category[i].cProductCategoryId}">${data_category[i].cCategoryName}</li>`
+            };
+            category_li += `</li>`
             $("#push_procategory").append(category_li);
-            pullme = data_category;console.log(pullme);
+            pullme = data_category;
+
             for (let i = 0; i < data_category.length; i++) {
                 var products = ""; 
                 for (let y = 0; y < data_category[i].tProducts.length; y++) {
-                   
                     products += `<div class="col-lg-3 col-md-4 col-sm-6 mix categoryid_${data_category[i].tProducts[y].cCategoryId}">
                                             <div class="featured__item">
                                                 <div class="featured__item__pic set-bg" style="background-image: url(${data_category[i].tProducts[y].cPicture.replace("~", "")})">
@@ -36,7 +35,6 @@ $(function () {
                 }
                 $("#many_products").append(products);
             }
-
             $('.featured__controls li').on('click', function () {
 
                 $('.featured__controls li').removeClass('active');
@@ -47,7 +45,7 @@ $(function () {
                 var mixer = mixitup(containerEl);
             }
             $("#FirstCate").click();
-
         }
     })
 })
+
