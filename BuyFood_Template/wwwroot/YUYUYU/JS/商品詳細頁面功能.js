@@ -1,5 +1,5 @@
-﻿let member_No = $("#user_member").val();
-let users_cart_No = "cart" + member_No;        //依登入的會員改變localstorage的Key值
+﻿////let member_No = $("#user_member").val();
+////let users_cart_No = "cart" + member_No;        //依登入的會員改變localstorage的Key值
 let product_name = $("#pdtName").text();       //商品的名稱
 let product_count = $("#productcount").val();  //會員輸入的商品數量
 let product_price = parseFloat($("#pdtPrice").text().replace('$', ''));  //商品的價格

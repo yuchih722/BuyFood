@@ -1,5 +1,5 @@
-﻿let member_No = $("#user_member").val();
-let users_cart_No = "cart" + member_No;   //依登入的會員改變localstorage的Key值
+﻿////let member_No = $("#user_member").val();
+////let users_cart_No = "cart" + member_No;   //依登入的會員改變localstorage的Key值
 let pdtcart = JSON.parse(localStorage.getItem(users_cart_No));             //從localStorage讀取購物車內的資料
 let pdtcart_obj = JSON.parse(localStorage.getItem("cart_price"));   //取得購物車內的價格
 let sum_total_time = 0;      //儲存訂單需要的製作時間及路程時間總和
