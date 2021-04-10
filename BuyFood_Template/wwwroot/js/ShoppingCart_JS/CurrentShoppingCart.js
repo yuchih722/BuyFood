@@ -1,6 +1,6 @@
-﻿////let member_No = $("#user_member").val();
-////let users_cart_No = "cart" + member_No;   //依登入的會員改變localstorage的Key值
-let pdtcart = JSON.parse(localStorage.getItem(users_cart_No));  //從localStorage讀取購物車內的資料
+﻿let member_NoCSC = $("#user_member").val();
+let users_cart_NoCSC = "cart" + member_NoCSC;   //依登入的會員改變localstorage的Key值
+let pdtcart = JSON.parse(localStorage.getItem(users_cart_NoCSC));  //從localStorage讀取購物車內的資料
 let pdtcart_quantity = [];     //用來存放各個商品的庫存量及製作時間
 //載入購物車時抓取現有庫存量
 $(function () {
@@ -128,7 +128,7 @@ function GetTotalPrice(id, count) {
 function DeleteProduct(row_NO, pdtname) {
     let cart_index = pdtcart.findIndex(x => x.cProductName == pdtname);
     pdtcart.splice(cart_index, 1);    //刪除pdtcart中該商品
-    localStorage.setItem(users_cart_No, JSON.stringify(pdtcart));
+    localStorage.setItem(users_cart_NoCSC, JSON.stringify(pdtcart));
     $('tr#' + row_NO).remove();       //移除該商品的html標籤
     CartAmount();
 }
@@ -238,6 +238,6 @@ $(window).bind('beforeunload', function () {
         finishTime: pdt_finishtime
     };
     localStorage.setItem("cart_price", JSON.stringify(cart_price_obj));
-    localStorage.setItem(users_cart_No, JSON.stringify(pdtcart));
+    localStorage.setItem(users_cart_NoCSC, JSON.stringify(pdtcart));
 }
 );
