@@ -1,5 +1,5 @@
-﻿let member_No = $("#user_member").val();
-let users_cart_No = "cart" + member_No;        //依登入的會員改變localstorage的Key值
+﻿let member_NoPDetail = $("#user_member").val();
+let users_cart_NoPDetail = "cart" + member_NoPDetail;        //依登入的會員改變localstorage的Key值
 let product_name = $("#pdtName").text();       //商品的名稱
 let product_count = $("#productcount").val();  //會員輸入的商品數量
 let product_price = parseFloat($("#pdtPrice").text().replace('$', ''));  //商品的價格
@@ -9,7 +9,7 @@ let pdtcart_quantity = [];    //存放商品ID和庫存數量
 //console.log(product_image);
 //載入商品細表時抓取現有庫存量
 $(function () {
-    let pdt_ID =id
+    let pdt_ID = parseInt($("#getid").val());
     let pdtIDquantity = [];
     let pdtInCart = pdt_ID
     pdtIDquantity.push(pdtInCart);
@@ -59,7 +59,7 @@ function incbtn() {
 var cart = [];
 //判斷購物車內是否有商品
 function isExist(id) {
-    cart = JSON.parse(localStorage.getItem(users_cart_No));
+    cart = JSON.parse(localStorage.getItem(users_cart_NoPDetail));
     for (let i = 0; i < cart.length; i++) {
         if (cart[i].cProductId === id) {
             return i;
@@ -76,7 +76,7 @@ function addCart(id) {
         window.location.assign("/ShoppingCart/CurrentCartItem");
         return;
     }
-    if (localStorage.getItem(users_cart_No)) {
+    if (localStorage.getItem(users_cart_NoPDetail)) {
         let pdtindex = isExist(id);
         if (pdtindex != -1) {
             window.alert("此商品已在購物車中");
@@ -99,5 +99,5 @@ function addItemInCart(id) {
     };
     cart.push(cartItem);
     window.alert("已加入購物車");
-    localStorage.setItem(users_cart_No, JSON.stringify(cart));
+    localStorage.setItem(users_cart_NoPDetail, JSON.stringify(cart));
 }
