@@ -1,4 +1,6 @@
-﻿let pdtcart = JSON.parse(localStorage.getItem("cart"));             //從localStorage讀取購物車內的資料
+﻿let member_NoCheck = $("#user_member").val();
+let users_cart_NoCheck = "cart" + member_NoCheck;   //依登入的會員改變localstorage的Key值
+let pdtcart = JSON.parse(localStorage.getItem(users_cart_NoCheck));             //從localStorage讀取購物車內的資料
 let pdtcart_obj = JSON.parse(localStorage.getItem("cart_price"));   //取得購物車內的價格
 let sum_total_time = 0;      //儲存訂單需要的製作時間及路程時間總和
 let input_location = "";     //儲存輸入的地址位置
@@ -43,7 +45,7 @@ $("#confirm_order").click(function () {
                 window.alert(data);
                 if (data == "已收到訂單，請稍後") {
                     window.location.assign("/ShoppingCart/CurrentCartItem");
-                    localStorage.removeItem("cart");
+                    localStorage.removeItem(users_cart_NoCheck);
                     localStorage.removeItem("cart_price");
                 }
                 //取消遮罩效果
@@ -53,7 +55,7 @@ $("#confirm_order").click(function () {
     } else if (radio_value == 2) {
         let product_item = "";
         for (let i = 0; i < pdtcart.length; i++) {
-            product_item += pdtcart[i].cProductName + " X " + pdtcart[i].QuantityInCart + " ";
+            product_item += "#" + pdtcart[i].cProductName + " X " + pdtcart[i].QuantityInCart;
         }
         var NowDate = new Date();
         //用日期時間當作商品編號
@@ -109,7 +111,7 @@ $("#confirm_order").click(function () {
                         data: JSON.stringify(obj_cart_order),
                         success: function () {
                             $("#send_to_opay").click();
-                            localStorage.removeItem("cart");
+                            localStorage.removeItem(users_cart_NoCheck);
                             localStorage.removeItem("cart_price");
                             //取消遮罩效果
                             $("#cover_page").css({ "display": "none" });

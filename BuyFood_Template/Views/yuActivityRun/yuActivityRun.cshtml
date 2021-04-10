@@ -9,26 +9,26 @@
 <div class="box-module">
     <div class="box-title">狀態分類</div>
     <div class="box-content padding15">
-        <a href="#" id="All">
+        <a href="javascript: void(0)" id="All">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-green">
-                    <div class="status_amount"> @ViewBag.All</div>
+                    <div class="status_amount"> </div>
                     <div class="status_name bg_color_green">進行中活動數</div>
                 </div>
             </div>
         </a>
-        <a href="#" id="Going" >
+        <a href="javascript: void(0)" id="Going" >
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-red">
-                    <div class="status_amount">@ViewBag.Going </div>
+                    <div class="status_amount"> </div>
                     <div class="status_name bg_color_red">已開啟輪播</div>
                 </div>
             </div>
         </a>
-        <a href="#" id="Close">
+        <a href="javascript: void(0)" id="Close">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-azure">
-                    <div class="status_amount">@ViewBag.close</div>
+                    <div class="status_amount"></div>
                     <div class="status_name bg_color_azure">未開啟輪播</div>
                 </div>
             </div>
@@ -59,10 +59,23 @@
 <script>
     //進入此頁面執行
     var what_str = "All";
-    $(Activity(what_str));
+    $(Activity(what_str), updateTOP());
     $("#All").click(function () { what_str = "All"; Activity(what_str) })
     $("#Going").click(function () { what_str = "Going"; Activity(what_str) })
     $("#Close").click(function () { what_str = "Close"; Activity(what_str) })
+
+    function updateTOP() {
+        $.ajax({
+            url: "/yuActivityRun/ActivityupdateTOP",
+            type: "get",
+            success: function (data) {
+                $("#All .status_amount").html(data.all)
+                $("#Going .status_amount").html(data.going)
+                $("#Close .status_amount").html(data.close)
+            }
+        })
+    }
+
 
     function Activity(str) {
 
@@ -268,6 +281,7 @@
             type: "get",
             success: function () {
                 $(Activity(what_str));
+                updateTOP();
             }
         })
     }
