@@ -11,7 +11,6 @@ namespace BuyFood_Template.Models
         {
             TBoards = new HashSet<TBoard>();
             TComboDetails = new HashSet<TComboDetail>();
-            TFavoriteLists = new HashSet<TFavoriteList>();
             TOrderDetails = new HashSet<TOrderDetail>();
         }
 
@@ -34,7 +33,6 @@ namespace BuyFood_Template.Models
         public virtual TIsOnSale CIsOnSale { get; set; }
         public virtual ICollection<TBoard> TBoards { get; set; }
         public virtual ICollection<TComboDetail> TComboDetails { get; set; }
-        public virtual ICollection<TFavoriteList> TFavoriteLists { get; set; }
         public virtual ICollection<TOrderDetail> TOrderDetails { get; set; }
     }
 }

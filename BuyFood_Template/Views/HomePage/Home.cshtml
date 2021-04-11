@@ -1,29 +1,13 @@
-﻿
-<!DOCTYPE html>
-<html lang="zxx">
+﻿<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style>
+    #slider_homepage {
+        z-index: 0;
+    }
+</style>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Ogani Template">
-    <meta name="keywords" content="Ogani, unica, creative, html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ogani | Template</title>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <style>
-        #slider_homepage {
-            z-index: 0;
-        }
-    </style>
-
-
-</head>
-
-<body>
     <!-- Page Preloder -->
     @*<div id="preloder">
             <div class="loader"></div>
@@ -43,7 +27,7 @@
                         </div>
                         <ul id="sideBarCategory">
                         </ul>
-                        <script src="~/js/adri/HomePage/SideBarCategory.js?randomId=<%=Math.random()%>"></script>
+                        <script src="~/js/adri/HomePage/SideBarCategory.js"></script>
                     </div>
                 </div>
                 <div class="col-lg-9" id="SearchChange">
@@ -51,7 +35,7 @@
                     <div class="hero__search" style="overflow:visible;">
                         <div @*class="hero__search__form"*@ style="">
                             <div id="formDeleted" style="width: 100%;margin:0%">
-                                <script src="~/js/adri/ComboBoxOfCategories.js"></script>
+                                
                                 <div class="hero__search__categories" style="height:100%;width:100%;margin-right:5px">
 
                                     <input type="text" id="SearchKeyInputMinPrice" placeholder="最低價格~" class="hero__search__form" style="width:10%;height:45.49px;">
@@ -107,7 +91,7 @@
     </section><div style="background-image: url('img/featured/feature-1.jpg')"></div>
     <!-- Hero Section End -->
     <script src="~/js/adri/AutoCompleteForSearchBar.js"></script>
-
+    <script type="text/javascript" src="~/js/adri/ComboBoxOfCategories.js"></script>
     <!-- 搜尋 Section Begin -->
     <div id="divforSearch">
         <!-- 搜尋 slider Begin -->
@@ -173,8 +157,8 @@
         </div>
     </section>
 
-    <script src="~/YUYUYU/JS/首頁產生商品.js?randomId=<%=Math.random()%>"></script>
-
+    @*<script src="~/YUYUYU/JS/首頁產生商品.js?randomId=<%=Math.random()%>"></script>*@
+    <script src="~/YUYUYU/JS/首頁產生商品.js"></script>
     <!-- Featured Section End -->
     <!-- Banner Begin -->
     <div class="banner">
@@ -202,12 +186,7 @@
         </div>
     </section>
 
-    <script src="~/js/adri/HomePage/LastProducts.js"></script>
-    <script src="~/js/adri/HomePage/TopRatedProducts.js"></script>
-    <script src="~/js/adri/HomePage/ReviewProducts.js"></script>
-
-
-
+<script src="~/js/adri/HomePage/getBottomList.js"></script>
 
     <!-- Latest Product Section End -->
     <!-- Blog Section Begin -->
@@ -216,34 +195,33 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title from-blog__title">
-                        <h2>相關活動</h2>
+                        <h2>最新活動</h2>
                     </div>
                 </div>
             </div>
             <div class="row" id="activityHomePage">
                 <script>
-                    var txtActivity = "";
+                   
                     $.ajax({
                         url: "/HomePage/getActivity/",
                         type: "POST",
                         success: function (data) {
-
+                            var txtActivity = "";
                             for (var i = 0; i < data.length; i++) {
 
-                                txtActivity += `                <div class="col-lg-4 col-md-4 col-sm-6">
-                                                                                                    <div class="blog__item">
-                                                                                                        <div class="blog__item__pic">
-                                                                                                            <img src="${data[i].cPicture.replace("..", "")}" alt="">
-                                                                                                        </div>
-                                                                                                        <div class="blog__item__text">
-                                                                                                            <ul>
-                                                                                                                <li><i class="fa fa-calendar-o"></i>${data[i].cTime}</li>
-                                                                                                            </ul>
-                                                                                                            <h5><a href="${data[i].cLink}">${data[i].cActivityName}</a></h5>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>`;
-
+                                txtActivity += `<div class="col-lg-4 col-md-4 col-sm-6">
+                                                    <div class="blog__item">
+                                                        <div class="blog__item__pic">
+                                                            <img src="${data[i].cPicture.replace("..", "")}" alt="">
+                                                        </div>
+                                                        <div class="blog__item__text">
+                                                            <ul>
+                                                                <li><i class="fa fa-calendar-o"></i>${data[i].cTime}</li>
+                                                            </ul>
+                                                            <h5><a href="${data[i].cLink}">${data[i].cActivityName}</a></h5>
+                                                        </div>
+                                                    </div>
+                                                </div>`;
 
                             }
                             $("#activityHomePage").append(txtActivity);
@@ -252,21 +230,10 @@
 
                     });
 
-
                 </script>
-
-
-
-
-
             </div>
         </div>
     </section>
     <!-- Blog Section End -->
-
     @*分頁function*@
     <script src="~/js/adri/HomePage/Pagination.js"></script>
-
-</body>
-
-</html>

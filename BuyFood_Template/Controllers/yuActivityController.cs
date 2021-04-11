@@ -23,12 +23,19 @@ namespace BuyFood_Template.Controllers
 
         public IActionResult ActivityList()
         {
-            ViewBag.All = (new 擺腹BuyFoodContext()).TActivities.Select(n => n).Count();
-            ViewBag.Going = (new 擺腹BuyFoodContext()).TActivities.Where(n => n.CStatus == 1).Select(n => n).Count();
-            ViewBag.close = (new 擺腹BuyFoodContext()).TActivities.Where(n => n.CStatus == 0).Select(n => n).Count();
-            ViewBag.mouth = (new 擺腹BuyFoodContext()).TActivities.Where(n => n.CTime.Contains(DateTime.Now.Year.ToString()) && n.CTime.Contains(DateTime.Now.Month.ToString())).Select(n => n).Count();
-            ViewBag.year = (new 擺腹BuyFoodContext()).TActivities.Where(n => n.CTime.Contains(DateTime.Now.Year.ToString())).Select(n => n).Count();
             return View();
+        }
+        public JsonResult ActivityupdateTOP()
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            int All = db.TActivities.Select(n => n).Count();
+            int Going = db.TActivities.Where(n => n.CStatus == 1).Select(n => n).Count();
+            int close = db.TActivities.Where(n => n.CStatus == 0).Select(n => n).Count();
+            int mouth = db.TActivities.Where(n => n.CTime.Contains(DateTime.Now.Year.ToString()) && n.CTime.Contains(DateTime.Now.Month.ToString())).Select(n => n).Count();
+            int year = db.TActivities.Where(n => n.CTime.Contains(DateTime.Now.Year.ToString())).Select(n => n).Count();
+
+            var my_num = new { All= All, Going= Going, close= close, mouth= mouth, year= year };
+            return Json(my_num);
         }
         public JsonResult ActivityListJson(string str)
         {

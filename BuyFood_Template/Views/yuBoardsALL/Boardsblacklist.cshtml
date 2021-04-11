@@ -5,13 +5,19 @@
 <link href="~/assets/NEW CSS/NEWCSS.css" rel="stylesheet" />
 <link href="~/assets/NEW CSS/page.css" rel="stylesheet" />
 
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
 <div class="box-module">
     <div class="box-title">狀態分類</div>
     <div class="box-content padding15">
-        <a href="#" onclick="Board(99)">
+        <a href="javascript: void(0)" id="Board99">
             <div class="clearfix col-xs-6 col-sm-2 padding5">
                 <div class="statusbox bg-green">
-                    <div class="status_amount"> @ViewBag.All</div>
+                    <div class="status_amount"></div>
                     <div class="status_name bg_color_green">全部黑單留言</div>
                 </div>
             </div>
@@ -72,11 +78,8 @@
     </div>
 </div>
 
-<div class="sidenav-backdrop backdrop"></div>
-<div class="preloader-backdrop">
-    <div class="page-preloader">Loading</div>
-</div>
-<!-- END PAGA BACKDROPS-->
+<div id="deletemore">確定要回復多筆資料嗎 ？ </div>
+<script src="~/YUYUYU/JS/留言勾選刪除.js"></script>
 
 <script>
     function Board(num) {
@@ -168,7 +171,7 @@
                     $("#btnshowEDIT").show();
                     $("[name='btnEDIT']").hide();
                     $("#btngood").hide();
-                    window.location.reload();
+                    Board(pagename), updateTOP()
                 })
 
                 $("#myTable input[name = interest]").change(function Submit() {
@@ -193,20 +196,24 @@
             }
         });
     };
-    var boo = false;
+
     function gotoblack(id) {
         $.ajax({
             url: "/yuBoardsALL/gotoblack?id=" + id,
             type: "get",
             success: function (data) {
-                boo = !boo;
-                if (boo) {
-                    $("#blacktype" + id).html(`<i class="fa fa-trash font-18">屏蔽留言`)
+                console.log(data);
+                if (data) {
+                    $("#blacktype" + id).html("已將此流言屏蔽,再次點擊回覆")
                 }
                 else
-                    $("#blacktype" + id).html(`<i class= "font-18" >已將此流言屏蔽,再次點擊回覆`)
+                    $("#blacktype" + id).html(`<i class="fa fa-trash font-18">屏蔽留言`)
             }
         })
+    }
+
+    function deletemore() {
+        $("#deletemore").dialog("open")
     }
 
     function checkOrCancelAll() {
@@ -237,17 +244,27 @@
         }
     };
 
-    //全選屏蔽
-    function deletemore() {
-        var checked = $("#myTable input[type=checkbox]:checked");
-        for (let i = 0; i < checked.length; i++) {
-            console.log(checked[i].value);
-            $("#blacktype" + checked[i].value).click();
+    ////全選屏蔽
+    //function deletemore() {
+    //    var checked = $("#myTable input[type=checkbox]:checked");
+    //    for (let i = 0; i < checked.length; i++) {
+    //        console.log(checked[i].value);
+    //        $("#blacktype" + checked[i].value).click();
 
-        }
-    }
+    //    }
+    //}
 
     //進入此頁面執行
-    $(Board(99));
+    var pagename = 99
+    $(Board(pagename), updateTOP());
 
+    function updateTOP() {
+        $.ajax({
+            url: "/yuBoardsALL/BoardsblacklistTOP",
+            type: "get",
+            success: function (data) {
+                $("#Board99 .status_amount").html(data.all)
+            }
+        })
+    }
 </script>

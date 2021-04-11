@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModels;
@@ -31,6 +32,14 @@ namespace BuyFood_Template.Controllers
                 pdtTimeList.Add((int)result);
             }
             return Json(pdtTimeList);
+        }
+        [HttpPost]
+        public void GetOpayOrder(OPay OpayData)
+        {
+            if(OpayData.RtnCode == 1)
+            {
+                //未寫
+            }
         }
         [HttpPost]
         public string InsertOrderToDB([FromBody] CartOrderJson CartOrder)
@@ -84,17 +93,17 @@ namespace BuyFood_Template.Controllers
             //將訂單內的商品一一存入資料庫中
             foreach (var i in CartOrder.cartOrder)
             {
+                var InStoreProduct = BuyFoodDB.TProducts.FirstOrDefault(x => x.CProductId == i.cProductId);
                 TOrderDetail ProductInOrder = new TOrderDetail()
                 {
                     CProductId = i.cProductId,
                     COrderId = DbOrder.COrderId,
                     CQuantity = i.QuantityInCart,
-                    CPriceAtTheTime = i.cPrice,
+                    CPriceAtTheTime = InStoreProduct.CPrice,
                     CScores = null,   //暫時資料會移除
                     CReview = null   //暫時資料會移除
-                };
-                var InStoreCount = BuyFoodDB.TProducts.FirstOrDefault(x => x.CProductId == i.cProductId);
-                InStoreCount.CQuantity -= ProductInOrder.CQuantity;
+                };              
+                InStoreProduct.CQuantity -= ProductInOrder.CQuantity;
                 BuyFoodDB.TOrderDetails.Add(ProductInOrder);
             }
             MemberDeposit.CDeposit -= (TotalPriceInCart - CouponPrice);   //直接從欄位更改數值才有效果
