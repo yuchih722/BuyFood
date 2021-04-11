@@ -56,7 +56,7 @@
             @{ var UserPictureForMessage = Context.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);}
             <input type="text" id="user_foto" style="display:none" value="@UserPictureForMessage" />
             @{ var adrUserNameForMessageSend = Context.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);}
-            <input type="text" id="adrLoginNameNow" value="@adrUserNameForMessageSend" />
+            <input type="text" id="adrLoginNameNow" style="display:none" value="@adrUserNameForMessageSend" />
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
@@ -337,10 +337,9 @@
             var 自己連續發言旗桿 = 0;
             var 對方連續發言旗桿 = 0;
 
-
-            connection.on("ReceiveMessage", function (user, message, foto) {
-
-                console.log(foto);
+            connection.on("ReceiveMessage", function (user, message, adrfoto, adrMemberIDForChat) {
+                console.log(adrMemberIDForChat);
+                console.log(adrfoto);
             var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
             var when = new Date().toLocaleTimeString();
             var encodedMsg = /*user + " says " +*/ '<p>' + msg + '<span class="chat_message_time">' + when + '</span></p>';
@@ -350,58 +349,89 @@
             $.ajax({
                 url: "/adChatRoom/getMessage",
                 type: "POST",
-                data: { MemberName: user, Content: message, MessageTime: when },
+                data: { MemberName: user, Content: message, MessageTime: when, "foto": adrfoto, "userID": adrMemberIDForChat },
 
             });
             
-                var PictureForMessage = foto;
-            if (user == '管理員') {
-                PictureForMessage = `img/adrChatRoom/adm2.jpg`;
-            } else {
-                PictureForMessage = $("#user_foto").val();
-            }
-            if (msg == '') { return; }
-            console.log($("#adrLoginNameNow").val());
+                var PictureForMessage = adrfoto;
+                
 
-                if (user == '管理員') {
+                if (msg == '') { return; }
+                //如果是自己，放右邊
 
-                if (對方連續發言旗桿 == 0) {
-                    $("#chatStartPoint").append(`<div class="chat_message_wrapper ">
+                if (adrMemberIDForChat == $("#user_member").val())
+                {
+
+                    if (自己連續發言旗桿 == 0)
+                    {
+                        $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
+                                        <div class="chat_user_avatar">
+                                                <img   src="${PictureForMessage}" class="md-user-image">
+                                        </div>
+                                        <ul class="chat_message messagesListForClient">
+                                        </ul>
+                                    </div>`);
+
+                        $("ul.messagesListForClient:eq(-1)").append(li);
+                        自己連續發言旗桿 = 1;
+                        對方連續發言旗桿 = 0;
+                    }
+                    else
+                    {
+                        $("ul.messagesListForClient:eq(-1)").append(li);
+                        對方連續發言旗桿 = 0;
+                    }
+                }
+
+                else
+                {
+                    if ($("#user_member").val() == 16)//if LoginAccount == admin
+                    {
+                        if (對方連續發言旗桿 == 0) {
+                            $("#chatStartPoint").append(`<div class="chat_message_wrapper ">
                     <div class="chat_user_avatar">
                             <img   src="${PictureForMessage}" class="md-user-image ">
                     </div>
-                    <ul class="chat_message messagesListForAdmin adrTheSelfMessage"  value="${user}">
+                    <ul class="chat_message messagesListForAdmin" >
                     </ul>
                 </div>`);
 
-                    $("ul.messagesListForAdmin:eq(-1)").append(li);
-                    對方連續發言旗桿 = 1;
-                    自己連續發言旗桿 = 0;
-                }
-                if (對方連續發言旗桿 == 1) {
-                    $("ul.messagesListForAdmin:eq(-1)").append(li);
-                }
+                            $("ul.messagesListForAdmin:eq(-1)").append(li);
+                            對方連續發言旗桿 = 1;
+                            自己連續發言旗桿 = 0;
+                        }
+                        else {
+                            $("ul.messagesListForAdmin:eq(-1)").append(li);
+                            自己連續發言旗桿 = 0;
+                        }
+                    }
 
-                } else {
-                    PictureForMessage = `MemberPhoto/79f49435-9703-4ec6-b396-e355ccdd7df2.jpg`;
-                if (自己連續發言旗桿 == 0) {
-                    $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
+                        if (adrMemberIDForChat != 16)
+                        {
+                            return;
+                        }
+
+                    if (對方連續發言旗桿 == 0)
+                    {
+                        $("#chatStartPoint").append(`<div class="chat_message_wrapper ">
                     <div class="chat_user_avatar">
-                            <img   src="${PictureForMessage}" class="md-user-image">
+                            <img   src="${PictureForMessage}" class="md-user-image ">
                     </div>
-                    <ul class="chat_message messagesListForClient adrTheSelfMessage" value="${user}">
+                    <ul class="chat_message messagesListForAdmin" >
                     </ul>
                 </div>`);
 
-                    $("ul.messagesListForClient:eq(-1)").append(li);
-                    自己連續發言旗桿 = 1;
-                    對方連續發言旗桿 = 0;
+                        $("ul.messagesListForAdmin:eq(-1)").append(li);
+                        對方連續發言旗桿 = 1;
+                        自己連續發言旗桿 = 0;
+                    }
+                    else
+                    {
+                        $("ul.messagesListForAdmin:eq(-1)").append(li);
+                        自己連續發言旗桿 = 0;
+                    }
                 }
-                if (自己連續發言旗桿 == 1) {
-                    $("ul.messagesListForClient:eq(-1)").append(li);
-                }
-
-            }
+                
 
         });
 
@@ -415,8 +445,9 @@
             document.getElementById("sendButtonMessage").addEventListener("click", function (event) {
                 var user = $("#adrLoginNameNow").val();
                 var message = document.getElementById("messageInput").value;
-                var foto = $("#user_foto").val();
-            connection.invoke("SendMessage", user, message).catch(function (err) {
+                var adrfoto = $("#user_foto").val();
+                var adrMemberIDForChat = parseInt($("#user_member").val());
+                connection.invoke("SendMessage", user, message, adrfoto, adrMemberIDForChat).catch(function (err) {
  
                 return console.error(err.toString());
             });
@@ -432,7 +463,15 @@
             $(function () {
                 
 
-            $("#addClass").click(function () {
+                $("#addClass").click(function () {
+
+                    if (member_No=="")
+                    {
+                        window.alert("請先登入會員");
+                        window.location.assign("/ShoppingCart/CurrentCartItem");
+                        return;
+                    }
+
                 if (flagForChatRoomSwitch == 1) {
                     $('#sidebar_secondary').addClass('popup-box-on');
                     flagForChatRoomSwitch = 0;
