@@ -149,7 +149,7 @@ namespace BuyFood_Template.Controllers
             //}
 
             //ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
-            return View();
+            return PartialView();
         }
         [HttpPost]
         public IActionResult 登入(CLoginViewModel loginMember)
@@ -175,7 +175,7 @@ namespace BuyFood_Template.Controllers
                 return RedirectToAction("Home");
             }
             //ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
-            return View();
+            return PartialView();
         }
 
         public bool facebookLogin(string id, string name)
