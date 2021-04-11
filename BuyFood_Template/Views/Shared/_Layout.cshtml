@@ -55,6 +55,8 @@
             <input type="text" id="user_member" style="display:none" value="@userID" />
             @{ var UserPictureForMessage = Context.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);}
             <input type="text" id="user_foto" style="display:none" value="@UserPictureForMessage" />
+            @{ var adrUserNameForMessageSend = Context.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);}
+            <input type="text" id="adrLoginNameNow" value="@adrUserNameForMessageSend" />
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
@@ -256,7 +258,7 @@
         <div class="popup-head">
             <div class="popup-head-left pull-left">
 
-                    <img class="md-user-image" alt="管理員" title="管理員" src="~/img/adrChatRoom/adm2.jpg"  >
+                    <img class="md-user-image"  src="~/img/adrChatRoom/adm2.jpg"  >
                     <h1>客服聯絡視窗</h1><small><br> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>BuyFood管理員</small>
 
             </div>
@@ -319,6 +321,12 @@
         <script src="~/js/mixitup.min.js"></script>
         <script src="~/js/owl.carousel.min.js"></script>
         <script src="~/js/main.js"></script>
+    <script>
+        //聊天室資料
+
+
+    </script>
+
         <script>
         //聊天室啟動
 
@@ -327,13 +335,12 @@
         //Disable send button until connection is established
         document.getElementById("sendButtonMessage").disabled = true;
             var 自己連續發言旗桿 = 0;
+            var 對方連續發言旗桿 = 0;
 
 
+            connection.on("ReceiveMessage", function (user, message, foto) {
 
-
-        connection.on("ReceiveMessage", function (user, message) {
-            //console.log("已連接");
-
+                console.log(foto);
             var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
             var when = new Date().toLocaleTimeString();
             var encodedMsg = /*user + " says " +*/ '<p>' + msg + '<span class="chat_message_time">' + when + '</span></p>';
@@ -346,54 +353,78 @@
                 data: { MemberName: user, Content: message, MessageTime: when },
 
             });
-
-           
-                       var PictureForMessage = "";
+            
+                var PictureForMessage = foto;
             if (user == '管理員') {
                 PictureForMessage = `img/adrChatRoom/adm2.jpg`;
-            }
-            else {
+            } else {
                 PictureForMessage = $("#user_foto").val();
             }
+            if (msg == '') { return; }
+            console.log($("#adrLoginNameNow").val());
 
-            if (自己連續發言旗桿 == 0)
-            {
-                $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
+                if (user == '管理員') {
+
+                if (對方連續發言旗桿 == 0) {
+                    $("#chatStartPoint").append(`<div class="chat_message_wrapper ">
                     <div class="chat_user_avatar">
-                            <img   src="${PictureForMessage}" class="md-user-image">
+                            <img   src="${PictureForMessage}" class="md-user-image ">
                     </div>
-                    <ul class="chat_message messagesListForClient">
+                    <ul class="chat_message messagesListForAdmin adrTheSelfMessage"  value="${user}">
                     </ul>
                 </div>`);
 
-                $("ul.messagesListForClient:eq(-1)").append(li);
-                自己連續發言旗桿 = 1;
+                    $("ul.messagesListForAdmin:eq(-1)").append(li);
+                    對方連續發言旗桿 = 1;
+                    自己連續發言旗桿 = 0;
+                }
+                if (對方連續發言旗桿 == 1) {
+                    $("ul.messagesListForAdmin:eq(-1)").append(li);
+                }
+
+                } else {
+                    PictureForMessage = `MemberPhoto/79f49435-9703-4ec6-b396-e355ccdd7df2.jpg`;
+                if (自己連續發言旗桿 == 0) {
+                    $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
+                    <div class="chat_user_avatar">
+                            <img   src="${PictureForMessage}" class="md-user-image">
+                    </div>
+                    <ul class="chat_message messagesListForClient adrTheSelfMessage" value="${user}">
+                    </ul>
+                </div>`);
+
+                    $("ul.messagesListForClient:eq(-1)").append(li);
+                    自己連續發言旗桿 = 1;
+                    對方連續發言旗桿 = 0;
+                }
+                if (自己連續發言旗桿 == 1) {
+                    $("ul.messagesListForClient:eq(-1)").append(li);
+                }
+
             }
-            if (自己連續發言旗桿 == 1) {
-                $("ul.messagesListForClient:eq(-1)").append(li);
-            }
+
         });
 
         connection.start().then(function () {
             document.getElementById("sendButtonMessage").disabled = false;
-            //console.log("已經可以點了");
+
         }).catch(function (err) {
-            //console.log("壞掉惹");
             return console.error(err.toString());
         });
 
             document.getElementById("sendButtonMessage").addEventListener("click", function (event) {
-            var user = "@UserLoginNameForPage";
-            var message = document.getElementById("messageInput").value;
+                var user = $("#adrLoginNameNow").val();
+                var message = document.getElementById("messageInput").value;
+                var foto = $("#user_foto").val();
             connection.invoke("SendMessage", user, message).catch(function (err) {
-                //console.log("壞掉了2");
+ 
                 return console.error(err.toString());
             });
             event.preventDefault();
         });
 
 
-
+            //聊天室啟動 結束
         </script>
 
         <script type="text/javascript">
@@ -416,7 +447,6 @@
                 $('#sidebar_secondary').removeClass('popup-box-on');
                 flagForChatRoomSwitch = 1;
             });
-            //chatsBefore("@ViewBag.USERNAME");
 
 
 
