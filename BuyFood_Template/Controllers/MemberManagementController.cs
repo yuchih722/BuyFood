@@ -14,15 +14,6 @@ namespace BuyFood_Template.Controllers
 {
     public class MemberManagementController : Controller
     {
-        //public IActionResult List() //列資料表
-        //{
-        //    var table = from m in (new 擺腹BuyFoodContext()).TMembers
-        //                select m;
-        //    List<MemberManagementViewModel> list = new List<MemberManagementViewModel>();
-        //    foreach (TMember t in table)
-        //        list.Add(new MemberManagementViewModel(t));
-        //    return View(list);
-        //}
         private 擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
         public IActionResult List()
         {
@@ -33,46 +24,126 @@ namespace BuyFood_Template.Controllers
             ViewBag.Undeposited = db.TMembers.Where(n => n.CDeposit == 0).Select(n => n).Count();//已儲值
             return View();
         }
+
         public JsonResult jsonList(string str)
-        {
-            List<MemberManagementViewModel> member =new List<MemberManagementViewModel>();
-            IEnumerable<TMember> table = null;
+        {       
             if (str == "All")
             {
-                table = from c in db.TMembers
-                        orderby c.CMemberId descending
-                        select c;
+                var table = from c in db.TMembers
+                            orderby c.CMemberId descending
+                            select new
+                            {
+                                c.CMemberId,
+                                c.CPicture,
+                                c.CName,
+                                c.CGender,
+                                cAge = c.CAge.ToString("yyyy/MM/dd"),
+                                c.CAddress,
+                                c.CPhone,
+                                c.CEmail,
+                                c.CPassword,
+                                c.CBlackList,
+                                c.CDeposit,
+                            };
+                return Json(table);
             }
             else if (str == "male")
             {
-                table = from c in db.TMembers where c.CGender == "男" select c;
+                var table = from c in db.TMembers where c.CGender == "男"
+                            select new
+                            {
+                                c.CMemberId,
+                                c.CPicture,
+                                c.CName,
+                                c.CGender,
+                                cAge = c.CAge.ToString("yyyy/MM/dd"),
+                                c.CAddress,
+                                c.CPhone,
+                                c.CEmail,
+                                c.CPassword,
+                                c.CBlackList,
+                                c.CDeposit,
+                            };
+                return Json(table);
             }
             else if(str== "female")
             {
-                table = from c in db.TMembers where c.CGender == "女" select c;              
+                var table  = from c in db.TMembers where c.CGender == "女"
+                             select new
+                             {
+                                 c.CMemberId,
+                                 c.CPicture,
+                                 c.CName,
+                                 c.CGender,
+                                 cAge = c.CAge.ToString("yyyy/MM/dd"),
+                                 c.CAddress,
+                                 c.CPhone,
+                                 c.CEmail,
+                                 c.CPassword,
+                                 c.CBlackList,
+                                 c.CDeposit,
+                             };
+                return Json(table);
             }
             else if(str== "deposit")
             {
-                table = from c in db.TMembers where c.CDeposit > 0 select c;
+                var table  = from c in db.TMembers where c.CDeposit > 0
+                             select new
+                             {
+                                 c.CMemberId,
+                                 c.CPicture,
+                                 c.CName,
+                                 c.CGender,
+                                 cAge = c.CAge.ToString("yyyy/MM/dd"),
+                                 c.CAddress,
+                                 c.CPhone,
+                                 c.CEmail,
+                                 c.CPassword,
+                                 c.CBlackList,
+                                 c.CDeposit,
+                             };
+                return Json(table);
             }
             else if(str== "Undeposited")
             {
-                table = from c in db.TMembers where c.CDeposit == 0 select c;
+               var table = from c in db.TMembers where c.CDeposit == 0
+                           select new
+                           {
+                               c.CMemberId,
+                               c.CPicture,
+                               c.CName,
+                               c.CGender,
+                               cAge = c.CAge.ToString("yyyy/MM/dd"),
+                               c.CAddress,
+                               c.CPhone,
+                               c.CEmail,
+                               c.CPassword,
+                               c.CBlackList,
+                               c.CDeposit,
+                           };
+                return Json(table);
             }
             else
             {
-                table = from p in db.TMembers
-                        where p.CName.Contains(str)   //???????
-                        select p;
+              var  table = from c in db.TMembers
+                        where c.CName.Contains(str)   //???????
+                           select new
+                           {
+                               c.CMemberId,
+                               c.CPicture,
+                               c.CName,
+                               c.CGender,
+                               cAge = c.CAge.ToString("yyyy/MM/dd"),
+                               c.CAddress,
+                               c.CPhone,
+                               c.CEmail,
+                               c.CPassword,
+                               c.CBlackList,
+                               c.CDeposit,
+                           };
+                return Json(table);
             }
-            if (table != null) //?????
-            {
-                foreach(TMember x in table)
-                {
-                    member.Add(new MemberManagementViewModel(x));
-                }
-            }
-            return Json(member);
+            
         }
         //以上新增圖片
         private IHostingEnvironment iv_host;
@@ -96,7 +167,7 @@ namespace BuyFood_Template.Controllers
                     newMember.image.CopyTo(photo);
                 }
             }            
-            newMember.CPicture = @"~/MemberPhoto/" + photoName;
+            newMember.CPicture = @"/MemberPhoto/" + photoName;
 
             db.TMembers.Add(newMember.member);
             db.SaveChanges();
@@ -117,6 +188,16 @@ namespace BuyFood_Template.Controllers
         [HttpPost]
         public IActionResult Edit(MemberManagementViewModel p)
         {
+            string photoName = Guid.NewGuid().ToString() + ".jpg";
+            if (p.image != null)
+            {
+                using (var photo = new FileStream(iv_host.WebRootPath + @"\MemberPhoto\" + photoName, FileMode.Create))
+                {
+                    p.image.CopyTo(photo);
+                }
+            }
+            p.CPicture = @"/MemberPhoto/" + photoName;
+
             if (p != null)
             {                       
                 TMember table = db.TMembers.FirstOrDefault(t => t.CMemberId == p.CMemberId);
@@ -130,7 +211,9 @@ namespace BuyFood_Template.Controllers
                     table.CAddress = p.CAddress;
                     table.CBlackList = p.CBlackList;
                     table.CDeposit = p.CDeposit;
-                    table.CPicture = p.CPicture;
+                    table.CAge = p.CAge;
+                    table.CPicture = p.CPicture;  //←要存改照片的話就解開
+                    //table.CRegisteredTime = DateTime.Now; //加註冊時間進資料庫
                     db.SaveChanges();
                 }
             }            
@@ -146,23 +229,17 @@ namespace BuyFood_Template.Controllers
         }
         
         public JsonResult detail(int? id)
-        {            
-            //var table = from o in db.TOrders
-            //            join m in db.TOrderStatuses on o.CMemberId equals id
-            //            select new { CArrivedAddress = o.CArrivedAddress, cOrderDate = o.COrderDate, cTransportMinute = o.CTransportMinute, cOrderStatusName = m.COrderStatusName };
-
-            var table = from o in db.TOrders
+        {                      
+            var table = from o in db.TOrders                         
                         join m in db.TMembers on o.CMemberId equals m.CMemberId
                         where m.CMemberId==id
-                        select new { CArrivedAddress = o.CArrivedAddress, cOrderDate = o.COrderDate, cTransportMinute = o.CTransportMinute, cPicture = m.CPicture };
-            //var table = db.TOrders.Where(n => n.CMemberId == id)
+                        select new {cOrderId=o.COrderId,CArrivedAddress = o.CArrivedAddress, cOrderDate = o.COrderDate, cTransportMinute = o.CTransportMinute,
+                            cName = m.CName};
+          
             return Json(table);
         }
 
-        public IActionResult Getemail()
-        {
-            return View();
-        }
+
         public ActionResult GetImage(int? id)
         {
             //參考網址 https://kevintsengtw.blogspot.com/2013/10/aspnet-mvc-image.html
