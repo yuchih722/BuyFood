@@ -79,10 +79,10 @@
     @*<div id="preloder">
             <div class="loader"></div>
         </div>*@
-    <div style="width:100%; height :800px;transition:all 1s;text-align:center">
+    <div id="cwc_i_div_wholeDiv" style="width:100%; height :800px;transition:all 1s;text-align:center">
         <div id="cwc_i_div_body" style="width:350px;height:inherit;transition:all 1s;display:inline-block">
 
-            <div class="container" style=" width: 350px; height: 650px; background-color: #F3F6FA; margin-top: 50px; float: left; transition: all .5s">
+            <div id="cwc_i_div_bodyLeft" class="container" style=" width: 350px; height: 650px; background-color: #F3F6FA; margin-top: 50px; float: left; transition: all .5s">
 
                 <div id="cwc_div_ProfilePhoto" class="row justify-content-center" style="width:inherit; padding-right:0px">
                     <img id="cwc_img_ProfilePhoto" style="border-radius: 50%;width:200px;height:200px;margin-top:20px;margin-bottom:10px" src="@ViewBag.userPhoto" alt="圓形圖" />
@@ -121,7 +121,27 @@
                         <button id="cwc_Coupon" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showCoupon(@Model.CMemberId)">優惠券</button>
                         <button id="cwc_Review" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showReport(@Model.CMemberId)">個人消費報表檢視</button>
                         <button id="cwc_QRcode" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showQRcode(@Model.CMemberId)">邀請好友</button>
-                        <button id="cwc_changePassword" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_changePassword(@Model.CMemberId)">修改密碼</button>
+                        <button id="cwc_Password" class="list-group-item list-group-item-action" onclick="cwc_showChangPassword()">修改密碼</button>
+                        <div id="aaa" style="display: none ; transition: all .5s">
+                            <div style="margin:10px">
+                                <lable style="margin-left:20px; font-size:15px">原始密碼 :</lable><input type="password" style="margin-left:36px; font-size:13px">
+                            </div>
+                            <div style="margin:10px">
+                                <lable style="margin-left:20px; font-size:15px">新密碼 :</lable><input id="password" type="password" style="margin-left:52px; font-size:13px">
+                            </div>
+                            <div style="height:45px">
+                                <span style="font-size:10px">((1.不可空白 , 2.至少6個字且必須包含英文字母+數字)</span>
+                                <label style="color:red; font-size:10px" id="Wrongpassword"></label>
+                            </div>
+                            <div style="margin:10px">
+                                <lable style="margin-left:20px; font-size:15px">確認新密碼 :</lable><input id="checkPassword" type="password" style="margin-left:20px; font-size:13px">
+                            </div>
+                            <div style="height:20px">
+                                <label style="color: red; font-size:10px" id="WrongCheckpassword"></label>
+                            </div>
+                            <button id="cwc_i_btn_pscSave" class="btn btn-success btn-sm" style="margin:10px" onclick="cwc_savePassword(@Model.CMemberId)">確認</button>
+                            <button id="cwc_i_btn_pscCancel" class="btn btn-success btn-sm" style="margin:10px">取消</button>
+                        </div>
                         <button id="cwc_logout" class="list-group-item list-group-item-action" style="display:inline;" onclick="cwc_logout()">登出</button>
                         <button id="cwc_logout" class="list-group-item list-group-item-action" style="display:inline;" onclick="test()">測試</button>
 
@@ -142,6 +162,10 @@
             function () {
                 $("#cwc_i_div_body").css("width", "100%");
                 $(".cwc_c_div_show").css("width", "auto");
+                $("#aaa").css("display", "none");
+                $("#cwc_i_div_bodyLeft").css("height", "650px");
+                $("#content_cwc").css("height", "650px");
+                $("#cwc_i_div_wholeDiv").css("height", "800px");
             });
     </script>
 
@@ -149,12 +173,23 @@
     <script type="text/javascript" src="~/cwc/cwc_Coupon.js"></script>
     <script type="text/javascript" src="~/cwc/cwc_Deposit.js"></script>
     <script type="text/javascript" src="~/cwc/cwc_Profile.js"></script>
+    <script type="text/javascript" src="~/cwc/CheckPassword.js"></script>
 
 
     <script>
         function test() {
             window.location.href = "/Member/test"
         }
+
+
+        function cwc_showChangPassword() {
+            $("#aaa").css("display", "block");
+            $("#cwc_i_div_bodyLeft").css("height", "800px");
+            $("#content_cwc").css("height", "800px");
+            $("#cwc_i_div_wholeDiv").css("height", "950px");
+        }
+
+
         function updateData(memberID) {
             $.ajax({
                 url: `/Member/updateMemberCenter?id=${memberID}`,
@@ -198,19 +233,32 @@
                     $("#head_cwc").html("");
                     var content = `<div>` + data[0] + `</div>` +
                         `<div>
-                                <span>邀請連結 :</span><span>${data[1]}</span>
-                                <div type="button" class="btn btn-outline-dark btn-sm" >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
-                                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
-                                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
-                                </svg></div></div>
-                              <img src="http://www.funcode-tech.com/Encoder_Service/img.aspx?custid=1&username=public&codetype=QR&EClevel=0&data=${data[1]}" width="300"/>`
+                                        <span>邀請連結 :</span><span id="cwc_span_urlRe">${data[1]}</span>
+                                        <div id="cwc_btn_copyurlRe" class="btn btn-outline-dark btn-sm" onclick="copy('cwc_span_urlRe')" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
+                                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                                        </svg></div></div>
+                                      <img src="http://www.funcode-tech.com/Encoder_Service/img.aspx?custid=1&username=public&codetype=QR&EClevel=0&data=${data[1]}" width="300"/>`
                     $("#content_cwc").html(content);
                 }
             })
         }
+
+        function copy(tid) {
+            var target = document.createRange();
+            target.selectNode(document.getElementById(tid));
+            var selectContent = window.getSelection();
+            selectContent.removeAllRanges();
+            selectContent.addRange(target);
+            document.execCommand("copy");
+
+            alert(`已成功複製 : ${$(`#${tid}`).html()}`);
+
+        }
+
     </script>
-    
+
 
 </body>
 

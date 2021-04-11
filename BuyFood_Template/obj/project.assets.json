@@ -8683,28 +8683,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\alway\\.nuget\\packages\\": {}
+    "C:\\Users\\alway\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
-      "projectUniqueName": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
+      "projectUniqueName": "D:\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
       "projectName": "BuyFood_Template",
-      "projectPath": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
+      "projectPath": "D:\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
       "packagesPath": "C:\\Users\\alway\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\obj\\",
-=======
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj",
-      "projectName": "BuyFood_Template",
-      "projectPath": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\BuyFood_Template.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\BuyFood\\BuyFood_Template\\obj\\",
->>>>>>> 8d0813fd959ce6d63ece62036137d0986d17c942
+      "outputPath": "D:\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
         "C:\\Users\\alway\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -8773,17 +8770,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
       }
     }
-<<<<<<< HEAD
   },
   "logs": [
     {
       "code": "Undefined",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "讀取快取檔案 C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\obj\\project.nuget.cache 時發生問題: Invalid property identifier character: <. Path 'version', line 3, position 0."
+      "message": "讀取快取檔案 D:\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\obj\\project.nuget.cache 時發生問題: Invalid property identifier character: <. Path 'version', line 3, position 0."
     }
   ]
-=======
-  }
->>>>>>> 8d0813fd959ce6d63ece62036137d0986d17c942
 }
