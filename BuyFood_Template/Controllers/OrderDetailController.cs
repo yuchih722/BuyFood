@@ -112,7 +112,7 @@ namespace BuyFood_Template.Controllers
             var TransPortTIme = db.TOrders.Where(n => n.COrderId == OrderID).Select(n => n.CTransportMinute).FirstOrDefault().GetValueOrDefault();
             var getTimeOfArrival = TimeOfSalir.AddMinutes(TransPortTIme);
             //===比較時間
-            //todo 儲存時間
+ 
             DateTime dtNow = DateTime.Now;
             if (dtNow >= getTimeOfArrival)
             {
