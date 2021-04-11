@@ -326,13 +326,13 @@
 
         //Disable send button until connection is established
         document.getElementById("sendButtonMessage").disabled = true;
-
+            var 自己連續發言旗桿 = 0;
 
 
 
 
         connection.on("ReceiveMessage", function (user, message) {
-            console.log("以連接");
+            //console.log("已連接");
 
             var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
             var when = new Date().toLocaleTimeString();
@@ -356,8 +356,9 @@
                 PictureForMessage = $("#user_foto").val();
             }
 
-            console.log(PictureForMessage);
-                    $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
+            if (自己連續發言旗桿 == 0)
+            {
+                $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
                     <div class="chat_user_avatar">
                             <img   src="${PictureForMessage}" class="md-user-image">
                     </div>
@@ -365,14 +366,19 @@
                     </ul>
                 </div>`);
 
-            $("ul.messagesListForClient:eq(-1)").append(li);
+                $("ul.messagesListForClient:eq(-1)").append(li);
+                自己連續發言旗桿 = 1;
+            }
+            if (自己連續發言旗桿 == 1) {
+                $("ul.messagesListForClient:eq(-1)").append(li);
+            }
         });
 
         connection.start().then(function () {
             document.getElementById("sendButtonMessage").disabled = false;
-            console.log("已經可以點了");
+            //console.log("已經可以點了");
         }).catch(function (err) {
-            console.log("壞掉惹");
+            //console.log("壞掉惹");
             return console.error(err.toString());
         });
 
@@ -380,7 +386,7 @@
             var user = "@UserLoginNameForPage";
             var message = document.getElementById("messageInput").value;
             connection.invoke("SendMessage", user, message).catch(function (err) {
-                console.log("壞掉了2");
+                //console.log("壞掉了2");
                 return console.error(err.toString());
             });
             event.preventDefault();
