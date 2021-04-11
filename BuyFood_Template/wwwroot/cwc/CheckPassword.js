@@ -1,7 +1,10 @@
-﻿document.getElementById("password").onblur = checkPwd
-document.getElementById("checkPassword").onblur = checkCheckPassword
-let flagCheckpwd = false, flagCheckCheckpwd = false, flagCheckEmail = false;
+﻿document.getElementById("password").onblur = checkPwd;
+document.getElementById("checkPassword").onblur = checkCheckPassword;
+let flagCheckpwd = false;
+let flagCheckCheckpwd = false;
 
+console.log(flagCheckCheckpwd);
+console.log(flagCheckpwd);
 
 function checkPwd() {
     let pwdObj = document.getElementById("password");
@@ -49,4 +52,25 @@ function checkCheckPassword() {
         spObj.innerHTML = "密碼確認相同";
         flagCheckCheckpwd = true;
     }
+}
+
+function cwc_savePassword(memberID) {
+    if (!flagCheckpwd)
+        return alert("新密碼輸入有誤");
+    if (!flagCheckCheckpwd)
+        return alert("新密碼確認錯誤");
+    var oPassword = $("#cwc_orP").val();
+    var nPassword = $("#password").val();
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/Member/savePassword",
+        data: JSON.stringify({ "memberID": `${memberID}`, "oPassword": `${oPassword}`, "nPassword": `${nPassword}` }),
+        success: function (data) {
+            if (data == "1")
+                return alert("密碼錯誤，請重新輸入。");
+            return alert("變更成功")
+        }
+    })
 }

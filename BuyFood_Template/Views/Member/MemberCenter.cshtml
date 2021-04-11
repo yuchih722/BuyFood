@@ -124,7 +124,7 @@
                         <button id="cwc_Password" class="list-group-item list-group-item-action" onclick="cwc_showChangPassword()">修改密碼</button>
                         <div id="aaa" style="display: none ; transition: all .5s">
                             <div style="margin:10px">
-                                <lable style="margin-left:20px; font-size:15px">原始密碼 :</lable><input type="password" style="margin-left:36px; font-size:13px">
+                                <lable style="margin-left:20px; font-size:15px">原始密碼 :</lable><input id="cwc_orP" type="password" style="margin-left:36px; font-size:13px">
                             </div>
                             <div style="margin:10px">
                                 <lable style="margin-left:20px; font-size:15px">新密碼 :</lable><input id="password" type="password" style="margin-left:52px; font-size:13px">
@@ -162,11 +162,8 @@
             function () {
                 $("#cwc_i_div_body").css("width", "100%");
                 $(".cwc_c_div_show").css("width", "auto");
-                $("#aaa").css("display", "none");
-                $("#cwc_i_div_bodyLeft").css("height", "650px");
-                $("#content_cwc").css("height", "650px");
-                $("#cwc_i_div_wholeDiv").css("height", "800px");
             });
+
     </script>
 
     <script type="text/javascript" src="~/cwc/cwc_Combo.js"></script>
@@ -181,14 +178,29 @@
             window.location.href = "/Member/test"
         }
 
+        var cwc_bool_showchangePassword = false;
 
         function cwc_showChangPassword() {
-            $("#aaa").css("display", "block");
-            $("#cwc_i_div_bodyLeft").css("height", "800px");
-            $("#content_cwc").css("height", "800px");
-            $("#cwc_i_div_wholeDiv").css("height", "950px");
+            if (!cwc_bool_showchangePassword) {
+                $("#aaa").css("display", "block");
+                $("#cwc_i_div_bodyLeft").css("height", "800px");
+                $("#content_cwc").css("height", "800px");
+                $("#cwc_i_div_wholeDiv").css("height", "950px");
+                cwc_bool_showchangePassword = true;
+            }
+            else {
+                $("#aaa").css("display", "none");
+                $("#cwc_i_div_bodyLeft").css("height", "650px");
+                $("#content_cwc").css("height", "650px");
+                $("#cwc_i_div_wholeDiv").css("height", "800px");
+                $("#cwc_orP").attr("value", "");
+                $("#password").attr("value", "");
+                $("#checkPassword").attr("value", "");
+                cwc_bool_showchangePassword = false;
+            }
         }
 
+  
 
         function updateData(memberID) {
             $.ajax({

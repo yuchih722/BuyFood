@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static BuyFood_Template.ViewModels.forReceiveJson;
 
 namespace BuyFood_Template.Controllers
 {
@@ -70,6 +72,26 @@ namespace BuyFood_Template.Controllers
 
             return Json(issueCombo);
         }
+
+
+        [HttpPost]
+        public string savePassword([FromBody]changePassword data)
+        {
+            擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
+            TMember reviseTarget = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(data.memberID));
+
+            ShareFunction sf = new ShareFunction();
+            SHA1 sha1 = SHA1.Create();
+            string SHAoPassword = sf.GetHash(sha1, data.oPassword);
+            string SHAnPassword = sf.GetHash(sha1, data.nPassword);
+
+            if (SHAoPassword != reviseTarget.CPassword)
+                return "1";
+            reviseTarget.CPassword = SHAnPassword;
+            dbcontext.SaveChanges();
+            return "0";
+        }
+
 
         [HttpPost]
         public JsonResult saveProfile([FromBody] TMember member)
