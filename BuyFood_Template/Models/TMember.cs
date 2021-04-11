@@ -13,14 +13,13 @@ namespace BuyFood_Template.Models
             TChatRooms = new HashSet<TChatRoom>();
             TCupons = new HashSet<TCupon>();
             TDeposits = new HashSet<TDeposit>();
-            TFavoriteLists = new HashSet<TFavoriteList>();
             TLoginRecords = new HashSet<TLoginRecord>();
             TOrders = new HashSet<TOrder>();
         }
 
         public int CMemberId { get; set; }
         public string CName { get; set; }
-        public DateTime? CAge { get; set; }
+        public DateTime CAge { get; set; }
         public string CEmail { get; set; }
         public string CPassword { get; set; }
         public string CGender { get; set; }
@@ -39,7 +38,6 @@ namespace BuyFood_Template.Models
         public virtual ICollection<TChatRoom> TChatRooms { get; set; }
         public virtual ICollection<TCupon> TCupons { get; set; }
         public virtual ICollection<TDeposit> TDeposits { get; set; }
-        public virtual ICollection<TFavoriteList> TFavoriteLists { get; set; }
         public virtual ICollection<TLoginRecord> TLoginRecords { get; set; }
         public virtual ICollection<TOrder> TOrders { get; set; }
     }

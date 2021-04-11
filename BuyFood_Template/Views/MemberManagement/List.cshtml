@@ -1,9 +1,9 @@
-﻿@model IEnumerable<BuyFood_Template.ViewModel.MemberManagementViewModel>
-<link href="~/assets/NEW CSS/NEWCSS.css" rel="stylesheet" />
-<link href="~/assets/NEW CSS/page.css" rel="stylesheet" />
-@{
+﻿@{
     Layout = "_LayoutAd";
 }
+@model IEnumerable<BuyFood_Template.ViewModel.MemberManagementViewModel>
+<link href="~/assets/NEW CSS/NEWCSS.css" rel="stylesheet" />
+<link href="~/assets/NEW CSS/page.css" rel="stylesheet" />
 
 <div class="box-module">
     <div class="box-title">會員分類</div>
@@ -64,8 +64,10 @@
     <div id="member">
 
 
+
     </div>
 </div>
+
 <!-- BEGIN PAGA BACKDROPS-->
 <div class="sidenav-backdrop backdrop"></div>
 <div class="preloader-backdrop">
@@ -86,48 +88,52 @@
                         <table class="table table-hover table_striped table-bordered border" id="myTable">
                             <thead>
                                 <tr>
-                                    <th width="10px">
+                                    <th class="align" width="10px">
                                         <label class="ui-checkbox">
                                             <input type="checkbox" id="chElt" onclick="checkOrCancelAll();" value=""></input>
                                             <span class="input-span"></span>
                                         </label>
                                     </th>
-                                    <th class="align" width="10%">會員姓名</th>
-                                    <th class="align" width="15%">EMAIL帳號</th>
-                                    <th class="align" width="10%">密碼</th>
+                                    <th class="align" width="6%">會員照片</th>
+                                    <th class="align" width="7%">會員姓名</th>
                                     <th class="align" width="5%">姓別</th>
-                                    <th class="align" width="15%">地址</th>
-                                    <th class="align" width="7%">黑名單</th>
+                                    <th class="align" width="6%">生日</th>
+                                    <th class="align" width="8%">地址</th>
+                                    <th class="align" width="8%">電話</th>
+                                    <th class="align" width="10%">EMAIL帳號</th>
+                                    <th class="align" width="5%">密碼</th>
+                                    <th class="align" width="6%">黑名單</th>
                                     <th class="align" width="10%">儲值餘額</th>
-                                    <th class="align" width="10%">電話</th>
-                                    <th class="align" width="25%">編輯</th>
+                                    <th class="align" width="20%">編輯</th>
                                 </tr>
                             </thead>
                           <tbody>`
                 for (let i = 0; i <= data.length - 1; i++) {
                     txttable +=
                         `<tr style="text-align:center">
-                                    <td style="vertical-align: middle;">
-                                        <label class="ui-checkbox">
-                                        <input id="checkdelete" value="${data[i].cMemberId}" type="checkbox" name="interest"></input>
-                                            <span class="input-span"></span>
-                                        </label>
-                                    </td>
-                                    <td style="vertical-align: middle;">${data[i].cName}</td>
-                                    <td>${data[i].cEmail}</td>
-                                    <td>${data[i].cPassword}</td>
-                                    <td style="vertical-align: middle;">${data[i].cGender}</td>
-                                    <td style="vertical-align: middle;">${data[i].cAddress}</td>
-                                    <td style="vertical-align: middle;">${data[i].cBlackList}</td>
-                                    <td style="vertical-align: middle;">${data[i].cDeposit}</td>
-                                    <td style="vertical-align: middle;">${data[i].cPhone}</td>
+                            <td style="vertical-align: middle;">
+                                <label class="ui-checkbox">
+                                    <input id="checkdelete" value="${data[i].cMemberId}" type="checkbox" name="interest"></input>
+                                    <span class="input-span"></span>
+                                </label>
+                            </td>
+                            <td><img src="${data[i].cPicture}" /></td>
+                            <td style="vertical-align: middle;">${data[i].cName}</td>
+                            <td style="vertical-align: middle;">${data[i].cGender}</td>
+                            <td style="vertical-align: middle;">${data[i].cAge}</td>
+                            <td style="vertical-align: middle;">${data[i].cAddress}</td>
+                            <td style="vertical-align: middle;">${data[i].cPhone}</td>
+                            <td style="vertical-align: middle;">${data[i].cEmail}</td>
+                            <td style="vertical-align: middle;">${data[i].cPassword}</td>
+                            <td style="vertical-align: middle;">${data[i].cBlackList}</td>
+                            <td style="vertical-align: middle;">${data[i].cDeposit}</td>
 
-                                    <td style="vertical-align: middle;">
-                                        <a class="btn btn-outline-success" href="/MemberManagement/Edit?id=${data[i].cMemberId}"><i class="fa fa-pencil font-18">修改</i></a>
-                                        <a class="btn btn-outline-danger" href="/MemberManagement/Delete?id=${data[i].cMemberId}" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-trash font-18">刪除</i></a>
-                                        <button class="btn btn-outline-info" onclick="order(${data[i].cMemberId})"><i class="fa fa-edit font-18">詳細</i></button>
+                            <td style="vertical-align: middle;">
+                            <a class="btn btn-outline-success" href="/MemberManagement/Edit?id=${data[i].cMemberId}"><i class="fa fa-pencil font-18">修改</i></a>
+                            <a class="btn btn-outline-danger" href="/MemberManagement/Delete?id=${data[i].cMemberId}" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-trash font-18">刪除</i></a>
+                            <button class="btn btn-outline-info" onclick="order(${data[i].cMemberId})"><i class="fa fa-edit font-18">訂單明細</i></button>
                                     </td>
-                                </tr>`
+                                </tr >`
                 }
                 txttable += ` </tbody >
                         </table >
@@ -209,6 +215,7 @@
         }
     };
 
+
     //全選刪除
     //function deletemore() {
     //    var checked = $("#myTable input[type=checkbox]:checked");
@@ -223,59 +230,38 @@
     //        });
     //    }
     //}
+
     function order(str) {
         $.ajax({
             url: `/MemberManagement/detail?id=${str}`,
             type: "POST",
             success: function (data) {
                 console.log(data)
-
                 var txttable = "";
                 txttable +=
-                    //`<img src="..\MemberPhoto\60afcb87-81c0-44b9-b570-115da8a65228.jpg">
                     `<div>
-                        <table class="table table-hover table_striped table-bordered border" id="table">
-                            <thead>
-                                <tr>
-                                    <th class="align">
-                                        訂單地址
-                        </th>
-                                    <th class="align">
-                                        訂單日期
-                        </th>
-                                    <th class="align">
-                                        運送時間
-                        </th>
-                                    <th class="align">
-                                        訂單狀態
-                        </th>
-                                    <th class="align">
-                                        會員照片
-                        </th>
-                                </tr>
-                            </thead>
-                    <tbody>`
+                    <table class="table table-hover table_striped table-bordered border" id="table">
+                        <thead>
+                            <tr>
+                                <th class="align">會員姓名</th>
+                                <th class="align">訂單編號</th>
+                                <th class="align">訂單地址</th>
+                                <th class="align">訂單日期</th>
+                                <th class="align">運送時間</th>
+                            </tr>
+                        </thead>
+                        <tbody>`
+
                 for (let i = 0; i <= data.length - 1; i++) {
                     txttable +=
                         `<tr>
-                            <td>
-                                ${data[i].cArrivedAddress}
-                            </td>
-                            <td>
-                                ${data[i].cOrderDate}
-                            </td>
-                            <td>
-                                ${data[i].cTransportMinute}
-                            </td>
-                            <td>
-                                ${data[i].cOrderStatusName}
-                            </td>
-                             <td>
-                                <img src="${data[i].cPicture}"/>
-                            </td>
+                        <td>${data[i].cName}</td>
+                        <td>${data[i].cOrderId}</td>
+                        <td>${data[i].cArrivedAddress}</td>
+                        <td>${data[i].cOrderDate}</td>
+                        <td>${data[i].cTransportMinute}</td>
                         </tr>`
                 }
-
                 txttable +=
                     `</tbody>
                 </table>
