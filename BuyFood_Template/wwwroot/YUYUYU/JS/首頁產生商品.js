@@ -35,6 +35,7 @@ $(function () {
                 }
                 $("#many_products").append(products);
             }
+
             $('.featured__controls li').on('click', function () {
 
                 $('.featured__controls li').removeClass('active');
