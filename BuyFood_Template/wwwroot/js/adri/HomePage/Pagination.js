@@ -21,6 +21,10 @@ function addCart(obj_product) {
         window.location.assign("/ShoppingCart/CurrentCartItem");
         return;
     }
+    if (obj_product.cQuantity <=0 || obj_product.cIsOnSaleId != 1) {
+        window.alert("此商品目前已售完，請稍後");
+        return;
+    }
     if (localStorage.getItem(users_cart_No)) {
         let pdtindex = isExist(obj_product.cProductId);
         if (pdtindex != -1) {
