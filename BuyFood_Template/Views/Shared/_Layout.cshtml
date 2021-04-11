@@ -53,6 +53,8 @@
             </div>
             @{ var userID = Context.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);}
             <input type="text" id="user_member" style="display:none" value="@userID" />
+            @{ var UserPictureForMessage = Context.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);}
+            <input type="text" id="user_foto" style="display:none" value="@UserPictureForMessage" />
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
@@ -283,7 +285,7 @@
             <div class="uk-input-group" style="width:100%;">
                 <div class="gurdeep-chat-box" style="width:100%">
                     <input type="text" placeholder="請輸入訊息" id="messageInput" name="submit_message" class="md-input" style="width:80%">
-                    <button class="btn btn-light" id="sendButton" style="padding:0;height:100%;width:10%;margin-left:10px;" ><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                    <button class="btn btn-light" id="sendButtonMessage" style="padding:0;height:100%;width:10%;margin-left:10px;" ><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </div>
             </div>
         </div>
@@ -323,14 +325,14 @@
         var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
         //Disable send button until connection is established
-        document.getElementById("sendButton").disabled = true;
-
+        document.getElementById("sendButtonMessage").disabled = true;
+            var 自己連續發言旗桿 = 0;
 
 
 
 
         connection.on("ReceiveMessage", function (user, message) {
-            console.log("以連接");
+            //console.log("已連接");
 
             var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
             var when = new Date().toLocaleTimeString();
@@ -345,19 +347,18 @@
 
             });
 
-
-
-            var PictureForMessage = "";
+           
+                       var PictureForMessage = "";
             if (user == '管理員') {
-                PictureForMessage = 'src = "img/adrChatRoom/adm2.jpg" class="md-user-image" >';
-
+                PictureForMessage = `img/adrChatRoom/adm2.jpg`;
             }
             else {
-                PictureForMessage = 'src = "img/adrChatRoom/Customer_Icon.jpg" class="md-user-image">';
+                PictureForMessage = $("#user_foto").val();
             }
 
-
-                    $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
+            if (自己連續發言旗桿 == 0)
+            {
+                $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
                     <div class="chat_user_avatar">
                             <img   src="${PictureForMessage}" class="md-user-image">
                     </div>
@@ -365,22 +366,27 @@
                     </ul>
                 </div>`);
 
-
+                $("ul.messagesListForClient:eq(-1)").append(li);
+                自己連續發言旗桿 = 1;
+            }
+            if (自己連續發言旗桿 == 1) {
+                $("ul.messagesListForClient:eq(-1)").append(li);
+            }
         });
 
         connection.start().then(function () {
-            document.getElementById("sendButton").disabled = false;
-            console.log("已經可以點了");
+            document.getElementById("sendButtonMessage").disabled = false;
+            //console.log("已經可以點了");
         }).catch(function (err) {
-            console.log("壞掉惹");
+            //console.log("壞掉惹");
             return console.error(err.toString());
         });
 
-        document.getElementById("sendButton").addEventListener("click", function (event) {
+            document.getElementById("sendButtonMessage").addEventListener("click", function (event) {
             var user = "@UserLoginNameForPage";
             var message = document.getElementById("messageInput").value;
             connection.invoke("SendMessage", user, message).catch(function (err) {
-                console.log("壞掉了2");
+                //console.log("壞掉了2");
                 return console.error(err.toString());
             });
             event.preventDefault();
@@ -444,6 +450,7 @@
         $.ajax({
             url: "/HomePage/BCheckLogin",
             type: "POST",
+            async: false,
             success: function (data) {
                 if (data == true) {
                     @*var aa = "@UserLoginImgForPage";
