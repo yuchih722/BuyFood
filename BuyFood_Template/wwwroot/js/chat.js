@@ -5,8 +5,7 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
 //Disable send button until connection is established
 document.getElementById("sendButton").disabled = true;
-var 自己有沒有連續留言 = 0;
-var 對方有沒有連續留言 = 0;
+
 
 
 

@@ -133,7 +133,7 @@ aside {
     background-attachment: fixed;
     background-clip: border-box;
     background-color: rgba(0, 0, 0, 0);
-    background-image: url("https://z-1-scontent-cdg2-1.xx.fbcdn.net/hphotos-xpt1/v/t1.0-9/12670232_624826600991767_3547881030871377118_n.jpg?oh=b4541268dfcdc6c8b2758066dba9c0c7&oe=572DDCE7");
+/*    background-image: url("https://z-1-scontent-cdg2-1.xx.fbcdn.net/hphotos-xpt1/v/t1.0-9/12670232_624826600991767_3547881030871377118_n.jpg?oh=b4541268dfcdc6c8b2758066dba9c0c7&oe=572DDCE7");*/
     background-origin: padding-box;
     background-position: center top;
     background-repeat: repeat;
@@ -223,14 +223,17 @@ img {
     text-decoration: none !important;
     text-transform: uppercase;
 }
+
 open-btn:active {
     background-color: black;
 }
+
 open-btn:focus {
     background-color: black;
 }
-open-btn:hover{
-    background-color:black;
+
+open-btn:hover {
+    background-color: black;
 }
 
 .chat_box .chat_message_wrapper ul.chat_message > li {

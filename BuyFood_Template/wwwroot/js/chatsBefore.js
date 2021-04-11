@@ -1,4 +1,6 @@
 ﻿function chatsBefore(MemberNameLogin) {
+    var 自己有沒有連續留言 = 0;
+    var 對方有沒有連續留言 = 0;
 
     $.ajax({
         url: "/adChatRoom/ListMessages",
