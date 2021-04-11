@@ -1,25 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "D:\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj": {}
+    "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj": {}
   },
   "projects": {
-    "D:\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj": {
+    "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
+        "projectUniqueName": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
         "projectName": "BuyFood_Template",
-        "projectPath": "D:\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
+        "projectPath": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
         "packagesPath": "C:\\Users\\alway\\.nuget\\packages\\",
-        "outputPath": "D:\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\obj\\",
+        "outputPath": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
           "C:\\Users\\alway\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"

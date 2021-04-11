@@ -11,6 +11,8 @@
 
 
     <!-- Css Styles -->
+
+
     <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/elegant-icons.css" type="text/css">
@@ -19,8 +21,8 @@
     <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/style.css" type="text/css">
-    <link rel="stylesheet" href="~/css/chatRoom.css" type="text/css">
     <link rel="stylesheet" href="~/css/yao/shopping-cart-Yao.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="~/css/chatRoom.css">
 </head>
 <body>
 
@@ -51,6 +53,8 @@
             </div>
             @{ var userID = Context.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);}
             <input type="text" id="user_member" style="display:none" value="@userID" />
+            @{ var UserPictureForMessage = Context.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);}
+            <input type="text" id="user_foto" style="display:none" value="@UserPictureForMessage" />
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
@@ -243,7 +247,7 @@
     </footer>
     <!-- Footer Section End -->
     <div class="round hollow  fixed-bottom    end-0" style="width:50%">
-        <a id="addClass"><button class="open-btn"><i class="fa fa-whatsapp" aria-hidden="true"> </i>聯絡客服</button></a>
+        <button class="open-btn"  id="addClass"><i class="fa fa-whatsapp" aria-hidden="true"> </i>聯絡客服</button>
     </div>
     @*聊天室窗*@
 
@@ -251,22 +255,13 @@
 
         <div class="popup-head">
             <div class="popup-head-left pull-left">
-                <a Design and Developmenta title="Gurdeep Osahan (Web Designer)" target="_blank">
-                    <img class="md-user-image" alt="管理員" title="管理員" src="~/img/adrChatRoom/adm2.jpg" title="管理員" alt="管理員">
+
+                    <img class="md-user-image" alt="管理員" title="管理員" src="~/img/adrChatRoom/adm2.jpg"  >
                     <h1>客服聯絡視窗</h1><small><br> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>BuyFood管理員</small>
-                </a>
+
             </div>
             <div class="popup-head-right pull-right">
-                <div class="btn-group gurdeepoushan">
-                    <ul role="menu" class="dropdown-menu pull-right">
-                        <li><a href="#"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Photo</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Video</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-headphones" aria-hidden="true"></span> Audio</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Location</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Contact</a></li>
-                    </ul>
-                </div>
+
 
                 <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" style="background-color:white;" type="button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
@@ -275,54 +270,131 @@
                 </button>
             </div>
         </div>
-
-        @*聊天室開始標籤*@
-        <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
-            <div class="chat_box touchscroll chat_box_colors_a" id="chatStartPoint">
-
-
-            </div>
-        </div>@*聊天室內容*@
+    @*聊天室開始標籤*@
+    <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
+        <div class="chat_box touchscroll chat_box_colors_a" id="chatStartPoint">
 
 
+        </div>
+    </div>
+    @*聊天室內容*@
 
-        <div class="chat_submit_box">
-            <div class="uk-input-group">
-                <div class="gurdeep-chat-box">
-                    <span style="vertical-align: sub;" class="uk-input-group-addon">
-                        <a><i class="fa fa-smile-o"></i></a>
-                    </span>
-                    <input type="text" placeholder="請輸入訊息" id="messageInput" name="submit_message" class="md-input">
-                    <input type="button" class="btn btn-light" id="sendButton" style="padding:0;height:100%" value="送出" />
+
+
+    <div class="chat_submit_box" style="padding:5px;">
+            <div class="uk-input-group" style="width:100%;">
+                <div class="gurdeep-chat-box" style="width:100%">
+                    <input type="text" placeholder="請輸入訊息" id="messageInput" name="submit_message" class="md-input" style="width:80%">
+                    <button class="btn btn-light" id="sendButtonMessage" style="padding:0;height:100%;width:10%;margin-left:10px;" ><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </div>
-                <span class="uk-input-group-addon">
-                    <a><i class="glyphicon glyphicon-send"></i></a>
-                </span>
             </div>
         </div>
     </aside>
-    <script src="~/js/chatsBefore.js"></script>
-    <script src="~/js/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/chat.js"></script>
-    @*聊天室窗結束*@
+    @*測試====*@
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/cwc/homepage.js"></script>
+ 
 
 
-    <script src="~/js/jquery-3.3.1.min.js"></script>
-    <script src="~/js/bootstrap.min.js"></script>
-    <script src="~/js/jquery.nice-select.min.js"></script>
-    <script src="~/js/jquery-ui.min.js"></script>
-    <script src="~/js/jquery.slicknav.js"></script>
-    <script src="~/js/mixitup.min.js"></script>
-    <script src="~/js/owl.carousel.min.js"></script>
-    <script src="~/js/main.js"></script>
-    <script type="text/javascript">
+        @*測試====*@
+
+
+
+
+
+        <script src="~/js/signalr/dist/browser/signalr.js"></script>
+        @*<script src="~/js/chat.js"></script>*@
+        @*聊天室窗結束*@
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script type="text/javascript" src="~/cwc/homepage.js"></script>
+
+
+        <script src="~/js/jquery-3.3.1.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <script src="~/js/jquery.nice-select.min.js"></script>
+        <script src="~/js/jquery-ui.min.js"></script>
+        <script src="~/js/jquery.slicknav.js"></script>
+        <script src="~/js/mixitup.min.js"></script>
+        <script src="~/js/owl.carousel.min.js"></script>
+        <script src="~/js/main.js"></script>
+        <script>
+        //聊天室啟動
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+        //Disable send button until connection is established
+        document.getElementById("sendButtonMessage").disabled = true;
+
+
+
+
+
+        connection.on("ReceiveMessage", function (user, message) {
+            console.log("以連接");
+
+            var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            var when = new Date().toLocaleTimeString();
+            var encodedMsg = /*user + " says " +*/ '<p>' + msg + '<span class="chat_message_time">' + when + '</span></p>';
+            var li = document.createElement("li");
+            li.innerHTML = encodedMsg;
+
+            $.ajax({
+                url: "/adChatRoom/getMessage",
+                type: "POST",
+                data: { MemberName: user, Content: message, MessageTime: when },
+
+            });
+
+           
+                       var PictureForMessage = "";
+            if (user == '管理員') {
+                PictureForMessage = `img/adrChatRoom/adm2.jpg`;
+            }
+            else {
+                PictureForMessage = $("#user_foto").val();
+            }
+
+            console.log(PictureForMessage);
+                    $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
+                    <div class="chat_user_avatar">
+                            <img   src="${PictureForMessage}" class="md-user-image">
+                    </div>
+                    <ul class="chat_message messagesListForClient">
+                    </ul>
+                </div>`);
+
+            $("ul.messagesListForClient:eq(-1)").append(li);
+        });
+
+        connection.start().then(function () {
+            document.getElementById("sendButtonMessage").disabled = false;
+            console.log("已經可以點了");
+        }).catch(function (err) {
+            console.log("壞掉惹");
+            return console.error(err.toString());
+        });
+
+            document.getElementById("sendButtonMessage").addEventListener("click", function (event) {
+            var user = "@UserLoginNameForPage";
+            var message = document.getElementById("messageInput").value;
+            connection.invoke("SendMessage", user, message).catch(function (err) {
+                console.log("壞掉了2");
+                return console.error(err.toString());
+            });
+            event.preventDefault();
+        });
+
+
+
+        </script>
+
+        <script type="text/javascript">
         var flagForChatRoomSwitch = 1;
-        $(function () {
+            $(function () {
+                
+
             $("#addClass").click(function () {
                 if (flagForChatRoomSwitch == 1) {
                     $('#sidebar_secondary').addClass('popup-box-on');
@@ -338,41 +410,41 @@
                 $('#sidebar_secondary').removeClass('popup-box-on');
                 flagForChatRoomSwitch = 1;
             });
-            chatsBefore("@ViewBag.USERNAME");
-
+            //chatsBefore("@ViewBag.USERNAME");
 
 
 
         })
-    </script>
-    <script>
-        let member_No = $("#user_member").val();
-        let users_cart_No = "cart" + member_No;   //依登入的會員改變localstorage的Key值
-        setInterval(function () {
-            if (users_cart_No == "") {
-                return;
-            }
-            let pdtcart_obj = JSON.parse(localStorage.getItem(users_cart_No));
-            let price = 0;
-            if (pdtcart_obj == null) {
+        </script>
+        <script>
+            let member_No = $("#user_member").val();
+            let users_cart_No = "cart" + member_No;   //依登入的會員改變localstorage的Key值
+            setInterval(function () {
+                if (users_cart_No == "") {
+                    return;
+                }
+                let pdtcart_obj = JSON.parse(localStorage.getItem(users_cart_No));
+                let price = 0;
+                if (pdtcart_obj == null) {
+                    $("#ItemMoneyTop").html('$' + price);
+                    $("#itemMoney").html('$' + price);
+                    return;
+                }
+                for (let i = 0; i < pdtcart_obj.length; i++) {
+                    price += (pdtcart_obj[i].cPrice * pdtcart_obj[i].QuantityInCart);
+                }
                 $("#ItemMoneyTop").html('$' + price);
                 $("#itemMoney").html('$' + price);
-                return;
-            }
-            for (let i = 0; i < pdtcart_obj.length; i++) {
-                price += (pdtcart_obj[i].cPrice * pdtcart_obj[i].QuantityInCart);
-            }
-            $("#ItemMoneyTop").html('$' + price);
-            $("#itemMoney").html('$' + price);
-            /*  console.log(price);*/
-        }, 500);
+                /*  console.log(price);*/
+            }, 500);
 
-    </script>
+        </script>
 
-    <script>
+        <script>
         $.ajax({
             url: "/HomePage/BCheckLogin",
             type: "POST",
+            async: false,
             success: function (data) {
                 if (data == true) {
                     @*var aa = "@UserLoginImgForPage";
@@ -400,22 +472,22 @@
                 }
             }
         });
-    </script>
-    <script>
-        function 登出() {
-            
-            $.ajax({
-                url: "/HomePage/SLogout",
-                type: "POST",
-                success: function (data) {
-                    window.alert(data);
-                    window.location.assign("https://localhost:44398/");
-                }
-            })
-        }
-    </script>
+        </script>
+        <script>
+            function 登出() {
+
+                $.ajax({
+                    url: "/HomePage/SLogout",
+                    type: "POST",
+                    success: function (data) {
+                        window.alert(data);
+                        window.location.assign("https://localhost:44398/");
+                    }
+                })
+            }
+        </script>
 
 
-    @RenderSection("Scripts", required: false)
+        @RenderSection("Scripts", required: false)
 </body>
 </html>

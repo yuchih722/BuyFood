@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "6GPpfoSjmFn7MYHeXBjIYA5h+QYM63vBnm/D8KocrLxfd9Zf4jW+p6/3WPKYhoqWkBF7iKpgRcd4oJMqTiaMjw==",
+  "dgSpecHash": "ycS3Lq/ZlVsgJtn6kAzD6iJx2aR/ReZhubZEBUSYN3NXU/KOyvlYpnLVFEXjpZ1xF2OG8UOLXX78WSjzpfxBYA==",
   "success": true,
-  "projectFilePath": "D:\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
+  "projectFilePath": "C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\BuyFood_Template.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\alway\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\alway\\.nuget\\packages\\linqkit.microsoft.entityframeworkcore\\5.0.24\\linqkit.microsoft.entityframeworkcore.5.0.24.nupkg.sha512",
@@ -170,7 +170,7 @@
       "code": "Undefined",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "讀取快取檔案 D:\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\obj\\project.nuget.cache 時發生問題: Invalid property identifier character: <. Path 'version', line 3, position 0."
+      "message": "讀取快取檔案 C:\\Users\\alway\\OneDrive\\C#\\BuyFoodNew\\BuyFood_Template\\obj\\project.nuget.cache 時發生問題: Invalid property identifier character: <. Path 'version', line 3, position 0."
     }
   ]
 }

@@ -1,5 +1,5 @@
-﻿let member_No = $("#user_member").val();
-let users_cart_No = "cart" + member_No;        //依登入的會員改變localstorage的Key值
+﻿////let member_No = $("#user_member").val();
+////let users_cart_No = "cart" + member_No;        //依登入的會員改變localstorage的Key值
 var cart = [];
 //判斷購物車內是否有商品
 function isExist(id) {
