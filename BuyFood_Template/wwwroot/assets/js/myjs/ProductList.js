@@ -86,58 +86,57 @@ $.ajax({
                         for (let i = 0; i <= data.length - 1; i++) {
                             count++
                             if (data[i].cIsBreakFast == 1) {
-                                BreakFast = `<p class=" btn btn-green" style="vertical-align: middle;" >販售</p>`
+                                BreakFast = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售啟用早(${data[i].cProductId}, ${data[i].cIsBreakFast})">販售 </button>`
                             }
                             else {
-                                BreakFast = `<p class="btn btn-gray" style="vertical-align: middle;" >不販售</p>`
+                                BreakFast = `<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售啟用早(${data[i].cProductId}, ${data[i].cIsBreakFast})">不販售 </button>`
                             }
                             if (data[i].cIsLunch == 1) {
-                                Lunch = `<p class=" btn btn-green" style="vertical-align: middle;" >販售</p>`
+                                Lunch = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售啟用午(${data[i].cProductId}, ${data[i].cIsLunch})">販售 </button>`
                             }
                             else {
-                                Lunch = `<p class="btn btn-gray" style="vertical-align: middle;" >不販售</p>`
+                                Lunch = `<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售啟用午(${data[i].cProductId}, ${data[i].cIsLunch})">不販售 </button>`
                             }
                             if (data[i].cIsDinner == 1) {
-                                Dinner = `<p class=" btn btn-green" style="vertical-align: middle;" >販售</p>`
+                                Dinner = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售啟用晚(${data[i].cProductId}, ${data[i].cIsDinner})">販售 </button>`
                             }
                             else {
-                                Dinner = `<p class="btn btn-gray" style="vertical-align: middle;" >不販售</p>`
+                                Dinner = `<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售啟用晚(${data[i].cProductId}, ${data[i].cIsDinner})">不販售 </button>`
                             }
                             if (data[i].cQuantity == 0) {
-                                cQuantity = `<p class="btn btn-danger" style="vertical-align: middle;" >請補充庫存</p>`
+                                cQuantity = `<p class="btn btn-danger" style="vertical-align: middle" >請補充庫存</p>`
                             }
                             else {
                                 cQuantity = data[i].cQuantity;
                             }
-                            if (data[i].cStatusName == "下架") {
-                                cStatusName = `<p class="btn btn-gray" style="vertical-align: middle;" >${data[i].cStatusName}</p>`
+                            if (data[i].cIsOnSaleId == 3) {
+                                cStatusName = `<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${data[i].cProductId}, ${data[i].cIsOnSaleId})">下架 </button>`
                             }
-                            else if (data[i].cStatusName == "售完") {
-                                cStatusName = `<p class="btn btn-danger" style="vertical-align: middle;" >${data[i].cStatusName}</p>`
+                            else if (data[i].cIsOnSaleId == 2) {
+                                cStatusName = `<button class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${data[i].cProductId}, ${data[i].cIsOnSaleId})">售完 </button>`
                             }
-                            else {
-                                cStatusName = `<p class=" btn btn-green" style="vertical-align: middle;" >${data[i].cStatusName}</p>`
+                            else if (data[i].cIsOnSaleId == 1) {
+                                cStatusName = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${data[i].cProductId}, ${data[i].cIsOnSaleId})">正常 </button>`
                             }
 
 
                             txttable += `<tr style="text-align:center"><td style="vertical-align: middle;"><label class="ui-checkbox"><input id="checkdelete" value="${data[i].cProductId}" type="checkbox" name="interest"><span class="input-span">
-                                <td style="vertical-align: middle;">${count}
-                                <td style="vertical-align: middle;">${data[i].cCategoryName}
-                                <td style="vertical-align: middle;">${data[i].cProductName}
-                                <td style="vertical-align: middle;">${data[i].cPrice}
-                                <td style="vertical-align: middle;">${cQuantity}
-                                <td style="vertical-align: middle;">${data[i].cDescription}
-                                <td style="vertical-align: middle;">${BreakFast}
-                                <td style="vertical-align: middle;">${Lunch}
-                                 <td style="vertical-align: middle;">${Dinner}
-                                <td style="vertical-align: middle;">${cStatusName}
-                                <td style="vertical-align: middle;"><img src="${data[i].cPicture.replace("~", "")}" alt="your image" width="180" height="150" />
+                                <td style="vertical-align: middle">${count}
+                                <td style="vertical-align: middle">${data[i].cCategoryName}
+                                <td style="vertical-align: middle">${data[i].cProductName}
+                                <td style="vertical-align: middle">${data[i].cPrice}
+                                <td style="vertical-align: middle">${cQuantity}
+                                <td style="vertical-align: middle">${data[i].cDescription}
+                                <td style="vertical-align: middle">${BreakFast}
+                                <td style="vertical-align: middle">${Lunch}
+                                 <td style="vertical-align: middle">${Dinner}
+                                <td style="vertical-align: middle">${cStatusName}
+                                <td style="vertical-align: middle"><img src="${data[i].cPicture.replace("~", "")}" alt="your image" width="180" height="150" />
 
-                                <td style="vertical-align: middle;">
+                                <td style="vertical-align: middle">
                                 <a  class="btn btn-Success btn-xs m-r-5" href="/cProduct/Edit?id=${data[i].cProductId}"style="background-color:##00ff21"><i class="fa fa-pencil font-18">編輯
                                 <a  class="btn btn-Danger btn-xs" href="/cProduct/Delete?id=${data[i].cProductId}" style="background-color:#ff0000"><i class="fa fa-trash font-18">刪除`
                         }
-
                         txttable += ` </tbody>
                                 </table>
                                 </div>`
@@ -399,4 +398,52 @@ function deletemore() {
 }
 
 //進入此頁面執行
-$(Activity("All"));
+$(Activity());
+
+
+
+//產品販售狀態
+function p產品販售狀態(PrId, PrTimeId) {
+    $.ajax({
+        url: "/cProduct/changeSaleonoff",
+        type: "Get",
+        data: { "PrId": PrId, "PrTimeId": PrTimeId },
+        success: function (data) {
+        }
+    });
+    setTimeout("Activity()", 1000);
+}
+
+//產品販售時段早
+function p產品販售啟用早(PrId, PrTimeId) {
+    $.ajax({
+        url: "/cProduct/changeProductBreakFast",
+        type: "Get",
+        data: { "PrId": PrId, "PrTimeId": PrTimeId },
+        success: function (data) {
+        }
+    });
+    setTimeout("Activity()", 1000);
+}
+//產品販售時段中
+function p產品販售啟用午(PrId, PrTimeId) {
+    $.ajax({
+        url: "/cProduct/changeProductLunch",
+        type: "Get",
+        data: { "PrId": PrId, "PrTimeId": PrTimeId },
+        success: function (data) {
+        }
+    });
+    setTimeout("Activity()", 1000);
+}
+//產品販售時段晚
+function p產品販售啟用晚(PrId, PrTimeId) {
+    $.ajax({
+        url: "/cProduct/changeProductDinner",
+        type: "Get",
+        data: { "PrId": PrId, "PrTimeId": PrTimeId },
+        success: function (data) {
+        }
+    });
+    setTimeout("Activity()", 1000);
+}
