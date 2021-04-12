@@ -42,8 +42,26 @@ namespace BuyFood_Template.Controllers
 
         public JsonResult getContext(int MemberID)
         {
-            var admChatContext = db.TChatRooms.OrderBy(n => n.CSaveTime).Where(n=>n.CMemberId==MemberID||n.CMemberId==16).Select(n => n).ToList();
+            var admChatContext = db.TChatRooms.OrderBy(n => n.CSaveTime).Where(n=>n.CMemberId==MemberID&&n.CDifRoomId==MemberID||n.CMemberId==16&&n.CDifRoomId==MemberID).Select(n => n).ToList();
             return Json(admChatContext);
+        }
+        public void saveContext(string MemberName,string Content,string MessageTime,string foto,int userID,int difChatRoomID)
+        {
+            DateTime theSaveTime = DateTime.Now;
+
+
+            TChatRoom cr = new TChatRoom()
+            {
+                CContent = Content,
+                CMessageTime = MessageTime,
+                CSaveTime = theSaveTime,
+                CMemberId = userID,
+                CPhoto = foto,
+                CDifRoomId = difChatRoomID
+            };
+            db.TChatRooms.Add(cr);
+            db.SaveChanges();
+
         }
     }
 }
