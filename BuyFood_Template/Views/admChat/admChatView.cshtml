@@ -235,34 +235,8 @@
             <div class="inbox_msg">
                 <div class="inbox_people">
 
-                    <div class="inbox_chat">
+                    <div class="inbox_chat" id="adrChannelIDForSwitch">
 
-                        <a onclick="switchToThisChannel(memberid)">
-                            <div class="chat_list active_chat" id="adrActiveChat+id">
-                                <div class="chat_people">
-                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                    <div class="chat_ib">
-                                        <h5>Sunil Rajput <span class="chat_date">2021/04/12 12:56</span></h5>
-                                        <p>
-                                            點擊查看資訊
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <div class="chat_list">
-                            <div class="chat_people">
-                                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                <div class="chat_ib">
-                                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                    <p>
-                                        Test, which is a new approach to have all solutions
-                                        astrology under one roof.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
 
 
                     </div>
@@ -334,17 +308,56 @@
         </div>
     </div>
 <script>
+    var adrTxtForAdmChatRoom = "";
     $.ajax({
-        url: "",
-        type:"POST",
-        data:
+        url: "/admChat/getChatRooms/",
+        type: "POST",
+        success: function (chatRooms)
+        {
+            console.log(chatRooms);
+            for (let i = 0; i < chatRooms.length; i++)
+            {
+                adrTxtForAdmChatRoom += `<a onclick="switchToThisChannel(${chatRooms[i].cChannelID})">
+                                            <div class="chat_list" id="adrActiveChat${chatRooms[i].cChannelID}">
+                                                <div class="chat_people">
+                                                    <div class="chat_img"> <img src="${chatRooms[i].cFoto}"> </div>
+                                                    <div class="chat_ib">
+                                                        <h5>${chatRooms[i].cMemberName} <span class="chat_date">${chatRooms[i].cTheLastChatTime}</span></h5>
+                                                        <p>
+                                                            點擊查看資訊
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>`;
+            }
+            
+            $("#adrChannelIDForSwitch").append(adrTxtForAdmChatRoom);
+        }
 
     })
 
     function switchToThisChannel(ChannelID)
     {
-        (adrActiveChat + id).sibblings.revomeClass((adrActiveChat + id));
-        (adrActiveChat + id).addclass(active_chat);
+        $(".chat_list").removeClass("active_chat");
+        $("#adrActiveChat" + ChannelID).addClass("active_chat");
+        adrShowTheContext(ChannelID)
+    }
+
+    function adrShowTheContext(MemberID)
+    {
+        $.ajax({
+            url:"/admChat/getContext/",
+            type: "POST",
+            data: { "MemberID": MemberID },
+            success: function (contexts) {
+                console.log(contexts);
+
+            }
+        })
+
+
+
 
     }
 
