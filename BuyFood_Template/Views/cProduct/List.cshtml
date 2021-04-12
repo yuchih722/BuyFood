@@ -53,7 +53,7 @@
             url: "/cProduct/ProductListJson",
             type: "GET",
             success: function (data) {
-             /*   console.log(data)*/
+                /*console.log(data)*/
                 var txttable = "";
 
                 txttable +=
@@ -85,23 +85,24 @@
                 var count = 0;
                 for (let i = 0; i <= data.length - 1; i++) {
                     count++
-                    if (data[i].cIsBreakFast == 1) {
-                        BreakFast = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售早(${data[i].cProductId}, ${data[i].cIsBreakFast})">販售 </button>`
+
+                    if (data[i].cIsBreakFast==1) {
+                        Break = `<button class="btn btn-green" onclick="p產品販售早(${data[i].cProductId})" >販售</button>`
                     }
                     else {
-                        BreakFast = `<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售早(${data[i].cProductId}, ${data[i].cIsBreakFast})">不販售 </button>`
+                        Break = `<button  class="btn btn-gray" onclick="p產品販售早(${data[i].cProductId})" >不販售</button>`
                     }
                     if (data[i].cIsLunch == 1) {
-                        Lunch = `<button  class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售午(${data[i].cProductId}, ${data[i].cIsLunch})">販售 </button>`
+                        Lunch = `<button  class=" btn btn-green"  onclick="p產品販售午(${data[i].cProductId})">販售 </button>`
                     }
                     else {
-                        Lunch = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售午(${data[i].cProductId}, ${data[i].cIsLunch})">不販售 </button>`
+                        Lunch = `<button  class="btn btn-gray" onclick="p產品販售午(${data[i].cProductId})">不販售 </button>`
                     }
                     if (data[i].cIsDinner == 1) {
-                        Dinner = `<button  class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售晚(${data[i].cProductId}, ${data[i].cIsDinner})">販售 </button>`
+                        Dinner = `<button  class=" btn btn-green" onclick="p產品販售晚(${data[i].cProductId})">販售 </button>`
                     }
                     else {
-                        Dinner = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售晚(${data[i].cProductId}, ${data[i].cIsDinner})">不販售 </button>`
+                        Dinner = `<button  class="btn btn-gray"  onclick="p產品販售晚(${data[i].cProductId})">不販售 </button>`
                     }
                     if (data[i].cQuantity == 0) {
                         cQuantity = `<p class="btn btn-danger" style="vertical-align: middle" >請補充庫存</p>`
@@ -127,7 +128,7 @@
                                 <td style="vertical-align: middle">${data[i].cPrice}
                                 <td style="vertical-align: middle">${cQuantity}
                                 <td style="vertical-align: middle">${data[i].cDescription}
-                                <td style="vertical-align: middle" id="p販售早${data[i].cProductId}">${BreakFast}
+                                <td style="vertical-align: middle" id="p販售早${data[i].cProductId}">${Break}
                                 <td style="vertical-align: middle" id="p販售午${data[i].cProductId}">${Lunch}
                                 <td style="vertical-align: middle" id="p販售晚${data[i].cProductId}">${Dinner}
                                 <td style="vertical-align: middle" id="p產品狀態${data[i].cProductId}">${cStatusName}
@@ -260,7 +261,6 @@
                 console.log(data);
                 if (data == 1) {
                     cStatusName = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId+1})">正常</button>`
-                 
                 }
                 else if (data == 2) {
                   
@@ -280,59 +280,56 @@
     }
 
     //產品販售時段早
-    function p產品販售早(PrId, PrTimeId) {
+    function p產品販售早(id) {
         $.ajax({
-            url: "/cProduct/changeProductBreakFast",
+            url: "/cProduct/changeProductBreakFast?id="+id,
             type: "Get",
-            data: { "PrId": PrId, "PrTimeId": PrTimeId },
             success: function (data) {
                 console.log(data);
-                if (data == 0) {
-                    BreakFast = `<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售早(${PrId},${PrTimeId})">不販售 </button>`
+                if (data == true) {
+                    
+                    $("#p販售早" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售早(${id})" style="vertical-align: middle">販售</button>`);
                 }
-                else (data == 1)
-                {
-                    BreakFast = `<button  class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售早(${PrId},${PrTimeId})">販售 </button>`
+                else {
+                    $("#p販售早" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售早(${id})" style="vertical-align: middle")">不販售</button>`);
                 }
-                $(`#p販售早${PrId}`).html(`<td style="vertical-align: middle" id="p販售早${PrId}">${BreakFast}`);
+              
             }
         });
         
     }
     //產品販售時段午
-    function p產品販售午(PrId, PrTimeId) {
+    function p產品販售午(id) {
         $.ajax({
-            url: "/cProduct/changeProductLunch",
+            url: "/cProduct/changeProductLunch?id="+id,
             type: "Get",
-            data: { "PrId": PrId, "PrTimeId": PrTimeId },
             success: function (data) {
-                if (data == 0) {
-                    Lunch = `<button id="cIsLunch${PrId}" class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售啟用午(${PrId},${PrTimeId+1})">不販售 </button>`
+                if (data == true) {
+                    $("#p販售午" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售午(${id})" style="vertical-align: middle">販售</button>`);
                 }
-                else(data==1)
+                else
                 {
-                    Lunch = `<button id="cIsLunch${PrId}"  class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售啟用午(${PrId},${PrTimeId=0})">販售 </button>`
+                    $("#p販售午" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售午(${id})" style="vertical-align: middle")">不販售</button>`);
                 }
-                $(`#p販售午${PrId}`).html(`<td style="vertical-align: middle" id="p販售午${PrId}">${Lunch}`);
+              
             }
         });
        
     }
     //產品販售時段晚
-    function p產品販售晚(PrId, PrTimeId) {
+    function p產品販售晚(id) {
         $.ajax({
-            url: "/cProduct/changeProductDinner",
+            url: "/cProduct/changeProductDinner?id="+id,
             type: "Get",
-            data: { "PrId": PrId, "PrTimeId": PrTimeId },
             success: function (data) {
-                if (data == 0) {
-                    Dinner = `<button id="cIsDinner${PrId}" class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售啟用晚(${PrId},${PrTimeId+1})">不販售 </button>`
+                if (data == true) {
+                    $("#p販售晚" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售晚(${id})" style="vertical-align: middle">販售</button>`);
                 }
-                else(data==1)
+                else
                 {
-                    Dinner= `<button id="cIsDinner${PrId}"  class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售啟用晚(${PrId},${PrTimeId=0})">販售 </button>`
+                    $("#p販售晚" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售晚(${id})" style="vertical-align: middle")">不販售</button>`);
                 }
-                $(`#p販售晚${PrId}`).html(`<td style="vertical-align: middle" id="p販售晚${PrId}">${Dinner}`);
+              
             }
         });
        

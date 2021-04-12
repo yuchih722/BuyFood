@@ -73,6 +73,12 @@ namespace BuyFood_Template.ViewModel
             get { return iv_member.CAddress; }
             set { iv_member.CAddress = value; }
         }
+        [DisplayName("生日")]
+        public DateTime CAge
+        {
+            get { return iv_member.CAge; }
+            set { iv_member.CAge = value; }
+        }
         [DisplayName("黑名單")]
         public int? CBlackList
         {
@@ -90,6 +96,11 @@ namespace BuyFood_Template.ViewModel
         {
             get { return iv_member.CPicture; }
             set { iv_member.CPicture = value; }
+        }
+        public DateTime? CRegisteredTime
+        {
+            get { return iv_member.CRegisteredTime; }
+            set { iv_member.CRegisteredTime = value; }
         }
         public IFormFile image { get; set; } //圖片
 

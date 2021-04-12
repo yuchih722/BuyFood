@@ -15,6 +15,8 @@
 </div>
 
 <hr />
+@{var getCCategoryIdval = Model.CCategoryId; }
+<input type="text" id="getCCategoryId"   hidden value="@getCCategoryIdval" />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit" enctype="multipart/form-data">
@@ -27,14 +29,23 @@
 
             <div>
                 <label class="control-label">產品種類</label>
-                <select asp-for="CCategoryId" class="form-control" id="p產品類別下拉選單"></select>
+                <select asp-for="CCategoryId" class="form-control" id="p產品類別下拉選單" >
+
+
+                </select>
+              
             </div>
+            <script>
+                var IwannaGetThisForTest = $("#getCCategoryId").val();
+                console.log(IwannaGetThisForTest);
+            </script>
+    
 
             @*<div class="form-group">
-            <label asp-for="CIsOnSaleId" class="control-label"></label>
-            <input asp-for="CIsOnSaleId" class="form-control" />
-            <span asp-validation-for="CIsOnSaleId" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="CIsOnSaleId" class="control-label"></label>
+                    <input asp-for="CIsOnSaleId" class="form-control" />
+                    <span asp-validation-for="CIsOnSaleId" class="text-danger"></span>
+                </div>*@
 
             <div class="form-group">
                 <label asp-for="CIsOnSaleId" class="control-label"></label>
@@ -109,27 +120,37 @@
         url: "/cProduct/getAllProductCategory",
         type: "Get",
         success: function (data) {
-            /*                console.log(data)*/
+                            console.log(data)
             txt = "";
 
             for (let i = 0; i < data.length; i++) {
+
                 txt += `<option value="${data[i].cProductCategoryId}">${data[i].cCategoryName}</option>`
+
             }
             document.getElementById("p產品類別下拉選單").innerHTML = txt;
+            document.getElementById("p產品類別下拉選單").selectedIndex = (IwannaGetThisForTest-1);
         }
     });
-    $.ajax({
-        url: "/cProduct/getAllProductOnSale",
-        type: "Get",
-        success: function (data) {
-            console.log(data)
-            txt = "";
 
-            for (let i = 0; i < data.length; i++) {
-                txt += `<option value="${data[i].cIsOnSaleId}">${data[i].cStatusName}</option>`
-            }
-            document.getElementById("p產品販售狀況下拉選單").innerHTML = txt;
-        }
-    });
+   //var aaa= function myFunction() {
+   //     document.getElementById("p產品類別下拉選單").selectedIndex = "0";
+   //    $(aaa());
+
+
+    /*$.ajax({*/
+    //    url: "/cProduct/getAllProductOnSale",
+    //    type: "Get",
+    //    success: function (data) {
+    //        console.log(data)
+    //        txt = "";
+
+    //        for (let i = 0; i < data.length; i++) {
+    //            txt += `<option value="${data[i].cIsOnSaleId}">${data[i].cStatusName}</option>`
+    //        }
+    //        document.getElementById("p產品販售狀況下拉選單").innerHTML = txt;
+    //    }
+    //});
+
 </script>
 

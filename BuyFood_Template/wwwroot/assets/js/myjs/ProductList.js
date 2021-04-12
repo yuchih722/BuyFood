@@ -1,5 +1,6 @@
 ﻿
 
+
 $(function () {
     var w = $("#mwt_slider_content").width();
     $("#mwt_slider_content").css("height", ($(window).height() - 20) + "px"); //將區塊自動撐滿畫面高度
@@ -86,22 +87,22 @@ $.ajax({
                         for (let i = 0; i <= data.length - 1; i++) {
                             count++
                             if (data[i].cIsBreakFast == 1) {
-                                BreakFast = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售啟用早(${data[i].cProductId}, ${data[i].cIsBreakFast})">販售 </button>`
+                                Break = `<button class="btn btn-green" onclick="p產品販售早(${data[i].cProductId})" >販售</button>`
                             }
                             else {
-                                BreakFast = `<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售啟用早(${data[i].cProductId}, ${data[i].cIsBreakFast})">不販售 </button>`
+                                Break = `<button  class="btn btn-gray" onclick="p產品販售早(${data[i].cProductId})" >不販售</button>`
                             }
                             if (data[i].cIsLunch == 1) {
-                                Lunch = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售啟用午(${data[i].cProductId}, ${data[i].cIsLunch})">販售 </button>`
+                                Lunch = `<button  class=" btn btn-green"  onclick="p產品販售午(${data[i].cProductId})">販售 </button>`
                             }
                             else {
-                                Lunch = `<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售啟用午(${data[i].cProductId}, ${data[i].cIsLunch})">不販售 </button>`
+                                Lunch = `<button  class="btn btn-gray" onclick="p產品販售午(${data[i].cProductId})">不販售 </button>`
                             }
                             if (data[i].cIsDinner == 1) {
-                                Dinner = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售啟用晚(${data[i].cProductId}, ${data[i].cIsDinner})">販售 </button>`
+                                Dinner = `<button  class=" btn btn-green" onclick="p產品販售晚(${data[i].cProductId})">販售 </button>`
                             }
                             else {
-                                Dinner = `<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售啟用晚(${data[i].cProductId}, ${data[i].cIsDinner})">不販售 </button>`
+                                Dinner = `<button  class="btn btn-gray"  onclick="p產品販售晚(${data[i].cProductId})">不販售 </button>`
                             }
                             if (data[i].cQuantity == 0) {
                                 cQuantity = `<p class="btn btn-danger" style="vertical-align: middle" >請補充庫存</p>`
@@ -127,10 +128,10 @@ $.ajax({
                                 <td style="vertical-align: middle">${data[i].cPrice}
                                 <td style="vertical-align: middle">${cQuantity}
                                 <td style="vertical-align: middle">${data[i].cDescription}
-                                <td style="vertical-align: middle">${BreakFast}
-                                <td style="vertical-align: middle">${Lunch}
-                                 <td style="vertical-align: middle">${Dinner}
-                                <td style="vertical-align: middle">${cStatusName}
+                                  <td style="vertical-align: middle" id="p販售早${data[i].cProductId}">${Break}
+                                <td style="vertical-align: middle" id="p販售午${data[i].cProductId}">${Lunch}
+                                <td style="vertical-align: middle" id="p販售晚${data[i].cProductId}">${Dinner}
+                                <td style="vertical-align: middle" id="p產品狀態${data[i].cProductId}">${cStatusName}
                                 <td style="vertical-align: middle"><img src="${data[i].cPicture.replace("~", "")}" alt="your image" width="180" height="150" />
 
                                 <td style="vertical-align: middle">
@@ -235,52 +236,54 @@ $.ajax({
                     var count = 0;
                     for (let i = 0; i <= data.length - 1; i++) {
                         count++
+
                         if (data[i].cIsBreakFast == 1) {
-                            BreakFast = `<p class=" btn btn-green" style="vertical-align: middle;" >販售</p>`
+                            Break = `<button class="btn btn-green" onclick="p產品販售早(${data[i].cProductId})" >販售</button>`
                         }
                         else {
-                            BreakFast = `<p class="btn btn-gray" style="vertical-align: middle;" >不販售</p>`
+                            Break = `<button  class="btn btn-gray" onclick="p產品販售早(${data[i].cProductId})" >不販售</button>`
                         }
                         if (data[i].cIsLunch == 1) {
-                            Lunch = `<p class=" btn btn-green" style="vertical-align: middle;" >販售</p>`
+                            Lunch = `<button  class=" btn btn-green"  onclick="p產品販售午(${data[i].cProductId})">販售 </button>`
                         }
                         else {
-                            Lunch = `<p class="btn btn-gray" style="vertical-align: middle;" >不販售</p>`
+                            Lunch = `<button  class="btn btn-gray" onclick="p產品販售午(${data[i].cProductId})">不販售 </button>`
                         }
                         if (data[i].cIsDinner == 1) {
-                            Dinner = `<p class=" btn btn-green" style="vertical-align: middle;" >販售</p>`
+                            Dinner = `<button  class=" btn btn-green" onclick="p產品販售晚(${data[i].cProductId})">販售 </button>`
                         }
                         else {
-                            Dinner = `<p class="btn btn-gray" style="vertical-align: middle;" >不販售</p>`
+                            Dinner = `<button  class="btn btn-gray"  onclick="p產品販售晚(${data[i].cProductId})">不販售 </button>`
                         }
                         if (data[i].cQuantity == 0) {
-                            cQuantity = `<p class="btn btn-danger" style="vertical-align: middle;" >請補充庫存</p>`
+                            cQuantity = `<p class="btn btn-danger" style="vertical-align: middle" >請補充庫存</p>`
                         }
                         else {
                             cQuantity = data[i].cQuantity;
                         }
-                        if (data[i].cStatusName == "下架") {
-                            cStatusName = `<p class="btn btn-gray" style="vertical-align: middle;" >${data[i].cStatusName}</p>`
+                        if (data[i].cIsOnSaleId == 3) {
+                            cStatusName = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${data[i].cProductId}, ${data[i].cIsOnSaleId})">下架 </button>`
                         }
-                        else if (data[i].cStatusName == "售完") {
-                            cStatusName = `<p class="btn btn-danger" style="vertical-align: middle;" >${data[i].cStatusName}</p>`
+                        else if (data[i].cIsOnSaleId == 2) {
+                            cStatusName = `<button  class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${data[i].cProductId}, ${data[i].cIsOnSaleId})">售完 </button>`
                         }
-                        else {
-                            cStatusName = `<p class=" btn btn-green" style="vertical-align: middle;" >${data[i].cStatusName}</p>`
+                        else if (data[i].cIsOnSaleId == 1) {
+                            cStatusName = `<button  class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${data[i].cProductId}, ${data[i].cIsOnSaleId})">正常 </button>`
                         }
+
 
 
                         txttable += `<tr style="text-align:center"><td style="vertical-align: middle;"><label class="ui-checkbox"><input id="checkdelete" value="${data[i].cProductId}" type="checkbox" name="interest"><span class="input-span">
-                                <td style="vertical-align: middle;">${count}
-                                <td style="vertical-align: middle;">${data[i].cCategoryName}
-                                <td style="vertical-align: middle;">${data[i].cProductName}
-                                <td style="vertical-align: middle;">${data[i].cPrice}
-                                <td style="vertical-align: middle;">${cQuantity}
-                                <td style="vertical-align: middle;">${data[i].cDescription}
-                                <td style="vertical-align: middle;">${BreakFast}
-                                <td style="vertical-align: middle;">${Lunch}
-                                 <td style="vertical-align: middle;">${Dinner}
-                                <td style="vertical-align: middle;">${cStatusName}
+                                <td style="vertical-align: middle">${count}
+                                <td style="vertical-align: middle">${data[i].cCategoryName}
+                                <td style="vertical-align: middle">${data[i].cProductName}
+                                <td style="vertical-align: middle">${data[i].cPrice}
+                                <td style="vertical-align: middle">${cQuantity}
+                                <td style="vertical-align: middle">${data[i].cDescription}
+                                <td style="vertical-align: middle" id="p販售早${data[i].cProductId}">${Break}
+                                <td style="vertical-align: middle" id="p販售午${data[i].cProductId}">${Lunch}
+                                <td style="vertical-align: middle" id="p販售晚${data[i].cProductId}">${Dinner}
+                                <td style="vertical-align: middle" id="p產品狀態${data[i].cProductId}">${cStatusName}
                                 <td style="vertical-align: middle;"><img src="${data[i].cPicture.replace("~", "")}" alt="your image" width="180" height="150" />
 
                                 <td style="vertical-align: middle;">
@@ -397,9 +400,6 @@ function deletemore() {
     }
 }
 
-//進入此頁面執行
-$(Activity());
-
 
 
 //產品販售狀態
@@ -409,41 +409,110 @@ function p產品販售狀態(PrId, PrTimeId) {
         type: "Get",
         data: { "PrId": PrId, "PrTimeId": PrTimeId },
         success: function (data) {
+            console.log(data);
+            if (data == 1) {
+                cStatusName = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId + 1})">正常</button>`
+            }
+            else if (data == 2) {
+
+                cStatusName = `<button  class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId + 1})">售完</button>`
+
+            }
+            else if (data == 3) {
+                cStatusName = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId = 0})">下架</button>`
+
+            }
+            $(`#p產品狀態${PrId}`).html(`<td style="vertical-align: middle" id="p產品狀態${PrId}">${cStatusName}`);
         }
     });
-    setTimeout("Activity()", 1000);
+
+
+}
+
+//產品販售狀態
+function p產品販售狀態(PrId, PrTimeId) {
+    $.ajax({
+        url: "/cProduct/changeSaleonoff",
+        type: "Get",
+        data: { "PrId": PrId, "PrTimeId": PrTimeId },
+        success: function (data) {
+            console.log(data);
+            if (data == 1) {
+                cStatusName = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId + 1})">正常</button>`
+            }
+            else if (data == 2) {
+
+                cStatusName = `<button  class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId + 1})">售完</button>`
+
+            }
+            else if (data == 3) {
+                cStatusName = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId = 0})">下架</button>`
+
+            }
+            $(`#p產品狀態${PrId}`).html(`<td style="vertical-align: middle" id="p產品狀態${PrId}">${cStatusName}`);
+        }
+    });
+
+
 }
 
 //產品販售時段早
-function p產品販售啟用早(PrId, PrTimeId) {
+function p產品販售早(id) {
     $.ajax({
-        url: "/cProduct/changeProductBreakFast",
+        url: "/cProduct/changeProductBreakFast?id=" + id,
         type: "Get",
-        data: { "PrId": PrId, "PrTimeId": PrTimeId },
         success: function (data) {
+            console.log(data);
+            if (data == true) {
+
+                $("#p販售早" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售早(${id})" style="vertical-align: middle">販售</button>`);
+            }
+            else {
+                $("#p販售早" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售早(${id})" style="vertical-align: middle")">不販售</button>`);
+            }
+
         }
     });
-    setTimeout("Activity()", 1000);
+
 }
-//產品販售時段中
-function p產品販售啟用午(PrId, PrTimeId) {
+//產品販售時段午
+function p產品販售午(id) {
     $.ajax({
-        url: "/cProduct/changeProductLunch",
+        url: "/cProduct/changeProductLunch?id=" + id,
         type: "Get",
-        data: { "PrId": PrId, "PrTimeId": PrTimeId },
         success: function (data) {
+            if (data == true) {
+                $("#p販售午" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售午(${id})" style="vertical-align: middle">販售</button>`);
+            }
+            else {
+                $("#p販售午" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售午(${id})" style="vertical-align: middle")">不販售</button>`);
+            }
+
         }
     });
-    setTimeout("Activity()", 1000);
+
 }
 //產品販售時段晚
-function p產品販售啟用晚(PrId, PrTimeId) {
+function p產品販售晚(id) {
     $.ajax({
-        url: "/cProduct/changeProductDinner",
+        url: "/cProduct/changeProductDinner?id=" + id,
         type: "Get",
-        data: { "PrId": PrId, "PrTimeId": PrTimeId },
         success: function (data) {
+            if (data == true) {
+                $("#p販售晚" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售晚(${id})" style="vertical-align: middle">販售</button>`);
+            }
+            else {
+                $("#p販售晚" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售晚(${id})" style="vertical-align: middle")">不販售</button>`);
+            }
+
         }
     });
-    setTimeout("Activity()", 1000);
+
 }
+
+
+
+
+
+//進入此頁面執行
+$(Activity());

@@ -1,12 +1,13 @@
-﻿$("#Board99").click(function () { pagename = 99; $(Board(pagename));})
-$("#Board5").click(function () { pagename = 5; $(Board(pagename)); })
-$("#Board4").click(function () { pagename = 4; $(Board(pagename)); })
-$("#Board3").click(function () { pagename = 3; $(Board(pagename)); })
-$("#Board2").click(function () { pagename = 2; $(Board(pagename)); })
-$("#Board1").click(function () { pagename = 1; $(Board(pagename)); })
+﻿$("#Board99").click(function () { pagename = 99; (Board(pagename));})
+$("#Board5").click(function () { pagename = 5; (Board(pagename)); })
+$("#Board4").click(function () { pagename = 4; (Board(pagename)); })
+$("#Board3").click(function () { pagename = 3; (Board(pagename)); })
+$("#Board2").click(function () { pagename = 2; (Board(pagename)); })
+$("#Board1").click(function () { pagename = 1; (Board(pagename)); })
 
 $("#deletemore").dialog({
-        autoOpen: false,
+    autoOpen: false,
+    modal: true,
         buttons: {
             "Ok": function () {
                 var checked = $("#myTable input[type=checkbox]:checked");
@@ -28,6 +29,7 @@ $("#deletemore").dialog({
                             $(Board(pagename));
 
                         $("#btndelete").hide();
+                        updateTOP()
                     }
                 });
             },

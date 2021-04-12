@@ -145,6 +145,10 @@ namespace BuyFood_Template.Models
                     .HasMaxLength(50)
                     .HasColumnName("cMessageTime");
 
+                entity.Property(e => e.CPhoto)
+                    .HasMaxLength(50)
+                    .HasColumnName("cPhoto");
+
                 entity.Property(e => e.CSaveTime)
                     .HasColumnType("datetime")
                     .HasColumnName("cSaveTime");
@@ -310,18 +314,6 @@ namespace BuyFood_Template.Models
                 entity.Property(e => e.CMemberId).HasColumnName("cMemberID");
 
                 entity.Property(e => e.CProductId).HasColumnName("cProductID");
-
-                entity.HasOne(d => d.CMember)
-                    .WithMany(p => p.TFavoriteLists)
-                    .HasForeignKey(d => d.CMemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_tFavoriteList_tMembers");
-
-                entity.HasOne(d => d.CProduct)
-                    .WithMany(p => p.TFavoriteLists)
-                    .HasForeignKey(d => d.CProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_tFavoriteList_tProducts");
             });
 
             modelBuilder.Entity<TIsOnSale>(entity =>

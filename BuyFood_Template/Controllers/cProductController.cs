@@ -113,76 +113,64 @@ namespace BuyFood_Template.Controllers
 
         #region 產品販售時段
         //時段早
-        public JsonResult changeProductBreakFast(int? PrId, int? PrTimeId)
+        public bool changeProductBreakFast(int? id)
         {
-            TProduct l_p販售時段修改 = db.TProducts.FirstOrDefault(n => n.CProductId == PrId);
-
-            if (PrId != null)
-            {
-                if (PrTimeId == 1)
+            TProduct l_p販售時段修改 = db.TProducts.FirstOrDefault(n => n.CProductId == id);
+            bool x = false;
+            if (l_p販售時段修改 != null) { 
+                if(l_p販售時段修改.CIsBreakFast == 1)
                 {
-
-                    PrTimeId = 0;
-                    l_p販售時段修改.CIsBreakFast = PrTimeId;
-
+                    l_p販售時段修改.CIsBreakFast = 0;
                 }
-                else
+                else 
                 {
-
-                    PrTimeId = 1;
-                    l_p販售時段修改.CIsBreakFast = PrTimeId;
-
+                    l_p販售時段修改.CIsBreakFast = 1;
+                    x = true;
                 }
             }
             db.SaveChanges();
-            return Json(PrTimeId);
+            return x;
         }
         //時段午
-        public JsonResult changeProductLunch(int? PrId, int? PrTimeId)
+        public bool changeProductLunch(int?id)
         {
-            if (PrId != null && PrTimeId != null)
+            TProduct l_p販售時段修改 = db.TProducts.FirstOrDefault(n => n.CProductId == id);
+            bool x = false;
+            if (l_p販售時段修改 != null)
             {
-                TProduct l_p販售時段修改 = db.TProducts.FirstOrDefault(n => n.CProductId == PrId);
-
-                if (PrTimeId == 1)
+                if (l_p販售時段修改.CIsLunch == 1)
                 {
-                    PrTimeId = 0;
-                    l_p販售時段修改.CIsLunch = PrTimeId;
-
+                    l_p販售時段修改.CIsLunch = 0;
                 }
                 else
                 {
-                    PrTimeId = 1;
-                    l_p販售時段修改.CIsLunch = PrTimeId;
+                    l_p販售時段修改.CIsLunch = 1;
+                    x = true;
                 }
-                db.SaveChanges();
             }
-            return Json(PrTimeId);
+            db.SaveChanges();
+            return x;
         }
         //時段晚
-        public JsonResult changeProductDinner(int? PrId, int? PrTimeId)
+        public bool changeProductDinner(int? id)
         {
-            if (PrId != null && PrTimeId != null)
+            TProduct l_p販售時段修改 = db.TProducts.FirstOrDefault(n => n.CProductId == id);
+            bool x = false;
+            if (l_p販售時段修改 != null)
             {
-                TProduct l_p販售時段修改 = db.TProducts.FirstOrDefault(n => n.CProductId == PrId);
-
-                if (PrTimeId == 1)
+                if (l_p販售時段修改.CIsDinner == 1)
                 {
-                    PrTimeId = 0;
-                    l_p販售時段修改.CIsDinner = PrTimeId;
-
+                    l_p販售時段修改.CIsDinner = 0;
                 }
                 else
                 {
-                    PrTimeId = 1;
-                    l_p販售時段修改.CIsDinner = PrTimeId;
+                    l_p販售時段修改.CIsDinner = 1;
+                    x = true;
                 }
-                db.SaveChanges();
             }
-            return Json(PrTimeId);
+            db.SaveChanges();
+            return x;
         }
-
-
 
 
         #endregion
