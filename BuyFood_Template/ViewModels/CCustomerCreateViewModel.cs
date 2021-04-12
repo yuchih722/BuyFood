@@ -36,7 +36,7 @@ namespace BuyFood_Template.ViewModel
         [DisplayName("密碼")]
         public string CPassword { get { return iv_CreateMember.CPassword; } set { iv_CreateMember.CPassword = value; } }
         [DisplayName("生日")]
-        public DateTime? CAge { get { return iv_CreateMember.CAge; } set { iv_CreateMember.CAge = value; } }
+        public DateTime CAge { get { return iv_CreateMember.CAge; } set { iv_CreateMember.CAge = value; } }
         [DisplayName("性別")]
         public string CGender { get { return iv_CreateMember.CGender; } set { iv_CreateMember.CGender = value; } }
         [DisplayName("地址")]

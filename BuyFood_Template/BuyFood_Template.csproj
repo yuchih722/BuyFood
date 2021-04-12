@@ -65,6 +65,11 @@
     <None Include="wwwroot\js\RatingStarsJS.js" />
     <None Include="wwwroot\js\ShoppingCart_JS\CurrentShoppingCart.js" />
     <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\YUYUYU\JS\layer-v3.3.0\layer\layer.js" />
+    <None Include="wwwroot\YUYUYU\JS\layer-v3.3.0\layer\mobile\layer.js" />
+    <None Include="wwwroot\YUYUYU\JS\layer-v3.3.0\免责声明.url" />
+    <None Include="wwwroot\YUYUYU\JS\layer-v3.3.0\文档\jquery下载.url" />
+    <None Include="wwwroot\YUYUYU\JS\layer-v3.3.0\文档\layer官网.url" />
   </ItemGroup>
 
   <ItemGroup>

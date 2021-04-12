@@ -1,9 +1,11 @@
-﻿var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+﻿function ChatRoomStart(MemberNameForChatStart) {
+
+
+var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
 //Disable send button until connection is established
 document.getElementById("sendButton").disabled = true;
-var 自己有沒有連續留言 = 0;
-var 對方有沒有連續留言 = 0;
+
 
 
 
@@ -33,7 +35,7 @@ connection.on("ReceiveMessage", function (user, message) {
         Picture = 'src = "img/adrChatRoom/Customer_Icon.jpg" class="md-user-image">';
     }
     if (msg == "") { return; }
-    if (user == document.getElementById("getLoginName").childNodes[1].nodeValue)
+    if (user == MemberNameForChatStart)
     {
     /*自己都放右邊  */
         if (自己有沒有連續留言 == 0)
@@ -79,10 +81,12 @@ connection.start().then(function () {
 });
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
-    var user = document.getElementById("getLoginName").childNodes[1].nodeValue;
+    var user = MemberNameForChatStart;
     var message = document.getElementById("messageInput").value;
     connection.invoke("SendMessage", user, message).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
 });
+
+}

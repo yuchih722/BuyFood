@@ -1,3 +1,9 @@
 /.vs
 /BuyFood_Template/bin/Debug
 /BuyFood_Template/obj/Debug
+/BuyFood_Template/obj/BuyFood_Template.csproj.nuget.g.props
+/BuyFood_Template/obj/BuyFood_Template.csproj.nuget.g.targets
+/BuyFood_Template/obj/project.assets.json
+/BuyFood_Template/obj/project.nuget.cache
+/BuyFood_Template/obj/BuyFood_Template.csproj.nuget.dgspec.json
+/BuyFood_Template/obj

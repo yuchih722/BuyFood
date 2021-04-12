@@ -246,18 +246,23 @@
         }
     };
 
-    //全選屏蔽
-    //function deletemore() {
-    //    var checked = $("#myTable input[type=checkbox]:checked");
-    //    for (let i = 0; i < checked.length; i++) {
-    //        console.log(checked[i].value);
-    //        $("#blacktype" + checked[i].value).click();
-
-    //    }
-    //}
 
     //進入此頁面執行
     var pagename = 99
-    $(Board(pagename));
+    $(Board(pagename),updateTOP());
 
+    function updateTOP() {
+        $.ajax({
+            url: "/yuBoardsALL/BoardsBreakfastTOP",
+            type: "get",
+            success: function (data) {
+                $("#Board99 .status_amount").html(data.all)
+                $("#Board5 .status_amount").html(data.five)
+                $("#Board4 .status_amount").html(data.four)
+                $("#Board3 .status_amount").html(data.three)
+                $("#Board2 .status_amount").html(data.two)
+                $("#Board1 .status_amount").html(data.one)
+            }
+        })
+    }
 </script>

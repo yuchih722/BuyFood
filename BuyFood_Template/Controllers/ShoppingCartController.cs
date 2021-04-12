@@ -15,6 +15,10 @@ namespace BuyFood_Template.Controllers
     {
         public IActionResult CurrentCartItem()
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
+            {
+                return RedirectToAction("登入", "HomePage");
+            }
             return View();
         }
         //抓取對應商品的庫存數量
@@ -27,7 +31,7 @@ namespace BuyFood_Template.Controllers
                 var result = new 擺腹BuyFoodContext().TProducts.Where(x => x.CProductId == i).FirstOrDefault();
                 CartProductCheckStore CartItem = new CartProductCheckStore()
                 {
-                    cProductId = i,
+                    cProductId = result.CProductId,
                     quantityInCart = (int)result.CQuantity,
                     finishTime = (int)result.CFinishedTime
                 };
