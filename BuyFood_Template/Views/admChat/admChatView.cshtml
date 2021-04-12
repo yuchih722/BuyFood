@@ -5,17 +5,20 @@
 
 
 <head>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    @*<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">*@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet" />
+    @*<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet" />*@
     <style>
         .adrContainerForadmChat {
             max-width: 1170px;
             margin: auto;
         }
 
-        img {
+        .chat_img img {
+            max-width: 100%;
+        }
+        .incoming_msg_img img {
             max-width: 100%;
         }
 
@@ -231,7 +234,7 @@
 
     <div class="adrContainerForadmChat" style="margin-top:100px">
         <h3 class=" text-center">客服中心</h3>
-        <div class="messaging">
+        <div class="messaging" style="margin-top:10px">
             <div class="inbox_msg">
                 <div class="inbox_people">
 

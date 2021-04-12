@@ -45,5 +45,9 @@ namespace BuyFood_Template.Controllers
             var admChatContext = db.TChatRooms.OrderBy(n => n.CSaveTime).Where(n=>n.CMemberId==MemberID||n.CMemberId==16).Select(n => n).ToList();
             return Json(admChatContext);
         }
+        public IActionResult test()
+        {
+            return View();
+        }
     }
 }
