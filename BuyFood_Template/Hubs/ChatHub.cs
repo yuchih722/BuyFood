@@ -17,6 +17,12 @@ namespace BuyFood_Template.Hubs
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
         }
+
+        public async Task RemoveFromGroup(string groupName)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+
+        }
         public Task SendMessageToGroup(string groupName, string username, string message,string adrfoto,int adrMemberIDForChat)
         {
             return Clients.Group(groupName).SendAsync("ReceiveGroupMessage", groupName, username, message, adrfoto,adrMemberIDForChat);
