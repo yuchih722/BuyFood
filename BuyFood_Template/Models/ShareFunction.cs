@@ -28,8 +28,8 @@ namespace BuyFood_Template.Models
         public void sendGrid(string mailtoAddress, string mailtoName, string subject, string body)
         {
  
-            var apiKey = System.Environment.GetEnvironmentVariable("buyfood_API");
-            var api = "SG.YoJ8HOk6TaSeBAEN8xHKig.SGgEx8CACGbebBE_KECCITu8XN5ZE6ySI_IZzmZUSus";
+            //var apiKey = System.Environment.GetEnvironmentVariable("buyfood_API");
+            var api = "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";
 
             var client = new SendGridClient(api); //api應該可以直接寫死
 
