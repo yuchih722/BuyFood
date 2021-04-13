@@ -5,17 +5,21 @@
 
 
 <head>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    @*<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">*@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet" />
+    @*<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet" />*@
     <style>
         .adrContainerForadmChat {
             max-width: 1170px;
             margin: auto;
         }
 
-        img {
+        .chat_img img {
+            max-width: 100%;
+        }
+
+        .incoming_msg_img img {
             max-width: 100%;
         }
 
@@ -224,128 +228,284 @@
             height: 516px;
             overflow-y: auto;
         }
-
     </style>
 </head>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<input type="text" id="thisIsForHideChannelID" value="" style="display:none;" />
+<div class="adrContainerForadmChat" style="margin-top:100px">
+    <h3 class=" text-center">客服中心</h3>
+    <div class="messaging" style="margin-top:10px">
+        <div class="inbox_msg">
+            <div class="inbox_people">
+
+                <div class="inbox_chat" id="adrChannelIDForSwitch">
 
 
-    <div class="adrContainerForadmChat" style="margin-top:100px">
-        <h3 class=" text-center">客服中心</h3>
-        <div class="messaging">
-            <div class="inbox_msg">
-                <div class="inbox_people">
 
-                    <div class="inbox_chat">
-
-                        <a onclick="switchToThisChannel(memberid)">
-                            <div class="chat_list active_chat" id="adrActiveChat+id">
-                                <div class="chat_people">
-                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                    <div class="chat_ib">
-                                        <h5>Sunil Rajput <span class="chat_date">2021/04/12 12:56</span></h5>
-                                        <p>
-                                            點擊查看資訊
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <div class="chat_list">
-                            <div class="chat_people">
-                                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                                <div class="chat_ib">
-                                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                    <p>
-                                        Test, which is a new approach to have all solutions
-                                        astrology under one roof.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-
-
-                <div class="mesgs">
-                    <div class="msg_history">
-                        <div class="incoming_msg">
-                            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                            <div class="received_msg">
-                                <div class="received_withd_msg">
-                                    <p>
-                                        Test which is a new approach to have all
-                                        solutions
-                                    </p>
-                                    <span class="time_date"> 11:01 AM    |    June 9</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="outgoing_msg">
-                            <div class="sent_msg">
-                                <p>
-                                    Test which is a new approach to have all
-                                    solutions
-                                </p>
-                                <span class="time_date"> 11:01 AM    |    June 9</span>
-                            </div>
-                        </div>
-                        <div class="incoming_msg">
-                            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                            <div class="received_msg">
-                                <div class="received_withd_msg">
-                                    <p>Test, which is a new approach to have</p>
-                                    <span class="time_date"> 11:01 AM    |    Yesterday</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="outgoing_msg">
-                            <div class="sent_msg">
-                                <p>Apollo University, Delhi, India Test</p>
-                                <span class="time_date"> 11:01 AM    |    Today</span>
-                            </div>
-                        </div>
-                        <div class="incoming_msg">
-                            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                            <div class="received_msg">
-                                <div class="received_withd_msg">
-                                    <p>
-                                        We work directly with our designers and suppliers,
-                                        and sell direct to you, which means quality, exclusive
-                                        products, at a price anyone can afford.
-                                    </p>
-                                    <span class="time_date"> 11:01 AM    |    Today</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="type_msg">
-                        <div class="input_msg_write">
-                            <input type="text" class="write_msg" placeholder="請輸入訊息" />
-                            <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-                        </div>
-                    </div>
                 </div>
             </div>
 
 
+            <div class="mesgs">
+                <div class="msg_history" id="TheStartPointOfContext">
+
+
+
+                </div>
+                <div class="type_msg">
+                    <div class="input_msg_write">
+                        <input type="text" class="write_msg" id="typeMessageOnAdmChat" placeholder="請輸入訊息" />
+                        <button class="msg_send_btn" type="button" id="summitButtonAdmChat"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
     </div>
+</div>
+
 <script>
+    var adrTxtForAdmChatRoom = "";
     $.ajax({
-        url: "",
-        type:"POST",
-        data:
+        url: "/admChat/getChatRooms/",
+        type: "POST",
+        success: function (chatRooms) {
+            console.log(chatRooms);
+            for (let i = 0; i < chatRooms.length; i++) {
+                adrTxtForAdmChatRoom += `<a onclick="switchToThisChannel(${chatRooms[i].cChannelID})">
+                                            <div class="chat_list" id="adrActiveChat${chatRooms[i].cChannelID}">
+                                                <div class="chat_people">
+                                                    <div class="chat_img"> <img src="${chatRooms[i].cFoto}"> </div>
+                                                    <div class="chat_ib">
+                                                        <h5>${chatRooms[i].cMemberName} <span class="chat_date">${chatRooms[i].cTheLastChatTime}</span></h5>
+                                                        <p>
+                                                            點擊查看資訊
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>`;
+            }
+
+            $("#adrChannelIDForSwitch").append(adrTxtForAdmChatRoom);
+        }
 
     })
 
-    function switchToThisChannel(ChannelID)
-    {
-        (adrActiveChat + id).sibblings.revomeClass((adrActiveChat + id));
-        (adrActiveChat + id).addclass(active_chat);
+    function switchToThisChannel(ChannelID) {
+        let adrLastGroupID = $("#thisIsForHideChannelID").val();
+        if (adrLastGroupID != "") {
+            admRemoveFromGroup(adrLastGroupID)
+        }
+        $(".chat_list").removeClass("active_chat");
+        $("#adrActiveChat" + ChannelID).addClass("active_chat");
+        adrShowTheContext(ChannelID);
+        admAddToGroup(ChannelID);
+    }
+    var adm自己連續發言旗桿 = 0;
+    var adm對方連續發言旗桿 = 0;
+
+    function adrShowTheContext(adradmMemberID) {
+        $("#TheStartPointOfContext").empty();
+        $.ajax({
+            url: "/admChat/getContext/",
+            type: "POST",
+            data: { "MemberID": adradmMemberID },
+            success: function (contexts) {
+                console.log(contexts);
+                console.log(adradmMemberID);
+                var adrTxtAdmContext = "";
+                for (let i = 0; i < contexts.length; i++) {
+                    //admin is the right side
+                    if (contexts[i].cMemberId == 16) {
+                        adrTxtAdmContext += `<div class="outgoing_msg">
+                            <div class="sent_msg">
+                                <p>${contexts[i].cContent}</p>
+                                <span class="time_date">${contexts[i].cMessageTime}</span>
+                            </div>
+                        </div>`;
+
+
+                        adm自己連續發言旗桿 = 1;
+                        adm對方連續發言旗桿 = 0;
+
+
+                    }
+                    else {
+                        if (contexts[i].cMemberId == adradmMemberID) {
+                            if (adm對方連續發言旗桿 == 0) {
+                                adrTxtAdmContext += `<div class="incoming_msg">
+                            <div class="incoming_msg_img"> <img src="${contexts[i].cPhoto}"> </div>
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>
+                                            ${contexts[i].cContent}
+                                        </p>
+                                        <span class="time_date">${contexts[i].cMessageTime}</span>
+                                    </div>
+                                </div>
+                            </div>`;
+                                adm對方連續發言旗桿 = 1;
+                                adm自己連續發言旗桿 = 0;
+                            }
+                            else {
+                                adrTxtAdmContext += `<div class="incoming_msg">
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>
+                                            ${contexts[i].cContent}
+                                        </p>
+                                        <span class="time_date">${contexts[i].cMessageTime}</span>
+                                    </div>
+                                </div>
+                            </div>`;
+                                adm自己連續發言旗桿 = 0;
+                            }
+                        }
+                    }
+                }
+                $("#TheStartPointOfContext").append(adrTxtAdmContext);
+                $("#TheStartPointOfContext").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 0);
+
+            }
+        })
+
 
     }
 
+    //聊天室啟動===============================================================
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+
+    connection.on("ReceiveGroupMessage", function (groupName, username, message, adrfoto, adrMemberIDForChat) {
+        console.log("接收成功");
+        console.log(adrMemberIDForChat);
+        console.log(adrfoto);
+        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var when = new Date().toLocaleTimeString();
+        var encodedMsg = /*user + " says " +*/ '<p>' + msg + '<span class="chat_message_time">' + when + '</span></p>';
+        var li = document.createElement("li");
+        li.innerHTML = encodedMsg;
+        let adradmHidechannelid = parseInt($("#thisIsForHideChannelID").val());
+        console.log('這個是：'+adradmHidechannelid);//頻道為4
+        $.ajax({
+            url: "/admChat/saveContext/",
+            type: "POST",
+            data: { MemberName: username, Content: message, MessageTime: when, "foto": adrfoto, "userID": adrMemberIDForChat, "difChatRoomID": adradmHidechannelid },
+
+        });
+
+        var PictureForMessage = adrfoto;
+        
+
+        if (msg == '') { return; }
+        //如果是自己，放右邊
+
+        if (adrMemberIDForChat == 16)
+        {
+
+                $("#TheStartPointOfContext").append(`<div class="outgoing_msg">
+                            <div class="sent_msg">
+                                <p>${msg}</p>
+                                <span class="time_date">${when}</span>
+                            </div>
+                        </div>`);
+
+                $("ul.messagesListForClient:eq(-1)").append(li);
+                adm自己連續發言旗桿 = 1;
+                adm對方連續發言旗桿 = 0;
+        }
+
+        else
+        {
+            if (adrMemberIDForChat == adradmHidechannelid)//if LoginAccount == ChannelID
+            {
+                if (adm對方連續發言旗桿 == 0)
+                {
+                    $("#TheStartPointOfContext").append(`<div class="incoming_msg">
+                            <div class="incoming_msg_img"> <img src="${PictureForMessage}"> </div>
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>
+                                            ${message}
+                                        </p>
+                                        <span class="time_date">${when}</span>
+                                    </div>
+                                </div>
+                            </div>`);
+
+                    adm對方連續發言旗桿 = 1;
+                    adm自己連續發言旗桿 = 0;
+                }
+                else
+                {
+                    $("#TheStartPointOfContext").append(`<div class="incoming_msg">
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>
+                                            ${message}
+                                        </p>
+                                        <span class="time_date">${when}</span>
+                                    </div>
+                                </div>
+                            </div>`);
+                    adm自己連續發言旗桿 = 0;
+                }
+            }
+        }
+        $("#TheStartPointOfContext").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
+    });
+     //聊天室啟動====================================================================
+
+
+    //開啟連線
+    connection.start().then(function () {
+        document.getElementById("summitButtonAdmChat").disabled = false;
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+    //開啟連線
+    //加入群組
+    function admAddToGroup(ChannelID) {
+        console.log(ChannelID + '已加入群組');
+        document.getElementById("thisIsForHideChannelID").value = ChannelID;
+        var groupName = ChannelID.toString();
+        let userName = '管理員';
+        connection.invoke("AddGroup", groupName, userName).catch(function (err) {
+            return console.error(err.toString());
+        })
+    }
+    //加入群組
+    //離開群組
+    function admRemoveFromGroup(LastChannelID) {
+        console.log(LastChannelID + '已退出群組');
+        var groupName = LastChannelID.toString();
+        connection.invoke("RemoveFromGroup", groupName).catch(function (err) {
+            return console.error(err.toString());
+        })
+    }
+
+    //離開群組
+    // 群組訊息Button事件
+    document.getElementById("summitButtonAdmChat").addEventListener("click", function (e) {
+        if ($("#thisIsForHideChannelID").val()=="")
+        {
+            window.alert('請先選擇會員');
+        }
+        var groupName = $("#thisIsForHideChannelID").val();
+        var username = '管理員';
+        var message = document.getElementById("typeMessageOnAdmChat").value;
+        var adrfoto = '/img/adrChatRoom/adm2.jpg';
+        var adrMemberIDForChat = 16;
+        console.log("傳送成功");
+        connection.invoke("SendMessageToGroup", groupName, username, message, adrfoto, adrMemberIDForChat).catch(function (err) {
+            console.log("傳送失敗")
+            return console.error(err.toString());
+        });
+    });
+    // 群組訊息Button事件
+
+    
 </script>

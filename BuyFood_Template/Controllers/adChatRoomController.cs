@@ -22,7 +22,8 @@ namespace BuyFood_Template.Controllers
                 CMessageTime = MessageTime,
                 CSaveTime = theSaveTime,
                 CMemberId = userID,
-                CPhoto=foto
+                CPhoto=foto,
+                CDifRoomId=userID
             };
             db.TChatRooms.Add(cr);
             db.SaveChanges();

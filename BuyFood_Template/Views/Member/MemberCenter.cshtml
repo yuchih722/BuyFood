@@ -17,7 +17,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    
+    @*照片功能*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" rel="stylesheet" />
+
     <style>
+
         .hiddenRow {
             padding: 0 !important;
         }
@@ -42,34 +48,10 @@
         .inline {
             display: inline;
         }
+
         .inlinrB {
             display: inline-block;
         }
-
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            border-bottom: 1px dotted black; /* 悬停元素上显示点线 */
-        }
-
-            /* Tooltip 文本 */
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 120px;
-                background-color: black;
-                color: #fff;
-                text-align: center;
-                padding: 5px 0;
-                border-radius: 6px;
-                /* 定位 */
-                position: absolute;
-                z-index: 1;
-            }
-
-            /* 鼠标移动上去后显示提示框 */
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-            }
     </style>
 
 </head>
@@ -88,8 +70,7 @@
                     <img id="cwc_img_ProfilePhoto" style="border-radius: 50%;width:200px;height:200px;margin-top:20px;margin-bottom:10px" src="@ViewBag.userPhoto" alt="圓形圖" />
                 </div>
                 <div class="row" style="width:inherit;margin-bottom:5px;position:relative;">
-                    <input type="file" id="cwc_input_uploadProfilePhoto" onchange="cwc_changeProfilePhoto(@Model.CMemberId)" style="display:none" />
-                    <button id="cwc_button_ReviseProfilePhoto" onclick="cwc_input_uploadProfilePhoto.click()" class="inline btn btn-success" style="width:30px;height:30px;padding:0px;position:absolute;bottom:32px;right:2px;">
+                    <button id="cwc_button_ReviseProfilePhoto" onclick="" class="inline btn btn-success" style="width:30px;height:30px;padding:0px;position:absolute;bottom:32px;right:2px;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
                             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                             <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
@@ -139,11 +120,11 @@
                             <div style="height:20px">
                                 <label style="color: red; font-size:10px" id="WrongCheckpassword"></label>
                             </div>
-                            <button id="cwc_i_btn_pscSave" class="btn btn-success btn-sm" style="margin:10px" onclick="cwc_savePassword(@Model.CMemberId)">確認</button>
-                            <button id="cwc_i_btn_pscCancel" class="btn btn-success btn-sm" style="margin:10px">取消</button>
+                            <button id="cwc_i_btn_pscSave" class="btn btn-success btn-sm" style="margin:10px" onclick="cwc_savePassword(@Model.CMemberId,1)">確認</button>
+                            <button id="cwc_i_btn_pscCancel" class="btn btn-success btn-sm" style="margin:10px" onclick="cwc_savePassword(@Model.CMemberId,0)">取消</button>
                         </div>
                         <button id="cwc_logout" class="list-group-item list-group-item-action" style="display:inline;" onclick="cwc_logout()">登出</button>
-                        <button id="cwc_logout" class="list-group-item list-group-item-action" style="display:inline;" onclick="test()">測試</button>
+                        <button id="cwc_logout" class="list-group-item list-group-item-action cwc_c_btn_showRight" style="display:inline;" onclick="test()">測試</button>
 
                     </div>
                 </div>
@@ -152,9 +133,26 @@
             <div id="head_cwc" class="cwc_c_div_show" style="width: 0; height: 50px; overflow: hidden; transition: all .5s;position:relative">
 
             </div>
+
+
             <div id="content_cwc" class="cwc_c_div_show" style="width: 0;height: 650px; overflow: hidden;padding:20px; transition: all .5s">
 
+
             </div>
+        </div>
+        <div id="dialog-form" title="上傳照片">
+            <p class="validateTips">請選擇欲上傳的檔案</p>
+            <form>
+                <fieldset>
+
+                    <label for="photo">photo</label>
+                    <input type="hidden" id="memberID" value="@Model.CMemberId" />
+                    <input type="file" name="photo" id="photo" value="上傳照片" class="ui-widget-content ui-corner-all">
+
+                    <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                    <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+                </fieldset>
+            </form>
         </div>
     </div>
     <script>
@@ -171,36 +169,70 @@
     <script type="text/javascript" src="~/cwc/cwc_Deposit.js"></script>
     <script type="text/javascript" src="~/cwc/cwc_Profile.js"></script>
     <script type="text/javascript" src="~/cwc/CheckPassword.js"></script>
+    <script>
+        $( function() {
+    var dialog, form,
+        photo = $("#photo"),
+      memberID=$("#memberID")
+      allFields = $( [] ).add( photo ).add(memberID),
+      tips = $( ".validateTips" );
+
+    function addUser() {
+        console.log(allFields);
+        const formdata = new FormData();
+        formdata.append('photo', $(`#photo`)[0].files[0]);
+        fetch(
+            '/Member/UploadOneFile',
+            {
+                method: 'POST',
+                body: formdata
+            })
+            .then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                console.log(data);
+                $("#cwc_img_ProfilePhoto").attr("src", `${data.src}`)
+                $("#cwc_loginPhoto").attr("src", `${data.src}`)
+            });
+
+        dialog.dialog( "close" );
+    }
+
+    dialog = $( "#dialog-form" ).dialog({
+      autoOpen: false,
+      height: 400,
+      width: 350,
+      modal: true,
+      buttons: {
+        "OK": addUser,
+        Cancel: function() {
+          dialog.dialog( "close" );
+        }
+      },
+      close: function() {
+        form[ 0 ].reset();
+        allFields.removeClass( "ui-state-error" );
+      }
+    });
+
+    form = dialog.find( "form" ).on( "submit", function( event ) {
+      event.preventDefault();
+      addUser();
+    });
+
+     $( "#cwc_button_ReviseProfilePhoto" ).button().on( "click", function() {
+      dialog.dialog( "open" );
+    });
+  } );
+
+    </script>
+
 
 
     <script>
         function test() {
-            window.location.href = "/Member/test"
+            /*window.location.href ="/api/SendGrid/SendNotification"*/
         }
-
-        var cwc_bool_showchangePassword = false;
-
-        function cwc_showChangPassword() {
-            if (!cwc_bool_showchangePassword) {
-                $("#aaa").css("display", "block");
-                $("#cwc_i_div_bodyLeft").css("height", "800px");
-                $("#content_cwc").css("height", "800px");
-                $("#cwc_i_div_wholeDiv").css("height", "950px");
-                cwc_bool_showchangePassword = true;
-            }
-            else {
-                $("#aaa").css("display", "none");
-                $("#cwc_i_div_bodyLeft").css("height", "650px");
-                $("#content_cwc").css("height", "650px");
-                $("#cwc_i_div_wholeDiv").css("height", "800px");
-                $("#cwc_orP").attr("value", "");
-                $("#password").attr("value", "");
-                $("#checkPassword").attr("value", "");
-                cwc_bool_showchangePassword = false;
-            }
-        }
-
-  
 
         function updateData(memberID) {
             $.ajax({
@@ -245,13 +277,15 @@
                     $("#head_cwc").html("");
                     var content = `<div>` + data[0] + `</div>` +
                         `<div>
-                                        <span>邀請連結 :</span><span id="cwc_span_urlRe">${data[1]}</span>
-                                        <div id="cwc_btn_copyurlRe" class="btn btn-outline-dark btn-sm" onclick="copy('cwc_span_urlRe')" >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
-                                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
-                                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
-                                        </svg></div></div>
-                                      <img src="http://www.funcode-tech.com/Encoder_Service/img.aspx?custid=1&username=public&codetype=QR&EClevel=0&data=${data[1]}" width="300"/>`
+            <span>邀請連結 :</span><span id="cwc_span_urlRe">${data[1]}</span>
+            <div id="cwc_btn_copyurlRe" class="btn btn-outline-dark btn-sm" onclick="copy('cwc_span_urlRe')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
+                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                </svg>
+            </div>
+        </div>
+        <img src="http://www.funcode-tech.com/Encoder_Service/img.aspx?custid=1&username=public&codetype=QR&EClevel=0&data=${data[1]}" width="300" />`
                     $("#content_cwc").html(content);
                 }
             })

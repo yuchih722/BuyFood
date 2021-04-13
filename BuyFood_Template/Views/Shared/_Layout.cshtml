@@ -134,7 +134,7 @@
                                 }
                             }
                             <div class="header__top__right__auth" id="divUserImg">
-                                <img src="@UserLoginImgForPage" width="20" height="20" />
+                                <img id="cwc_loginPhoto" src="@UserLoginImgForPage" width="20" height="20" />
                             </div>
                             <div class="header__top__right__auth" id="divLogin">
                                 @*<a asp-controller="HomePage" asp-action="登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>*@
@@ -376,10 +376,12 @@
                         $("ul.messagesListForClient:eq(-1)").append(li);
                         自己連續發言旗桿 = 1;
                         對方連續發言旗桿 = 0;
+                        $("#chat").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
                     }
                     else {
                         $("ul.messagesListForClient:eq(-1)").append(li);
                         對方連續發言旗桿 = 0;
+                        $("#chat").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
                     }
                 }
 
@@ -387,7 +389,7 @@
                     if ($("#user_member").val() == 16)//if LoginAccount == admin
                     {
                         if (對方連續發言旗桿 == 0) {
-                            $("#chatStartPoint").append(`<div class="chat_message_wrapper ">
+                            $("#chat").append(`<div class="chat_message_wrapper ">
                     <div class="chat_user_avatar">
                             <img   src="${PictureForMessage}" class="md-user-image ">
                     </div>
@@ -398,10 +400,12 @@
                             $("ul.messagesListForAdmin:eq(-1)").append(li);
                             對方連續發言旗桿 = 1;
                             自己連續發言旗桿 = 0;
+                            $("#chat").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
                         }
                         else {
                             $("ul.messagesListForAdmin:eq(-1)").append(li);
                             自己連續發言旗桿 = 0;
+                            $("#chat").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
                         }
                     }
 
@@ -421,10 +425,12 @@
                         $("ul.messagesListForAdmin:eq(-1)").append(li);
                         對方連續發言旗桿 = 1;
                         自己連續發言旗桿 = 0;
+                        $("#chat").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
                     }
                     else {
                         $("ul.messagesListForAdmin:eq(-1)").append(li);
                         自己連續發言旗桿 = 0;
+                        $("#chat").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
                     }
                 }
 
