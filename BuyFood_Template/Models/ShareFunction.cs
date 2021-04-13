@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SendGrid;
+using SendGrid.Helpers.Mail;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -23,6 +25,26 @@ namespace BuyFood_Template.Models
             return builder.ToString();
         }
 
+        public void sendGrid(string mailtoAddress, string mailtoName, string subject, string body)
+        {
+ 
+            var apiKey = System.Environment.GetEnvironmentVariable("buyfood_API");
+            var api = "SG.YoJ8HOk6TaSeBAEN8xHKig.SGgEx8CACGbebBE_KECCITu8XN5ZE6ySI_IZzmZUSus";
+
+            var client = new SendGridClient(api); //api應該可以直接寫死
+
+            SendGridMessage msg = new SendGridMessage();
+            msg.SetFrom("sunfengmsit129@gmail.com", "擺腹buyfood");
+            msg.AddTo(mailtoAddress, mailtoName);
+            msg.SetSubject(subject);
+            msg.AddContent(MimeType.Text, body);
+            
+
+            var response = client.SendEmailAsync(msg);
+
+
+
+        }
         public void sendEmail(string mailtoAddress,string mailtoName, string subject, string body)
         {
             var fromAddress = new MailAddress("sunfengmsit129@gmail.com", "擺腹buyfood");
