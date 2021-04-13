@@ -1,16 +1,16 @@
-﻿@model BuyFood_Template.ViewModel.MemberManagementViewModel
+﻿@{
+    Layout = "_LayoutAd";
+}
+@model BuyFood_Template.ViewModel.MemberManagementViewModel
 @{
     ViewData["Title"] = "會員管理系統";
-}
-@{
-    Layout = "_LayoutAd";
 }
 
 <p><h1>修改會員資料</h1></p>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit" method="post">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 @*<label asp-for="CMemberId" class="control-label"></label>*@
@@ -33,14 +33,22 @@
                 <span asp-validation-for="CPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CGender" class="control-label"></label>
-                <input asp-for="CGender" class="form-control" />
-                <span asp-validation-for="CGender" class="text-danger"></span>
+                <label>性別：</label>
+                <input asp-for="CGender" type="radio" value="男" />
+                <label asp-for="CGender" class="control-label">男</label>
+                <input asp-for="CGender" type="radio" value="女" />
+                <label asp-for="CGender" class="control-label">女</label>
             </div>
             <div class="form-group">
                 <label asp-for="CAddress" class="control-label"></label>
                 <input asp-for="CAddress" class="form-control" />
                 <span asp-validation-for="CAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CAge" class="control-label"></label>
+                <input asp-for="CAge" type="date" class="form-control" />
+                <span asp-validation-for="CAge" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CBlackList" class="control-label"></label>
@@ -50,7 +58,7 @@
             <div class="form-group">
                 <label asp-for="CDeposit" class="control-label"></label>
                 <input asp-for="CDeposit" class="form-control" />
-                <span asp-validation-for="CDeposit" class="text-danger"></span>
+                <span asp-validation-for="CDeposit" class="text-danger">客戶的$$請勿亂改</span>
             </div>
             <div class="form-group">
                 <label asp-for="CPhone" class="control-label"></label>
@@ -58,7 +66,7 @@
                 <span asp-validation-for="CPhone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CPicture" class="control-label"></label>
+                <label asp-for="image" class="control-label"></label>
                 <input type="file" name="image" />
                 @*<input asp-for="CPicture" class="form-control" />*@
                 <span asp-validation-for="CPicture" class="text-danger"></span>
@@ -74,3 +82,83 @@
         </form>
     </div>
 </div>
+
+
+
+@*
+    <fieldset>
+        <legend>個人資料一</legend>
+        <div class="st1">
+
+            <input type="text" id="account1" name="account" autocomplete="off" placeholder="guest" size="10" autofocus />
+        </div>
+
+
+        </div>
+
+
+        <div class="st1">
+            <label class="t1">E-mail:</label>
+            <input type="email" name="mail1" readonly />
+        </div>
+
+    </fieldset>
+    <fieldset>
+        <legend>地址</legend>
+        <div class="st1">
+            <label class="t1">縣市:</label>
+            <select name="add1">
+                <option value="" selected>請選擇</option>
+                <option value="Tpe">台北市</option>
+                <option value="Tph">新北市</option>
+                <option value="Tyu">桃園市</option>
+            </select>
+        </div>
+        <div class="st1">
+            <label class="t1">完整地址:</label>
+            <input type="text" name="add2" size="30" />
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>個人資料二</legend>
+        <div class="st1">
+            <label class="t1">照片:</label>
+            <input type="file" name="file1" multiple />
+        </div>
+        <div class="st1">
+            <label class="t1">Blog:</label>
+            <input type="url" name="hplist" list="urllist" value="http://" />
+            <datalist id="urllist">
+                <option value="http://www.google.com">Google</option>
+                <option value="https://www.facebook.com"></option>
+
+            </datalist>
+        </div>
+        <div class="st1">
+            <label class="t1">興趣:</label>
+            <label>
+                <input type="checkbox" name="hobby" value="movie" />電影
+            </label>
+            <label>
+                <input type="checkbox" name="hobby" value="sport" />運動
+            </label>
+            <label>
+                <input type="checkbox" name="hobby" value="music" />音樂
+            </label>
+            <label>
+                <input type="checkbox" name="hobby" value="travel" />旅遊
+            </label>
+        </div>
+        <div class="st1">
+            <label class="t1" for="comment1">意見:</label>
+            <textarea name="comment" id="comment1" cols="40" rows="5"></textarea>
+        </div>
+    </fieldset>
+    <div class="sub">
+        <input type="submit" value="送出" />
+        <input type="reset" value="清除" />
+    </div>
+
+*@
+
+
