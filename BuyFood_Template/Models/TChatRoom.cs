@@ -12,6 +12,8 @@ namespace BuyFood_Template.Models
         public string CContent { get; set; }
         public string CMessageTime { get; set; }
         public DateTime? CSaveTime { get; set; }
+        public string CPhoto { get; set; }
+        public int? CDifRoomId { get; set; }
 
         public virtual TMember CMember { get; set; }
     }

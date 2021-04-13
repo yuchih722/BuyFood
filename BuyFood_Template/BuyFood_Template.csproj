@@ -65,9 +65,15 @@
     <None Include="wwwroot\js\RatingStarsJS.js" />
     <None Include="wwwroot\js\ShoppingCart_JS\CurrentShoppingCart.js" />
     <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\YUYUYU\JS\layer-v3.3.0\layer\layer.js" />
+    <None Include="wwwroot\YUYUYU\JS\layer-v3.3.0\layer\mobile\layer.js" />
+    <None Include="wwwroot\YUYUYU\JS\layer-v3.3.0\免责声明.url" />
+    <None Include="wwwroot\YUYUYU\JS\layer-v3.3.0\文档\jquery下载.url" />
+    <None Include="wwwroot\YUYUYU\JS\layer-v3.3.0\文档\layer官网.url" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Grpc.Core" Version="2.37.0" />
     <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="5.0.24" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
@@ -76,6 +82,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="SendGrid" Version="9.22.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties libman_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
