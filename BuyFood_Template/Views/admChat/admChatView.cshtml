@@ -1,0 +1,519 @@
+﻿@{
+    Layout = "_LayoutAd";
+}
+
+
+
+<head>
+    @*<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">*@
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    @*<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet" />*@
+    <style>
+        .adrContainerForadmChat {
+            max-width: 1170px;
+            margin: auto;
+        }
+
+        .chat_img img {
+            max-width: 100%;
+        }
+
+        .incoming_msg_img img {
+            max-width: 100%;
+        }
+
+        .inbox_people {
+            background: #f8f8f8 none repeat scroll 0 0;
+            float: left;
+            overflow: hidden;
+            width: 40%;
+            border-right: 1px solid #c4c4c4;
+        }
+
+        .inbox_msg {
+            border: 1px solid #c4c4c4;
+            clear: both;
+            overflow: hidden;
+        }
+
+        .top_spac {
+            margin: 20px 0 0;
+        }
+
+
+        .recent_heading {
+            float: left;
+            width: 40%;
+        }
+
+        .srch_bar {
+            display: inline-block;
+            text-align: right;
+            width: 60%;
+        }
+
+        .headind_srch {
+            padding: 10px 29px 10px 20px;
+            overflow: hidden;
+            border-bottom: 1px solid #c4c4c4;
+        }
+
+        .recent_heading h4 {
+            color: #05728f;
+            font-size: 21px;
+            margin: auto;
+        }
+
+        .srch_bar input {
+            border: 1px solid #cdcdcd;
+            border-width: 0 0 1px 0;
+            width: 80%;
+            padding: 2px 0 4px 6px;
+            background: none;
+        }
+
+        .srch_bar .input-group-addon button {
+            background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+            border: medium none;
+            padding: 0;
+            color: #707070;
+            font-size: 18px;
+        }
+
+        .srch_bar .input-group-addon {
+            margin: 0 0 0 -27px;
+        }
+
+        .chat_ib h5 {
+            font-size: 15px;
+            color: #464646;
+            margin: 0 0 8px 0;
+        }
+
+            .chat_ib h5 span {
+                font-size: 13px;
+                float: right;
+            }
+
+        .chat_ib p {
+            font-size: 14px;
+            color: #989898;
+            margin: auto
+        }
+
+        .chat_img {
+            float: left;
+            width: 11%;
+        }
+
+        .chat_ib {
+            float: left;
+            padding: 0 0 0 15px;
+            width: 88%;
+        }
+
+        .chat_people {
+            overflow: hidden;
+            clear: both;
+        }
+
+        .chat_list {
+            border-bottom: 1px solid #c4c4c4;
+            margin: 0;
+            padding: 18px 16px 10px;
+        }
+
+        .inbox_chat {
+            height: 550px;
+            overflow-y: scroll;
+        }
+
+        .active_chat {
+            background: #ebebeb;
+        }
+
+        .incoming_msg_img {
+            display: inline-block;
+            width: 6%;
+        }
+
+        .received_msg {
+            display: inline-block;
+            padding: 0 0 0 10px;
+            vertical-align: top;
+            width: 92%;
+        }
+
+        .received_withd_msg p {
+            background: #ebebeb none repeat scroll 0 0;
+            border-radius: 3px;
+            color: #646464;
+            font-size: 14px;
+            margin: 0;
+            padding: 5px 10px 5px 12px;
+            width: 100%;
+        }
+
+        .time_date {
+            color: #747474;
+            display: block;
+            font-size: 12px;
+            margin: 8px 0 0;
+        }
+
+        .received_withd_msg {
+            width: 57%;
+        }
+
+        .mesgs {
+            float: left;
+            padding: 30px 15px 0 25px;
+            width: 60%;
+        }
+
+        .sent_msg p {
+            background: #05728f none repeat scroll 0 0;
+            border-radius: 3px;
+            font-size: 14px;
+            margin: 0;
+            color: #fff;
+            padding: 5px 10px 5px 12px;
+            width: 100%;
+        }
+
+        .outgoing_msg {
+            overflow: hidden;
+            margin: 26px 0 26px;
+        }
+
+        .sent_msg {
+            float: right;
+            width: 46%;
+        }
+
+        .input_msg_write input {
+            background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+            border: medium none;
+            color: #4c4c4c;
+            font-size: 15px;
+            min-height: 48px;
+            width: 100%;
+        }
+
+        .type_msg {
+            border-top: 1px solid #c4c4c4;
+            position: relative;
+        }
+
+        .msg_send_btn {
+            background: #05728f none repeat scroll 0 0;
+            border: medium none;
+            border-radius: 50%;
+            color: #fff;
+            cursor: pointer;
+            font-size: 17px;
+            height: 33px;
+            position: absolute;
+            right: 0;
+            top: 11px;
+            width: 33px;
+        }
+
+        .messaging {
+            padding: 0 0 50px 0;
+        }
+
+        .msg_history {
+            height: 516px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<input type="text" id="thisIsForHideChannelID" value="" style="display:none;" />
+<div class="adrContainerForadmChat" style="margin-top:100px">
+    <h3 class=" text-center">客服中心</h3>
+    <div class="messaging" style="margin-top:10px">
+        <div class="inbox_msg">
+            <div class="inbox_people">
+
+                <div class="inbox_chat" id="adrChannelIDForSwitch">
+
+
+
+                </div>
+            </div>
+
+
+            <div class="mesgs">
+                <div class="msg_history" id="TheStartPointOfContext">
+
+
+
+                </div>
+                <div class="type_msg">
+                    <div class="input_msg_write">
+                        <input type="text" class="write_msg" id="typeMessageOnAdmChat" placeholder="請輸入訊息" />
+                        <button class="msg_send_btn" type="button" id="summitButtonAdmChat"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    var adrTxtForAdmChatRoom = "";
+    $.ajax({
+        url: "/admChat/getChatRooms/",
+        type: "POST",
+        success: function (chatRooms) {
+            console.log(chatRooms);
+            for (let i = 0; i < chatRooms.length; i++) {
+                adrTxtForAdmChatRoom += `<a onclick="switchToThisChannel(${chatRooms[i].cChannelID})">
+                                            <div class="chat_list" id="adrActiveChat${chatRooms[i].cChannelID}">
+                                                <div class="chat_people">
+                                                    <div class="chat_img"> <img src="${chatRooms[i].cFoto}"> </div>
+                                                    <div class="chat_ib">
+                                                        <h5>${chatRooms[i].cMemberName} <span class="chat_date">${chatRooms[i].cTheLastChatTime}</span></h5>
+                                                        <p>
+                                                            點擊查看資訊
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>`;
+            }
+
+            $("#adrChannelIDForSwitch").append(adrTxtForAdmChatRoom);
+        }
+
+    })
+
+    function switchToThisChannel(ChannelID) {
+        let adrLastGroupID = $("#thisIsForHideChannelID").val();
+        if (adrLastGroupID != "") {
+            admRemoveFromGroup(adrLastGroupID)
+        }
+        $(".chat_list").removeClass("active_chat");
+        $("#adrActiveChat" + ChannelID).addClass("active_chat");
+        adrShowTheContext(ChannelID);
+        admAddToGroup(ChannelID);
+    }
+    var adm自己連續發言旗桿 = 0;
+    var adm對方連續發言旗桿 = 0;
+
+    function adrShowTheContext(adradmMemberID) {
+        $("#TheStartPointOfContext").empty();
+        $.ajax({
+            url: "/admChat/getContext/",
+            type: "POST",
+            data: { "MemberID": adradmMemberID },
+            success: function (contexts) {
+                console.log(contexts);
+                console.log(adradmMemberID);
+                var adrTxtAdmContext = "";
+                for (let i = 0; i < contexts.length; i++) {
+                    //admin is the right side
+                    if (contexts[i].cMemberId == 16) {
+                        adrTxtAdmContext += `<div class="outgoing_msg">
+                            <div class="sent_msg">
+                                <p>${contexts[i].cContent}</p>
+                                <span class="time_date">${contexts[i].cMessageTime}</span>
+                            </div>
+                        </div>`;
+
+
+                        adm自己連續發言旗桿 = 1;
+                        adm對方連續發言旗桿 = 0;
+
+
+                    }
+                    else {
+                        if (contexts[i].cMemberId == adradmMemberID) {
+                            if (adm對方連續發言旗桿 == 0) {
+                                adrTxtAdmContext += `<div class="incoming_msg">
+                            <div class="incoming_msg_img"> <img src="${contexts[i].cPhoto}"> </div>
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>
+                                            ${contexts[i].cContent}
+                                        </p>
+                                        <span class="time_date">${contexts[i].cMessageTime}</span>
+                                    </div>
+                                </div>
+                            </div>`;
+                                adm對方連續發言旗桿 = 1;
+                                adm自己連續發言旗桿 = 0;
+                            }
+                            else {
+                                adrTxtAdmContext += `<div class="incoming_msg">
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>
+                                            ${contexts[i].cContent}
+                                        </p>
+                                        <span class="time_date">${contexts[i].cMessageTime}</span>
+                                    </div>
+                                </div>
+                            </div>`;
+                                adm自己連續發言旗桿 = 0;
+                            }
+                        }
+                    }
+                }
+                $("#TheStartPointOfContext").append(adrTxtAdmContext);
+                $("#TheStartPointOfContext").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 0);
+
+            }
+        })
+
+
+    }
+
+    //聊天室啟動===============================================================
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+
+    connection.on("ReceiveGroupMessage", function (groupName, username, message, adrfoto, adrMemberIDForChat) {
+        console.log("接收成功");
+        console.log(adrMemberIDForChat);
+        console.log(adrfoto);
+        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var when = new Date().toLocaleTimeString();
+        var encodedMsg = /*user + " says " +*/ '<p>' + msg + '<span class="chat_message_time">' + when + '</span></p>';
+        var li = document.createElement("li");
+        li.innerHTML = encodedMsg;
+        document.getElementById("typeMessageOnAdmChat").value = "";
+
+
+        let adradmHidechannelid = parseInt($("#thisIsForHideChannelID").val());
+        console.log('這個是：'+adradmHidechannelid);//頻道為4
+        $.ajax({
+            url: "/admChat/saveContext/",
+            type: "POST",
+            data: { MemberName: username, Content: message, MessageTime: when, "foto": adrfoto, "userID": adrMemberIDForChat, "difChatRoomID": adradmHidechannelid },
+
+        });
+
+        var PictureForMessage = adrfoto;
+        
+
+        if (msg == '') { return; }
+        //如果是自己，放右邊
+
+        if (adrMemberIDForChat == 16)
+        {
+
+                $("#TheStartPointOfContext").append(`<div class="outgoing_msg">
+                            <div class="sent_msg">
+                                <p>${msg}</p>
+                                <span class="time_date">${when}</span>
+                            </div>
+                        </div>`);
+
+                $("ul.messagesListForClient:eq(-1)").append(li);
+                adm自己連續發言旗桿 = 1;
+                adm對方連續發言旗桿 = 0;
+        }
+
+        else
+        {
+            if (adrMemberIDForChat == adradmHidechannelid)//if LoginAccount == ChannelID
+            {
+                if (adm對方連續發言旗桿 == 0)
+                {
+                    $("#TheStartPointOfContext").append(`<div class="incoming_msg">
+                            <div class="incoming_msg_img"> <img src="${PictureForMessage}"> </div>
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>
+                                            ${message}
+                                        </p>
+                                        <span class="time_date">${when}</span>
+                                    </div>
+                                </div>
+                            </div>`);
+
+                    adm對方連續發言旗桿 = 1;
+                    adm自己連續發言旗桿 = 0;
+                }
+                else
+                {
+                    $("#TheStartPointOfContext").append(`<div class="incoming_msg">
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>
+                                            ${message}
+                                        </p>
+                                        <span class="time_date">${when}</span>
+                                    </div>
+                                </div>
+                            </div>`);
+                    adm自己連續發言旗桿 = 0;
+                }
+            }
+        }
+        $("#TheStartPointOfContext").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
+    });
+     //聊天室啟動====================================================================
+
+
+    //開啟連線
+    connection.start().then(function () {
+        document.getElementById("summitButtonAdmChat").disabled = false;
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+    //開啟連線
+    //加入群組
+    function admAddToGroup(ChannelID) {
+        console.log(ChannelID + '已加入群組');
+        document.getElementById("thisIsForHideChannelID").value = ChannelID;
+        var groupName = ChannelID.toString();
+        let userName = '管理員';
+        connection.invoke("AddGroup", groupName, userName).catch(function (err) {
+            return console.error(err.toString());
+        })
+    }
+    //加入群組
+    //離開群組
+    function admRemoveFromGroup(LastChannelID) {
+        console.log(LastChannelID + '已退出群組');
+        var groupName = LastChannelID.toString();
+        connection.invoke("RemoveFromGroup", groupName).catch(function (err) {
+            return console.error(err.toString());
+        })
+    }
+
+    //離開群組
+    // 群組訊息Button事件
+    document.getElementById("summitButtonAdmChat").addEventListener("click", function (e) {
+        if ($("#thisIsForHideChannelID").val()=="")
+        {
+            window.alert('請先選擇會員');
+        }
+        var groupName = $("#thisIsForHideChannelID").val();
+        var username = '管理員';
+        var message = document.getElementById("typeMessageOnAdmChat").value;
+        var adrfoto = '/img/adrChatRoom/adm2.jpg';
+        var adrMemberIDForChat = 16;
+        console.log(message);
+        if (message == null) {
+            window.alert('請輸入內容');
+            return;
+        }
+        console.log("傳送成功");
+        connection.invoke("SendMessageToGroup", groupName, username, message, adrfoto, adrMemberIDForChat).catch(function (err) {
+            console.log("傳送失敗")
+            return console.error(err.toString());
+        });
+    });
+    // 群組訊息Button事件
+
+    
+</script>

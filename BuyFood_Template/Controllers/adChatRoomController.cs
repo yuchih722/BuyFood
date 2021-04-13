@@ -10,12 +10,10 @@ namespace BuyFood_Template.Controllers
 {
     public class adChatRoomController : Controller
     {
-        public void getMessage(string MemberName,string Content,string MessageTime)
+        public void getMessage(string MemberName,string Content,string MessageTime,string foto,int userID)
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
             DateTime theSaveTime = DateTime.Now;
-
-            int UserID = db.TMembers.Where(n=>n.CName==MemberName).Select(n=>n.CMemberId).FirstOrDefault();
 
 
             TChatRoom cr = new TChatRoom()
@@ -23,20 +21,23 @@ namespace BuyFood_Template.Controllers
                 CContent = Content,
                 CMessageTime = MessageTime,
                 CSaveTime = theSaveTime,
-                CMemberId = UserID
+                CMemberId = userID,
+                CPhoto=foto,
+                CDifRoomId=userID
             };
             db.TChatRooms.Add(cr);
             db.SaveChanges();
 
         }
 
-        public JsonResult ListMessages(string MemberName)
+        public JsonResult ListMessages(int ChannelID)
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
 
             //在一開始就從資料庫抓資料至畫面顯示
             //判斷會員是否是自己
             var MessagesBefore = from mes in db.TChatRooms
+                                 where mes.CDifRoomId== ChannelID
                                  join member in db.TMembers on mes.CMemberId equals member.CMemberId
                                  orderby mes.CSaveTime
                                  select new
@@ -46,7 +47,9 @@ namespace BuyFood_Template.Controllers
                                      CMemberName = member.CName,
                                      CContent = mes.CContent,
                                      CMessageTime = mes.CMessageTime,
-                                     CSaveTime = mes.CSaveTime
+                                     CSaveTime = mes.CSaveTime,
+                                     mes.CPhoto,
+                                     mes.CDifRoomId
                                  };
 
             //把ID換成名稱

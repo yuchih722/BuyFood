@@ -6,7 +6,8 @@ $("#Board2").click(function () { pagename = 2; (Board(pagename)); })
 $("#Board1").click(function () { pagename = 1; (Board(pagename)); })
 
 $("#deletemore").dialog({
-        autoOpen: false,
+    autoOpen: false,
+    modal: true,
         buttons: {
             "Ok": function () {
                 var checked = $("#myTable input[type=checkbox]:checked");

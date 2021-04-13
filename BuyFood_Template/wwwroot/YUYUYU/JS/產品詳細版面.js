@@ -29,7 +29,7 @@
             $("#Bigstert").html(starforbown);
         }
     }),
-
+        
         $.ajax({
             url: "/ProductDetail/productBoards?id=" + id,
             type: "get",
@@ -37,7 +37,7 @@
                 //console.log(data);
                 var Boardlist = "";
                 if (data.length == 0) {
-                    Boardlist += ` <img style="display:block; margin:auto;" width="400" height="400" src="/imgs/000.png" />`
+                    Boardlist += ` <img style="display:block; margin:auto;" width="400" height="400" src="/imgs/維修圖.jpg"  />`
                 }
                 for (var i = 0; i < data.length; i++) {
                     Boardlist += `<div style="width:100%;height:150px;float:none;left:30%;border-bottom:1px solid #808080;margin:10px;">
