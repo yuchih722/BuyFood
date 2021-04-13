@@ -27,7 +27,7 @@ namespace BuyFood_Template.Controllers
             return View();
         }
 
-        public JsonResult ProductListJson(string str)
+        public JsonResult ProductListJson(/*string str*/)
         {
             var table = from product in db.TProducts
                         join productca in db.TProductCategories on product.CCategoryId equals productca.CProductCategoryId
@@ -83,7 +83,100 @@ namespace BuyFood_Template.Controllers
         //    }
         //    return View(list);
         //}
+        #region 產品販售狀況
+        public JsonResult changeSaleonoff(int? PrId, int PrTimeId)
+        {
 
+            if (PrId != null)
+            {
+                TProduct l_p販售狀態 = db.TProducts.FirstOrDefault(n => n.CProductId == PrId);
+
+                if (PrTimeId == 1)
+                {
+                    PrTimeId = 2;
+                    l_p販售狀態.CIsOnSaleId = PrTimeId;
+                }
+                else if (PrTimeId == 2)
+                {
+                    PrTimeId = 3;
+                    l_p販售狀態.CIsOnSaleId = PrTimeId;
+                }
+                else {
+                    PrTimeId = 1;
+                    l_p販售狀態.CIsOnSaleId = PrTimeId;
+                }
+                db.SaveChanges();
+            }
+            return Json(PrTimeId);
+        }
+        #endregion
+
+        #region 產品販售時段
+        //時段早
+        public bool changeProductBreakFast(int? id)
+        {
+            TProduct l_p販售時段修改 = db.TProducts.FirstOrDefault(n => n.CProductId == id);
+            bool x = false;
+            if (l_p販售時段修改 != null) { 
+                if(l_p販售時段修改.CIsBreakFast == 1)
+                {
+                    l_p販售時段修改.CIsBreakFast = 0;
+                }
+                else 
+                {
+                    l_p販售時段修改.CIsBreakFast = 1;
+                    x = true;
+                }
+            }
+            db.SaveChanges();
+            return x;
+        }
+        //時段午
+        public bool changeProductLunch(int?id)
+        {
+            TProduct l_p販售時段修改 = db.TProducts.FirstOrDefault(n => n.CProductId == id);
+            bool x = false;
+            if (l_p販售時段修改 != null)
+            {
+                if (l_p販售時段修改.CIsLunch == 1)
+                {
+                    l_p販售時段修改.CIsLunch = 0;
+                }
+                else
+                {
+                    l_p販售時段修改.CIsLunch = 1;
+                    x = true;
+                }
+            }
+            db.SaveChanges();
+            return x;
+        }
+        //時段晚
+        public bool changeProductDinner(int? id)
+        {
+            TProduct l_p販售時段修改 = db.TProducts.FirstOrDefault(n => n.CProductId == id);
+            bool x = false;
+            if (l_p販售時段修改 != null)
+            {
+                if (l_p販售時段修改.CIsDinner == 1)
+                {
+                    l_p販售時段修改.CIsDinner = 0;
+                }
+                else
+                {
+                    l_p販售時段修改.CIsDinner = 1;
+                    x = true;
+                }
+            }
+            db.SaveChanges();
+            return x;
+        }
+
+
+        #endregion
+
+
+        //左側選單產品種類Json
         public JsonResult getAllProductCategory()
         {
 

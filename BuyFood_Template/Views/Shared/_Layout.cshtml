@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
 
 
+
     <!-- Css Styles -->
 
 
@@ -292,12 +293,7 @@
             </div>
         </div>
     </aside>
-    @*測試====*@
 
- 
-
-
-        @*測試====*@
 
 
 
@@ -328,6 +324,94 @@
     </script>
 
         <script>
+            //聊天室資料紀錄
+            var txtadrLayoutChatRecordsForShow = "";
+            let adrLayoutMemberIDForChat = parseInt($("#user_member").val());
+            $.ajax({
+                url: "/adChatRoom/ListMessages/",
+                type: "POST",
+                data: { "ChannelID": adrLayoutMemberIDForChat },
+                success: function (listChatRecords) {
+                    //console.log(adrLayoutMemberIDForChat);
+                    //console.log(listChatRecords);
+
+                    for (let i = 0; i < listChatRecords.length; i++)
+                    {
+                        var fotoRecordsLayout = listChatRecords[i].cPhoto;
+                        var memberNameRecords = listChatRecords[i].cMemberName;
+                        var msgRecords = listChatRecords[i].cContent;
+                        var whenRecords = listChatRecords[i].cMessageTime
+                        var encodedMsgRecords = /*user + " says " +*/ '<p>' + msgRecords + '<span class="chat_message_time">' + whenRecords + '</span></p>';
+                        var liRecords = document.createElement("li");
+                        let adrBarRecords = $("#chatStartPoint");
+
+                        liRecords.innerHTML = encodedMsgRecords;
+                        //客戶自己
+                        if (listChatRecords[i].cMemberId == listChatRecords[i].cDifRoomId) {//自己發言開始  資料庫ID==目前頻道
+                            if (自己連續發言旗桿 == 0) {
+                                $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
+                                        <div class="chat_user_avatar">
+                                                <img   src="${fotoRecordsLayout}" class="md-user-image">
+                                        </div>
+                                        <ul class="chat_message messagesListForClient">
+                                        </ul>
+                                    </div>`);
+
+                                $("ul.messagesListForClient:eq(-1)").append(liRecords);
+                                自己連續發言旗桿 = 1;
+                                對方連續發言旗桿 = 0;
+                                adrBarRecords.animate({ scrollTop: adrBarRecords.prop("scrollHeight") }, 1000);
+                                console.log('自己第一次發言');
+                            }
+                            else {
+                                $("ul.messagesListForClient:eq(-1)").append(liRecords);
+                                對方連續發言旗桿 = 0;
+                                adrBarRecords.animate({ scrollTop: adrBarRecords.prop("scrollHeight") }, 1000);
+                                console.log("自己連續發言狀態");
+                            }
+                        }//自己發言結束
+                        else //對方發言開始
+                        {
+                            if (對方連續發言旗桿 == 0) {
+
+                                $("#chatStartPoint").append(`<div class="chat_message_wrapper ">
+                                        <div class="chat_user_avatar">
+                                                <img   src="${fotoRecordsLayout}" class="md-user-image ">
+                                        </div>
+                                        <ul class="chat_message messagesListForAdmin" >
+                                        </ul>
+                                    </div>`);
+
+                                $("ul.messagesListForAdmin:eq(-1)").append(liRecords);
+                                對方連續發言旗桿 = 1;
+                                自己連續發言旗桿 = 0;
+                                adrBarRecords.animate({ scrollTop: adrBarRecords.prop("scrollHeight") }, 1000);
+                                console.log("對方第一次發言");
+                            }
+                            else
+                            {
+                                $("ul.messagesListForAdmin:eq(-1)").append(liRecords);
+                                自己連續發言旗桿 = 0;
+                                adrBarRecords.animate({ scrollTop: adrBarRecords.prop("scrollHeight") }, 1000);
+                                console.log("對方連續發言狀態");
+                            }
+                        }//對方發言結束
+
+
+
+                    }
+
+                } //success end
+
+            });//ajax end
+
+
+
+
+
+
+             //聊天室資料紀錄
+
         //聊天室啟動
 
         var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
@@ -340,9 +424,9 @@
 
             // 群組訊息接收事件
             connection.on("ReceiveGroupMessage", function (groupName, username, message, adrfoto, adrMemberIDForChat) {
-                console.log("接收成功");
-                console.log(adrMemberIDForChat);
-                console.log(adrfoto);
+                //console.log("接收成功");
+                //console.log(adrMemberIDForChat);
+                //console.log(adrfoto);
                 var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 var when = new Date().toLocaleTimeString();
                 var encodedMsg = /*user + " says " +*/ '<p>' + msg + '<span class="chat_message_time">' + when + '</span></p>';
@@ -452,7 +536,7 @@
             var username = $("#adrLoginNameNow").val();
             var groupName = $("#user_member").val();
             connection.invoke("AddGroup", groupName, username).catch(function (err) {
-                console.log('觸發後端失敗')
+                //console.log('觸發後端失敗')
                 return console.error(err.toString());
             });
             event.preventDefault();
@@ -467,9 +551,9 @@
             var message = document.getElementById("messageInput").value;
             var adrfoto = $("#user_foto").val();
             var adrMemberIDForChat = parseInt($("#user_member").val());
-            console.log("傳送成功");
+            //console.log("傳送成功");
             connection.invoke("SendMessageToGroup", groupName, username, message, adrfoto, adrMemberIDForChat).catch(function (err) {
-                console.log("傳送失敗")
+                //console.log("傳送失敗")
                 return console.error(err.toString());
             });
         });

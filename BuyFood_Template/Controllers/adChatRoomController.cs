@@ -30,13 +30,14 @@ namespace BuyFood_Template.Controllers
 
         }
 
-        public JsonResult ListMessages(string MemberName)
+        public JsonResult ListMessages(int ChannelID)
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
 
             //在一開始就從資料庫抓資料至畫面顯示
             //判斷會員是否是自己
             var MessagesBefore = from mes in db.TChatRooms
+                                 where mes.CDifRoomId== ChannelID
                                  join member in db.TMembers on mes.CMemberId equals member.CMemberId
                                  orderby mes.CSaveTime
                                  select new
@@ -46,7 +47,9 @@ namespace BuyFood_Template.Controllers
                                      CMemberName = member.CName,
                                      CContent = mes.CContent,
                                      CMessageTime = mes.CMessageTime,
-                                     CSaveTime = mes.CSaveTime
+                                     CSaveTime = mes.CSaveTime,
+                                     mes.CPhoto,
+                                     mes.CDifRoomId
                                  };
 
             //把ID換成名稱
