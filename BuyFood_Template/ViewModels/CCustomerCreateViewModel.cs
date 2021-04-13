@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BuyFood_Template.ViewModel
 {
@@ -31,7 +32,9 @@ namespace BuyFood_Template.ViewModel
 
         [DisplayName("姓名")]
         public string CName { get { return iv_CreateMember.CName; } set { iv_CreateMember.CName = value; } }
+
         [DisplayName("信箱")]
+        //[Remote(action: "checkEmail", controller: "Customer", ErrorMessage = "此Email已被使用")]
         public string CEmail { get { return iv_CreateMember.CEmail; } set { iv_CreateMember.CEmail = value; } }
         [DisplayName("密碼")]
         public string CPassword { get { return iv_CreateMember.CPassword; } set { iv_CreateMember.CPassword = value; } }

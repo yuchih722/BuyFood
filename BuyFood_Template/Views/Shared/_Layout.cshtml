@@ -634,17 +634,17 @@
                     console.log(thispicForMember.replace('~', ''))
                  //var UserImg=`<img width="20" height="20" src="${thispicForMember.replace('~', '')}" alt="">`;
                  UserImg = `<img src="${thispicForMember.replace('~', '')}" width="20" height="20"/>`;*@
-                    text = `<a href="/Member/MemberCenter" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
+                    LogInTxt = `<a href="/Member/MemberCenter" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
                     LogOutTxt = `<input type="button" class="btn btn-light"  onclick="登出();" id="sendButton" style="padding:0;height:100%" value="登出" />`
                     //$("divUserImg").html(UserImg);
-                    $("#divLogin").html(text);
+                    $("#divLogin").html(LogInTxt);
                     $("#divLogOut").html(LogOutTxt);
                 }
                 else {
-                    text = `<a href="/HomePage/登入" id="getLoginName "><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
+                    LogInTxt = `<a href="/HomePage/登入" id="getLoginName "><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
 
                     //$("divUserImg").html();
-                    $("#divLogin").html(text);
+                    $("#divLogin").html(LogInTxt);
                     $("#divLogOut").html();
                 }
             }
@@ -658,7 +658,7 @@
                     type: "POST",
                     success: function (data) {
                         window.alert(data);
-                        window.location.assign("https://localhost:44398/");
+                        window.location.assign("HomePage/Home");
                     }
                 })
             }
