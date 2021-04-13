@@ -23,6 +23,7 @@ namespace BuyFood_Template.Controllers
         public void test()
         {
             (new ShareFunction()).sendGrid("always0537@gmail.com", "hihi", "訂單成功", "check your account");
+            
 
         }
         public string checkLogin()
@@ -33,6 +34,7 @@ namespace BuyFood_Template.Controllers
         }
         public IActionResult MemberCenter()
         {
+
             int test = 555;
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
             {
@@ -42,17 +44,17 @@ namespace BuyFood_Template.Controllers
                 擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
                 TMember data = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)));
 
-                return View(new MemberCenterViewModel(data));
+                if (TempData[CDictionary.REDIRECT_FROM_WHERE] != null)
+                {
+                    // 1:儲值, 2:套餐
+                    string goWhere = TempData[CDictionary.REDIRECT_FROM_WHERE].ToString();
+                    return View(new MemberCenterViewModel(data, goWhere));
+                }
+                return View(new MemberCenterViewModel(data,"0" ));
             }
-            //ViewBag.memberID = 2;
-
-            //擺腹BuyFoodContext ccc = new 擺腹BuyFoodContext();
-            //TMember ddd = ccc.TMembers.FirstOrDefault(n => n.CMemberId == 2);
-            //return View(new MemberCenterViewModel(ddd));
 
             else
             {
-                HttpContext.Session.SetString(CDictionary.REDIRECT_FROM_MEMBERCENTER, "1");
                 return RedirectToAction("登入", "HomePage");
             }
         }
@@ -159,17 +161,17 @@ namespace BuyFood_Template.Controllers
             return Json(new { result = "0", msg = "上傳失敗" });
         }
 
-        //public class dataURLs
-        //{
-        //    public string dataURL { get; set; }
-        //}
+        public class dataURLs
+        {
+            public string dataURL { get; set; }
+        }
         //[HttpPost]
-        //public string decodeBase64ToImage([FromBody]dataURLs receiveData)
+        //public string decodeBase64ToImage([FromBody] dataURLs receiveData)
         //{
 
         //    string imgName = Guid.NewGuid().ToString();
         //    string filename = "";
-        //    string base64 = receiveData.dataURL.Substring(receiveData.dataURL.IndexOf(",") + 1);      //将‘，’以前的多余字符串删除
+        //    string base64 = receiveData.dataURL.Substring(receiveData.dataURL.IndexOf(",") + 1);      //将‘，’以前的多余字符串删除
         //    Bitmap bitmap = null;//定义一个Bitmap对象，接收转换完成的图片
 
 
@@ -184,9 +186,9 @@ namespace BuyFood_Template.Controllers
         //        ms.Close();//关闭当前流，并释放所有与之关联的资源
         //        bitmap = bmp;
 
-        //        filename = iv_host.WebRootPath + @"\cwc\"  + imgName + ".jpg";
+        //        filename = iv_host.WebRootPath + @"\cwc\" + imgName + ".jpg";
 
-        //        bitmap.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);//保存到服务器路径
+        //        bitmap.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);//保存到服务器路径
 
         //    }
         //    catch (Exception ex)
