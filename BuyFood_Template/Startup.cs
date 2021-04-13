@@ -19,6 +19,7 @@ namespace BuyFood_Template
             Configuration = configuration;
         }
 
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -27,6 +28,10 @@ namespace BuyFood_Template
             services.AddSession(option=>option.IdleTimeout=TimeSpan.FromDays(1));
             services.AddControllersWithViews();
             services.AddSignalR();
+
+            //for SendGrid
+            services.AddMvc(); 
+            services.AddSingleton<IConfiguration>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
