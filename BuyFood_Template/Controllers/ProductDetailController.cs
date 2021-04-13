@@ -48,8 +48,8 @@ namespace BuyFood_Template.Controllers
         public JsonResult startJson(int id)
         {
             //抓出當前CProductId的留言數量及平均值
-            int? Count = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1).Count();
-            int? Sum = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1).Sum(n => n.CScores);
+            int? Count = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1&&n.CScores!=null).Count();
+            int? Sum = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1 && n.CScores != null).Sum(n => n.CScores);
 
             int average = Count <= 0 ? 0 : (int)(Sum / Count);
 
@@ -62,7 +62,7 @@ namespace BuyFood_Template.Controllers
 
             if (star == 99)
             {
-                var table = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1).OrderByDescending(n => n.CScores)
+                var table = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1&&n.CScores!=null).OrderByDescending(n => n.CScores)
                     .Select(n => new
                     {
                         membersphoto = n.COrder.CMember.CPicture,
@@ -99,18 +99,16 @@ namespace BuyFood_Template.Controllers
             });
                 return Json(table);
             }
-
-          
         }
         public JsonResult productstar(int id)  //動態抓出留言數量
         {
-            int? all = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1).Count();
+            int? all = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1&&n.CScores!=null).Count();
             int? one = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1 && n.CScores == 1).Count();
             int? two = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1 && n.CScores == 2).Count();
             int? three = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1 && n.CScores == 3).Count();
             int? four = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1 && n.CScores == 4).Count();
             int? five = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1 && n.CScores == 5).Count();
-            int? hasreview = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1).Select(n => n.CReview).Count();
+            int? hasreview = db.TOrderDetails.Where(n => n.CProductId == id && n.CFeedBackStatus == 1 && n.CScores != null).Select(n => n.CReview).Count();
 
             var table = db.TOrderDetails
                .Select(n => new

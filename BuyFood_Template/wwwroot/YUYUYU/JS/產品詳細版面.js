@@ -29,7 +29,7 @@
             $("#Bigstert").html(starforbown);
         }
     }),
-
+        
         $.ajax({
             url: "/ProductDetail/productBoards?id=" + id,
             type: "get",
@@ -37,7 +37,7 @@
                 //console.log(data);
                 var Boardlist = "";
                 if (data.length == 0) {
-                    Boardlist += ` <img style="display:block; margin:auto;" width="400" height="400" src="/imgs/000.png" />`
+                    Boardlist += ` <img style="display:block; margin:auto;" width="400" height="400" src="/imgs/維修圖.jpg"  />`
                 }
                 for (var i = 0; i < data.length; i++) {
                     Boardlist += `<div style="width:100%;height:150px;float:none;left:30%;border-bottom:1px solid #808080;margin:10px;">
@@ -109,12 +109,12 @@
             //console.log(data);
             var productQuantity = data.table.cQuantity <= 0 ? `<span style="color:#ff0000">已售完</span>` : `<span>${data.table.cQuantity}</span>`
             var productdetail=""
-            if (data.table.cQuantity <= 0) {
+            if (data.table.cQuantity <= 0 || data.table.cIsOnSaleId !=1) {
                 productdetail+=`<input type = "button" class="btn_enable_style"  value = "此商品已完售" disabled>`
                 $("#btu_check_stock").hide();
             }
             else
-                productdetail += `<input type = "button" class="primary-btn" onclick = "addCart(@Model.CProductId)"  value = "加入購物車" >`
+                productdetail += `<input type = "button" class="primary-btn" onclick = "addCart(${data.table.cProductId})"  value = "加入購物車" >`
 
              productdetail += ` <ul>
                         <li><b>庫存量</b> ${productQuantity}</li>

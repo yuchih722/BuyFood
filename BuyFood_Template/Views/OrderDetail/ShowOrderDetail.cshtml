@@ -194,7 +194,7 @@
 
     </div>
     <script>
-        var text = "";
+        var adriTxtOrderDetail = "";
         $.ajax({
             url: "/OrderDetail/getOrderAdress/",
             type: "POST",
@@ -206,13 +206,13 @@
                     data: { "OrderID":@Model},
                     success: function (response) {
                         for (let i = 0; i < response.length; i++) {
-                            text = `
+                            adriTxtOrderDetail = `
                                             <h3>收件地址</h3>
                                             <p>${response[i].cName}</p>
                                             <p>${response[i].cPhone}</p>
                                             <p>${data[i].cArrivedAddress}</p>`;
                         }
-                        $("#AdressForDetail").html(text);
+                        $("#AdressForDetail").html(adriTxtOrderDetail);
                     }
                 });
             }
@@ -316,8 +316,8 @@
 
 </script>
 <script>
-
-                            var text = "";
+    let countForEveryLoopInOD = 1;
+                            var adriTxtOrderDetail = "";
                             $.ajax({
                                 url: "/OrderDetail/getOrderDetail/",
                                 type: "POST",
@@ -325,12 +325,13 @@
                                 success: function (data) {
                                     //console.log(data[0]);
 
-                                    for (let i = 0; i < data.length; i++) {
+                                    for (let i = 0; i < data.length; i++)
+                                    {
                                         var stars = "";
                                         var count = data[i].cScores;
                                         var oDetailID = data[i].cOrderDetailId;
                                         var Scorebutton = `ScoreIt${oDetailID}`;
-                                        let countForEveryLoopInOD = 1;
+                                        
                                         for (let i = 0; i < count; i++)
                                         {
                                             stars += `<span class="fa fa-star checked"></span>`;
@@ -344,7 +345,7 @@
                                             stars = `<p>評分不列入計算</p>`;
                                         }
 
-                                        text += `<tr>
+                                        adriTxtOrderDetail += `<tr>
                                                         <th scope="row">${countForEveryLoopInOD}</th>
                                                         <td class="w-25">
                                                         <img src="${data[i].cPicture.replace("~", "")}" class="img-fluid img-thumbnail" alt="Sheep">
@@ -355,8 +356,8 @@
                                                         <td>${data[i].cOrderStatusName}</td>
                                                         <td id="ScoreStatus${oDetailID}">${stars}<p>${data[i].cReview}</p></td>
                                                         </tr>`;
-                                        countForEveryLoopInOD+=1;
-                                        text +=`<tr>
+                                        
+                                        adriTxtOrderDetail +=`<tr>
                                                        <th scope="row"></th>
                                                        <td class="">
                                                        </td>
@@ -367,27 +368,27 @@
 
                                         if (count == null) {
                                             if (data[i].cOrderStatusName != "已結單") {
-                                                text += `<td><button type="button" class="btn btn-outline-success" id="ScoreIt${data[i].cOrderDetailId}" onclick="StartScore('ScoreStatus${oDetailID}')" disabled>進行評分</button></td>`;
+                                                adriTxtOrderDetail += `<td><button type="button" class="btn btn-outline-success" id="ScoreIt${data[i].cOrderDetailId}" onclick="StartScore('ScoreStatus${oDetailID}')" disabled>進行評分</button></td>`;
                                                 $('#' + Scorebutton).prop('disabled', true);
                                             }
                                             else {
-                                                text += `<td><button type="button" class="btn btn-outline-success" id="ScoreIt${data[i].cOrderDetailId}" onclick="StartScore('ScoreStatus${oDetailID}')">進行評分</button></td>`;
+                                                adriTxtOrderDetail += `<td><button type="button" class="btn btn-outline-success" id="ScoreIt${data[i].cOrderDetailId}" onclick="StartScore('ScoreStatus${oDetailID}')">進行評分</button></td>`;
                                             }
                                             
                                         }
                                         else {
-                                            text += `<td><button type="button" class="btn btn-outline-success" id="ScoreIt${data[i].cOrderDetailId}" disabled>完成評分</button></td>`;
+                                            adriTxtOrderDetail += `<td><button type="button" class="btn btn-outline-success" id="ScoreIt${data[i].cOrderDetailId}" disabled>完成評分</button></td>`;
                                             /*$(`#${Scorebutton}`).prop('disabled', true);*/
                                             $('#' + Scorebutton).prop('disabled', true);
                                         }
 
-                                        text += `</tr>`;
+                                        adriTxtOrderDetail += `</tr>`;
 
-
+                                        countForEveryLoopInOD++;
 
                                         //===========   For迴圈結尾
                                     }
-                                    $("#StartOfDetails").prepend(text);
+                                    $("#StartOfDetails").prepend(adriTxtOrderDetail);
 
                                                                                 //結帳方式
                                     var ltTotal = 0;
