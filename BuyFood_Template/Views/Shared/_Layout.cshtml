@@ -326,6 +326,7 @@
             //聊天室資料紀錄
             var txtadrLayoutChatRecordsForShow = "";
             let adrLayoutMemberIDForChat = parseInt($("#user_member").val());
+            let adrBarRecords = $("#chat");
             $.ajax({
                 url: "/adChatRoom/ListMessages/",
                 type: "POST",
@@ -342,7 +343,7 @@
                         var whenRecords = listChatRecords[i].cMessageTime
                         var encodedMsgRecords = /*user + " says " +*/ '<p>' + msgRecords + '<span class="chat_message_time">' + whenRecords + '</span></p>';
                         var liRecords = document.createElement("li");
-                        let adrBarRecords = $("#chatStartPoint");
+                        
 
                         liRecords.innerHTML = encodedMsgRecords;
                         //客戶自己
@@ -359,13 +360,13 @@
                                 $("ul.messagesListForClient:eq(-1)").append(liRecords);
                                 自己連續發言旗桿 = 1;
                                 對方連續發言旗桿 = 0;
-                                adrBarRecords.animate({ scrollTop: adrBarRecords.prop("scrollHeight") }, 1000);
+                                
                                 console.log('自己第一次發言');
                             }
                             else {
                                 $("ul.messagesListForClient:eq(-1)").append(liRecords);
                                 對方連續發言旗桿 = 0;
-                                adrBarRecords.animate({ scrollTop: adrBarRecords.prop("scrollHeight") }, 1000);
+                                
                                 console.log("自己連續發言狀態");
                             }
                         }//自己發言結束
@@ -384,14 +385,14 @@
                                 $("ul.messagesListForAdmin:eq(-1)").append(liRecords);
                                 對方連續發言旗桿 = 1;
                                 自己連續發言旗桿 = 0;
-                                adrBarRecords.animate({ scrollTop: adrBarRecords.prop("scrollHeight") }, 1000);
+                                
                                 console.log("對方第一次發言");
                             }
                             else
                             {
                                 $("ul.messagesListForAdmin:eq(-1)").append(liRecords);
                                 自己連續發言旗桿 = 0;
-                                adrBarRecords.animate({ scrollTop: adrBarRecords.prop("scrollHeight") }, 1000);
+                                
                                 console.log("對方連續發言狀態");
                             }
                         }//對方發言結束
@@ -399,7 +400,9 @@
 
 
                     }
-
+                    //$("#myDiv").animate({ scrollTop: $("#myDiv")[0].scrollHeight }, 1000);
+                    //adrBarRecords.animate({ scrollTop: adrBarRecords.prop("scrollHeight") }, 1000);
+                    //adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
                 } //success end
 
             });//ajax end
@@ -431,6 +434,8 @@
                 var encodedMsg = /*user + " says " +*/ '<p>' + msg + '<span class="chat_message_time">' + when + '</span></p>';
                 var li = document.createElement("li");
                 li.innerHTML = encodedMsg;
+                document.getElementById("messageInput").value = "";
+
 
                 $.ajax({
                     url: "/adChatRoom/getMessage",
@@ -459,12 +464,12 @@
                         $("ul.messagesListForClient:eq(-1)").append(li);
                         自己連續發言旗桿 = 1;
                         對方連續發言旗桿 = 0;
-                        $("#chat").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
+                        adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
                     }
                     else {
                         $("ul.messagesListForClient:eq(-1)").append(li);
                         對方連續發言旗桿 = 0;
-                        $("#chat").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
+                        adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
                     }
                 }
 
@@ -483,12 +488,12 @@
                             $("ul.messagesListForAdmin:eq(-1)").append(li);
                             對方連續發言旗桿 = 1;
                             自己連續發言旗桿 = 0;
-                            $("#chat").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
+                            adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
                         }
                         else {
                             $("ul.messagesListForAdmin:eq(-1)").append(li);
                             自己連續發言旗桿 = 0;
-                            $("#chat").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
+                            adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
                         }
                     }
 
@@ -508,12 +513,12 @@
                         $("ul.messagesListForAdmin:eq(-1)").append(li);
                         對方連續發言旗桿 = 1;
                         自己連續發言旗桿 = 0;
-                        $("#chat").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
+                        adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
                     }
                     else {
                         $("ul.messagesListForAdmin:eq(-1)").append(li);
                         自己連續發言旗桿 = 0;
-                        $("#chat").animate({ scrollTop: $("#TheStartPointOfContext").prop("scrollHeight") }, 1000);
+                        adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
                     }
                 }
 
@@ -550,6 +555,11 @@
             var message = document.getElementById("messageInput").value;
             var adrfoto = $("#user_foto").val();
             var adrMemberIDForChat = parseInt($("#user_member").val());
+            console.log(message);
+            if (message == "") {
+                window.alert('請輸入內容');
+                return;
+            }
             //console.log("傳送成功");
             connection.invoke("SendMessageToGroup", groupName, username, message, adrfoto, adrMemberIDForChat).catch(function (err) {
                 //console.log("傳送失敗")
@@ -576,6 +586,7 @@
                 if (flagForChatRoomSwitch == 1) {
                     $('#sidebar_secondary').addClass('popup-box-on');
                     flagForChatRoomSwitch = 0;
+                    adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 0);//scroll to the bottom
                 } else {
                     $('#sidebar_secondary').removeClass('popup-box-on');
                     flagForChatRoomSwitch = 1;
