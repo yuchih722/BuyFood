@@ -388,6 +388,9 @@
         var encodedMsg = /*user + " says " +*/ '<p>' + msg + '<span class="chat_message_time">' + when + '</span></p>';
         var li = document.createElement("li");
         li.innerHTML = encodedMsg;
+        document.getElementById("typeMessageOnAdmChat").value = "";
+
+
         let adradmHidechannelid = parseInt($("#thisIsForHideChannelID").val());
         console.log('這個是：'+adradmHidechannelid);//頻道為4
         $.ajax({
@@ -499,6 +502,11 @@
         var message = document.getElementById("typeMessageOnAdmChat").value;
         var adrfoto = '/img/adrChatRoom/adm2.jpg';
         var adrMemberIDForChat = 16;
+        console.log(message);
+        if (message == null) {
+            window.alert('請輸入內容');
+            return;
+        }
         console.log("傳送成功");
         connection.invoke("SendMessageToGroup", groupName, username, message, adrfoto, adrMemberIDForChat).catch(function (err) {
             console.log("傳送失敗")
