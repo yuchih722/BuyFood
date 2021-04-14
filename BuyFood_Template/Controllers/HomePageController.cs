@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModel;
+using BuyFood_Template.ViewModels;
 using LinqKit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,13 +30,21 @@ namespace BuyFood_Template.Controllers
 
             List<TProduct> list = new List<TProduct>();
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var result = db.TProducts.AsEnumerable().Select(n => n);
             double getMin = Convert.ToDouble(Min);
             double getMax = Convert.ToDouble(Max);
             int getBreakFast = 0;
             int getLunch = 0;
             int getDinner = 0;
             int CategoryID = db.TProductCategories.Where(n => n.CCategoryName == Category).Select(n => n.CProductCategoryId).FirstOrDefault();
+
+            var rowdata = db.TProducts.Select(n => new cTProduct
+            {
+                TProduct = n,
+                count = n.TOrderDetails.Count(x => x.CFeedBackStatus == 1 && x.CScores != null),
+                sum = n.TOrderDetails.Where(x => x.CFeedBackStatus == 1 && x.CScores != null).Sum(m => m.CScores)
+            });
+
+            var result = rowdata.AsEnumerable().Select(n => n);
 
             if (BreakFast == "早餐")
                 getBreakFast = 1;
@@ -59,12 +68,12 @@ namespace BuyFood_Template.Controllers
             {
                 if (Category == "全部")
                 {
-                    result=db.TProducts.AsEnumerable().Where(m=> (double)m.CPrice >= getMin && (double)m.CPrice <= getMax );
+                    result=rowdata.AsEnumerable().Where(m=> (double)m.TProduct.CPrice >= getMin && (double)m.TProduct.CPrice <= getMax );
                 }
                 else
                 {
-                    result = db.TProducts.AsEnumerable().Where(m => m.CCategoryId == CategoryID &&
-                       (double)m.CPrice >= getMin && (double)m.CPrice <= getMax);
+                    result = rowdata.AsEnumerable().Where(m => m.TProduct.CCategoryId == CategoryID &&
+                       (double)m.TProduct.CPrice >= getMin && (double)m.TProduct.CPrice <= getMax);
 
                 }
             }
@@ -74,28 +83,41 @@ namespace BuyFood_Template.Controllers
 
                 if (Category=="全部")
                 {
-                    result=db.TProducts.AsEnumerable().Where(m=>m.CProductName.Any(n=>m.CProductName.Contains(key)) &&
-                          (double)m.CPrice >= getMin && (double)m.CPrice <= getMax);
+                    result=rowdata.AsEnumerable().Where(m=>m.TProduct.CProductName.Any(n=>m.TProduct.CProductName.Contains(key)) &&
+                          (double)m.TProduct.CPrice >= getMin && (double)m.TProduct.CPrice <= getMax);
                 }
 
                 else
                 {
 
-                    result = db.TProducts.AsEnumerable().Where(m => m.CProductName.Any(n => m.CProductName.Contains(key)) &&
-                      m.CCategoryId == CategoryID && (double)m.CPrice >= getMin && (double)m.CPrice <= getMax);
+                    result = rowdata.AsEnumerable().Where(m => m.TProduct.CProductName.Any(n => m.TProduct.CProductName.Contains(key)) &&
+                      m.TProduct.CCategoryId == CategoryID && (double)m.TProduct.CPrice >= getMin && (double)m.TProduct.CPrice <= getMax);
 
                 }
             }
             //時段判斷
             var product = db.TProducts.AsQueryable();
-            var predicate = PredicateBuilder.False<TProduct>();
+            var predicate = PredicateBuilder.False<cTProduct>();
             if (getBreakFast == 1)
-                predicate = predicate.Or(n => n.CIsBreakFast == getBreakFast);
+                predicate = predicate.Or(n => n.TProduct.CIsBreakFast == getBreakFast);
             if (getLunch == 1)
-                predicate = predicate.Or(n => n.CIsLunch == getLunch);
+                predicate = predicate.Or(n => n.TProduct.CIsLunch == getLunch);
             if (getDinner == 1)
-                predicate = predicate.Or(n => n.CIsDinner == getDinner);
-            var resultOfTime = result.AsQueryable().AsExpandable().Where(c => predicate.Invoke(c));
+                predicate = predicate.Or(n => n.TProduct.CIsDinner == getDinner);
+
+            var resultOfTime = result.Where(c => predicate.Invoke(c));
+
+            //var aaa = db.TOrders.Where(n => n.CMemberId == 1).OrderByDescending(n => n.COrderDate).Take(6).GroupBy(n => n.TOrderDetails.);
+            //var bbb = db.TOrderDetails.OrderByDescending(n => n.COrder.COrderDate).Select(n=>new { 
+            //    n.CProductId,
+            //    product = n.CProduct
+            //}).Take(100).GroupBy(n => n.CProductId).Select(n => new
+            //{
+            //    n.Key,
+            //    n,
+            //    count = n.Count()
+            //}).OrderByDescending(n => n.count).Take(6);
+
             //return Json(result.ToList());
             //return Json(result.Where(n=>n.CIsBreakFast==getBreakFast&&n.CIsLunch==getLunch&&n.CIsDinner==getDinner));
             return Json(resultOfTime.ToList());
@@ -313,11 +335,18 @@ namespace BuyFood_Template.Controllers
         public JsonResult get_categorysname() //抓取所有商品顯示在首頁
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var table = db.TProductCategories.Select(n => new {n.CProductCategoryId,n.CCategoryName, n.TProducts});
+            var table = db.TProductCategories.Select(n => new {n.CProductCategoryId,n.CCategoryName,
+                tProducts = n.TProducts.Select(m => new 
+                {
+                    tProducts=m,
+                    coun=m.TOrderDetails.Count(b=>b.CFeedBackStatus==1&&b.CScores!=null),
+                    sum=m.TOrderDetails.Where(m=>m.CFeedBackStatus == 1 && m.CScores != null).Sum(m=>m.CScores)
+                })
+            });
 
             return Json(table);
         }
-       
+
         public JsonResult getBottomList()  
         { 
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
@@ -368,6 +397,71 @@ namespace BuyFood_Template.Controllers
             var table = new { lastProducts = lastProducts, topProducts = topProducts, ReviewProducts = ReviewProducts };
             return Json(table);
         }
-       
+        public JsonResult getSideBar_CateNums()
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+
+            var CategoryGroupBy = db.TProductCategories.Select(n => new
+            {
+                n.CProductCategoryId,
+                n.CCategoryName,
+                n.TProducts
+            });
+
+
+            return Json(CategoryGroupBy.ToList());
+
+        }
+        public JsonResult DidLogingetBottomList(int MemberID)
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            #region 最新商品
+
+            var lastProducts = db.TProducts.OrderByDescending(n => n.CProductId).Select(n => n).Take(6);
+
+            #endregion
+
+            #region //好評商品
+
+            var gettopProducts = (from tp in db.TOrderDetails
+                                  group tp by tp.CProductId into g
+                                  select new
+                                  {
+                                      g.Key,
+                                      AvgScore = g.Sum(n => n.CScores) / g.Count()
+                                  }).OrderByDescending(n => n.AvgScore).Select(n => n.Key).ToList().Take(6);
+
+            List<TProduct> topProducts = new List<TProduct>();
+            foreach (var p in gettopProducts)
+            {
+                topProducts.Add(db.TProducts.Where(n => n.CProductId == p).Select(n => n).FirstOrDefault());
+            }
+
+            #endregion
+
+            #region //熱評商品
+
+            var review = (from od in db.TOrderDetails
+                          where od.CReview != null
+                          group od by od.CProductId into g
+                          select new
+                          {
+                              g.Key,
+                              ReviewCounts = g.Count()
+                          }).OrderByDescending(n => n.ReviewCounts).Select(n => n.Key).ToList().Take(6);
+
+            List<TProduct> ReviewProducts = new List<TProduct>();
+            foreach (var p in review)
+            {
+                ReviewProducts.Add(db.TProducts.Where(n => n.CProductId == p).Select(n => n).FirstOrDefault());
+            }
+
+            #endregion
+
+
+            var table = new { lastProducts = lastProducts, topProducts = topProducts, ReviewProducts = ReviewProducts };
+            return Json(table);
+        }
+
     }
 }
