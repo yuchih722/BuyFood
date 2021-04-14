@@ -22,6 +22,7 @@ function addCart(obj_product) {
         return;
     }
     if (obj_product.cQuantity <= 0 || obj_product.cIsOnSaleId != 1) {
+        console.log(obj_product)
         window.alert("此商品目前已售完，請稍後");
         return;
     }
