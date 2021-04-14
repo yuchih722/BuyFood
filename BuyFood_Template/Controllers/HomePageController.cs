@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModel;
@@ -13,6 +14,8 @@ namespace BuyFood_Template.Controllers
 {
     public class HomePageController : Controller
     {
+        ShareFunction shareFun = new ShareFunction();
+
         public IActionResult Home()
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
@@ -173,33 +176,89 @@ namespace BuyFood_Template.Controllers
             //ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
             return PartialView();
         }
+        //[HttpPost]
+        //public IActionResult 登入(CLoginViewModel loginMember)
+        //{
+        //    //if (loginMember.txtCode == null)
+        //    //{
+        //    //    loginMember.txtCode = "";
+        //    //}
+        //    //if (!loginMember.txtCode.Equals(HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE)))
+        //    //{
+        //    //    ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
+        //    //    return View();
+        //    //}
+
+        //    TMember CheckMember = (new 擺腹BuyFoodContext()).TMembers.FirstOrDefault(p => p.CEmail.Equals(loginMember.CEmail) && p.CPassword.Equals(loginMember.CPassword));
+
+        //    if (CheckMember != null)
+        //    {
+        //        HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, CheckMember.CName);
+        //        HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, CheckMember.CPicture);
+        //        HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, CheckMember.CMemberId.ToString());
+
+        //        return RedirectToAction("Home");
+        //    }
+        //    //ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
+        //    return PartialView();
+        //}
         [HttpPost]
-        public IActionResult 登入(CLoginViewModel loginMember)
+        public JsonResult loginCheck([FromBody] CLoginViewModel loginMember)
         {
-            //if (loginMember.txtCode == null)
-            //{
-            //    loginMember.txtCode = "";
-            //}
-            //if (!loginMember.txtCode.Equals(HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE)))
-            //{
-            //    ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
-            //    return View();
-            //}
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            var check信箱 = from n in db.TMembers
+                          select n.CEmail;
 
-            TMember CheckMember = (new 擺腹BuyFoodContext()).TMembers.FirstOrDefault(p => p.CEmail.Equals(loginMember.CEmail) && p.CPassword.Equals(loginMember.CPassword));
-
-            if (CheckMember != null)
+            if(check信箱.Any(n => n == loginMember.CEmail) == true)
             {
-                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, CheckMember.CName);
-                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, CheckMember.CPicture);
-                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, CheckMember.CMemberId.ToString());
+                TMember freezeCheck = (from n in db.TMembers
+                                       where n.CEmail == loginMember.CEmail
+                                       select n).FirstOrDefault();
 
-                return RedirectToAction("Home");
+                var check密碼 = (from n in db.TMembers
+                              where n.CEmail == loginMember.CEmail
+                              select n).FirstOrDefault();
+
+                SHA1 sha1 = SHA1.Create();
+
+                string pwd解密 = shareFun.GetHash(sha1, loginMember.CPassword);
+
+                if (check密碼.CFreezeCount >=4)
+                {
+                    return Json("memberFrozed");
+                }
+                else if(check密碼.CPassword == pwd解密)
+                {
+                    HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, check密碼.CName);
+                    HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, check密碼.CPicture);
+                    HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, check密碼.CMemberId.ToString());
+
+                    freezeCheck.CFreezeCount = 0;
+                    db.SaveChanges();
+
+                    return Json("loginSuccess");
+                }
+                else
+                {
+                    if (check密碼.CFreezeCount == 3)
+                    {
+                    freezeCheck.CFreezeCount += 1;
+                    db.SaveChanges();
+                    return Json("FrozeComplete");
+                    }
+                    else
+                    {
+                        freezeCheck.CFreezeCount += 1;
+                        db.SaveChanges();
+                        return Json("FrozeCountPlus");
+                    }
+                }
             }
-            //ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
-            return PartialView();
+            else
+            {
+                return Json("noEmail");
+            }
         }
-
         public bool facebookLogin(string id, string name)
         {
             var test = id + name;
@@ -220,15 +279,19 @@ namespace BuyFood_Template.Controllers
             }
         }
 
-        public bool BCheckLogin()
+        public JsonResult BCheckLogin()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)))
             {
-                return false;
+                return Json(false);
+            }
+            else if (int.Parse(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)) == 16)
+            {
+                return Json("isAdm");
             }
             else
             {
-                return true;
+                return Json(true);
             }
         }
         public string SLogout()

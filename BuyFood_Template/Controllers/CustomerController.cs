@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModel;
@@ -41,9 +42,16 @@ namespace BuyFood_Template.Controllers
             var check信箱 = from n in db.TMembers
                           select n.CEmail;
 
+            var check手機 = from n in db.TMembers
+                          select n.CPhone;
+
             if (check信箱.Any(n => n == newMember.CEmail) == true)
             {
                 return Json("EmailRepeat");
+            }
+            else if (check手機.Any(n => n == newMember.CPhone) == true)
+            {
+                return Json("PhoneRepeat");
             }
             else
             {
@@ -116,6 +124,19 @@ namespace BuyFood_Template.Controllers
                     db.TCupons.Add(新增新會員折價卷);
                     db.SaveChanges();
                 }
+
+                //密碼雜湊
+                TMember add密碼雜湊 = (from n in db.TMembers
+                                  where n.CMemberId == newMember.CMemberID
+                                  select n).FirstOrDefault();
+
+                SHA1 sha1 = SHA1.Create();
+
+                string 雜湊密碼 = shareFun.GetHash(sha1, add密碼雜湊.CPassword);
+
+                add密碼雜湊.CPassword = 雜湊密碼;
+                db.SaveChanges();
+
 
                 return Json(true);
             }
