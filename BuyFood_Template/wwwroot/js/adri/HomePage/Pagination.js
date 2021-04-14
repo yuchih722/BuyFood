@@ -95,7 +95,7 @@ function pagesForSearch(page) {
             pdtItem = data;
 
 
-
+             
             var itemPerPage = 8;
             //var HowManyPages = (data.length / itemPerPage);   //40/8
             var textForLoop = "";
@@ -105,22 +105,34 @@ function pagesForSearch(page) {
             }
 
             for (var i = (page * itemPerPage); i < items; i++) {
-                var images = data[i].cPicture;
+                var images = data[i].products.cPicture;
                 var imageSrc = images.replace("~", "");
                 console.log(imageSrc);
 
                 textForLoop += `<div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
                                         <div class="featured__item">
-                                        <div class="featured__item__pic set-bg" style="background-image: url(${data[i].cPicture.replace("~", "")})">
+                                        <div class="featured__item__pic set-bg" style="background-image: url(${data[i].products.cPicture.replace("~", "")})">
                                         <ul class="featured__item__pic__hover">
                                          <li><a href = "#" ><i class="fa fa-heart"></i></a></li>
                                          <li><a href = "#" ><i class="fa fa-retweet"></i></a></li>
-                                         <li><a href="javascript: void(0)" onclick="addCart(pdtItem[${i}])"><i class="fa fa-shopping-cart"></i></a></li>
+                                         <li><a href="javascript: void(0)" onclick="addCart(pdtItem[${i}].products)"><i class="fa fa-shopping-cart"></i></a></li>
                                          </ul>
-                                         </div>
+                                         <ul class="start_for_homepage">`
+                let Average_message_adri = data[i].coun <= 0 ? 0 : parseInt(data[i].sum / data[i].coun)
+                for (let x = 0; x < Average_message_adri; x++) {
+                    textForLoop += `<li><span class="fa fa-star checked" style="color: orange;"></span></li>`
+                }
+                for (let g = 0; g < 5 - Average_message_adri; g++) {
+                    textForLoop += `<li><span class="fa fa-star checked" style="color: #d5d3cf;"></span></li>`
+                }
+                textForLoop += ` </ul>
+                                                <span class="product_time_yu">製作時間：${data[i].products.cFinishedTime}分鐘</span> `
+
+                textForLoop += `</div>
                                          <div class="featured__item__text">
-                                         <h6><a href="/ProductDetail/ProductData?id=${data[i].cProductId}">${data[i].cProductName}</a></h6>
-                                         <h5>$${data[i].cPrice}</h5>
+                                         <h6><a href="/ProductDetail/ProductData?id=${data[i].products.cProductId}">${data[i].products.cProductName}</a></h6>
+                                         <h5>$${data[i].products.cPrice}</h5>
+                                         <h6>庫存量 ${data[i].products.cQuantity} </h6>
                                          </div>
                                          </div>
                                          </div>`;

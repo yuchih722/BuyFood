@@ -96,7 +96,14 @@ namespace BuyFood_Template.Controllers
                 predicate = predicate.Or(n => n.CIsLunch == getLunch);
             if (getDinner == 1)
                 predicate = predicate.Or(n => n.CIsDinner == getDinner);
-            var resultOfTime = result.AsQueryable().AsExpandable().Where(c => predicate.Invoke(c));
+
+            var resultOfTime = result.Where(c => predicate.Invoke(c)).Select(n=>new {
+                products = n,
+                coun = n.TOrderDetails.Count(x => x.CFeedBackStatus == 1 && x.CScores != null),
+                sum = n.TOrderDetails.Where(x => x.CFeedBackStatus == 1 && x.CScores != null).Sum(m => m.CScores)
+            });
+
+
             //return Json(result.ToList());
             //return Json(result.Where(n=>n.CIsBreakFast==getBreakFast&&n.CIsLunch==getLunch&&n.CIsDinner==getDinner));
             return Json(resultOfTime.ToList());
@@ -258,11 +265,19 @@ namespace BuyFood_Template.Controllers
         public JsonResult get_categorysname() //抓取所有商品顯示在首頁
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var table = db.TProductCategories.Select(n => new {n.CProductCategoryId,n.CCategoryName, n.TProducts});
+
+            var table = db.TProductCategories.Select(n => new {n.CProductCategoryId,n.CCategoryName,
+                tProducts = n.TProducts.Select(m => new 
+                {
+                    tProducts=m,
+                    coun=m.TOrderDetails.Count(b=>b.CFeedBackStatus==1&&b.CScores!=null),
+                    sum=m.TOrderDetails.Where(m=>m.CFeedBackStatus == 1 && m.CScores != null).Sum(m=>m.CScores)
+                })
+            });
 
             return Json(table);
         }
-       
+
         public JsonResult getBottomList()  
         { 
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
