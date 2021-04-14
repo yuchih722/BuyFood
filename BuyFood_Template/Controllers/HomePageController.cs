@@ -294,6 +294,10 @@ namespace BuyFood_Template.Controllers
                 return Json(true);
             }
         }
+        public IActionResult forgetPwd()
+        {
+            return PartialView();
+        }
         public string SLogout()
         {
             HttpContext.Session.Remove(CDictionary.CURRENT_LOGINED_USERNAME);
