@@ -70,6 +70,7 @@
                     <label asp-for="CName" for="name">*姓名 :</label>
                     <input asp-for="CName" id="name" required />
                     <span asp-validation-for="CName" class="text-danger" id="spname"></span>
+                    <label style="color:red" id="WrongName"></label>
                 </div>
             </div>
             <div class="form-row">
@@ -77,7 +78,7 @@
                     <label asp-for="CPassword" for="name">*密碼 :</label>
                     <input asp-for="CPassword" type="password" id="password" required />
                     <span asp-validation-for="CPassword" class="text-danger" id="sppassword"></span>
-                    <span>((1.不可空白 , 2.至少6個字且必須包含英文字母+數字)</span>
+                    <span>((1.不可空白 , 2.至少7個字且必須包含英文字母+數字)</span>
                     <label style="color:red" id="Wrongpassword"></label>
                 </div>
             </div>
@@ -93,13 +94,14 @@
                 <div class="form-check form-check-inline">
                     @*暫時替代*@
                     <input asp-for="CGender" id="inlineRadio1">
+                    <label style="color:red" id="WrongGender"></label>
                 </div>
                 @*<div class="form-check form-check-inline">
-                        <input asp-for="CGender" type="radio" id="inlineRadio1" value="male">
+                        <input asp-for="CGender" type="radio" id="inlineRadio1" value="男">
                         <label class="form-check-label" for="inlineRadio1">男</label>
                     </div>*@
                 @*<div class="form-check form-check-inline">
-                        <input  asp-for="CGender" type="radio" id="inlineRadio2" value="female">
+                        <input  asp-for="CGender" type="radio" id="inlineRadio2" value="女">
                         <label class="form-check-label" for="inlineRadio2">女</label>
                     </div>*@
             </div>
@@ -108,42 +110,45 @@
                     <label asp-for="CAge" for="age">*生日 :</label>
                     <input asp-for="CAge" type="date" id="age" required />
                     <span asp-validation-for="CAge" class="text-danger" id="spage"></span>
+                    <label style="color:red" id="WrongAge"></label>
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="CAddress" for="address">*地址 :</label>
                 <input asp-for="CAddress" id="address" required />
                 <span asp-validation-for="CAddress" class="text-danger" id="spaddress"></span>
+                <label style="color:red" id="WrongAddress"></label>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label asp-for="CPhone" for="name">*手機 :</label>
                     <input asp-for="CPhone" id="phone" required />
                     <span asp-validation-for="CPhone" class="text-danger" id="spphone"></span>
+                    <label style="color:red" id="WrongPhone"></label>
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="CEmail" for="email" style="position:relative">*Email :</label>
-                <input asp-for="CEmail" id="email" required />
+                <label asp-for="CEmail" for="email" style="position:relative">*Email(帳號) :</label>
+                <input asp-for="CEmail" id="CEmail" required />
                 <span asp-validation-for="CEmail" class="text-danger" id="spemail"></span>
-                <span id="Wrongemail"></span>
+                <label style="color:red" id="WrongEmail"></label>
             </div>
 
 
 
             <label asp-for="CPicture" style="position:relative">上傳頭像 :</label>
-                <input type="file" name="img" id="image" style="padding:0px; border:none" />
-                <span asp-validation-for="CPicture" class="text-danger" id="spimg"></span>
+            <input type="file" name="img" id="image" style="padding:0px; border:none" />
+            <span asp-validation-for="CPicture" class="text-danger" id="spimg"></span>
 
             @*裁切圖片*@
             @*<label class="btn btn-info"><input id="upload_img" style="display:none;" type="file" accept="image/*"><i class="fa fa-photo"></i> 上傳圖片</label>
 
-            <div id="oldImg" style="display:none;"></div>
+                <div id="oldImg" style="display:none;"></div>
 
-            <button id="crop_img" class="btn btn-info"><i class="fa fa-scissors"></i> 裁剪圖片</button>
+                <button id="crop_img" class="btn btn-info"><i class="fa fa-scissors"></i> 裁剪圖片</button>
 
-            <div id="newImgInfo"></div>
-            <div id="newImg"></div>*@
+                <div id="newImgInfo"></div>
+                <div id="newImg"></div>*@
 
 
 
@@ -155,20 +160,30 @@
             </div>
 
             <div class="form-submit">
-                <input type="submit" value="Reset All" class="submit" name="reset" id="reset" />
-                <input type="submit" value="確認註冊" class="submit" name="submit" id="submit" onclick="return confirm('確定要註冊嗎?')" />
+                <input type="button" value="清除重寫" class="submit" name="reset" id="reset" onclick='(function () {
+    document.getElementById("name").value = "";
+    document.getElementById("CEmail").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("checkPassword").value = "";
+    document.getElementById("inlineRadio1").value = "";
+    document.getElementById("address").value = "";
+    document.getElementById("phone").value = "";
+        document.getElementById("code").value = "";
+                            })()' />
+                <input type="button" value="確認註冊" class="submit" name="submit" id="submit" onclick="submitData()" />
             </div>
 
             <div class="form-submit">
                 <input type="button" value="Demo" class="btn btn-primary"
                        onclick='(function () {
-    document.getElementById("name").value = "jotaro";
-    document.getElementById("email").value = "jotaro@Gmail.com";
-    document.getElementById("password").value = "123";
-    document.getElementById("checkPassword").value = "123";
+    document.getElementById("name").value = "joruno";
+    document.getElementById("CEmail").value = "joruno@Gmail.com";
+    document.getElementById("password").value = "321321q";
+    document.getElementById("checkPassword").value = "321321q";
     document.getElementById("inlineRadio1").value = "男";
-    document.getElementById("address").value = "Japan";
+    document.getElementById("address").value = "台北市復興南路一段390號2樓";
     document.getElementById("phone").value = "0912345678";
+    allPass();
                             })()' />
             </div>
 
@@ -189,16 +204,107 @@
     })
 </script>
 
-@{
-    string o = "@";
-}
-<script>
-    document.getElementById("password").onblur = checkPwd
-    document.getElementById("checkPassword").onblur = checkCheckPassword
-    document.getElementById("email").onblur = checkEmail
-    document.getElementById("submit").onblur = checkAll
-    let flagCheckpwd = false, flagCheckCheckpwd = false, flagCheckEmail = false;
 
+<script>
+    document.getElementById("password").onblur = checkPwd;
+    document.getElementById("checkPassword").onblur = checkCheckPassword;
+    document.getElementById("CEmail").onblur = checkEmail;
+    document.getElementById("name").onblur = checkName;
+    document.getElementById("inlineRadio1").onblur = checkGender;
+    document.getElementById("address").onblur = checkAddress;
+    document.getElementById("phone").onblur = checkPhone;
+    document.getElementById("age").onblur = checkAge;
+
+    let flagCheckpwd = false, flagCheckCheckpwd = false, flagCheckEmail = false, flagCheckName = false, flagCheckAge = false, flagCheckAddress = false, flagCheckGender = false, flagCheckPhone = false;
+
+    function allPass() {
+        flagCheckpwd = true, flagCheckCheckpwd = true, flagCheckEmail = true, flagCheckName = true, flagCheckAge = true, flagCheckAddress = true, flagCheckGender = true, flagCheckPhone = true;
+    }
+
+
+    function checkEmail() {
+        let emailVal = document.getElementById("CEmail").value;
+        let spObj = document.getElementById("WrongEmail");
+
+        if (emailVal == "") {
+            spObj.innerHTML = "不可空白";
+            flagCheckEmail = false;
+        }
+        else {
+            spObj.innerHTML = "";
+            flagCheckEmail = true;
+        }
+    }
+
+    function checkName() {
+        let nameVal = document.getElementById("name").value;
+        let spObj = document.getElementById("WrongName");
+
+        if (nameVal == "") {
+            spObj.innerHTML = "不可空白";
+            flagCheckName = false;
+        }
+        else {
+            spObj.innerHTML = "";
+            flagCheckName = true;
+        }
+    }
+
+    function checkGender() {
+        let genderVal = document.getElementById("inlineRadio1").value;
+        let spObj = document.getElementById("WrongGender");
+
+        if (genderVal == "") {
+            spObj.innerHTML = "不可空白";
+            flagCheckGender = false;
+        }
+        else {
+            spObj.innerHTML = "";
+            flagCheckGender = true;
+        }
+    }
+
+    function checkAddress() {
+        let addressVal = document.getElementById("address").value;
+        let spObj = document.getElementById("WrongAddress");
+
+        if (addressVal == "") {
+            spObj.innerHTML = "不可空白";
+            flagCheckAddress = false;
+        }
+        else {
+            spObj.innerHTML = "";
+            flagCheckAddress = true;
+        }
+    }
+
+    function checkPhone() {
+        let phoneVal = document.getElementById("phone").value;
+        let spObj = document.getElementById("WrongPhone");
+
+        if (phoneVal == "") {
+            spObj.innerHTML = "不可空白";
+            flagCheckPhone = false;
+        }
+        else {
+            spObj.innerHTML = "";
+            flagCheckPhone = true;
+        }
+    }
+
+    function checkAge() {
+        let ageVal = document.getElementById("age").value;
+        let spObj = document.getElementById("WrongAge");
+
+        if (ageVal == "") {
+            spObj.innerHTML = "不可空白";
+            flagCheckAge = false;
+        }
+        else {
+            spObj.innerHTML = "";
+            flagCheckAge = true;
+        }
+    }
 
     function checkPwd() {
         let pwdObj = document.getElementById("password");
@@ -250,125 +356,176 @@
         }
     }
 
-    @*function checkEmail() {
+    function submitData() {
+        var msg = "確定註冊?";
+        console.log(flagCheckAddress);
+        console.log(flagCheckAge);
+        console.log(flagCheckCheckpwd);
+        console.log(flagCheckEmail);
+        console.log(flagCheckGender);
+        console.log(flagCheckName);
+        console.log(flagCheckPhone);
+        console.log(flagCheckpwd);
+
+        if (confirm(msg) == true) {
+            if (flagCheckAddress == true && flagCheckAge == true && flagCheckCheckpwd == true && flagCheckEmail == true && flagCheckGender == true && flagCheckName == true && flagCheckPhone == true && flagCheckpwd == true) {
+                checkAll();
+            }
+            else {
+                alert("請檢察必填資料是否正確")
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    function checkAll() {
+        var newMember = {};
+
+        newMember.CEmail = $("#CEmail").val();
+        newMember.CPassword = $("#password").val();
+        newMember.CAddress = $("#address").val();
+        newMember.CPhone = $("#phone").val();
+        newMember.CGender = $("#inlineRadio1").val();
+        newMember.CAge = $("#age").val();
+        newMember.CName = $("#name").val();
+        newMember.code = $("#code").val();
+
+        console.log($("#age"));
+        console.log($('input[type=file]')[0].files[0]);
+
         $.ajax({
-            url: "@Url.Action("checkEmail", "Customer")",
-            data: { "email": $("#email") },
+            url: "/Customer/CreateNewMember",
             type: "POST",
+            data: JSON.stringify(newMember),
+            dataType: "Json",
+            processData: false,
+            contentType: "application/json; charset=utf-8",
             success: function (data) {
-                let ObjEmail = document.getElementById("email");
-                let ObjEmailVal = ObjEmail.value;
-                console.log(data);
+                console.log(newMember);
 
-                if (data == "此信箱可使用") {
+                if (data == "EmailRepeat") {
+                    alert("此Email已被註冊");
+                }
+                else if (data == true) {
 
-                    if (ObjEmailVal.length >= 5 && ObjEmailVal.match(/^[0-9a-zA-Z]([-._]*[0-9a-zA-Z])*"@o"[0-9a-zA-Z]([-._]*[0-9a-zA-Z])*\.+[a-zA-Z]+$/)) {
-                        document.getElementById("Wrongemail").innerHTML = "信箱格式正確"
-                    }
-                    else {
-                        document.getElementById("Wrongemail").innerHTML = "信箱格式錯誤"
-                    }
+                    doImgUpload();
 
+                    alert("註冊成功 將返回登入頁面");
+                    window.location.assign("/HomePage/登入");
                 }
                 else {
-                    document.getElementById("Wrongemail").innerHTML = data;
+                    alert("不知道哪裡錯ㄌ");
                 }
+            }
+        });
+    }
 
-                }
-            })*@
-          //}
+    function doImgUpload() {
+        const formdata = new FormData();
+        formdata.append('photo', $('input[type=file]')[0].files[0]);
+        formdata.append('CEmail', $("#CEmail").val())
+        fetch('/Customer/UploadImage', {
+            method: 'POST',
+            body: formdata
+        }).then(function (response) {
+            return response.json();
+        });
+    }
 </script>
 
 
-<script>
-    (function ($) {
-        var width_crop = 300, // 圖片裁切寬度 px 值
-            height_crop = 200, // 圖片裁切高度 px 值
-            type_crop = "circle", // 裁切形狀: square 為方形, circle 為圓形
-            width_preview = 350, // 預覽區塊寬度 px 值
-            height_preview = 350, // 預覽區塊高度 px 值
-            compress_ratio = 0.85, // 圖片壓縮比例 0~1
-            type_img = "jpg", // 圖檔格式 jpeg png webp
-            oldImg = new Image(),
-            myCrop, file, oldImgDataUrl;
+@*<script>
+        (function ($) {
+            var width_crop = 300, // 圖片裁切寬度 px 值
+                height_crop = 200, // 圖片裁切高度 px 值
+                type_crop = "circle", // 裁切形狀: square 為方形, circle 為圓形
+                width_preview = 350, // 預覽區塊寬度 px 值
+                height_preview = 350, // 預覽區塊高度 px 值
+                compress_ratio = 0.85, // 圖片壓縮比例 0~1
+                type_img = "jpg", // 圖檔格式 jpeg png webp
+                oldImg = new Image(),
+                myCrop, file, oldImgDataUrl;
 
-        // 裁切初始參數設定
-        myCrop = $("#oldImg").croppie({
-            viewport: { // 裁切區塊
-                width: width_crop,
-                height: height_crop,
-                type: type_crop
-            },
-            boundary: { // 預覽區塊
-                width: width_preview,
-                height: height_preview
-            }
-        });
-
-        function readFile(input) {
-            if (input.files && input.files[0]) {
-                file = input.files[0];
-            } else {
-                alert("瀏覽器不支援此功能！建議使用最新版本 Chrome");
-                return;
-            }
-
-            if (file.type.indexOf("image") == 0) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    oldImgDataUrl = e.target.result;
-                    oldImg.src = oldImgDataUrl; // 載入 oldImg 取得圖片資訊
-                    myCrop.croppie("bind", {
-                        url: oldImgDataUrl
-                    });
-                };
-
-                reader.readAsDataURL(file);
-            } else {
-                alert("您上傳的不是圖檔！");
-            }
-        }
-
-        function displayCropImg(src) {
-            var html = "<img src='" + src + "' />";
-            $("#newImg").html(html);
-        }
-
-        $("#upload_img").on("change", function () {
-            $("#oldImg").show();
-            readFile(this);
-        });
-
-        oldImg.onload = function () {
-            var width = this.width,
-                height = this.height,
-                fileSize = Math.round(file.size / 1000),
-                html = "";
-
-            html += "<p>原始圖片尺寸 " + width + "x" + height + "</p>";
-            html += "<p>檔案大小約 " + fileSize + "k</p>";
-            $("#oldImg").before(html);
-        };
-
-        function displayNewImgInfo(src) {
-            var html = "",
-                filesize = src.length * 0.75;
-
-            html += "<p>裁切圖片尺寸 " + width_crop + "x" + height_crop + "</p>";
-            html += "<p>檔案大小約 " + Math.round(filesize / 1000) + "k</p>";
-            $("#newImgInfo").html(html);
-        }
-
-        $("#crop_img").on("click", function () {
-            myCrop.croppie("result", {
-                type: "canvas",
-                format: type_img,
-                quality: compress_ratio
-            }).then(function (src) {
-                displayCropImg(src);
-                displayNewImgInfo(src);
+            // 裁切初始參數設定
+            myCrop = $("#oldImg").croppie({
+                viewport: { // 裁切區塊
+                    width: width_crop,
+                    height: height_crop,
+                    type: type_crop
+                },
+                boundary: { // 預覽區塊
+                    width: width_preview,
+                    height: height_preview
+                }
             });
-        });
-    })(jQuery);
-</script>
+
+            function readFile(input) {
+                if (input.files && input.files[0]) {
+                    file = input.files[0];
+                } else {
+                    alert("瀏覽器不支援此功能！建議使用最新版本 Chrome");
+                    return;
+                }
+
+                if (file.type.indexOf("image") == 0) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        oldImgDataUrl = e.target.result;
+                        oldImg.src = oldImgDataUrl; // 載入 oldImg 取得圖片資訊
+                        myCrop.croppie("bind", {
+                            url: oldImgDataUrl
+                        });
+                    };
+
+                    reader.readAsDataURL(file);
+                } else {
+                    alert("您上傳的不是圖檔！");
+                }
+            }
+
+            function displayCropImg(src) {
+                var html = "<img src='" + src + "' />";
+                $("#newImg").html(html);
+            }
+
+            $("#upload_img").on("change", function () {
+                $("#oldImg").show();
+                readFile(this);
+            });
+
+            oldImg.onload = function () {
+                var width = this.width,
+                    height = this.height,
+                    fileSize = Math.round(file.size / 1000),
+                    html = "";
+
+                html += "<p>原始圖片尺寸 " + width + "x" + height + "</p>";
+                html += "<p>檔案大小約 " + fileSize + "k</p>";
+                $("#oldImg").before(html);
+            };
+
+            function displayNewImgInfo(src) {
+                var html = "",
+                    filesize = src.length * 0.75;
+
+                html += "<p>裁切圖片尺寸 " + width_crop + "x" + height_crop + "</p>";
+                html += "<p>檔案大小約 " + Math.round(filesize / 1000) + "k</p>";
+                $("#newImgInfo").html(html);
+            }
+
+            $("#crop_img").on("click", function () {
+                myCrop.croppie("result", {
+                    type: "canvas",
+                    format: type_img,
+                    quality: compress_ratio
+                }).then(function (src) {
+                    displayCropImg(src);
+                    displayNewImgInfo(src);
+                });
+            });
+        })(jQuery);
+    </script>*@
