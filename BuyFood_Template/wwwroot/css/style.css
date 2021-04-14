@@ -854,7 +854,7 @@ ol {
 }
 
 	.featured__item:hover .featured__item__pic .featured__item__pic__hover {
-		bottom: 20px;
+		bottom: 25px;
 	}
 
 .featured__item__pic {

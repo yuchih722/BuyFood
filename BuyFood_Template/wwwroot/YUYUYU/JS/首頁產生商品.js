@@ -30,10 +30,10 @@ $(function () {
                                                     <ul class="start_for_homepage">`
                     let Average_message_yu = data_category[i].tProducts[y].coun <= 0 ? 0 :   parseInt(data_category[i].tProducts[y].sum / data_category[i].tProducts[y].coun)
                     for (let x = 0; x < Average_message_yu; x++) {
-                        products +=`<li><span class="fa fa-star checked" style="color: orange;"></span></li>`
+                        products +=`<li><span class="fa fa-star checked" style="color: orange;font-size:25px"></span></li>`
                     }
                     for (let g = 0; g < 5 - Average_message_yu; g++) {
-                        products += `<li><span class="fa fa-star checked" style="color: #d5d3cf;"></span></li>`
+                        products += `<li><span class="fa fa-star checked" style="color: #d5d3cf;font-size:25px"></span></li>`
                     }                              
                     products += ` </ul>
                                                 <span class="product_time_yu">製作時間：${data_category[i].tProducts[y].tProducts.cFinishedTime}分鐘</span> `
