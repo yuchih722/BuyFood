@@ -22,9 +22,11 @@ namespace BuyFood_Template.Controllers
     {
         public JsonResult test()
         {
+
             //(new ShareFunction()).sendGrid("always0537@gmail.com", "hihi", "訂單成功", "check your account");
 
             //擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            //var products = db.TProducts.ToList();
             //var bbb = db.TOrderDetails.OrderByDescending(n => n.COrder.COrderDate).Select(n => new
             //{
             //    n.CProductId,
@@ -33,21 +35,32 @@ namespace BuyFood_Template.Controllers
             //.GroupBy(n => n.CProductId).Select(n => new
             //{
             //    n.Key,
-            //    product = new List<TProduct>(),
             //    count = n.Count()
             //}).OrderByDescending(n => n.count).Take(6).ToList();
 
-            //foreach(var item in bbb)
+            //var ccc=bbb.Select(n => new
+            //{
+            //    n.Key,
+            //    n.count,
+            //    product = products.First(m => m.CProductId == n.Key)
+            //});
+
+            //foreach (var item in bbb)
             //{
             //    TProduct product = db.TProducts.FirstOrDefault(n => n.CProductId == item.Key);
             //    item.product.Add(product);
             //}
-            //return Json(bbb);
+            return Json("aaa");
         }
-        public string checkLogin()
+        public string checkLogin(string id)
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
+            {
+                if(id!="0")
+                    TempData[CDictionary.REDIRECT_FROM_WHERE] = id;
                 return "1";
+            }
+                
             return "0";
         }
         public IActionResult MemberCenter()
