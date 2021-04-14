@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModel;
@@ -13,6 +14,8 @@ namespace BuyFood_Template.Controllers
 {
     public class HomePageController : Controller
     {
+        ShareFunction shareFun = new ShareFunction();
+
         public IActionResult Home()
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
@@ -216,11 +219,15 @@ namespace BuyFood_Template.Controllers
                               where n.CEmail == loginMember.CEmail
                               select n).FirstOrDefault();
 
+                SHA1 sha1 = SHA1.Create();
+
+                string pwd解密 = shareFun.GetHash(sha1, loginMember.CPassword);
+
                 if (check密碼.CFreezeCount >=4)
                 {
                     return Json("memberFrozed");
                 }
-                else if(check密碼.CPassword == loginMember.CPassword)
+                else if(check密碼.CPassword == pwd解密)
                 {
                     HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, check密碼.CName);
                     HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, check密碼.CPicture);
