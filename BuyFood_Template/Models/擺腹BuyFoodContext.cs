@@ -152,6 +152,8 @@ namespace BuyFood_Template.Models
                     .HasMaxLength(255)
                     .HasColumnName("cPhoto");
 
+                entity.Property(e => e.CReview).HasColumnName("cReview");
+
                 entity.Property(e => e.CSaveTime)
                     .HasColumnType("datetime")
                     .HasColumnName("cSaveTime");

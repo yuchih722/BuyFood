@@ -61,5 +61,12 @@ namespace BuyFood_Template.Controllers
                 return Json(result);
             }
         }
+        [HttpPost]
+        public JsonResult SearchCouponCanUse([FromBody] int MemberID)
+        {
+            var result = new 擺腹BuyFoodContext().TCupons.Where(x => x.CMenberId == MemberID && x.CBeUsed == 0)
+                .Select(x => x);
+            return Json(result.ToList());
+        }
     }
 }
