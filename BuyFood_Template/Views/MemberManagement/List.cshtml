@@ -60,6 +60,7 @@
 <div class="box-module">
     <div class="box-title" style="margin-bottom:10px">
         會員列表<a style="margin-left:30px;background-color:#8E8E8E" asp-action="Create" class="btn btn-primary">新增會員</a>
+        <button id="btnsendmail" onclick="showvalue()" style="margin-left:30px;background-color:#8E8E8E" class="btn btn-primary">寄信</button>
     </div>
     <div id="member">
 
@@ -75,62 +76,81 @@
 </div>
 <!-- END PAGA BACKDROPS-->
 
+
 <script>
     function Member(str) {
         $.ajax({
             url: "/MemberManagement/jsonList?str=" + str,
             type: "GET",
             success: function (data) {
-                console.log(data);
+                /*console.log(data);*/
                 var txttable = "";
                 txttable +=
                     `<div>
                         <table class="table table-hover table_striped table-bordered border" id="myTable">
                             <thead>
                                 <tr>
-                                    <th class="align" width="10px">
+                                    <th class="align">
                                         <label class="ui-checkbox">
                                             <input type="checkbox" id="chElt" onclick="checkOrCancelAll();" value=""></input>
                                             <span class="input-span"></span>
                                         </label>
                                     </th>
+                                    <th class="align">會員編號</th>
                                     <th class="align" width="6%">會員照片</th>
-                                    <th class="align" width="7%">會員姓名</th>
-                                    <th class="align" width="5%">姓別</th>
-                                    <th class="align" width="6%">生日</th>
-                                    <th class="align" width="8%">地址</th>
-                                    <th class="align" width="8%">電話</th>
-                                    <th class="align" width="10%">EMAIL帳號</th>
-                                    <th class="align" width="5%">密碼</th>
-                                    <th class="align" width="6%">黑名單</th>
-                                    <th class="align" width="10%">儲值餘額</th>
-                                    <th class="align" width="20%">編輯</th>
+                                    <th class="align">會員姓名</th>
+                                    <th class="align">姓別</th>
+                                    <th class="align">生日</th>
+                                    <th class="align">年齡</th>
+                                    <th class="align">地址</th>
+                                    <th class="align">電話</th>
+                                    <th class="align">EMAIL帳號</th>                                    
+                                    <th class="align">儲值餘額</th>
+                                    <th class="align">黑名單</th>
+                                    <th class="align">停權</th>
+                                    <th class="align">編輯</th>
                                 </tr>
                             </thead>
                           <tbody>`
                 for (let i = 0; i <= data.length - 1; i++) {
+                    if (data[i].cBlackList == 0) {
+                        var Black = `<button class="btn btn-green" onclick="blacklist(${data[i].cMemberId})">加入黑名單</button>`
+                    }
+                    else {
+                        Black = `<button class="btn btn-secondary" onclick="blacklist(${data[i].cMemberId})">解鎖黑名單</button>`
+                    }
+
+                    if (data[i].cFreezeCount == 0) {
+                        var freezecount = `<button class="btn btn-green" onclick="freeze(${data[i].cMemberId})">凍結</button>`
+                    }
+                    else {
+                        freezecount = `<button class="btn btn-secondary" onclick="freeze(${data[i].cMemberId})">解凍</button>`
+                    }
+
                     txttable +=
                         `<tr style="text-align:center">
                             <td style="vertical-align: middle;">
                                 <label class="ui-checkbox">
-                                    <input id="checkdelete" value="${data[i].cMemberId}" type="checkbox" name="interest"></input>
+                                    <input id="test" value="${data[i].cMemberId}" type="checkbox" name="選中內框"></input>
                                     <span class="input-span"></span>
                                 </label>
                             </td>
+                            <td style="vertical-align: middle;">${data[i].cMemberId}</td>
                             <td><img src="${data[i].cPicture}" /></td>
                             <td style="vertical-align: middle;">${data[i].cName}</td>
                             <td style="vertical-align: middle;">${data[i].cGender}</td>
+                            <td id="test2" style="vertical-align: middle;">${data[i].cBirthday}</td>
                             <td style="vertical-align: middle;">${data[i].cAge}</td>
                             <td style="vertical-align: middle;">${data[i].cAddress}</td>
                             <td style="vertical-align: middle;">${data[i].cPhone}</td>
                             <td style="vertical-align: middle;">${data[i].cEmail}</td>
-                            <td style="vertical-align: middle;">${data[i].cPassword}</td>
-                            <td style="vertical-align: middle;">${data[i].cBlackList}</td>
                             <td style="vertical-align: middle;">${data[i].cDeposit}</td>
-
-                            <td style="vertical-align: middle;">
+                            <td style="vertical-align: middle" id="c黑名單${data[i].cMemberId}">${Black}</td>
+                            <td id="c凍結${data[i].cMemberId}">${freezecount}</td>
+                            
+                            <td style="vertical-align: middle">                            
                             <a class="btn btn-outline-success" href="/MemberManagement/Edit?id=${data[i].cMemberId}"><i class="fa fa-pencil font-18">修改</i></a>
-                            <a class="btn btn-outline-danger" href="/MemberManagement/Delete?id=${data[i].cMemberId}" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-trash font-18">刪除</i></a>
+                            <a class="btn btn-outline-danger" href="/MemberManagement/Delete?id=${data[i].cMemberId}" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-trash font-18">刪除</i></a>                            
                             <button class="btn btn-outline-info" onclick="order(${data[i].cMemberId})"><i class="fa fa-edit font-18">訂單明細</i></button>
                                     </td>
                                 </tr >`
@@ -167,14 +187,15 @@
 
                 //$("#myTable_length").append(`<label id="btndelete" style = "display:none"><button type="button" class="btn button_btn btn-danger" onclick="deletemore();">刪除選中</button></label>`);
 
-                $("#myTable input[name=interest]").change(function Submit() {
+                $("#myTable input[name=選中內框]").change(function Submit() {
                     var selectFalse = false; //用于判断是否被选择条件
-                    var checkBox = $('input[name=interest]'); //得到所有的復選框
-                    for (var i = 0; i < checkBox.length; i++) {
-                        if (CheckBox[i].checked) {
-                            selectFalse = true;
-                        }
-                    }
+                    var checkBox = $('input[name=選中內框]'); //得到所有的復選框
+                    //for (var i = 0; i < checkBox.length; i++) {
+                    //    if (CheckBox[i].checked) {
+                    //        selectFalse = true;
+                    //    }
+                    //}
+                    console.log($('input[name=選中內框]'));
                     //if (SelectFalse) {
                     //    $("#btndelete").show();
                     //} else {
@@ -183,10 +204,10 @@
                 }
                 )
 
-
             }
         })
     }
+    //↓checkBox全選功能
     function checkOrCancelAll() {
         //1.獲取checkbo的元素對象
         var chElt = document.getElementById("chElt");
@@ -194,27 +215,25 @@
         var checkedElt = chElt.checked;
         console.log(checkedElt)
         //3.若checked=true,將所有的復選框選中,checked=false,將所有的復選框取消
-        var allCheck = document.getElementsByName("interest");
+        var allCheck = document.getElementsByName("選中內框");
         //4.循環遍歷取出每一個復選框中的元素
         //var mySpan=document.getElementById("mySpan");
         if (checkedElt) {
             //全選
             for (var i = 0; i < allCheck.length; i++) {
-                //設置復選框的選中狀態
-                allCheck[i].checked = true;
+                allCheck[i].checked = true;//設置復選框的選中狀態
             }
-            $("#btndelete").show();
+            //$("#btndelete").show();
             //mySpan.innerHTML="取消全選";
-        } else {
-            //取消全選
+        }
+        else {
             for (var i = 0; i < allCheck.length; i++) {
-                allCheck[i].checked = false;
+                allCheck[i].checked = false;//取消全選
             }
-            $("#btndelete").hide();
+            //$("#btndelete").hide();
             //mySpan.innerHTML="全選";
         }
     };
-
 
     //全選刪除
     //function deletemore() {
@@ -230,13 +249,57 @@
     //        });
     //    }
     //}
+    /*進入此頁面執行*/
+  
+    $(Member("All"));
+</script>
+<script>
+    function blacklist(id) {
+        $.ajax({
+            url: "/MemberManagement/changeblacklist?id=" + id,
+            type: "Get",
+            success: function (data) {
+                console.log(data);
+                //console.log("id="+id)
+                if (data == true) {                                                         
+                    $("#c黑名單" + id).html(`<button class="btn btn-secondary" onclick="blacklist(${id})">解鎖黑名單</button>`);
+                }
+                else {                 
+                    $("#c黑名單" + id).html(`<button class="btn btn-green" onclick="blacklist(${id})">加入黑名單</button>`);
+                }
+            }
+        })
+    }
+
+    function freeze(id) {
+        $.ajax({
+            url: "/MemberManagement/changefreeze?id=" + id,
+            type: "Get",
+            success: function (data) {
+                console.log(data);
+                if (data == true) {
+                    $("#c凍結" + id).html(`<button class="btn btn-secondary" onclick="freeze(${id})">解凍</button>`);
+                }
+                else {
+                    $("#c凍結" + id).html(`<button class="btn btn-green" onclick="freeze(${id})">凍結</button>`);
+                }
+          
+            }
+        })
+    }
+
+    //function showvalue() {
+    //    var aa = document.getElementById("test").nodeValue.nodeValue
+    //    var bb = document.getElementById("test2")
+    //    console.log(aa);
+    //    console.log(bb);
+    //}
 
     function order(str) {
         $.ajax({
             url: `/MemberManagement/detail?id=${str}`,
             type: "POST",
             success: function (data) {
-                console.log(data)
                 var txttable = "";
                 txttable +=
                     `<div>
@@ -295,14 +358,11 @@
 
             }
         })
-    }//這裡結束
-
-
-    /*進入此頁面執行*/
-    $(Member("All"));
-
-
-
+    }
 </script>
+  
+
+
+
 
 
