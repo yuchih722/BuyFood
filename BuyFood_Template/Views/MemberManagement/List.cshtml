@@ -84,8 +84,8 @@
             type: "GET",
             success: function (data) {
                 /*console.log(data);*/
-                var txttable = "";
-                txttable +=
+                var txttableAdmMemberList = "";
+                txttableAdmMemberList +=
                     `<div>
                         <table class="table table-hover table_striped table-bordered border" id="myTable">
                             <thead>
@@ -114,20 +114,20 @@
                           <tbody>`
                 for (let i = 0; i <= data.length - 1; i++) {
                     if (data[i].cBlackList == 0) {
-                        var Black = `<button class="btn btn-green" onclick="blacklist(${data[i].cMemberId})">加入黑名單</button>`
+                        var Blackliang = `<button class="btn btn-green" onclick="blacklist(${data[i].cMemberId})">加入黑名單</button>`
                     }
                     else {
-                        Black = `<button class="btn btn-secondary" onclick="blacklist(${data[i].cMemberId})">解鎖黑名單</button>`
+                        Blackliang = `<button class="btn btn-secondary" onclick="blacklist(${data[i].cMemberId})">解鎖黑名單</button>`
                     }
 
                     if (data[i].cFreezeCount == 0) {
-                        var freezecount = `<button class="btn btn-green" onclick="freeze(${data[i].cMemberId})">凍結</button>`
+                        var freezecountliang = `<button class="btn btn-green" onclick="freeze(${data[i].cMemberId})">凍結</button>`
                     }
                     else {
-                        freezecount = `<button class="btn btn-secondary" onclick="freeze(${data[i].cMemberId})">解凍</button>`
+                        freezecountliang = `<button class="btn btn-secondary" onclick="freeze(${data[i].cMemberId})">解凍</button>`
                     }
 
-                    txttable +=
+                    txttableAdmMemberList +=
                         `<tr style="text-align:center">
                             <td style="vertical-align: middle;">
                                 <label class="ui-checkbox">
@@ -145,8 +145,8 @@
                             <td style="vertical-align: middle;">${data[i].cPhone}</td>
                             <td style="vertical-align: middle;">${data[i].cEmail}</td>
                             <td style="vertical-align: middle;">${data[i].cDeposit}</td>
-                            <td style="vertical-align: middle" id="c黑名單${data[i].cMemberId}">${Black}</td>
-                            <td id="c凍結${data[i].cMemberId}">${freezecount}</td>
+                            <td style="vertical-align: middle" id="c黑名單${data[i].cMemberId}">${Blackliang}</td>
+                            <td id="c凍結${data[i].cMemberId}">${freezecountliang}</td>
                             
                             <td style="vertical-align: middle">                            
                             <a class="btn btn-outline-success" href="/MemberManagement/Edit?id=${data[i].cMemberId}"><i class="fa fa-pencil font-18">修改</i></a>
@@ -155,11 +155,11 @@
                                     </td>
                                 </tr >`
                 }
-                txttable += ` </tbody >
+                txttableAdmMemberList += ` </tbody >
                         </table >
                     </div >`
 
-                $("#member").html(txttable);
+                $("#member").html(txttableAdmMemberList);
                 $('#myTable').DataTable({
                     language: {
                         "emptyTable": "無資料...",
