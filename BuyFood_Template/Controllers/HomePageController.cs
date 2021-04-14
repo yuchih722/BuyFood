@@ -30,13 +30,21 @@ namespace BuyFood_Template.Controllers
 
             List<TProduct> list = new List<TProduct>();
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var result = db.TProducts.AsEnumerable().Select(n => n);
             double getMin = Convert.ToDouble(Min);
             double getMax = Convert.ToDouble(Max);
             int getBreakFast = 0;
             int getLunch = 0;
             int getDinner = 0;
             int CategoryID = db.TProductCategories.Where(n => n.CCategoryName == Category).Select(n => n.CProductCategoryId).FirstOrDefault();
+
+            var rowdata = db.TProducts.Select(n => new cTProduct
+            {
+                TProduct = n,
+                count = n.TOrderDetails.Count(x => x.CFeedBackStatus == 1 && x.CScores != null),
+                sum = n.TOrderDetails.Where(x => x.CFeedBackStatus == 1 && x.CScores != null).Sum(m => m.CScores)
+            });
+
+            var result = rowdata.AsEnumerable().Select(n => n);
 
             if (BreakFast == "早餐")
                 getBreakFast = 1;
@@ -60,12 +68,12 @@ namespace BuyFood_Template.Controllers
             {
                 if (Category == "全部")
                 {
-                    result=db.TProducts.AsEnumerable().Where(m=> (double)m.CPrice >= getMin && (double)m.CPrice <= getMax );
+                    result=rowdata.AsEnumerable().Where(m=> (double)m.TProduct.CPrice >= getMin && (double)m.TProduct.CPrice <= getMax );
                 }
                 else
                 {
-                    result = db.TProducts.AsEnumerable().Where(m => m.CCategoryId == CategoryID &&
-                       (double)m.CPrice >= getMin && (double)m.CPrice <= getMax);
+                    result = rowdata.AsEnumerable().Where(m => m.TProduct.CCategoryId == CategoryID &&
+                       (double)m.TProduct.CPrice >= getMin && (double)m.TProduct.CPrice <= getMax);
 
                 }
             }
@@ -75,34 +83,40 @@ namespace BuyFood_Template.Controllers
 
                 if (Category=="全部")
                 {
-                    result=db.TProducts.AsEnumerable().Where(m=>m.CProductName.Any(n=>m.CProductName.Contains(key)) &&
-                          (double)m.CPrice >= getMin && (double)m.CPrice <= getMax);
+                    result=rowdata.AsEnumerable().Where(m=>m.TProduct.CProductName.Any(n=>m.TProduct.CProductName.Contains(key)) &&
+                          (double)m.TProduct.CPrice >= getMin && (double)m.TProduct.CPrice <= getMax);
                 }
 
                 else
                 {
 
-                    result = db.TProducts.AsEnumerable().Where(m => m.CProductName.Any(n => m.CProductName.Contains(key)) &&
-                      m.CCategoryId == CategoryID && (double)m.CPrice >= getMin && (double)m.CPrice <= getMax);
+                    result = rowdata.AsEnumerable().Where(m => m.TProduct.CProductName.Any(n => m.TProduct.CProductName.Contains(key)) &&
+                      m.TProduct.CCategoryId == CategoryID && (double)m.TProduct.CPrice >= getMin && (double)m.TProduct.CPrice <= getMax);
 
                 }
             }
             //時段判斷
             var product = db.TProducts.AsQueryable();
-            var predicate = PredicateBuilder.False<TProduct>();
+            var predicate = PredicateBuilder.False<cTProduct>();
             if (getBreakFast == 1)
-                predicate = predicate.Or(n => n.CIsBreakFast == getBreakFast);
+                predicate = predicate.Or(n => n.TProduct.CIsBreakFast == getBreakFast);
             if (getLunch == 1)
-                predicate = predicate.Or(n => n.CIsLunch == getLunch);
+                predicate = predicate.Or(n => n.TProduct.CIsLunch == getLunch);
             if (getDinner == 1)
-                predicate = predicate.Or(n => n.CIsDinner == getDinner);
+                predicate = predicate.Or(n => n.TProduct.CIsDinner == getDinner);
 
-            var resultOfTime = result.Where(c => predicate.Invoke(c)).Select(n=>new {
-                products = n,
-                coun = n.TOrderDetails.Count(x => x.CFeedBackStatus == 1 && x.CScores != null),
-                sum = n.TOrderDetails.Where(x => x.CFeedBackStatus == 1 && x.CScores != null).Sum(m => m.CScores)
-            });
+            var resultOfTime = result.Where(c => predicate.Invoke(c));
 
+            //var aaa = db.TOrders.Where(n => n.CMemberId == 1).OrderByDescending(n => n.COrderDate).Take(6).GroupBy(n => n.TOrderDetails.);
+            //var bbb = db.TOrderDetails.OrderByDescending(n => n.COrder.COrderDate).Select(n=>new { 
+            //    n.CProductId,
+            //    product = n.CProduct
+            //}).Take(100).GroupBy(n => n.CProductId).Select(n => new
+            //{
+            //    n.Key,
+            //    n,
+            //    count = n.Count()
+            //}).OrderByDescending(n => n.count).Take(6);
 
             //return Json(result.ToList());
             //return Json(result.Where(n=>n.CIsBreakFast==getBreakFast&&n.CIsLunch==getLunch&&n.CIsDinner==getDinner));
@@ -265,7 +279,6 @@ namespace BuyFood_Template.Controllers
         public JsonResult get_categorysname() //抓取所有商品顯示在首頁
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-
             var table = db.TProductCategories.Select(n => new {n.CProductCategoryId,n.CCategoryName,
                 tProducts = n.TProducts.Select(m => new 
                 {

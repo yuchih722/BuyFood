@@ -93,7 +93,7 @@ function pagesForSearch(page) {
         },
         success: function (data) {
             pdtItem = data;
-
+            console.log(data);
 
              
             var itemPerPage = 8;
