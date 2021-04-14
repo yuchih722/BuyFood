@@ -47,6 +47,10 @@ namespace BuyFood_Template.Controllers
         }
         public void saveContext(string MemberName,string Content,string MessageTime,string foto,int userID,int difChatRoomID)
         {
+            if (userID != 16 || difChatRoomID == 16)
+            {
+                return;
+            }
             DateTime theSaveTime = DateTime.Now;
 
 

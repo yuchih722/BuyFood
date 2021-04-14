@@ -12,6 +12,10 @@ namespace BuyFood_Template.Controllers
     {
         public void getMessage(string MemberName,string Content,string MessageTime,string foto,int userID)
         {
+            if (userID == 16)
+            {
+                return;
+            }
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
             DateTime theSaveTime = DateTime.Now;
 
