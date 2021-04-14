@@ -273,7 +273,7 @@
         success: function (chatRooms) {
             console.log(chatRooms);
             for (let i = 0; i < chatRooms.length; i++) {
-                adrTxtForAdmChatRoom += `<a onclick="switchToThisChannel(${chatRooms[i].cChannelID})">
+                adrTxtForAdmChatRoom += `<a id="g" onclick="switchToThisChannel(${chatRooms[i].cChannelID})">
                                             <div class="chat_list" id="adrActiveChat${chatRooms[i].cChannelID}">
                                                 <div class="chat_people">
                                                     <div class="chat_img"> <img src="${chatRooms[i].cFoto}"> </div>
@@ -401,7 +401,7 @@
         });
 
         var PictureForMessage = adrfoto;
-        
+
 
         if (msg == '') { return; }
         //如果是自己，放右邊
@@ -515,5 +515,12 @@
     });
     // 群組訊息Button事件
 
-    
+
+</script>
+
+<script>
+    if (@TempData["get_chat_id"] != null) {
+
+}
+
 </script>

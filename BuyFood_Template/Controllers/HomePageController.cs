@@ -331,18 +331,21 @@ namespace BuyFood_Template.Controllers
         public JsonResult getSideBar_CateNums()
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-
-            var CategoryGroupBy = db.TProductCategories.Select(n => new
+            try
             {
-                n.CProductCategoryId,
-                n.CCategoryName,
-                n.TProducts
-            });
+                var CategoryGroupBy = db.TProductCategories.Select(n => new
+                {
+                    n.CProductCategoryId,
+                    n.CCategoryName,
+                    n.TProducts
+                });
 
-
-            return Json(CategoryGroupBy.ToList());
-
-        }
+            
+            
+                return Json(CategoryGroupBy.ToList());
+            }
+            catch { return Json(""); }
+            }
         public JsonResult DidLogingetBottomList(int MemberID)
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
