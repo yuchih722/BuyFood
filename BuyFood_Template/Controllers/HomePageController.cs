@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModel;
+using BuyFood_Template.ViewModels;
 using LinqKit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -327,6 +328,71 @@ namespace BuyFood_Template.Controllers
             var table = new { lastProducts = lastProducts, topProducts = topProducts, ReviewProducts = ReviewProducts };
             return Json(table);
         }
-       
+        public JsonResult getSideBar_CateNums()
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+
+            var CategoryGroupBy = db.TProductCategories.Select(n => new
+            {
+                n.CProductCategoryId,
+                n.CCategoryName,
+                n.TProducts
+            });
+
+
+            return Json(CategoryGroupBy.ToList());
+
+        }
+        public JsonResult DidLogingetBottomList(int MemberID)
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            #region 最新商品
+
+            var lastProducts = db.TProducts.OrderByDescending(n => n.CProductId).Select(n => n).Take(6);
+
+            #endregion
+
+            #region //好評商品
+
+            var gettopProducts = (from tp in db.TOrderDetails
+                                  group tp by tp.CProductId into g
+                                  select new
+                                  {
+                                      g.Key,
+                                      AvgScore = g.Sum(n => n.CScores) / g.Count()
+                                  }).OrderByDescending(n => n.AvgScore).Select(n => n.Key).ToList().Take(6);
+
+            List<TProduct> topProducts = new List<TProduct>();
+            foreach (var p in gettopProducts)
+            {
+                topProducts.Add(db.TProducts.Where(n => n.CProductId == p).Select(n => n).FirstOrDefault());
+            }
+
+            #endregion
+
+            #region //熱評商品
+
+            var review = (from od in db.TOrderDetails
+                          where od.CReview != null
+                          group od by od.CProductId into g
+                          select new
+                          {
+                              g.Key,
+                              ReviewCounts = g.Count()
+                          }).OrderByDescending(n => n.ReviewCounts).Select(n => n.Key).ToList().Take(6);
+
+            List<TProduct> ReviewProducts = new List<TProduct>();
+            foreach (var p in review)
+            {
+                ReviewProducts.Add(db.TProducts.Where(n => n.CProductId == p).Select(n => n).FirstOrDefault());
+            }
+
+            #endregion
+
+
+            var table = new { lastProducts = lastProducts, topProducts = topProducts, ReviewProducts = ReviewProducts };
+            return Json(table);
+        }
+
     }
 }
