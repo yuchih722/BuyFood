@@ -88,7 +88,7 @@
                         <div class="list-group-item" style="text-align:left;">
                             <div class="col inline" style="width:30%; text-align:left;">餘額 :</div>
                             <div class="col inline" style="width:60%; text-align:center">@Model.CDeposit</div>
-                            <div class="col inline btn btn-success cwc_c_btn_showRight" style="width:auto;" onclick="cwc_showWallet(@Model.CMemberId)">儲值</div>
+                            <div id="cwc_div_deposit" class="col inline btn btn-success cwc_c_btn_showRight" style="width:auto;" onclick="cwc_showWallet(@Model.CMemberId)">儲值</div>
                         </div>
                         <div class="list-group-item" style="text-align:left;">
                             <div class="col inline" style="width:30%; text-align:left">信箱 :</div>
@@ -124,7 +124,8 @@
                             <button id="cwc_i_btn_pscCancel" class="btn btn-success btn-sm" style="margin:10px" onclick="cwc_savePassword(@Model.CMemberId,0)">取消</button>
                         </div>
                         <button id="cwc_logout" class="list-group-item list-group-item-action" style="display:inline;" onclick="cwc_logout()">登出</button>
-                        <button id="cwc_logout" class="list-group-item list-group-item-action cwc_c_btn_showRight" style="display:inline;" onclick="test()">測試</button>
+                        <button class="list-group-item list-group-item-action cwc_c_btn_showRight" style="display:inline;" onclick="test()">測試</button>
+                        <button class="list-group-item list-group-item-action cwc_c_btn_showRight" style="display:inline;" onclick="test2()">測試2</button>
 
                     </div>
                 </div>
@@ -169,61 +170,64 @@
     <script type="text/javascript" src="~/cwc/cwc_Deposit.js"></script>
     <script type="text/javascript" src="~/cwc/cwc_Profile.js"></script>
     <script type="text/javascript" src="~/cwc/CheckPassword.js"></script>
-    <script>
-        $( function() {
-    var dialog, form,
-        photo = $("#photo"),
-      memberID=$("#memberID")
-      allFields = $( [] ).add( photo ).add(memberID),
-      tips = $( ".validateTips" );
+    <script type="text/javascript" src="~/cwc/cwc_addComboInCart.js"></script>
 
-    function addUser() {
-        console.log(allFields);
-        const formdata = new FormData();
-        formdata.append('photo', $(`#photo`)[0].files[0]);
-        fetch(
-            '/Member/UploadOneFile',
-            {
-                method: 'POST',
-                body: formdata
-            })
-            .then(function (response) {
-                return response.json();
-            }).then(function (data) {
-                console.log(data);
-                $("#cwc_img_ProfilePhoto").attr("src", `${data.src}`)
-                $("#cwc_loginPhoto").attr("src", `${data.src}`)
+    <script>
+        var cwc_ComboDetails = null;
+        $(function () {
+            var dialog, form,
+                photo = $("#photo"),
+                memberID = $("#memberID")
+            allFields = $([]).add(photo).add(memberID),
+                tips = $(".validateTips");
+
+            function addUser() {
+                console.log(allFields);
+                const formdata = new FormData();
+                formdata.append('photo', $(`#photo`)[0].files[0]);
+                fetch(
+                    '/Member/UploadOneFile',
+                    {
+                        method: 'POST',
+                        body: formdata
+                    })
+                    .then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+                        console.log(data);
+                        $("#cwc_img_ProfilePhoto").attr("src", `${data.src}`)
+                        $("#cwc_loginPhoto").attr("src", `${data.src}`)
+                    });
+
+                dialog.dialog("close");
+            }
+
+            dialog = $("#dialog-form").dialog({
+                autoOpen: false,
+                height: 400,
+                width: 350,
+                modal: true,
+                buttons: {
+                    "OK": addUser,
+                    Cancel: function () {
+                        dialog.dialog("close");
+                    }
+                },
+                close: function () {
+                    form[0].reset();
+                    allFields.removeClass("ui-state-error");
+                }
             });
 
-        dialog.dialog( "close" );
-    }
+            form = dialog.find("form").on("submit", function (event) {
+                event.preventDefault();
+                addUser();
+            });
 
-    dialog = $( "#dialog-form" ).dialog({
-      autoOpen: false,
-      height: 400,
-      width: 350,
-      modal: true,
-      buttons: {
-        "OK": addUser,
-        Cancel: function() {
-          dialog.dialog( "close" );
-        }
-      },
-      close: function() {
-        form[ 0 ].reset();
-        allFields.removeClass( "ui-state-error" );
-      }
-    });
-
-    form = dialog.find( "form" ).on( "submit", function( event ) {
-      event.preventDefault();
-      addUser();
-    });
-
-     $( "#cwc_button_ReviseProfilePhoto" ).button().on( "click", function() {
-      dialog.dialog( "open" );
-    });
-  } );
+            $("#cwc_button_ReviseProfilePhoto").button().on("click", function () {
+                dialog.dialog("open");
+            });
+        });
 
     </script>
 
@@ -231,7 +235,10 @@
 
     <script>
         function test() {
-            /*window.location.href ="/api/SendGrid/SendNotification"*/
+                window.location.href ="/api/SendGrid/SendNotification"
+        }
+        function test2() {
+                window.location.href ="/Member/test"
         }
 
         function updateData(memberID) {
@@ -277,15 +284,15 @@
                     $("#head_cwc").html("");
                     var content = `<div>` + data[0] + `</div>` +
                         `<div>
-            <span>邀請連結 :</span><span id="cwc_span_urlRe">${data[1]}</span>
-            <div id="cwc_btn_copyurlRe" class="btn btn-outline-dark btn-sm" onclick="copy('cwc_span_urlRe')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
-                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
-                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
-                </svg>
+                <span>邀請連結 :</span><span id="cwc_span_urlRe">${data[1]}</span>
+                <div id="cwc_btn_copyurlRe" class="btn btn-outline-dark btn-sm" onclick="copy('cwc_span_urlRe')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                    </svg>
+                </div>
             </div>
-        </div>
-        <img src="http://www.funcode-tech.com/Encoder_Service/img.aspx?custid=1&username=public&codetype=QR&EClevel=0&data=${data[1]}" width="300" />`
+            <img src="http://www.funcode-tech.com/Encoder_Service/img.aspx?custid=1&username=public&codetype=QR&EClevel=0&data=${data[1]}" width="300" />`
                     $("#content_cwc").html(content);
                 }
             })
@@ -302,6 +309,12 @@
             alert(`已成功複製 : ${$(`#${tid}`).html()}`);
 
         }
+
+        //外部連結確認
+        if (@Model.goWhere == "1")
+            $("#cwc_div_deposit").click();
+        if (@Model.goWhere== "2")
+            $("#cwc_MyCombo").click();
 
     </script>
 

@@ -141,8 +141,9 @@
                                 @*<a asp-controller="HomePage" asp-action="登入" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>*@
                             </div>
                             <div class="header__top__right__auth" id="divLogOut"></div>
-                            <div class="header__top__right__auth" style="margin-left:2px;">
-                                <a asp-controller="Home" asp-action="Index"><i class="fa fa-user"></i> 後台管理</a>
+                            <div class="header__top__right__auth" style="margin-left:2px;" id="admOnly">
+                                @*<a asp-controller="Home" asp-action="Index"><i class="fa fa-user"></i> 後台管理</a>*@
+                                @*<a href="/Home/Index"><i class="fa fa-user"></i> 後台管理</a>*@
                             </div>
                         </div>
                     </div>
@@ -173,7 +174,7 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a asp-controller="ShoppingCart" asp-action="CurrentCartItem"><i class="fa fa-shopping-bag"></i> @*<span>3</span>*@</a></li>
+                            <li><a asp-controller="ShoppingCart" asp-action="CurrentCartItem"><i class="fa fa-shopping-bag"></i> <span id="wu_cartItem_count">0</span></a></li>
                         </ul>
                         <div class="header__cart__price">item: <span id="itemMoney">$0</span></div>
                     </div>
@@ -599,8 +600,7 @@
                 $('#sidebar_secondary').removeClass('popup-box-on');
                 flagForChatRoomSwitch = 1;
             });
-
-
+            
 
         })
         </script>
@@ -621,6 +621,7 @@
                 for (let i = 0; i < pdtcart_obj.length; i++) {
                     price += (pdtcart_obj[i].cPrice * pdtcart_obj[i].QuantityInCart);
                 }
+                $("#wu_cartItem_count").text(pdtcart_obj.length);
                 $("#ItemMoneyTop").html('$' + price);
                 $("#itemMoney").html('$' + price);
                 /*  console.log(price);*/
@@ -651,6 +652,14 @@
                     $("#divLogin").html(LogInTxt);
                     $("#divLogOut").html(LogOutTxt);
                 }
+                else if (data == "isAdm") {
+                    LogInTxt = `<a href="/Member/MemberCenter" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
+                    LogOutTxt = `<input type="button" class="btn btn-light"  onclick="登出();" id="sendButton" style="padding:0;height:100%" value="登出" />`
+                    AdmTxt = `<a href="/Home/Index"><i class="fa fa-user"></i> 後台管理</a>`
+                    $("#divLogin").html(LogInTxt);
+                    $("#divLogOut").html(LogOutTxt);
+                    $("#admOnly").html(AdmTxt);
+                }
                 else {
                     LogInTxt = `<a href="/HomePage/登入" id="getLoginName "><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
 
@@ -669,7 +678,7 @@
                     type: "POST",
                     success: function (data) {
                         window.alert(data);
-                        window.location.assign("HomePage/Home");
+                        window.location.assign("Home");
                     }
                 })
             }

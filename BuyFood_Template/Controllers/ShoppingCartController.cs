@@ -39,6 +39,7 @@ namespace BuyFood_Template.Controllers
             }
             return Json(quantityList);
         }
+        //檢查優惠券是否可使用
         [HttpPost]
         public JsonResult CheckCouponCode([FromBody] string Code)
         {
@@ -60,6 +61,23 @@ namespace BuyFood_Template.Controllers
             {
                 return Json(result);
             }
+        }
+        //搜尋該會員可以使用的優惠券
+        [HttpPost]
+        public JsonResult SearchCouponCanUse([FromBody] int MemberID)
+        {
+            var result = from i in new 擺腹BuyFoodContext().TCupons
+                         where i.CMenberId == MemberID && i.CBeUsed == 0
+                         select new
+                         {
+                             CouponName = i.CCuponCategory.CategoryName,
+                             CouponCode = i.CDiscountCode
+                         };
+            if (result == null)
+            {
+                return Json("0");
+            }
+            return Json(result);
         }
     }
 }
