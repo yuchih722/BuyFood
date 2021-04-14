@@ -45,63 +45,15 @@
                 <!-- START TOP-RIGHT TOOLBAR-->
                 <ul class="nav navbar-toolbar">
                     <li class="dropdown dropdown-inbox">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="goto_click_num_chat_yu">
                             <i class="fa fa-envelope-o"></i>
-                            <span class="badge badge-primary envelope-badge">9</span> @*抓取幾個最新訊息*@
+                            <span class="badge badge-primary envelope-badge" name="num_New_notice"> </span> @*抓取幾個最新訊息*@
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" id="chat_review">
                             <li class="dropdown-menu-header">
                                 <div>
-                                    <span><strong>9 NEW</strong> 訊息</span>
-                                    <a class="pull-right" href="mailbox.html">顯示全部</a>
-                                </div>
-                            </li>
-                            <li class="list-group list-group-divider scroller" data-height="240px" data-color="#71808f">
-                                <div>
-                                    <a class="list-group-item">
-                                        <div class="media">
-                                            <div class="media-img">
-                                                <img src="~/assets/img/users/u1.jpg" />
-                                            </div>
-                                            <div class="media-body">
-                                                <div class="font-strong"> </div>小毛<small class="text-muted float-right">剛剛</small>
-                                                <div class="font-13">Your proposal interested me.</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a class="list-group-item">
-                                        <div class="media">
-                                            <div class="media-img">
-                                                <img src="~/assets/img/users/u2.jpg" />
-                                            </div>
-                                            <div class="media-body">
-                                                <div class="font-strong"></div>王小明<small class="text-muted float-right">18 分鐘前</small>
-                                                <div class="font-13">Lorem Ipsum is simply.</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a class="list-group-item">
-                                        <div class="media">
-                                            <div class="media-img">
-                                                <img src="~/assets/img/users/u3.jpg" />
-                                            </div>
-                                            <div class="media-body">
-                                                <div class="font-strong"></div>李曉明<small class="text-muted float-right">18 分鐘前</small>
-                                                <div class="font-13">Lorem Ipsum is simply.</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a class="list-group-item">
-                                        <div class="media">
-                                            <div class="media-img">
-                                                <img src="~/assets/img/users/u4.jpg" />
-                                            </div>
-                                            <div class="media-body">
-                                                <div class="font-strong"></div>李大仁<small class="text-muted float-right">3 小時前</small>
-                                                <div class="font-13">Lorem Ipsum is simply.</div>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    <span><strong name="num_New_notice">  </strong>筆 新訊息</span>
+                                    <a class="pull-right" href="/admChat/admChatView">顯示全部</a>
                                 </div>
                             </li>
                         </ul>
@@ -192,7 +144,7 @@
                 </div>
                 <ul class="side-menu metismenu">
                     <li>
-                        <a class="active" asp-controller="AdmHome" asp-action="AdmHome">
+                        <a class="active" asp-controller="cCustomerAnalysis" asp-action="List">
                             <i class="sidebar-item-icon fa fa-th-large"></i>
                             <span class="nav-label">後台首頁</span>
                         </a>
@@ -538,3 +490,4 @@
 
 <script src="~/YUYUYU/JS/時間日期顯示.js"></script>
 <script src="~/YUYUYU/JS/登出呼叫登出.js"></script>
+<script src="~/YUYUYU/JS/後台小鈴鐺聊天.js"></script>
