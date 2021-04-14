@@ -393,9 +393,6 @@
         newMember.CName = $("#name").val();
         newMember.code = $("#code").val();
 
-        console.log($("#age"));
-        console.log($('input[type=file]')[0].files[0]);
-
         $.ajax({
             url: "/Customer/CreateNewMember",
             type: "POST",
@@ -409,6 +406,9 @@
                 if (data == "EmailRepeat") {
                     alert("此Email已被註冊");
                 }
+                else if (data == "PhoneRepeat") {
+                    alert("此手機已被註冊");
+                }
                 else if (data == true) {
 
                     doImgUpload();
@@ -417,7 +417,7 @@
                     window.location.assign("/HomePage/登入");
                 }
                 else {
-                    alert("不知道哪裡錯ㄌ");
+                    alert("不知道哪裡錯ㄌ 請聯絡客服人員");
                 }
             }
         });

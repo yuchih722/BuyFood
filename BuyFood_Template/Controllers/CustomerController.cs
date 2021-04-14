@@ -41,9 +41,16 @@ namespace BuyFood_Template.Controllers
             var check信箱 = from n in db.TMembers
                           select n.CEmail;
 
+            var check手機 = from n in db.TMembers
+                          select n.CPhone;
+
             if (check信箱.Any(n => n == newMember.CEmail) == true)
             {
                 return Json("EmailRepeat");
+            }
+            else if (check手機.Any(n => n == newMember.CPhone) == true)
+            {
+                return Json("PhoneRepeat");
             }
             else
             {
