@@ -4,7 +4,7 @@
         type: "get",
         success: function (data) {
 
-            console.log(data);
+            //console.log(data);
 
             var textForReviewsP = `<div class="col-lg-4 col-md-6">
                                                         <div class="latest-product__text">
