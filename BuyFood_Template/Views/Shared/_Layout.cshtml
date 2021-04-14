@@ -173,7 +173,7 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a asp-controller="ShoppingCart" asp-action="CurrentCartItem"><i class="fa fa-shopping-bag"></i> @*<span>3</span>*@</a></li>
+                            <li><a asp-controller="ShoppingCart" asp-action="CurrentCartItem"><i class="fa fa-shopping-bag"></i> <span id="wu_cartItem_count">0</span></a></li>
                         </ul>
                         <div class="header__cart__price">item: <span id="itemMoney">$0</span></div>
                     </div>
@@ -600,7 +600,8 @@
                 flagForChatRoomSwitch = 1;
             });
 
-
+                if (localStorage.getItem())
+            
 
         })
         </script>
@@ -621,6 +622,7 @@
                 for (let i = 0; i < pdtcart_obj.length; i++) {
                     price += (pdtcart_obj[i].cPrice * pdtcart_obj[i].QuantityInCart);
                 }
+                $("#wu_cartItem_count").text(pdtcart_obj.length);
                 $("#ItemMoneyTop").html('$' + price);
                 $("#itemMoney").html('$' + price);
                 /*  console.log(price);*/
