@@ -170,8 +170,10 @@
     <script type="text/javascript" src="~/cwc/cwc_Deposit.js"></script>
     <script type="text/javascript" src="~/cwc/cwc_Profile.js"></script>
     <script type="text/javascript" src="~/cwc/CheckPassword.js"></script>
+    <script type="text/javascript" src="~/cwc/cwc_addComboInCart.js"></script>
 
     <script>
+        var cwc_ComboDetails = null;
         $(function () {
             var dialog, form,
                 photo = $("#photo"),
@@ -307,26 +309,13 @@
             alert(`已成功複製 : ${$(`#${tid}`).html()}`);
 
         }
-        @*switch (@Model.goWhere) {
-            case "1":
-                console.log(1);
-                $("#cwc_div_deposit").click();
-                break;
-            case "2":
-                console.log(2);
-                $("#cwc_MyCombo").click();
-                break;
-            default:
-                console.log(3);
-                break;
-        }*@
-        console.log(@Model.goWhere);
-  
 
+        //外部連結確認
         if (@Model.goWhere == "1")
             $("#cwc_div_deposit").click();
         if (@Model.goWhere== "2")
             $("#cwc_MyCombo").click();
+
     </script>
 
 
@@ -334,6 +323,5 @@
 
 </html>
 <script>
-    console.log(0);
     updateData(@Model.CMemberId);
 </script>

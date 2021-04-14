@@ -257,7 +257,12 @@ namespace BuyFood_Template.Controllers
         public JsonResult get_categorysname() //抓取所有商品顯示在首頁
         {
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var table = db.TProductCategories.Select(n => new {n.CProductCategoryId,n.CCategoryName, n.TProducts});
+            var table = db.TProductCategories.Select(n => new {
+                n.CProductCategoryId,
+                n.CCategoryName, 
+                n.TProducts
+            }
+         );
 
             return Json(table);
         }
