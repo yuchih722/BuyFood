@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModel;
@@ -123,6 +124,19 @@ namespace BuyFood_Template.Controllers
                     db.TCupons.Add(新增新會員折價卷);
                     db.SaveChanges();
                 }
+
+                //密碼雜湊
+                TMember add密碼雜湊 = (from n in db.TMembers
+                                  where n.CMemberId == newMember.CMemberID
+                                  select n).FirstOrDefault();
+
+                SHA1 sha1 = SHA1.Create();
+
+                string 雜湊密碼 = shareFun.GetHash(sha1, add密碼雜湊.CPassword);
+
+                add密碼雜湊.CPassword = 雜湊密碼;
+                db.SaveChanges();
+
 
                 return Json(true);
             }
