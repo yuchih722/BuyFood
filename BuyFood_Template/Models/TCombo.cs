@@ -16,6 +16,7 @@ namespace BuyFood_Template.Models
         public int CMemberId { get; set; }
         public string CComboName { get; set; }
 
+        public virtual TMember CMember { get; set; }
         public virtual ICollection<TComboDetail> TComboDetails { get; set; }
     }
 }

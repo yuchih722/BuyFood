@@ -191,7 +191,7 @@ $("#search_address").click(
                 input_location = response.destinationAddresses[0];
                 let duration_time = Math.round((response.rows[0].elements[0].duration.value) / 60);
                 sum_total_time = duration_time + pdtcart_obj.finishTime    //將路程與製作時間相加
-                let text = "預估時間為" + sum_total_time + "鐘";
+                let text = "路程時間:" + duration_time + "鐘、製作時間:" + pdtcart_obj.finishTime + "鐘。 總計:" + sum_total_time +"鐘";
                 let text_address = "目前輸入的地點為:" + input_location;
                 $("#estimate_time").html(text);                //將預估時間顯示在畫面上
                 $("#confirm_order").prop('disabled', false);   //啟用'確認購買'的按鈕
