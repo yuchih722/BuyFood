@@ -34,7 +34,7 @@
                                         <td class="hiddenRow" colspan="5">
                                             <div class="accordian-body collapse" data-parent="#mycombo" id="cwc_comboDetail_div_${data[i].cComboId}">
                                                 <table class="table table-success table-sm" style="text-align:center">
-                                                    <thead><tr><td>餐點<td>數量<td>單價
+                                                    <thead><tr><td>餐點<td>數量<td>單價<td>點餐
                                                     <tbody>`;
                 var comboDetail = new Array();
                 for (var q = 0; q < data[i].comboDetails.length; q++) {
@@ -65,7 +65,11 @@
 
                 for (var p = 0; p < comboDetail.length; p++) {
                     var issue = comboDetail[p].cProduct.cIsOnSaleId == 3 ? `(停止販售)` : ``
-                    txt += `<tr><td>${comboDetail[p].cProduct.cProductName}${issue}<td>${comboDetail[p].Count}<td>${comboDetail[p].cProduct.cPrice}`;
+                    txt += `<tr><td>${comboDetail[p].cProduct.cProductName}${issue}
+                                        <td>${comboDetail[p].Count}
+                                        <td>${comboDetail[p].cProduct.cPrice}
+                                        <td><div class="btn btn-success btn-sm" onclick="cwc_addProducttoCart(cwc_ComboDetails[${i}].comboDetails[${p}].cProduct)">加入購物車</div>
+                                        `;
                 }
                 txt += `</tbody></thead></table></div>`;
             }
@@ -76,8 +80,13 @@
         }
     });
 }
+function cwc_addProducttoCart(product) {
+    addCart(product);
+    window.alert("已加入購物車");
+
+}
+
 function cwc_addCombotoCart(comboDetails) {
-    console.log(comboDetails);
     for (var i = 0; i < comboDetails.length; i++) {
         addCart(comboDetails[i].cProduct);
     }
