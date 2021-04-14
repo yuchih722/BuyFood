@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModel;
+using BuyFood_Template.ViewModels;
 using LinqKit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -311,6 +312,21 @@ namespace BuyFood_Template.Controllers
 
             var table = new { lastProducts = lastProducts, topProducts = topProducts, ReviewProducts = ReviewProducts };
             return Json(table);
+        }
+        public JsonResult getSideBar_CateNums()
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+
+            var CategoryGroupBy = db.TProductCategories.Select(n => new
+            {
+                n.CProductCategoryId,
+                n.CCategoryName,
+                n.TProducts
+            });
+
+
+            return Json(CategoryGroupBy.ToList());
+
         }
        
     }
