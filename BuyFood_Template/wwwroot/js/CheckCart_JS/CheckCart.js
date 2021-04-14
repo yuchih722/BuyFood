@@ -44,7 +44,7 @@ $("#confirm_order").click(function () {
             success: function (data) {
                 window.alert(data);
                 if (data == "已收到訂單，請稍後") {
-                    window.location.assign("/ShoppingCart/CurrentCartItem");
+                    window.location.assign("/HomePage/Home");
                     localStorage.removeItem(users_cart_NoCheck);
                     localStorage.removeItem("cart_price");
                 }
