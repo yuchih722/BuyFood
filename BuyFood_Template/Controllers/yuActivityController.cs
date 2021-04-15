@@ -80,7 +80,7 @@ namespace BuyFood_Template.Controllers
             {
                 p.img.CopyTo(photo);
             }
-
+            
             p.CPicture = @"../imgs/" + pohotoname;
             p.CTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
@@ -187,6 +187,37 @@ namespace BuyFood_Template.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction("ActivityList");
+        }
+        public IActionResult goto_where_page_todo(int todopage)
+        {
+            switch (todopage)
+            {
+                case 1: //儲值
+                    {
+                        TempData[CDictionary.REDIRECT_FROM_WHERE] = 1;
+                        return RedirectToAction("MemberCenter", "Member");
+                    }
+                case 2:  //套餐
+                    {
+                        TempData[CDictionary.REDIRECT_FROM_WHERE] = 2;
+                        return RedirectToAction("MemberCenter", "Member");
+                    }
+                case 3:  //點餐
+                    {
+                       TempData[CDictionary.REDIRECT_FROM_WHERE] = 4;
+                        return RedirectToAction("Home", "HomePage");
+                    }
+                case 4:  //註冊
+                    {
+                         return RedirectToAction("Create", "Customer");
+                    }
+                case 5:  //活動
+                    {
+                        return RedirectToAction("ShowActivity", "Activity");
+                    }
+            }
+
+            return RedirectToAction("Home", "HomePage");
         }
     }
 }

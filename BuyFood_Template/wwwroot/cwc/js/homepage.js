@@ -1,5 +1,6 @@
 ﻿$("#cwc_home_btn_memberCenter").attr("onclick","checkLogin(0,'/Member/MemberCenter')");
 $("#cwc_home_btn_memberCombo").attr("onclick","checkLogin(2,'/Member/MemberCenter')");
+$("#adr_Order_SearchOrder").attr("onclick", "checkLogin(0,'/Order/SearchOrder')");
 
 function checkLogin(goto,location) {
     $.ajax({
