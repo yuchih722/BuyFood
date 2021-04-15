@@ -4,8 +4,6 @@ $(function () {
         url: "/HomePage/get_categorysname",
         type: "GET",
         success: function (dataForHomePage) {
-            console.log(dataForHomePage)
-
 
             //首頁商品
             var category_li =

@@ -239,8 +239,10 @@
     @*分頁function*@
     <script src="~/js/adri/HomePage/Pagination.js"></script>
     <script>
-        $(window).ready(function () { 
-        if (@ViewBag.num_todo== "4") {
+        var num_todo_yu=@ViewBag.num_todo
+
+        $(window).ready(function () {
+            if (num_todo_yu== "4") {
             $('html, body').animate({ scrollTop: $('#featureProductsForLocation').offset().top }, 800);
             }
         })

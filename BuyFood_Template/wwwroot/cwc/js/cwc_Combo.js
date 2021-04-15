@@ -1,8 +1,9 @@
 ﻿function cwc_showCombo(memberID) {
     $.ajax({
-        url: "/Combo/getCombo?id=" + memberID,
+        url: "/Combo/getCombo",
         type: "GET",
         success: function (data) {
+            console.log(data);
             cwc_ComboDetails = data;
             if (data.length == 0) {
                 var txt = `<div style="width:100%;height:100%;position:relative;display:flex;align-items:center;text-align:center">
@@ -27,7 +28,7 @@
                                         <td>${data[i].cComboName}${issue}
                                         <td>${data[i].comboDetails.length}
                                         <td>${data[i].comboSum}
-                                        <td><div class="btn btn-success btn-sm" onclick="cwc_addCombotoCart(cwc_ComboDetails[${i}].comboDetails)">加入購物車</div>
+                                        <td><div class="btn btn-success btn-sm" onclick="cwc_addCombotoCart(cwc_ComboDetails[${i}])">加入購物車</div>
                                         <td><div class="btn btn-success btn-sm" onclick="cwc_EditCombo(${data[i].cComboId},'${data[i].cComboName}',${memberID})">修改</div>
                                         <td><div class="btn btn-danger btn-sm" onclick="cwc_deleteCombo(${data[i].cComboId},${memberID})">刪除</div>
                                     <tr id="cwc_comboDetail_tr_${data[i].cComboId}">
@@ -80,18 +81,7 @@
         }
     });
 }
-function cwc_addProducttoCart(product) {
-    addCart(product);
-    window.alert("已加入購物車");
 
-}
-
-function cwc_addCombotoCart(comboDetails) {
-    for (var i = 0; i < comboDetails.length; i++) {
-        addCart(comboDetails[i].cProduct);
-    }
-    window.alert("已加入購物車");
-}
 
 function cwc_EditCombo(comboID, comboName, memberID) {
 

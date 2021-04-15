@@ -153,5 +153,48 @@ namespace BuyFood_Template.Controllers
             return Json(null);
 
         }
+
+        public void saveTheNewOrders(string userName,string OrderMessage)
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            DateTime dn = DateTime.Now;
+            TMessageOrder messageOrder = new TMessageOrder
+            {
+                CMessageOrder = OrderMessage,
+                CUserName = userName,
+                CIsRead = 0,
+                CSaveTime=dn
+            };
+            db.Add(messageOrder);
+            db.SaveChanges();
+
+        }
+        public JsonResult newOrdersSignalR()
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            DateTime dn = DateTime.Now;
+
+            var orderMessage = db.TMessageOrders.Where(n=>n.CIsRead==0).Select(n => new
+            {
+                n.CUserName,
+                n.CMessageOrder,
+                time = dn - n.CSaveTime
+            }).ToList();
+
+            return Json(orderMessage);
+        }
+        public void clearAllnewOrderMessage()
+        {
+            擺腹BuyFoodContext db = (new 擺腹BuyFoodContext());
+
+            var mesR=db.TMessageOrders.Select(n => n).OrderByDescending(n=>n.CSaveTime).Take(20).ToList();
+            foreach(var n in mesR)
+            {
+                n.CIsRead = 1;
+                db.SaveChanges();
+            }
+
+
+        }
     }
 }
