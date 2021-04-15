@@ -424,13 +424,13 @@
                             自己連續發言旗桿 = 1;
                             對方連續發言旗桿 = 0;
 
-                            console.log('自己第一次發言');
+                            //console.log('自己第一次發言');
                         }
                         else {
                             $("ul.messagesListForClient:eq(-1)").append(liRecords);
                             對方連續發言旗桿 = 0;
 
-                            console.log("自己連續發言狀態");
+                            //console.log("自己連續發言狀態");
                         }
                     }//自己發言結束
                     else //對方發言開始
@@ -449,13 +449,13 @@
                             對方連續發言旗桿 = 1;
                             自己連續發言旗桿 = 0;
 
-                            console.log("對方第一次發言");
+                            //console.log("對方第一次發言");
                         }
                         else {
                             $("ul.messagesListForAdmin:eq(-1)").append(liRecords);
                             自己連續發言旗桿 = 0;
 
-                            console.log("對方連續發言狀態");
+                            //console.log("對方連續發言狀態");
                         }
                     }//對方發言結束
 
