@@ -27,5 +27,9 @@ namespace BuyFood_Template.Hubs
         {
             return Clients.Group(groupName).SendAsync("ReceiveGroupMessage", groupName, username, message, adrfoto,adrMemberIDForChat);
         }
+        public Task SendMessageToOrder(string groupName, string username, string message, string adrfoto, int adrMemberIDForChat)
+        {
+            return Clients.Group(groupName).SendAsync("ReceiveOrderMessage", groupName, username, message, adrfoto, adrMemberIDForChat);
+        }
     }
 }

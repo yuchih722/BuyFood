@@ -1,12 +1,12 @@
-﻿function needtoReply(){
+﻿function needtoReply() {
+    console.log("0")
 $.ajax({
     url:"/AdmHome/ger_chat_new",
     type: "get",
     success: function (data) {
-        console.log(data);
+        //console.log(data);
         $("[name='num_New_notice']").html(data.length);
         var chat_yu = "";
-        console.log(data[0].time.value.minutes)
         for (let i = 0; i < data.length; i++) {
             let h_time = data[i].time.value.hours;
             let m_time = data[i].time.value.minutes;
@@ -33,18 +33,19 @@ $.ajax({
                                 </div>
                                 </li>`
         }
-        $("#chat_review").append(chat_yu)
+        $("#chat_review").html(chat_yu)
     }
 })
 }
-let time_chat_yu = window.setInterval(needtoReply(), 2000)
+let time_chat_yu = window.setInterval("needtoReply()", 2000)
 
 $("#goto_click_num_chat_yu").click(function() {
     window.clearInterval(time_chat_yu);
-    $("[name='num_New_notice']").html("0"),
+    $("#yu_forzerothemessage").html("0"),
+        
     $.ajax({
-        url: "/AdmHome/click_num_chat",
-        type:"get",
+        url: "/AdmHome/do_all_review_0",
+        type: "get",
     })
 })
 
