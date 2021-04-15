@@ -593,9 +593,12 @@
             //
             if (window.location.href == "https://localhost:44398/Member/MemberCenter") {
                 connection.on("receiveComboQty", function () {
-                    updateData(@ViewBag.memberID)
-                    console.log("ok")
-                }); 
+                    updateData(@ViewBag.memberID);
+                    updateLayoutCombo();
+                    if ($("#mycombo").length > 0) {
+                        cwc_showCombo(@ViewBag.memberID);
+                    };
+                });
             }
         }).catch(function (err) {
             return console.error(err.toString());
@@ -741,32 +744,34 @@
                 })
                 cwc_layoutSet.then(function (getResult) {
                     if (getResult != "0") {
-                        $.ajax({
-                            url: `/Combo/getCombo`,
-                            success: function (homeCombodata) {
-                                const forCombo = homeCombodata;
-                                cwc_ComboDetails = homeCombodata;
-                                if (forCombo != 0 && forCombo.length > 0) {
-                                    $("#cwc_howManyCombo").html(forCombo.length);
-                                    var cwc_pageCombo = "";
-                                    for (var i = 0; i < forCombo.length; i++) {
-                                        cwc_pageCombo += `<div style="width:100px;text-align:center;display:inline-block">${forCombo[i].cComboName}</div>
-                                                                                        <button class="btn btn-success btn-sm" onclick="cwc_addCombotoCart(cwc_ComboDetails[${i}])">訂購</button>`
-                                    }
-                                    $("#cwc_div_homePageCombo").html(cwc_pageCombo)
-                                }
-                            }
-
-                        })
+                        updateLayoutCombo();
                         return (getResult)
                     }
                     return ("0")
                 })
             
             }
-
-
         });
+
+        function updateLayoutCombo() {
+            console.log("1")
+            $.ajax({
+                url: `/Combo/getCombo`,
+                success: function (homeCombodata) {
+                    const forCombo = homeCombodata;
+                    cwc_ComboDetails = homeCombodata;
+                    if (forCombo != 0 && forCombo.length > 0) {
+                        $("#cwc_howManyCombo").html(forCombo.length);
+                        var cwc_pageCombo = "";
+                        for (var i = 0; i < forCombo.length; i++) {
+                            cwc_pageCombo += `<div style="width:100px;text-align:center;display:inline-block">${forCombo[i].cComboName}</div>
+                                                                                        <button class="btn btn-success btn-sm" onclick="cwc_addCombotoCart(cwc_ComboDetails[${i}])">訂購</button>`
+                        }
+                        $("#cwc_div_homePageCombo").html(cwc_pageCombo);
+                    }
+                }
+            })
+        }
 
     </script>
     <script>

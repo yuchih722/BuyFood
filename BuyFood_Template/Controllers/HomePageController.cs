@@ -24,6 +24,7 @@ namespace BuyFood_Template.Controllers
                 ViewBag.USERPHOTO = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);
                 ViewBag.USERUSERID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);
             }
+            ViewBag.num_todo = "";
             if (TempData[CDictionary.REDIRECT_FROM_WHERE] != null) { 
             ViewBag.num_todo= TempData[CDictionary.REDIRECT_FROM_WHERE].ToString();
             }

@@ -22,6 +22,10 @@
 /*    background:#d1c3c3;*/
     top: 10px;
 }
+.product__item:hover .product__item__pic .start_for_homepage {
+    /*    background:#d1c3c3;*/
+    top: 10px;
+}
 .product_time_yu {
     position: absolute;
     width: 51.1%;

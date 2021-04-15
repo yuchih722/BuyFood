@@ -47,68 +47,28 @@
                     <li class="dropdown dropdown-inbox">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="goto_click_num_chat_yu">
                             <i class="fa fa-envelope-o"></i>
-                            <span class="badge badge-primary envelope-badge" name="num_New_notice"> </span> @*抓取幾個最新訊息*@
+                            <span class="badge badge-primary envelope-badge" name="num_New_notice" id="yu_forzerothemessage"> </span> @*抓取幾個最新訊息*@
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" id="chat_review">
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" >
                             <li class="dropdown-menu-header">
                                 <div>
                                     <span><strong name="num_New_notice">  </strong>筆 新訊息</span>
                                     <a class="pull-right" href="/admChat/admChatView">顯示全部</a>
+                                    <div id="chat_review"></div>
                                 </div>
                             </li>
                         </ul>
                     </li>
                     <li class="dropdown dropdown-notification">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell-o rel"><span class="notify-signal"></span></i></a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="goto_click_num_chat_adri">
+                            <i class="fa fa-bell-o rel"></i>
+                            <span class="badge badge-primary envelope-badge" name="num_New_Order" id="adri_forzerothemessage"></span></a>@*抓取最新訂單*@
                         <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                             <li class="dropdown-menu-header">
                                 <div>
-                                    <span><strong>5 New</strong> 通知事項</span>
+                                    <span><strong id="num_new_orderMessage" name="num_New_Order"></strong>筆 新訂單</span>
                                     <a class="pull-right" href="javascript:;">顯示全部</a>
-                                </div>
-                            </li>
-                            <li class="list-group list-group-divider scroller" data-height="240px" data-color="#71808f">
-                                <div>
-                                    <a class="list-group-item">
-                                        <div class="media">
-                                            <div class="media-img">
-                                                <span class="badge badge-success badge-big"><i class="fa fa-check"></i></span>
-                                            </div>
-                                            <div class="media-body">
-                                                <div class="font-13">4 task compiled</div><small class="text-muted">22 分鐘前</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a class="list-group-item">
-                                        <div class="media">
-                                            <div class="media-img">
-                                                <span class="badge badge-default badge-big"><i class="fa fa-shopping-basket"></i></span>
-                                            </div>
-                                            <div class="media-body">
-                                                <div class="font-13">您有 12 新訂單</div><small class="text-muted">40 分鐘前</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a class="list-group-item">
-                                        <div class="media">
-                                            <div class="media-img">
-                                                <span class="badge badge-danger badge-big"><i class="fa fa-bolt"></i></span>
-                                            </div>
-                                            <div class="media-body">
-                                                <div class="font-13">Server #7 rebooted</div><small class="text-muted">2 小時前</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a class="list-group-item">
-                                        <div class="media">
-                                            <div class="media-img">
-                                                <span class="badge badge-success badge-big"><i class="fa fa-user"></i></span>
-                                            </div>
-                                            <div class="media-body">
-                                                <div class="font-13">New user registered</div><small class="text-muted">2 小時前</small>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    <div id="oder_message"></div>
                                 </div>
                             </li>
                         </ul>
@@ -491,3 +451,5 @@
 <script src="~/YUYUYU/JS/時間日期顯示.js"></script>
 <script src="~/YUYUYU/JS/登出呼叫登出.js"></script>
 <script src="~/YUYUYU/JS/後台小鈴鐺聊天.js"></script>
+@* <script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/adri/sginalR/OrderSignal.js"></script> *@
