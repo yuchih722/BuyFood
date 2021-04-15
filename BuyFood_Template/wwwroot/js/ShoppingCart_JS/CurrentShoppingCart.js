@@ -1,4 +1,4 @@
-﻿let member_NoCSC = $("#user_member").val();
+﻿let member_NoCSC = $("#user_member").val();     //會員的ID
 let users_cart_NoCSC = "cart" + member_NoCSC;   //依登入的會員改變localstorage的Key值
 let pdtcart = JSON.parse(localStorage.getItem(users_cart_NoCSC));  //從localStorage讀取購物車內的資料
 let pdtcart_quantity = [];     //用來存放各個商品的庫存量及製作時間
@@ -180,12 +180,17 @@ $(function () {
         //console.log($("#check_is_used").prop('checked'));
         if ($("#check_is_used").prop('checked')) {
             $("#input_coupon_code").prop('disabled', false);
+            $("#search_coupon_enable").prop('disabled', false);
         } else {
             discount_price = 0;
             couponId = 1;
             $("#input_coupon_code").val("");
-            $("#coupon_discount").html("目前優惠券的折價金額為: 無");
+            $("#coupon_discount").html("目前無使用優惠券");
             $("#input_coupon_code").prop('disabled', true);
+            $("#search_coupon_enable").prop('disabled', true);
+            //隱藏顯示的優惠券列表
+            $("#show_coupon_list").css('display', 'none');
+            $("#show_coupon_list").removeClass("coupon_display");
             GetDiscountTotalPrice();
         }
     })
@@ -198,7 +203,40 @@ function GetDiscountTotalPrice() {
     $("#off_price").html('$' + discount_price);
     $("#cart_total_price").html('$' + sum_price);
 }
-
+//讀取會員擁有的優惠券
+$(function () {
+    $.ajax({
+        url: "/ShoppingCart/SearchCouponCanUse",
+        type: "POST",
+        data: JSON.stringify(parseInt(member_NoCSC)),
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            $("#show_coupon_list").css('display', 'none');
+            //console.log(data);
+            let textCoupon = "";
+            for (let i = 0; i < data.length; i++) {
+                textCoupon += `<div>${data[i].couponName}<a class="coupon_link_style" id="wu_coupon_${i}" name="nameCoupon" href="###">${data[i].couponCode}</a></div>`;
+            }
+            $("#show_coupon_list").append(textCoupon);
+            //選取所有name為nameCoupon的a元素
+            $('a[name="nameCoupon"]').click(function () {
+                //console.log($(this.id).text());
+                $("#input_coupon_code").val($('#' + this.id).text());  //找出該a元素的text           
+            })
+        }
+    })
+})
+//顯示該會員可用的優惠券
+$("#search_coupon_enable").click(function () {
+    if ($("#show_coupon_list").hasClass("coupon_display")) {
+        $("#show_coupon_list").removeClass("coupon_display");
+        $("#show_coupon_list").css('display', 'none');
+    } else {
+        $("#show_coupon_list").addClass("coupon_display");
+        $("#show_coupon_list").css('display', 'initial');       
+    }
+    
+})
 //跳轉至最後確認結帳頁面
 $(function () {
     $("#send_order").click(function () {

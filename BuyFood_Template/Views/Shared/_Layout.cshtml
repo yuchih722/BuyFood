@@ -2,6 +2,56 @@
 @using BuyFood_Template.Controllers
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    /* Style The Dropdown Button */
+    .dropbtn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            /* Change color of dropdown links on hover */
+            .dropdown-content a:hover {
+                background-color: #f1f1f1
+            }
+
+    /* Show the dropdown menu on hover */
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+</style>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,6 +76,8 @@
     <link rel="stylesheet" type="text/css" href="~/css/chatRoom.css">
 </head>
 <body>
+
+
 
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
@@ -166,14 +218,24 @@
                             </li>
                             <li><a asp-controller="Activity" asp-action="ShowActivity">活動一覽</a></li>
                             <li><a href="javascript:void(0)" id="cwc_home_btn_memberCenter">會員中心</a></li>
-                            <li><a asp-controller="Order" asp-action="SearchOrder">訂單查詢</a></li>
+                            <li><a href="javascript:void(0)" id="adr_Order_SearchOrder">訂單查詢</a></li>
                         </ul>
                     </nav>
                 </div>
                 <div class="col-lg-3">
                     <div class="header__cart">
                         <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                            <li class="dropdown">
+                                <a href="javascript:void(0)"  id="cwc_home_btn_memberCombo"><i class="fa fa-heart"></i> <span id="cwc_howManyCombo">0</span></a>
+                                @*<div class="dropdown">
+                                    <button class="dropbtn">Dropdown</button>*@
+                                    <div id="cwc_div_homePageCombo" class="dropdown-content" >
+                                        <label>1111</label><button>aaa</button>
+                                        <a href="#">Link 2</a>
+                                        <a href="#">Link 3</a>
+                                    </div>
+                                @*</div>*@
+                            </li>
                             <li><a asp-controller="ShoppingCart" asp-action="CurrentCartItem"><i class="fa fa-shopping-bag"></i> <span id="wu_cartItem_count">0</span></a></li>
                         </ul>
                         <div class="header__cart__price">item: <span id="itemMoney">$0</span></div>
@@ -251,7 +313,7 @@
     </footer>
     <!-- Footer Section End -->
     <div class="round hollow  fixed-bottom    end-0" style="width:50%">
-        <button class="open-btn"  id="addClass"><i class="fa fa-whatsapp" aria-hidden="true"> </i>聯絡客服</button>
+        <button class="open-btn" id="addClass"><i class="fa fa-whatsapp" aria-hidden="true"> </i>聯絡客服</button>
     </div>
     @*聊天室窗*@
 
@@ -260,8 +322,8 @@
         <div class="popup-head">
             <div class="popup-head-left pull-left">
 
-                    <img class="md-user-image"  src="~/img/adrChatRoom/adm2.jpg"  >
-                    <h1>客服聯絡視窗</h1><small><br> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>BuyFood管理員</small>
+                <img class="md-user-image" src="~/img/adrChatRoom/adm2.jpg">
+                <h1>客服聯絡視窗</h1><small><br> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>BuyFood管理員</small>
 
             </div>
             <div class="popup-head-right pull-right">
@@ -274,22 +336,22 @@
                 </button>
             </div>
         </div>
-    @*聊天室開始標籤*@
-    <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
-        <div class="chat_box touchscroll chat_box_colors_a" id="chatStartPoint">
+        @*聊天室開始標籤*@
+        <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
+            <div class="chat_box touchscroll chat_box_colors_a" id="chatStartPoint">
 
 
+            </div>
         </div>
-    </div>
-    @*聊天室內容*@
+        @*聊天室內容*@
 
 
 
-    <div class="chat_submit_box" style="padding:5px;">
+        <div class="chat_submit_box" style="padding:5px;">
             <div class="uk-input-group" style="width:100%;">
                 <div class="gurdeep-chat-box" style="width:100%">
                     <input type="text" placeholder="請輸入訊息" id="messageInput" name="submit_message" class="md-input" style="width:80%">
-                    <button class="btn btn-light" id="sendButtonMessage" style="padding:0;height:100%;width:10%;margin-left:10px;" ><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                    <button class="btn btn-light" id="sendButtonMessage" style="padding:0;height:100%;width:10%;margin-left:10px;"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </div>
             </div>
         </div>
@@ -300,121 +362,119 @@
 
 
 
-        <script src="~/js/signalr/dist/browser/signalr.js"></script>
-        @*<script src="~/js/chat.js"></script>*@
-        @*聊天室窗結束*@
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    @*<script src="~/js/chat.js"></script>*@
+    @*聊天室窗結束*@
 
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        <script type="text/javascript" src="~/cwc/homepage.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/cwc/js/homepage.js"></script>
 
 
-        <script src="~/js/jquery-3.3.1.min.js"></script>
-        <script src="~/js/bootstrap.min.js"></script>
-        <script src="~/js/jquery.nice-select.min.js"></script>
-        <script src="~/js/jquery-ui.min.js"></script>
-        <script src="~/js/jquery.slicknav.js"></script>
-        <script src="~/js/mixitup.min.js"></script>
-        <script src="~/js/owl.carousel.min.js"></script>
-        <script src="~/js/main.js"></script>
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.nice-select.min.js"></script>
+    <script src="~/js/jquery-ui.min.js"></script>
+    <script src="~/js/jquery.slicknav.js"></script>
+    <script src="~/js/mixitup.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/main.js"></script>
     <script>
         //聊天室資料
 
 
     </script>
 
-        <script>
-            //聊天室資料紀錄
-            var txtadrLayoutChatRecordsForShow = "";
-            let adrLayoutMemberIDForChat = parseInt($("#user_member").val());
-            let adrBarRecords = $("#chat");
-            $.ajax({
-                url: "/adChatRoom/ListMessages/",
-                type: "POST",
-                data: { "ChannelID": adrLayoutMemberIDForChat },
-                success: function (listChatRecords) {
-                    //console.log(adrLayoutMemberIDForChat);
-                    //console.log(listChatRecords);
+    <script>
+        //聊天室資料紀錄
+        var txtadrLayoutChatRecordsForShow = "";
+        let adrLayoutMemberIDForChat = parseInt($("#user_member").val());
+        let adrBarRecords = $("#chat");
+        $.ajax({
+            url: "/adChatRoom/ListMessages/",
+            type: "POST",
+            data: { "ChannelID": adrLayoutMemberIDForChat },
+            success: function (listChatRecords) {
+                //console.log(adrLayoutMemberIDForChat);
+                //console.log(listChatRecords);
 
-                    for (let i = 0; i < listChatRecords.length; i++)
+                for (let i = 0; i < listChatRecords.length; i++) {
+                    var fotoRecordsLayout = listChatRecords[i].cPhoto;
+                    var memberNameRecords = listChatRecords[i].cMemberName;
+                    var msgRecords = listChatRecords[i].cContent;
+                    var whenRecords = listChatRecords[i].cMessageTime
+                    var encodedMsgRecords = /*user + " says " +*/ '<p>' + msgRecords + '<span class="chat_message_time">' + whenRecords + '</span></p>';
+                    var liRecords = document.createElement("li");
+
+
+                    liRecords.innerHTML = encodedMsgRecords;
+                    //客戶自己
+                    if (listChatRecords[i].cMemberId == listChatRecords[i].cDifRoomId) {//自己發言開始  資料庫ID==目前頻道
+                        if (自己連續發言旗桿 == 0) {
+                            $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
+                                            <div class="chat_user_avatar">
+                                                    <img   src="${fotoRecordsLayout}" class="md-user-image">
+                                            </div>
+                                            <ul class="chat_message messagesListForClient">
+                                            </ul>
+                                        </div>`);
+
+                            $("ul.messagesListForClient:eq(-1)").append(liRecords);
+                            自己連續發言旗桿 = 1;
+                            對方連續發言旗桿 = 0;
+
+                            console.log('自己第一次發言');
+                        }
+                        else {
+                            $("ul.messagesListForClient:eq(-1)").append(liRecords);
+                            對方連續發言旗桿 = 0;
+
+                            console.log("自己連續發言狀態");
+                        }
+                    }//自己發言結束
+                    else //對方發言開始
                     {
-                        var fotoRecordsLayout = listChatRecords[i].cPhoto;
-                        var memberNameRecords = listChatRecords[i].cMemberName;
-                        var msgRecords = listChatRecords[i].cContent;
-                        var whenRecords = listChatRecords[i].cMessageTime
-                        var encodedMsgRecords = /*user + " says " +*/ '<p>' + msgRecords + '<span class="chat_message_time">' + whenRecords + '</span></p>';
-                        var liRecords = document.createElement("li");
-                        
+                        if (對方連續發言旗桿 == 0) {
 
-                        liRecords.innerHTML = encodedMsgRecords;
-                        //客戶自己
-                        if (listChatRecords[i].cMemberId == listChatRecords[i].cDifRoomId) {//自己發言開始  資料庫ID==目前頻道
-                            if (自己連續發言旗桿 == 0) {
-                                $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
-                                        <div class="chat_user_avatar">
-                                                <img   src="${fotoRecordsLayout}" class="md-user-image">
-                                        </div>
-                                        <ul class="chat_message messagesListForClient">
-                                        </ul>
-                                    </div>`);
+                            $("#chatStartPoint").append(`<div class="chat_message_wrapper ">
+                                            <div class="chat_user_avatar">
+                                                    <img   src="${fotoRecordsLayout}" class="md-user-image ">
+                                            </div>
+                                            <ul class="chat_message messagesListForAdmin" >
+                                            </ul>
+                                        </div>`);
 
-                                $("ul.messagesListForClient:eq(-1)").append(liRecords);
-                                自己連續發言旗桿 = 1;
-                                對方連續發言旗桿 = 0;
-                                
-                                console.log('自己第一次發言');
-                            }
-                            else {
-                                $("ul.messagesListForClient:eq(-1)").append(liRecords);
-                                對方連續發言旗桿 = 0;
-                                
-                                console.log("自己連續發言狀態");
-                            }
-                        }//自己發言結束
-                        else //對方發言開始
-                        {
-                            if (對方連續發言旗桿 == 0) {
+                            $("ul.messagesListForAdmin:eq(-1)").append(liRecords);
+                            對方連續發言旗桿 = 1;
+                            自己連續發言旗桿 = 0;
 
-                                $("#chatStartPoint").append(`<div class="chat_message_wrapper ">
-                                        <div class="chat_user_avatar">
-                                                <img   src="${fotoRecordsLayout}" class="md-user-image ">
-                                        </div>
-                                        <ul class="chat_message messagesListForAdmin" >
-                                        </ul>
-                                    </div>`);
+                            console.log("對方第一次發言");
+                        }
+                        else {
+                            $("ul.messagesListForAdmin:eq(-1)").append(liRecords);
+                            自己連續發言旗桿 = 0;
 
-                                $("ul.messagesListForAdmin:eq(-1)").append(liRecords);
-                                對方連續發言旗桿 = 1;
-                                自己連續發言旗桿 = 0;
-                                
-                                console.log("對方第一次發言");
-                            }
-                            else
-                            {
-                                $("ul.messagesListForAdmin:eq(-1)").append(liRecords);
-                                自己連續發言旗桿 = 0;
-                                
-                                console.log("對方連續發言狀態");
-                            }
-                        }//對方發言結束
+                            console.log("對方連續發言狀態");
+                        }
+                    }//對方發言結束
 
 
 
-                    }
-                    //$("#myDiv").animate({ scrollTop: $("#myDiv")[0].scrollHeight }, 1000);
-                    //adrBarRecords.animate({ scrollTop: adrBarRecords.prop("scrollHeight") }, 1000);
-                    //adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
-                } //success end
+                }
+                //$("#myDiv").animate({ scrollTop: $("#myDiv")[0].scrollHeight }, 1000);
+                //adrBarRecords.animate({ scrollTop: adrBarRecords.prop("scrollHeight") }, 1000);
+                //adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
+            } //success end
 
-            });//ajax end
+        });//ajax end
 
 
 
 
 
 
-             //聊天室資料紀錄
+        //聊天室資料紀錄
 
         //聊天室啟動
 
@@ -422,95 +482,70 @@
 
         //Disable send button until connection is established
         document.getElementById("sendButtonMessage").disabled = true;
-            var 自己連續發言旗桿 = 0;
-            var 對方連續發言旗桿 = 0;
+        var 自己連續發言旗桿 = 0;
+        var 對方連續發言旗桿 = 0;
 
 
-            // 群組訊息接收事件
-            connection.on("ReceiveGroupMessage", function (groupName, username, message, adrfoto, adrMemberIDForChat) {
-                //console.log("接收成功");
-                //console.log(adrMemberIDForChat);
-                //console.log(adrfoto);
-                var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                var when = new Date().toLocaleTimeString();
-                var encodedMsg = /*user + " says " +*/ '<p>' + msg + '<span class="chat_message_time">' + when + '</span></p>';
-                var li = document.createElement("li");
-                li.innerHTML = encodedMsg;
-                document.getElementById("messageInput").value = "";
+        // 群組訊息接收事件
+        connection.on("ReceiveGroupMessage", function (groupName, username, message, adrfoto, adrMemberIDForChat) {
+            //console.log("接收成功");
+            //console.log(adrMemberIDForChat);
+            //console.log(adrfoto);
+            var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            var when = new Date().toLocaleTimeString();
+            var encodedMsg = /*user + " says " +*/ '<p>' + msg + '<span class="chat_message_time">' + when + '</span></p>';
+            var li = document.createElement("li");
+            li.innerHTML = encodedMsg;
+            document.getElementById("messageInput").value = "";
 
 
-                $.ajax({
-                    url: "/adChatRoom/getMessage",
-                    type: "POST",
-                    data: { MemberName: username, Content: message, MessageTime: when, "foto": adrfoto, "userID": adrMemberIDForChat },
+            $.ajax({
+                url: "/adChatRoom/getMessage",
+                type: "POST",
+                data: { MemberName: username, Content: message, MessageTime: when, "foto": adrfoto, "userID": adrMemberIDForChat },
 
-                });
+            });
 
-                var PictureForMessage = adrfoto;
+            var PictureForMessage = adrfoto;
 
 
-                if (msg == '') { return; }
-                //如果是自己，放右邊
+            if (msg == '') { return; }
+            //如果是自己，放右邊
 
-                if (adrMemberIDForChat == $("#user_member").val()) {
+            if (adrMemberIDForChat == $("#user_member").val()) {
 
-                    if (自己連續發言旗桿 == 0) {
-                        $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
-                                        <div class="chat_user_avatar">
-                                                <img   src="${PictureForMessage}" class="md-user-image">
-                                        </div>
-                                        <ul class="chat_message messagesListForClient">
-                                        </ul>
-                                    </div>`);
+                if (自己連續發言旗桿 == 0) {
+                    $("#chatStartPoint").append(`<div class="chat_message_wrapper chat_message_right">
+                                            <div class="chat_user_avatar">
+                                                    <img   src="${PictureForMessage}" class="md-user-image">
+                                            </div>
+                                            <ul class="chat_message messagesListForClient">
+                                            </ul>
+                                        </div>`);
 
-                        $("ul.messagesListForClient:eq(-1)").append(li);
-                        自己連續發言旗桿 = 1;
-                        對方連續發言旗桿 = 0;
-                        adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
-                    }
-                    else {
-                        $("ul.messagesListForClient:eq(-1)").append(li);
-                        對方連續發言旗桿 = 0;
-                        adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
-                    }
+                    $("ul.messagesListForClient:eq(-1)").append(li);
+                    自己連續發言旗桿 = 1;
+                    對方連續發言旗桿 = 0;
+                    adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
                 }
-
                 else {
-                    if ($("#user_member").val() == 16)//if LoginAccount == admin
-                    {
-                        if (對方連續發言旗桿 == 0) {
-                            $("#chat").append(`<div class="chat_message_wrapper ">
-                    <div class="chat_user_avatar">
-                            <img   src="${PictureForMessage}" class="md-user-image ">
-                    </div>
-                    <ul class="chat_message messagesListForAdmin" >
-                    </ul>
-                </div>`);
+                    $("ul.messagesListForClient:eq(-1)").append(li);
+                    對方連續發言旗桿 = 0;
+                    adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
+                }
+            }
 
-                            $("ul.messagesListForAdmin:eq(-1)").append(li);
-                            對方連續發言旗桿 = 1;
-                            自己連續發言旗桿 = 0;
-                            adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
-                        }
-                        else {
-                            $("ul.messagesListForAdmin:eq(-1)").append(li);
-                            自己連續發言旗桿 = 0;
-                            adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
-                        }
-                    }
-
-                    if (adrMemberIDForChat != 16) {
-                        return;
-                    }
-
+            else {
+                if ($("#user_member").val() == 16)//if LoginAccount == admin
+                {
                     if (對方連續發言旗桿 == 0) {
-                        $("#chatStartPoint").append(`<div class="chat_message_wrapper ">
-                    <div class="chat_user_avatar">
-                            <img   src="${PictureForMessage}" class="md-user-image ">
-                    </div>
-                    <ul class="chat_message messagesListForAdmin" >
-                    </ul>
-                </div>`);
+                        $("#chat").append(`<div class="chat_message_wrapper ">
+                        <div class="chat_user_avatar">
+                                <img   src="${PictureForMessage}" class="md-user-image ">
+                        </div>
+                        <ul class="chat_message messagesListForAdmin" >
+                        </ul>
+                    </div>`);
 
                         $("ul.messagesListForAdmin:eq(-1)").append(li);
                         對方連續發言旗桿 = 1;
@@ -524,8 +559,33 @@
                     }
                 }
 
+                if (adrMemberIDForChat != 16) {
+                    return;
+                }
 
-            });
+                if (對方連續發言旗桿 == 0) {
+                    $("#chatStartPoint").append(`<div class="chat_message_wrapper ">
+                        <div class="chat_user_avatar">
+                                <img   src="${PictureForMessage}" class="md-user-image ">
+                        </div>
+                        <ul class="chat_message messagesListForAdmin" >
+                        </ul>
+                    </div>`);
+
+                    $("ul.messagesListForAdmin:eq(-1)").append(li);
+                    對方連續發言旗桿 = 1;
+                    自己連續發言旗桿 = 0;
+                    adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
+                }
+                else {
+                    $("ul.messagesListForAdmin:eq(-1)").append(li);
+                    自己連續發言旗桿 = 0;
+                    adrBarRecords.animate({ scrollTop: adrBarRecords[0].scrollHeight }, 1000);
+                }
+            }
+
+
+        });
         // 群組訊息接收事件
 
         connection.start().then(function () {
@@ -534,7 +594,7 @@
         }).catch(function (err) {
             return console.error(err.toString());
         });
-        </script>
+    </script>
 
     <script>
         //加入群組
@@ -571,19 +631,18 @@
         // 群組訊息Button事件
     </script>
 
-        <script type="text/javascript">
+    <script type="text/javascript">
         var flagForChatRoomSwitch = 1;
-            $(function () {
-                
+        $(function () {
 
-                $("#addClass").click(function () {
 
-                    if (member_No=="")
-                    {
-                        window.alert("請先登入會員");
-                        window.location.assign("/ShoppingCart/CurrentCartItem");
-                        return;
-                    }
+            $("#addClass").click(function () {
+
+                if (member_No == "") {
+                    window.alert("請先登入會員");
+                    window.location.assign("/ShoppingCart/CurrentCartItem");
+                    return;
+                }
 
                 if (flagForChatRoomSwitch == 1) {
                     $('#sidebar_secondary').addClass('popup-box-on');
@@ -600,36 +659,36 @@
                 $('#sidebar_secondary').removeClass('popup-box-on');
                 flagForChatRoomSwitch = 1;
             });
-            
+
 
         })
-        </script>
-        <script>
-            let member_No = $("#user_member").val();
-            let users_cart_No = "cart" + member_No;   //依登入的會員改變localstorage的Key值
-            setInterval(function () {
-                if (users_cart_No == "") {
-                    return;
-                }
-                let pdtcart_obj = JSON.parse(localStorage.getItem(users_cart_No));
-                let price = 0;
-                if (pdtcart_obj == null) {
-                    $("#ItemMoneyTop").html('$' + price);
-                    $("#itemMoney").html('$' + price);
-                    return;
-                }
-                for (let i = 0; i < pdtcart_obj.length; i++) {
-                    price += (pdtcart_obj[i].cPrice * pdtcart_obj[i].QuantityInCart);
-                }
-                $("#wu_cartItem_count").text(pdtcart_obj.length);
+    </script>
+    <script>
+        let member_No = $("#user_member").val();
+        let users_cart_No = "cart" + member_No;   //依登入的會員改變localstorage的Key值
+        setInterval(function () {
+            if (users_cart_No == "") {
+                return;
+            }
+            let pdtcart_obj = JSON.parse(localStorage.getItem(users_cart_No));
+            let price = 0;
+            if (pdtcart_obj == null) {
                 $("#ItemMoneyTop").html('$' + price);
                 $("#itemMoney").html('$' + price);
-                /*  console.log(price);*/
-            }, 500);
+                return;
+            }
+            for (let i = 0; i < pdtcart_obj.length; i++) {
+                price += (pdtcart_obj[i].cPrice * pdtcart_obj[i].QuantityInCart);
+            }
+            $("#wu_cartItem_count").text(pdtcart_obj.length);
+            $("#ItemMoneyTop").html('$' + price);
+            $("#itemMoney").html('$' + price);
+            /*  console.log(price);*/
+        }, 500);
 
-        </script>
+    </script>
 
-        <script>
+    <script>
         $.ajax({
             url: "/HomePage/BCheckLogin",
             type: "POST",
@@ -641,7 +700,7 @@
                     console.log(aa);
                     UserImg = `<img width="20" height="20" src="${aa}" alt="">`*@
 
-                        @*var thispicForMember = @UserLoginImgForPage;
+                    @*var thispicForMember = @UserLoginImgForPage;
                     console.log(thispicForMember)
                     console.log(thispicForMember.replace('~', ''))
                  //var UserImg=`<img width="20" height="20" src="${thispicForMember.replace('~', '')}" alt="">`;
@@ -651,6 +710,7 @@
                     //$("divUserImg").html(UserImg);
                     $("#divLogin").html(LogInTxt);
                     $("#divLogOut").html(LogOutTxt);
+                    return "1";
                 }
                 else if (data == "isAdm") {
                     LogInTxt = `<a href="/Member/MemberCenter" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
@@ -659,6 +719,7 @@
                     $("#divLogin").html(LogInTxt);
                     $("#divLogOut").html(LogOutTxt);
                     $("#admOnly").html(AdmTxt);
+                    return "9"
                 }
                 else {
                     LogInTxt = `<a href="/HomePage/登入" id="getLoginName "><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
@@ -666,25 +727,29 @@
                     //$("divUserImg").html();
                     $("#divLogin").html(LogInTxt);
                     $("#divLogOut").html();
+                    return "0"
                 }
+                }//.then(function (cwc_checStates) {
+                //    console.log(cwc_checStates)
+                //})
             }
-        });
-        </script>
-        <script>
-            function 登出() {
+        );
+    </script>
+    <script>
+        function 登出() {
 
-                $.ajax({
-                    url: "/HomePage/SLogout",
-                    type: "POST",
-                    success: function (data) {
-                        window.alert(data);
-                        window.location.assign("Home");
-                    }
-                })
-            }
-        </script>
+            $.ajax({
+                url: "/HomePage/SLogout",
+                type: "POST",
+                success: function (data) {
+                    window.alert(data);
+                    window.location.assign("Home");
+                }
+            })
+        }
+    </script>
 
 
-        @RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
