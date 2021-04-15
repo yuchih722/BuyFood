@@ -41,9 +41,13 @@ $(function () {
                     products +=   ` </div>
                                                 <div class="featured__item__text">
                                                     <h6><a href="/ProductDetail/ProductData?id=${dataForHomePage.forProduct[i].tProducts[y].tProducts.cProductId}">${dataForHomePage.forProduct[i].tProducts[y].tProducts.cProductName}</a></h6>
-                                                    <h5>$${dataForHomePage.forProduct[i].tProducts[y].tProducts.cPrice}</h5>
-                                                    <h6>庫存量 ${dataForHomePage.forProduct[i].tProducts[y].tProducts.cQuantity} </h3>
-                                                </div>
+                                                    <h5>$${dataForHomePage.forProduct[i].tProducts[y].tProducts.cPrice}</h5>`
+                    if (dataForHomePage.forProduct[i].tProducts[y].tProducts.cIsOnSaleId == 1) {
+                        products += `<h6> 庫存量 ${dataForHomePage.forProduct[i].tProducts[y].tProducts.cQuantity} </h6 >`
+                    } else {
+                        products += `<h6>此商品暫停販售 </h6>`
+                    }
+                        products += `</div>
                                             </div>
                                         </div>`
                 }
