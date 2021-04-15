@@ -91,17 +91,16 @@ $("#searchBtn").on("click", function () {
                                         <div class="featured__item">
                                         <div class="featured__item__pic set-bg" style="background-image: url(${data[i].tProduct.cPicture.replace("~", "")})">
                                         <ul class="featured__item__pic__hover">
-                                         <li><a href = "#" ><i class="fa fa-heart"></i></a></li>
-                                         <li><a href = "#" ><i class="fa fa-retweet"></i></a></li>
+
                                          <li><a href="javascript: void(0)" onclick="addCart(pdtItem[${i}].tProduct)"><i class="fa fa-shopping-cart"></i></a></li>
                                          </ul>
                                                <ul class="start_for_homepage">`
                 let Average_message_adri = data[i].count <= 0 ? 0 : parseInt(data[i].sum / data[i].count)
                 for (let x = 0; x < Average_message_adri; x++) {
-                    label += `<li><span class="fa fa-star checked" style="color: orange;"></span></li>`
+                    label += `<li><span class="fa fa-star checked" style="color: orange;font-size:25px""></span></li>`
                 }
                 for (let g = 0; g < 5 - Average_message_adri; g++) {
-                    label += `<li><span class="fa fa-star checked" style="color: #d5d3cf;"></span></li>`
+                    label += `<li><span class="fa fa-star checked" style="color: #d5d3cf;font-size:25px""></span></li>`
                 }
                 label += ` </ul>
                                                 <span class="product_time_yu">製作時間：${data[i].tProduct.cFinishedTime}分鐘</span> `

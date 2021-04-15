@@ -24,8 +24,7 @@ $(function () {
                                             <div class="featured__item">
                                                 <div class="featured__item__pic set-bg" style="background-image: url(${dataForHomePage.forProduct[i].tProducts[y].tProducts.cPicture.replace("~", "")})">
                                                     <ul class="featured__item__pic__hover">
-                                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+
                                                         <li><a href="javascript: void(0)" onclick="addCart(pullme[${i}].tProducts[${y}].tProducts)"><i class="fa fa-shopping-cart"></i></a></li>
                                                     </ul>
                                                     <ul class="start_for_homepage">`
@@ -65,3 +64,5 @@ $(function () {
     })
 })
 
+    //< li > <a href="#"><i class="fa fa-heart"></i></a></li >
+    //    <li><a href="#"><i class="fa fa-retweet"></i></a></li>
