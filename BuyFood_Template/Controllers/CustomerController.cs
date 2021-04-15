@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModel;
@@ -17,6 +18,8 @@ namespace BuyFood_Template.Controllers
     public class CustomerController : Controller
     {
         ShareFunction shareFun = new ShareFunction();
+
+
         private IHostingEnvironment iv_host;
         public CustomerController(IHostingEnvironment p)
         {
@@ -41,9 +44,16 @@ namespace BuyFood_Template.Controllers
             var check信箱 = from n in db.TMembers
                           select n.CEmail;
 
+            var check手機 = from n in db.TMembers
+                          select n.CPhone;
+
             if (check信箱.Any(n => n == newMember.CEmail) == true)
             {
                 return Json("EmailRepeat");
+            }
+            else if (check手機.Any(n => n == newMember.CPhone) == true)
+            {
+                return Json("PhoneRepeat");
             }
             else
             {
@@ -54,6 +64,7 @@ namespace BuyFood_Template.Controllers
                 newMember.CFreezeCount = 0;
                 newMember.CDeposit = 0;
                 newMember.CRegisteredTime = DateTime.Now;
+                newMember.COpenMember = 0;
 
 
                 var check邀請碼 = from n in db.TMembers
@@ -117,6 +128,22 @@ namespace BuyFood_Template.Controllers
                     db.SaveChanges();
                 }
 
+                //密碼雜湊
+                TMember add密碼雜湊 = (from n in db.TMembers
+                                   where n.CMemberId == newMember.CMemberID
+                                   select n).FirstOrDefault();
+
+                SHA1 sha1 = SHA1.Create();
+
+                string 雜湊密碼 = shareFun.GetHash(sha1, add密碼雜湊.CPassword);
+
+                add密碼雜湊.CPassword = 雜湊密碼;
+                db.SaveChanges();
+
+                string val信件內容 = "歡迎加入BuyFood,請點擊以下連結以開通帳號 \n https://localhost:44398/Customer/memberConfirm?ID="+add密碼雜湊.CMemberId;
+
+                shareFun.sendEmail(add密碼雜湊.CEmail, add密碼雜湊.CName, "BuyFood帳號開通認證信", val信件內容);
+
                 return Json(true);
             }
         }
@@ -149,6 +176,22 @@ namespace BuyFood_Template.Controllers
             }
 
             return Json(new { result = false });
+        }
+
+        public IActionResult memberConfirm()
+        {
+            string memberOpenID = HttpContext.Request.Query["ID"];
+
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+
+            TMember openMember = (from n in db.TMembers
+                                  where n.CMemberId == int.Parse(memberOpenID)
+                                  select n).FirstOrDefault();
+
+            openMember.COpenMember = 1;
+            db.SaveChanges();
+
+            return Redirect("~/HomePage/Home");
         }
 
         //public IActionResult getFBIdandName(string id,string name)

@@ -3,29 +3,73 @@
         url: "/Combo/getCombo?id=" + memberID,
         type: "GET",
         success: function (data) {
+            cwc_ComboDetails = data;
+            if (data.length == 0) {
+                var txt = `<div style="width:100%;height:100%;position:relative;display:flex;align-items:center;text-align:center">
+                                        <div style="width:100%">
+                                            <h1>自訂專屬自己的套餐</h1>
+                                            <button class="btn btn-success" style="font-size:50px;width:250px;height:100" onclick="cwc_EditCombo(0,'套餐${data.length + 1}',${memberID})">自訂套餐</button>
+                                         </div>
+                                  </div>`;
+                $("#head_cwc").html("");
+                $("#content_cwc").html(txt);
+                return;
+            }
             var txthead = `<span style="font-size:30px; line-height:50px;position:absolute;left:30px">我的套餐</span><span class="btn btn-success" style="position:absolute;right:30px" onclick="cwc_EditCombo(0,'套餐${data.length + 1}',${memberID})">新增套餐</span>`
 
-            var txt = `<table class="table accordion" id="mycombo"><thead><tr><td>套餐名稱<td>餐點數量<td>套餐總額<td>修改<td>刪除<tbody>`;
+            var txt = `<table class="table accordion" id="mycombo"><thead><tr><td>套餐名稱<td>餐點數量<td>套餐總額<td>點餐<td>修改<td>刪除<tbody>`;
             for (var i = 0; i < data.length; i++) {
-                var issue = data[i].notSaleItem > 0 ? `(部分餐點已停供)` : ``;
+                var issue = data[i].comboNotSalesCount > 0 ? `(部分餐點已停供)` : ``;
                 txt += `<tr  class="accordion-toggle"
                                             data-toggle="collapse"
-                                            data-target="#cwc_comboDetail_div_${data[i].comboID}"
-                                            id="cwc_combo_tr_${data[i].comboID}">
-                                        <td>${data[i].comboName}${issue}
-                                        <td>${data[i].totalItems}
-                                        <td>${data[i].totalPrice}
-                                        <td><div class="btn btn-success btn-sm" onclick="cwc_EditCombo(${data[i].comboID},'${data[i].comboName}',${memberID})">修改</div>
-                                        <td><div class="btn btn-danger btn-sm" onclick="cwc_deleteCombo(${data[i].comboID},${memberID})">刪除</div>
-                                    <tr id="cwc_comboDetail_tr_${data[i].comboID}">
+                                            data-target="#cwc_comboDetail_div_${data[i].cComboId}"
+                                            id="cwc_combo_tr_${data[i].cComboId}">
+                                        <td>${data[i].cComboName}${issue}
+                                        <td>${data[i].comboDetails.length}
+                                        <td>${data[i].comboSum}
+                                        <td><div class="btn btn-success btn-sm" onclick="cwc_addCombotoCart(cwc_ComboDetails[${i}].comboDetails)">加入購物車</div>
+                                        <td><div class="btn btn-success btn-sm" onclick="cwc_EditCombo(${data[i].cComboId},'${data[i].cComboName}',${memberID})">修改</div>
+                                        <td><div class="btn btn-danger btn-sm" onclick="cwc_deleteCombo(${data[i].cComboId},${memberID})">刪除</div>
+                                    <tr id="cwc_comboDetail_tr_${data[i].cComboId}">
                                         <td class="hiddenRow" colspan="5">
-                                            <div class="accordian-body collapse" data-parent="#mycombo" id="cwc_comboDetail_div_${data[i].comboID}">
+                                            <div class="accordian-body collapse" data-parent="#mycombo" id="cwc_comboDetail_div_${data[i].cComboId}">
                                                 <table class="table table-success table-sm" style="text-align:center">
-                                                    <thead><tr><td>餐點<td>數量<td>單價
+                                                    <thead><tr><td>餐點<td>數量<td>單價<td>點餐
                                                     <tbody>`;
-                for (var p = 0; p < data[i].comboDetail.length; p++) {
-                    var issue = data[i].comboDetail[p].onSale == 3 ? `(停止販售)` : ``
-                    txt += `<tr><td>${data[i].comboDetail[p].productName}${issue}<td>${data[i].comboDetail[p].qty}<td>${data[i].comboDetail[p].price}`;
+                var comboDetail = new Array();
+                for (var q = 0; q < data[i].comboDetails.length; q++) {
+
+                    var sameProduct = false
+                    if (comboDetail.length > 0) {
+                        for (var z = 0; z < comboDetail.length; z++) {
+                            if (data[i].comboDetails[q].cProductId == comboDetail[z].cProduct.cProductId) {
+                                sameProduct = true;
+                                comboDetail[z].Count += 1;
+                                break;
+                            }
+                        }
+                        if (!sameProduct) {
+                            var newdata = {};
+                            newdata.cProduct = data[i].comboDetails[q].cProduct;
+                            newdata.Count = 1;
+                            comboDetail.push(newdata);
+                        }
+                    }
+                    else {
+                        var newdata = {};
+                        newdata.cProduct = data[i].comboDetails[q].cProduct;
+                        newdata.Count = 1;
+                        comboDetail.push(newdata);
+                    }
+                }
+
+                for (var p = 0; p < comboDetail.length; p++) {
+                    var issue = comboDetail[p].cProduct.cIsOnSaleId == 3 ? `(停止販售)` : ``
+                    txt += `<tr><td>${comboDetail[p].cProduct.cProductName}${issue}
+                                        <td>${comboDetail[p].Count}
+                                        <td>${comboDetail[p].cProduct.cPrice}
+                                        <td><div class="btn btn-success btn-sm" onclick="cwc_addProducttoCart(cwc_ComboDetails[${i}].comboDetails[${p}].cProduct)">加入購物車</div>
+                                        `;
                 }
                 txt += `</tbody></thead></table></div>`;
             }
@@ -35,6 +79,18 @@
             updateData(memberID);
         }
     });
+}
+function cwc_addProducttoCart(product) {
+    addCart(product);
+    window.alert("已加入購物車");
+
+}
+
+function cwc_addCombotoCart(comboDetails) {
+    for (var i = 0; i < comboDetails.length; i++) {
+        addCart(comboDetails[i].cProduct);
+    }
+    window.alert("已加入購物車");
 }
 
 function cwc_EditCombo(comboID, comboName, memberID) {
@@ -275,7 +331,6 @@ function cwc_Category_selected(CategoryID) {
     $.ajax({
         url: `/ProductDetail/getProductsByCategory?id=${CategoryID}`,
         success: function (ProductList) {
-            console.log(ProductList)
             var txt = `<table class="table table-success table-striped" style="text-align:center"><thead><tr><td>餐點<td>單價<td>供餐時段<td>新增
                                         <tbody id="cwc_product_tbody">`;
 

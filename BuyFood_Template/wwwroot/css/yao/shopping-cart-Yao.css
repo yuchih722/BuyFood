@@ -15,7 +15,7 @@
 .select_width {
     width: 150px;
 }
-
+/*顯示路程時間文字*/
 .text_inline {
     color: #444040;
     width: 200px;
@@ -45,7 +45,7 @@
     background-color: #d8efb5;
     color: #4676e3;
 }
-
+/*頁面遮罩*/
 .mask_page {
     position: absolute;
     left: 0;
@@ -56,10 +56,57 @@
     filter: alpha(opacity=80);
     display: none;
 }
-
+/*顯示載入圖片的位置*/
 .loading_image {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.btn_check_coupon {
+    margin-top:30px;
+    height: 50px;
+    background-color: transparent;
+    border-radius: 7px;
+    border: 2px solid #6c85be;
+    color: #5d90de;
+}
+
+.btn_check_coupon:hover {
+    height: 50px;
+    background-color: #5d90de;
+    border-radius: 8px;
+    border: 2px solid #6c85be;
+    color: white;
+    transition: 0.5s;
+}
+/*設定優惠券的表格圖形*/
+.coupon_display{
+    font-size:16px;
+    padding-right:20px;
+    margin-top:20px;
+    border:2px solid #7ea7e5;
+    border-radius:5px;
+}
+.coupon_display:hover {
+    transition: 0.5s;
+    box-shadow: 3px 3px 5px 5px #cccccc;
+}
+.coupon_link_style:hover {
+    color: #18367b;
+}
+.coupon_link_style:visited {
+    color: #83a3ec;
+}
+/*顯示該優惠券當前金額*/
+.text_show_discount {
+    color: #444040;
+    width: 300px;
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: normal;
+    background-color: #ebebeb;
+    border: 2px solid #ebebeb;
+    border-radius: 8px;
+}
+

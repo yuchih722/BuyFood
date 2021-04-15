@@ -20,16 +20,47 @@ namespace BuyFood_Template.Controllers
 {
     public class MemberController : Controller
     {
-        public void test()
+        public JsonResult test()
         {
-            (new ShareFunction()).sendGrid("always0537@gmail.com", "hihi", "訂單成功", "check your account");
-            
 
+            //(new ShareFunction()).sendGrid("always0537@gmail.com", "hihi", "訂單成功", "check your account");
+
+            //擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            //var products = db.TProducts.ToList();
+            //var bbb = db.TOrderDetails.OrderByDescending(n => n.COrder.COrderDate).Select(n => new
+            //{
+            //    n.CProductId,
+            //    product = n.CProduct
+            //}).Take(100)
+            //.GroupBy(n => n.CProductId).Select(n => new
+            //{
+            //    n.Key,
+            //    count = n.Count()
+            //}).OrderByDescending(n => n.count).Take(6).ToList();
+
+            //var ccc=bbb.Select(n => new
+            //{
+            //    n.Key,
+            //    n.count,
+            //    product = products.First(m => m.CProductId == n.Key)
+            //});
+
+            //foreach (var item in bbb)
+            //{
+            //    TProduct product = db.TProducts.FirstOrDefault(n => n.CProductId == item.Key);
+            //    item.product.Add(product);
+            //}
+            return Json("aaa");
         }
-        public string checkLogin()
+        public string checkLogin(string id)
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
+            {
+                if(id!="0")
+                    TempData[CDictionary.REDIRECT_FROM_WHERE] = id;
                 return "1";
+            }
+                
             return "0";
         }
         public IActionResult MemberCenter()
@@ -83,21 +114,19 @@ namespace BuyFood_Template.Controllers
         [HttpPost]
         public string savePassword([FromBody]changePassword data)
         {
-            //擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
-            //TMember reviseTarget = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(data.memberID));
+            擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
+            TMember reviseTarget = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(data.memberID));
 
-            //ShareFunction sf = new ShareFunction();
-            //SHA1 sha1 = SHA1.Create();
-            //string SHAoPassword = sf.GetHash(sha1, data.oPassword);
-            ////string SHAoPassword = data.oPassword;
-            //string SHAnPassword = sf.GetHash(sha1, data.nPassword);
+            ShareFunction sf = new ShareFunction();
+            SHA1 sha1 = SHA1.Create();
+            string SHAoPassword = sf.GetHash(sha1, data.oPassword);
+            //string SHAoPassword = data.oPassword;
+            string SHAnPassword = sf.GetHash(sha1, data.nPassword);
 
-            //if (SHAoPassword != reviseTarget.CPassword)
-            //    return "1";
-            //reviseTarget.CPassword = SHAnPassword;
-            //dbcontext.SaveChanges();
-            //return "0";
-
+            if (SHAoPassword != reviseTarget.CPassword)
+                return "1";
+            reviseTarget.CPassword = SHAnPassword;
+            dbcontext.SaveChanges();
             return "0";
         }
 

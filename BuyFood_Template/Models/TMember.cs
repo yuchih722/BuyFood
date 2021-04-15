@@ -34,6 +34,7 @@ namespace BuyFood_Template.Models
         public int? CReferrerId { get; set; }
         public string CFacebookId { get; set; }
         public DateTime? CRegisteredTime { get; set; }
+        public int? COpenMember { get; set; }
 
         public virtual ICollection<TBoard> TBoards { get; set; }
         public virtual ICollection<TChatRoom> TChatRooms { get; set; }
