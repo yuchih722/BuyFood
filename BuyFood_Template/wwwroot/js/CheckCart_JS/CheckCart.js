@@ -7,6 +7,8 @@ let input_location = "";     //儲存輸入的地址位置
 //console.log(pdtcart_obj.couponId);
 //將金額顯示在html中
 $(function () {
+    //加入通知群組
+    admAddToGroup('Order');
     $("#total_price").text('$' + pdtcart_obj.total);
     $("#discount_price").text('$' + pdtcart_obj.discount);
     $("#origin_price").text('$' + pdtcart_obj.origin);
@@ -47,6 +49,7 @@ $("#confirm_order").click(function () {
                     window.location.assign("/HomePage/Home");
                     localStorage.removeItem(users_cart_NoCheck);
                     localStorage.removeItem("cart_price");
+                    SendOrderMessage('Order')//傳送訂單通知
                 }
                 //取消遮罩效果
                 $("#cover_page").css({ "display": "none" });
@@ -117,6 +120,7 @@ $("#confirm_order").click(function () {
                             localStorage.removeItem("cart_price");
                             //取消遮罩效果
                             //$("#cover_page").css({ "display": "none" });
+                            SendOrderMessage('Order')//傳送訂單通知
                         }
                     })
                 },
@@ -259,3 +263,30 @@ async function sha256(message) {
     const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
     return hashHex;
 }
+
+
+
+
+//加入群組
+function admAddToGroup(ChannelID) {
+    var groupNameOrder = ChannelID.toString();
+    let userName = $("#adrLoginNameNow").val();
+
+    connection.invoke("AddGroup", groupNameOrder, userName).catch(function (err) {
+        return console.error(err.toString());
+    })
+}
+//加入群組
+
+//觸發發送通知事件
+function SendOrderMessage(ChannelID) {
+    var groupNameOrder = ChannelID.toString();
+    let userName = $("#adrLoginNameNow").val();
+    var messageOrder = '下了1筆訂單';
+    var adrfotoOrder = $("#user_foto").val();
+    var adrMemberIDForOrder = 101;
+    connection.invoke("SendMessageToGroup", groupNameOrder, userName, messageOrder, adrfotoOrder, adrMemberIDForOrder).catch(function (err) {
+        return console.log(err.toString());
+    });
+}
+//觸發發送通知事件
