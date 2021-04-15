@@ -700,7 +700,7 @@
                     console.log(aa);
                     UserImg = `<img width="20" height="20" src="${aa}" alt="">`*@
 
-                        @*var thispicForMember = @UserLoginImgForPage;
+                    @*var thispicForMember = @UserLoginImgForPage;
                     console.log(thispicForMember)
                     console.log(thispicForMember.replace('~', ''))
                  //var UserImg=`<img width="20" height="20" src="${thispicForMember.replace('~', '')}" alt="">`;
@@ -729,10 +729,11 @@
                     $("#divLogOut").html();
                     return "0"
                 }
-            }.then(function (cwc_checStates) {
-                console.log(cwc_checStates)
-            })
-        });
+                }//.then(function (cwc_checStates) {
+                //    console.log(cwc_checStates)
+                //})
+            }
+        );
     </script>
     <script>
         function 登出() {
