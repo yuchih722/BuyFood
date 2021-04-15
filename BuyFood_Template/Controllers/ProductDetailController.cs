@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -18,7 +19,12 @@ namespace BuyFood_Template.Controllers
         {
 
             //var product = db.TProducts.Where(x => x.CProductId == id).FirstOrDefault();
-
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
+            {
+                ViewBag.USERNAME = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
+                ViewBag.USERPHOTO = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);
+                ViewBag.USERUSERID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);
+            }
             var product = new 擺腹BuyFoodContext().TProducts.Where(x => x.CProductId == id).FirstOrDefault();
             return View(product);
 
@@ -130,32 +136,22 @@ namespace BuyFood_Template.Controllers
             var x = db.TProducts.Select(n => new { table, tablea }).FirstOrDefault();
             return Json(x);
         }
-        public JsonResult gethotproduct()  //熱門商品
+        public JsonResult gethotproduct(int id)  //相關風格商品
         {
-            var table = (from x in db.TOrderDetails
-                        group x by x.CProductId into g
-                        orderby g.Count() descending
-                        select new
+            var table = from x in db.TProducts
+                        where x.CProductId == id
+                        join a in db.TProducts
+                        on x.CProductTagId equals a.CProductTagId
+                        orderby a.CIsOnSaleId
+                        select new 
                         {
-                            產品 = g.Key,
-                            數量 = g.Count(),
-                        }).Take(4);
-
+                            product=a,
+                            coun = a.TOrderDetails.Count(x => x.CFeedBackStatus == 1 && x.CScores != null),
+                            sum = a.TOrderDetails.Where(x => x.CFeedBackStatus == 1 && x.CScores != null).Sum(m => m.CScores)
+                        };
             
-            List<int> get_hot_productID = new List<int>();
-            List<TProduct> hot_product_row = new List<TProduct>();
-            foreach (var a in table)
-            {
-                get_hot_productID.Add(a.產品);
-            }
-
-            for (int i = 0; i < get_hot_productID.Count(); i++)
-            {
-                TProduct gg= db.TProducts.Where(n => n.CProductId == get_hot_productID[i]).Select(n => n).FirstOrDefault();
-                hot_product_row.Add(gg);
-            }
-
-            return Json(hot_product_row);
+            
+            return Json(table);
         }
         public JsonResult getProductsByCategory(string id, string br, string lu, string di)
         {

@@ -21,48 +21,52 @@ function addCart(obj_product) {
         window.location.assign("/ShoppingCart/CurrentCartItem");
         return;
     }
-    if (obj_product.cQuantity <=0 || obj_product.cIsOnSaleId != 1) {
+    if (obj_product.cQuantity <=0) {
         window.alert("此商品目前已售完，請稍後");
+        return;
+    }
+    if (obj_product.cIsOnSaleId == 3) {
+        window.alert("此商品目前已停售，請耐心等候");
         return;
     }
     var NowDate = new Date();  /*現在時間*/
     var h = NowDate.getHours();
     console.log(h)
     if (h >= 3 && h <= 10) {
-        console.log("1")
+        //console.log("1")
         if (obj_product.cIsBreakFast == 0) {
             window.alert("此時段尚未販售，請耐心等待");
             return;
         }
     }
     if (h >= 10 && h <= 17) {
-        console.log("2")
+        //console.log("2")
         if (obj_product.cIsLunch == 0) {
             window.alert("此時段尚未販售，請耐心等待");
             return;
         }
     }
     if (h >= 17 && h <= 23 || h >= 0 && h <= 3) {
-        console.log("3")
+        //console.log("3")
         if (obj_product.cIsDinner == 0) {
             window.alert("此時段尚未販售，請耐心等待");
             return;
         }
     }
-    console.log("4")
+    //console.log("4")
     if (localStorage.getItem(users_cart_No)) {
         let pdtindex = isExist(obj_product.cProductId);
         if (pdtindex != -1) {
-            console.log("5")
+            //console.log("5")
             window.alert("此商品已在購物車中");
            
         } else {
-            console.log("6")
+            //console.log("6")
             addItemInCart(obj_product);
             
         }
     } else {
-console.log("7")
+//console.log("7")
         addItemInCart(obj_product);
         
     }

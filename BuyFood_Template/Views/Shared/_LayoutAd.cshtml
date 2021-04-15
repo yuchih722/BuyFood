@@ -47,13 +47,14 @@
                     <li class="dropdown dropdown-inbox">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="goto_click_num_chat_yu">
                             <i class="fa fa-envelope-o"></i>
-                            <span class="badge badge-primary envelope-badge" name="num_New_notice"> </span> @*抓取幾個最新訊息*@
+                            <span class="badge badge-primary envelope-badge" name="num_New_notice" id="yu_forzerothemessage"> </span> @*抓取幾個最新訊息*@
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" id="chat_review">
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" >
                             <li class="dropdown-menu-header">
                                 <div>
                                     <span><strong name="num_New_notice">  </strong>筆 新訊息</span>
                                     <a class="pull-right" href="/admChat/admChatView">顯示全部</a>
+                                    <div id="chat_review"></div>
                                 </div>
                             </li>
                         </ul>
@@ -491,3 +492,5 @@
 <script src="~/YUYUYU/JS/時間日期顯示.js"></script>
 <script src="~/YUYUYU/JS/登出呼叫登出.js"></script>
 <script src="~/YUYUYU/JS/後台小鈴鐺聊天.js"></script>
+@* <script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/adri/sginalR/OrderSignal.js"></script> *@
