@@ -38,7 +38,7 @@ namespace BuyFood_Template.Controllers
         {
             if(OpayData.RtnCode == 1)
             {
-                //未寫
+                (new ShareFunction()).sendGrid("fg2216875@gmail.com", "hihi", "訂單成功", "查看詳細");
             }
         }
         [HttpPost]
