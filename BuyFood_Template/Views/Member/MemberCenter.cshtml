@@ -238,9 +238,12 @@
                 window.location.href ="/api/SendGrid/SendNotification"
         }
         function test2() {
-            var time = new Date();
-            console.log(time.getHours());
-            console.log(time.getTime());
+            $.ajax({
+                url: `/Member/test`,
+                success: function (data) {
+                    console.log(data);
+                }
+                });
         }
 
         function updateData(memberID) {
