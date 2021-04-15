@@ -157,8 +157,10 @@
             //console.log(data);
             var hot = "";
             pdtItem = data;
-            for (let i = 0; i < data.length; i++) {
+
+            for (let i = 0; i <data.length ; i++) {
                 if (data[i].product.cIsOnSaleId != 1) continue;
+                if (data.length > 8) return ;
                 hot += `<div class="col-lg-3 col-md-4 col-sm-6">
                                             <div class="product__item">
                                                 <div class="product__item__pic set-bg" style="background-image: url(${data[i].product.cPicture.replace("~", "")})">

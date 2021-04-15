@@ -142,6 +142,7 @@ namespace BuyFood_Template.Controllers
                         where x.CProductId == id
                         join a in db.TProducts
                         on x.CProductTagId equals a.CProductTagId
+                        orderby a.CIsOnSaleId
                         select new 
                         {
                             product=a,
