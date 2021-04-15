@@ -106,16 +106,20 @@
         url: "/ProductDetail/smelltit?id=" + id,
         type: "get",
         success: function (data) {
-            //console.log(data);
+            var NowDate = new Date();  /*現在時間*/
+            var h = NowDate.getHours();
+            
             var productQuantity = data.table.cQuantity <= 0 ? `<span style="color:#ff0000">已售完</span>` : `<span>${data.table.cQuantity}</span>`
             var productdetail=""
-            if (data.table.cQuantity <= 0 || data.table.cIsOnSaleId !=1) {
-                productdetail+=`<input type = "button" class="btn_enable_style"  value = "此商品已完售" disabled>`
+            if (data.table.cQuantity <= 0) {
+                productdetail += `<input type = "button" class="btn_enable_style"  value = "此商品已完售" disabled><input id="goto_botton" type = "button" style="margin-left:50px" class="btn btn-info btn-lg" value="尋找同類型商品"></button>`
                 $("#btu_check_stock").hide();
-            }
-            else
+            } else if (data.table.cIsOnSaleId == 3) {
+                productdetail += `<input type = "button" class="btn_enable_style"  value = "此商品暫停販售" disabled><input id="goto_botton" type = "button" style="margin-left:50px" class="btn btn-info btn-lg" value="尋找同類型商品"></button>`
+                $("#btu_check_stock").hide();
+            } else
                 productdetail += `<input type = "button" class="primary-btn" onclick = "addCart(${data.table.cProductId})"  value = "加入購物車" >`
-
+            
              productdetail += ` <ul>
                         <li><b>庫存量</b> ${productQuantity}</li>
                         <li><b>類型</b> <span>${data.tablea} </span></li>
@@ -138,31 +142,48 @@
                 $("#tagfood").append(` <a href="javascript:void(0)" class="btn btn - outline - primary">晚</a> `)
             }
 
+            $("#goto_botton").click(function () {
+                console.log("00")
+                $('html, body').animate({ scrollTop: $('#maybe_like').offset().top }, 500);
+            })
         }
     })
 
 
     $.ajax({
-        url: "/ProductDetail/gethotproduct",
+        url: "/ProductDetail/gethotproduct?id="+id,
         type: "get",
         success: function (data) {
-            console.log(data);
+            //console.log(data);
             var hot = "";
             pdtItem = data;
-            for (let i = 0; i < data.length; i++) {
 
+            for (let i = 0; i <data.length ; i++) {
+                if (data[i].product.cIsOnSaleId != 1) continue;
+                if (data.length > 8) return ;
                 hot += `<div class="col-lg-3 col-md-4 col-sm-6">
                                             <div class="product__item">
-                                                <div class="product__item__pic set-bg" style="background-image: url(${data[i].cPicture.replace("~", "")})">
-                                                 <ul class="product__item__pic__hover">
-                                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                                        <li><a href="javascript: void(0)"  onclick="addCartlist(pdtItem[${i}])"><i class="fa fa-shopping-cart"></i></a></li>
+                                                <div class="product__item__pic set-bg" style="background-image: url(${data[i].product.cPicture.replace("~", "")})">
+                                                 <ul class="product__item__pic__hover" style="text-align: right;">
+                                                        
+                                                        <li><a href="javascript: void(0)"  onclick="addCartlist(pdtItem[${i}].product)"><i class="fa fa-shopping-cart"></i></a></li>
                                                     </ul>
-                                                </div>
+                                                    <ul class="start_for_homepage">`
+                let Average_message_yu = data[i].coun <= 0 ? 0 : parseInt(data[i].sum / data[i].coun)
+                    for (let x = 0; x < Average_message_yu; x++) {
+                        hot +=`<li> <span class="fa fa-star checked" style="color: orange;font-size:25px"></span></li > `
+                    }
+                    for (let g = 0; g < 5 - Average_message_yu; g++) {
+                        hot += `<li> <span class="fa fa-star checked" style="color: #d5d3cf;font-size:25px"></span></li > `
+                    }                              
+                hot += ` </ul >
+                    <span class="product_time_yu">製作時間：${data[i].product.cFinishedTime}分鐘</span> `
+
+                hot +=   ` </div >
                                                 <div class="product__item__text">
-                                                    <h6><a href="/ProductDetail/ProductData?id=${data[i].cProductId}">${data[i].cProductName}</a></h6>
-                                                    <h5>$ ${data[i].cPrice}</h5>
+                                                    <h6><a href="/ProductDetail/ProductData?id=${data[i].product.cProductId}">${data[i].product.cProductName}</a></h6>
+                                                    <h5>$ ${data[i].product.cPrice}</h5>
+                                                    <h6>庫存量 ${ data[i].product.cQuantity}</h6>
                                                 </div>
                                             </div>
                                         </div>`
@@ -171,5 +192,9 @@
         }
     })
     //$.ajax
+//<li><a href="#"><i class="fa fa-heart"></i></a></li>
+    //<li><a href="#"><i class="fa fa-retweet"></i></a></li>
 
 })
+
+    

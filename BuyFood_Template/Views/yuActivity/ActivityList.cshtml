@@ -13,7 +13,7 @@
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 
-<div class="box-module">
+<div class="box-module" >
     <div class="box-title">狀態分類</div>
     <div class="box-content padding15">
         <a href="javascript: void(0)" id="All">
@@ -199,7 +199,7 @@
                              <th class="align" width="5%">活動連結</th>
                              <th width="15%" class="align">活動創立時間</th>
                              <th class="align" width="5%">狀態</th>
-                              <th width="10%" class="align" >操作</th>
+                              <th  class="align" >操作</th>
                              </tr>
                              </thead>
                              <tbody id="yuActivitytbody">`
@@ -217,8 +217,8 @@
                                 <td style="vertical-align: middle;">${data[i].cTime}
                                 <td>${shobtn}
                                 <td style="vertical-align: middle;display:none" name="btnEDIT">
-                                <a   class="btn btn-outline-secondary btn-xs" href="/yuActivity/ActionEdit?id=${data[i].cActivityId}"><i class="fa fa-pencil font-18">編輯</i></a>
-                                <a  class="btn btn-outline-danger btn-xs" onclick="test_getid(${data[i].cActivityId})" ><i class="fa fa-trash font-18">刪除</i></a>`
+                                <a   class="btn btn-outline-success" href="/yuActivity/ActionEdit?id=${data[i].cActivityId}"><i class="fa fa-pencil font-18">編輯</i></a>
+                                <a  class="btn btn-outline-danger" onclick="test_getid(${data[i].cActivityId})" ><i class="fa fa-trash font-18">刪除</i></a></td>`
                 }
                 txttable += ` </tbody>
                                 </table>
