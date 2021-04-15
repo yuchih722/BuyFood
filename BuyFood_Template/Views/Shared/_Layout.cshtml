@@ -710,6 +710,7 @@
                     //$("divUserImg").html(UserImg);
                     $("#divLogin").html(LogInTxt);
                     $("#divLogOut").html(LogOutTxt);
+                    return "1";
                 }
                 else if (data == "isAdm") {
                     LogInTxt = `<a href="/Member/MemberCenter" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
@@ -718,6 +719,7 @@
                     $("#divLogin").html(LogInTxt);
                     $("#divLogOut").html(LogOutTxt);
                     $("#admOnly").html(AdmTxt);
+                    return "9"
                 }
                 else {
                     LogInTxt = `<a href="/HomePage/登入" id="getLoginName "><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
@@ -725,8 +727,11 @@
                     //$("divUserImg").html();
                     $("#divLogin").html(LogInTxt);
                     $("#divLogOut").html();
+                    return "0"
                 }
-            }
+            }.then(function (cwc_checStates) {
+                console.log(cwc_checStates)
+            })
         });
     </script>
     <script>
