@@ -1,22 +1,11 @@
 ﻿
 $(function () {
-
     $.ajax({
         url: "/HomePage/get_categorysname",
         type: "GET",
         success: function (dataForHomePage) {
             console.log(dataForHomePage)
-            //首頁套餐
-            const forCombo = dataForHomePage.forCombo;
-            if (forCombo != 0 && forCombo.length > 0) {
-                $("#cwc_howManyCombo").html(forCombo.length);
-                var cwc_pageCombo = "";
-                for (var i = 0; i < forCombo.length; i++) {
-                    cwc_pageCombo += `<div style="display:inline-block">${forCombo[i].cComboName}</div><button class="btn btn-success btn-sm">訂購</button>`
-                }
-                $("#cwc_div_homePageCombo").html(cwc_pageCombo);
 
-            }
 
             //首頁商品
             var category_li =
@@ -35,8 +24,7 @@ $(function () {
                                             <div class="featured__item">
                                                 <div class="featured__item__pic set-bg" style="background-image: url(${dataForHomePage.forProduct[i].tProducts[y].tProducts.cPicture.replace("~", "")})">
                                                     <ul class="featured__item__pic__hover">
-                                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+
                                                         <li><a href="javascript: void(0)" onclick="addCart(pullme[${i}].tProducts[${y}].tProducts)"><i class="fa fa-shopping-cart"></i></a></li>
                                                     </ul>
                                                     <ul class="start_for_homepage">`
@@ -76,3 +64,5 @@ $(function () {
     })
 })
 
+    //< li > <a href="#"><i class="fa fa-heart"></i></a></li >
+    //    <li><a href="#"><i class="fa fa-retweet"></i></a></li>

@@ -1,7 +1,7 @@
 ﻿let member_NoCheck = $("#user_member").val();
 let users_cart_NoCheck = "cart" + member_NoCheck;   //依登入的會員改變localstorage的Key值
-let pdtcart = JSON.parse(localStorage.getItem(users_cart_NoCheck));             //從localStorage讀取購物車內的資料
-let pdtcart_obj = JSON.parse(localStorage.getItem("cart_price"));   //取得購物車內的價格
+let pdtcart = JSON.parse(localStorage.getItem(users_cart_NoCheck));  //從localStorage讀取購物車內的資料
+let pdtcart_obj = JSON.parse(localStorage.getItem("cart_price"));    //取得購物車內的價格
 let sum_total_time = 0;      //儲存訂單需要的製作時間及路程時間總和
 let input_location = "";     //儲存輸入的地址位置
 //console.log(pdtcart_obj.couponId);
@@ -57,6 +57,9 @@ $("#confirm_order").click(function () {
         for (let i = 0; i < pdtcart.length; i++) {
             product_item += "#" + pdtcart[i].cProductName + " X " + pdtcart[i].QuantityInCart;
         }
+        let web_host = window.location.host;
+        console.log(web_host);
+        $("#backUrl").val("https://"+ web_host + "/HomePage/Home");
         var NowDate = new Date();
         //用日期時間當作商品編號
         let order_No = NowDate.getFullYear().toString() + NowDate.getMonth().toString() + NowDate.getDate().toString() + NowDate.getHours().toString()
@@ -95,7 +98,6 @@ $("#confirm_order").click(function () {
             buttons: {
                 "確定": function () {
                     $(this).dialog("close");
-
                     let obj_cart_order = {
                         cartOrder: pdtcart,
                         couponSelected: pdtcart_obj.couponId,
@@ -110,19 +112,24 @@ $("#confirm_order").click(function () {
                         contentType: "application/json; charset=utf-8",
                         data: JSON.stringify(obj_cart_order),
                         success: function () {
-                            $("#send_to_opay").click();
+                            $("#send_to_opay").click();                          
                             localStorage.removeItem(users_cart_NoCheck);
                             localStorage.removeItem("cart_price");
                             //取消遮罩效果
-                            $("#cover_page").css({ "display": "none" });
+                            //$("#cover_page").css({ "display": "none" });
                         }
                     })
                 },
                 "取消": function () {
                     $(this).dialog("close");
+                    //取消遮罩效果
                     $("#cover_page").css({ "display": "none" });
                 }
-            }
+            },
+            //關閉小視窗的觸發事件
+            //close: function () {
+            //    $("#cover_page").css({ "display": "none" });
+            //}
         });
     }
 
@@ -153,6 +160,7 @@ $("#search_address").click(
             zoom: 14,
             center: { lat: 25.0342831, lng: 121.5447801 }
         });
+
         directionsRenderer.setMap(map);
         var request = {
             origin: { 'query': origin1 },
@@ -185,20 +193,56 @@ $("#search_address").click(
             }, callback);
         //取得路線資訊後取出預估時間
         function callback(response, status) {
-            if (status == 'OK') {
+            if (status != 'OK') {
+                window.alert("查不到該路線資訊");
+                return;
+            }
+            geocoder = new google.maps.Geocoder();
+            //geocoder.geocode()為取得該輸入地址的經緯度，再帶入computeDistanceBetween()方法
+            geocoder.geocode({ 'address': input_address }, function (results, status) {
+                if (status != 'OK') {
+                    window.alert("輸入的位置有誤");
+                    $("#cover_page").css({ "display": "none" });   //取消遮罩效果
+                    return;
+                    //console.log(results[0].geometry.location.lat());
+                }
+                //計算出發地與目的地的直線距離
+                let distance_inline = Math.floor(google.maps.geometry.spherical.computeDistanceBetween(
+                    new google.maps.LatLng({ lat: 25.033942297235797, lng: 121.54340761133165 }),
+                    new google.maps.LatLng({ lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng() })
+                ))
+                //規劃路線後Circle會消失，故再生成一次
+                const cityCircle = new google.maps.Circle({
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 0.3,
+                    strokeWeight: 2,
+                    fillColor: "#FF0000",
+                    fillOpacity: 0.2,
+                    map,
+                    center: { lat: 25.033942297235797, lng: 121.54340761133165 },
+                    radius: 3000,
+                });
+                //判斷輸入的距離是否超過Circle範圍
+                if (distance_inline > cityCircle.radius) {
+                    window.alert("輸入的位置超過可外送的距離，請重新再設定一次");
+                    $("#cover_page").css({ "display": "none" });   //取消遮罩效果
+                    return;
+                }
+
                 console.log(response);
                 //console.log(response.rows[0].elements[0].duration.text);
                 input_location = response.destinationAddresses[0];
                 let duration_time = Math.round((response.rows[0].elements[0].duration.value) / 60);
                 sum_total_time = duration_time + pdtcart_obj.finishTime    //將路程與製作時間相加
-                let text = "路程時間:" + duration_time + "鐘、製作時間:" + pdtcart_obj.finishTime + "鐘。 總計:" + sum_total_time +"鐘";
+                let text = "路程時間:" + duration_time + "鐘、製作時間:" + pdtcart_obj.finishTime + "鐘。 總計:" + sum_total_time + "鐘";
                 let text_address = "目前輸入的地點為:" + input_location;
                 $("#estimate_time").html(text);                //將預估時間顯示在畫面上
                 $("#confirm_order").prop('disabled', false);   //啟用'確認購買'的按鈕
                 $("#current_address").html(text_address);      //顯示目前輸入的地址
                 $("#confirm_order").css('background-color', '#7FAD39');
                 $("#cover_page").css({ "display": "none" });   //取消遮罩效果
-            }
+            });
+
         }
     }
 )

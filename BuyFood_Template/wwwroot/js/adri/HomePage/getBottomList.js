@@ -20,7 +20,7 @@ function NonLoginBotton() {
         type: "get",
         success: function (data) {
 
-            //console.log(data);
+            //console.log(data.lastProducts);
 
             var textForReviewsP = `<div class="col-lg-4 col-md-6">
                                                         <div class="latest-product__text">
@@ -140,11 +140,11 @@ function DidLoginBotton(memberID) {
         data: { "MemberID": memberID},
         type: "get",
         success: function (data) {
-
+            console.log(data.reviewProducts);
 
             var textForReviewsP = `<div class="col-lg-4 col-md-6">
                                                         <div class="latest-product__text">
-                                                        <h4>您最常購買</h4>
+                                                        <h4>最常購買</h4>
                                                         <div class="latest-product__slider owl-carousel">`
             var countForReview = 1;
             for (let a = 0; a < 2; a++) {

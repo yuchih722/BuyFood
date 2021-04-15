@@ -13,7 +13,12 @@ namespace BuyFood_Template.Controllers
         public IActionResult SearchOrder()
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
+            {
                 ViewBag.USERNAME = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
+                ViewBag.USERPHOTO = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);
+                ViewBag.USERUSERID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);
+            }
+
             //{
             //    return RedirectToAction("登入", "HomePage");
             //}
@@ -38,11 +43,11 @@ namespace BuyFood_Template.Controllers
             //==OrderTIme
 
             //總金額
-            var OrderGroupBy = from o in db.TOrders
-                               join od in db.TOrderDetails on o.COrderId equals od.COrderId
-                               where o.CMemberId == memberID
-                               group od by od.COrderId into g
-                               select new {cOrderID=g.Key, cTotalPrice=g.Sum(n => (n.CQuantity * n.CPriceAtTheTime)) } ;
+            var OrderGroupBy = (from o in db.TOrders
+                                join od in db.TOrderDetails on o.COrderId equals od.COrderId
+                                where o.CMemberId == memberID
+                                group od by od.COrderId into g
+                                select new { cOrderID = g.Key, cTotalPrice = g.Sum(n => (n.CQuantity * n.CPriceAtTheTime)) }).OrderByDescending(n => n.cOrderID).Take(10);
 
 
             return Json(OrderGroupBy.ToList());
@@ -55,11 +60,9 @@ namespace BuyFood_Template.Controllers
 
 
 
-            var AllOrders = db.TOrders.Where(n => n.CMemberId == memberID).Select(n => n);
-
-            var OrderStatusDate = from o in db.TOrders
-                                  where o.CMemberId == memberID
-                                  select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate,cOID=o.COrderId };
+            var OrderStatusDate = (from o in db.TOrders
+                                   where o.CMemberId == memberID
+                                   select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate, cOID = o.COrderId }).OrderByDescending(n => n.cOID).Take(10);
 
 
             return Json(OrderStatusDate.ToList());
@@ -102,11 +105,11 @@ namespace BuyFood_Template.Controllers
             var memberID = db.TMembers.Where(n => n.CName == MemberName).Select(n => n.CMemberId).FirstOrDefault();
 
             //總金額
-            var OrderGroupBy = from o in db.TOrders
-                               join od in db.TOrderDetails on o.COrderId equals od.COrderId
-                               where o.CMemberId == memberID && o.COrderStatus.COrderStatusId == 2
-                               group od by od.COrderId into g
-                               select new { cOrderID = g.Key, cTotalPrice = g.Sum(n => (n.CQuantity * n.CPriceAtTheTime)) };
+            var OrderGroupBy = (from o in db.TOrders
+                                join od in db.TOrderDetails on o.COrderId equals od.COrderId
+                                where o.CMemberId == memberID && o.COrderStatus.COrderStatusId == 2
+                                group od by od.COrderId into g
+                                select new { cOrderID = g.Key, cTotalPrice = g.Sum(n => (n.CQuantity * n.CPriceAtTheTime)) }).OrderByDescending(n => n.cOrderID).Take(10);
 
 
             return Json(OrderGroupBy.ToList());
@@ -117,9 +120,9 @@ namespace BuyFood_Template.Controllers
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
             var memberID = db.TMembers.Where(n => n.CName == MemberName).Select(n => n.CMemberId).FirstOrDefault();
 
-            var OrderStatusDate = from o in db.TOrders
-                                  where o.CMemberId == memberID && o.COrderStatus.COrderStatusId == 2
-                                  select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate };
+            var OrderStatusDate = (from o in db.TOrders
+                                   where o.CMemberId == memberID && o.COrderStatus.COrderStatusId == 2
+                                   select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate, cOID = o.COrderId }).OrderByDescending(n => n.cOID).Take(10);
 
 
             return Json(OrderStatusDate.ToList());
