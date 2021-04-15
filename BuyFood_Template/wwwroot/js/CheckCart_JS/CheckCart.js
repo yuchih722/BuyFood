@@ -285,7 +285,7 @@ function SendOrderMessage(ChannelID) {
     var messageOrder = '下了1筆訂單';
     var adrfotoOrder = $("#user_foto").val();
     var adrMemberIDForOrder = 101;
-    connection.invoke("SendMessageToGroup", groupNameOrder, userName, messageOrder, adrfotoOrder, adrMemberIDForOrder).catch(function (err) {
+    connection.invoke("SendMessageToOrder", groupNameOrder, userName, messageOrder, adrfotoOrder, adrMemberIDForOrder).catch(function (err) {
         return console.log(err.toString());
     });
 }

@@ -33,7 +33,7 @@ $.ajax({
                                 </div>
                                 </li>`
         }
-        $("#chat_review").append(chat_yu)
+        $("#chat_review").html(chat_yu)
     }
 })
 }
@@ -41,7 +41,7 @@ let time_chat_yu = window.setInterval("needtoReply()", 2000)
 
 $("#goto_click_num_chat_yu").click(function() {
     window.clearInterval(time_chat_yu);
-    $("[name='num_New_notice']").html("0"),
+    $("#yu_forzerothemessage").html("0"),
         
     $.ajax({
         url: "/AdmHome/do_all_review_0",
