@@ -348,47 +348,27 @@ namespace BuyFood_Template.Controllers
         }
         public JsonResult get_categorysname() //抓取所有商品顯示在首頁
         {
-            
-           擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var table = db.TProductCategories.Select(n => new {n.CProductCategoryId,n.CCategoryName,
-                tProducts = n.TProducts.Select(m => new 
+
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            var table = db.TProductCategories.Select(n => new
+            {
+                n.CProductCategoryId,
+                n.CCategoryName,
+                tProducts = n.TProducts.Select(m => new
                 {
-                    tProducts=m,
-                    coun=m.TOrderDetails.Count(b=>b.CFeedBackStatus==1&&b.CScores!=null),
-                    sum=m.TOrderDetails.Where(m=>m.CFeedBackStatus == 1 && m.CScores != null).Sum(m=>m.CScores)
+                    tProducts = m,
+                    coun = m.TOrderDetails.Count(b => b.CFeedBackStatus == 1 && b.CScores != null),
+                    sum = m.TOrderDetails.Where(m => m.CFeedBackStatus == 1 && m.CScores != null).Sum(m => m.CScores)
                 })
             });
-            
 
-            if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)))
-            {
-                int memberID = int.Parse(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID));
-                var homePageCombe = db.TCombos.Where(n => n.CMemberId == memberID).Select(n => new
-                {
-                    n.CComboId,
-                    n.CComboName,
-                    comboCount = n.TComboDetails.Count(),
-                    comboNotSalesCount = n.TComboDetails.Count(m => m.CProduct.CIsOnSaleId == 3),
-                    comboSum = n.TComboDetails.Sum(m => m.CProduct.CPrice),
-                    comboDetails = n.TComboDetails.Select(m => new
-                    {
-                        m.CProductId,
-                        m.CProduct,
-                    })
-                });
 
-                return Json(new
-                {
-                    forProduct = table.ToList(),
-                    forCombo = homePageCombe.ToList()
-                }) ;
-            }
 
             return Json(new
             {
                 forProduct = table.ToList(),
-                forCombo ="0",
             });
+
         }
 
         public JsonResult getBottomList()  

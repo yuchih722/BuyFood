@@ -107,12 +107,23 @@
                                 function initMap() {
                                     var initlocation = { lat: 25.033942297235797, lng: 121.54340761133165 };  //大安資策會經緯度
                                     var map = new google.maps.Map(document.getElementById('map'), {
-                                        zoom: 14,
+                                        zoom: 13,
                                         center: initlocation
                                     });
                                     var marker = new google.maps.Marker({
                                         position: initlocation,	  //地圖標籤的放置位置
                                         map: map                  //這邊的map指的是第四行的map變數
+                                    });
+                                    //在地圖中劃出圓形半徑
+                                    const cityCircle = new google.maps.Circle({
+                                        strokeColor: "#FF0000",
+                                        strokeOpacity: 0.4,
+                                        strokeWeight: 2,
+                                        fillColor: "#FF0000",
+                                        fillOpacity: 0.2,
+                                        map,
+                                        center: { lat: 25.033942297235797, lng: 121.54340761133165 },
+                                        radius: 3000,
                                     });
                                 }
                             </script>
