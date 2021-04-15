@@ -294,6 +294,10 @@ namespace BuyFood_Template.Controllers
                 return Json(true);
             }
         }
+        public IActionResult forgetPwd()
+        {
+            return PartialView();
+        }
         public string SLogout()
         {
             HttpContext.Session.Remove(CDictionary.CURRENT_LOGINED_USERNAME);
@@ -341,7 +345,8 @@ namespace BuyFood_Template.Controllers
         }
         public JsonResult get_categorysname() //抓取所有商品顯示在首頁
         {
-            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            
+           擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
             var table = db.TProductCategories.Select(n => new {n.CProductCategoryId,n.CCategoryName,
                 tProducts = n.TProducts.Select(m => new 
                 {
@@ -350,8 +355,37 @@ namespace BuyFood_Template.Controllers
                     sum=m.TOrderDetails.Where(m=>m.CFeedBackStatus == 1 && m.CScores != null).Sum(m=>m.CScores)
                 })
             });
+            
 
-            return Json(table);
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)))
+            {
+                int memberID = int.Parse(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID));
+                var homePageCombe = db.TCombos.Where(n => n.CMemberId == memberID).Select(n => new
+                {
+                    n.CComboId,
+                    n.CComboName,
+                    comboCount = n.TComboDetails.Count(),
+                    comboNotSalesCount = n.TComboDetails.Count(m => m.CProduct.CIsOnSaleId == 3),
+                    comboSum = n.TComboDetails.Sum(m => m.CProduct.CPrice),
+                    comboDetails = n.TComboDetails.Select(m => new
+                    {
+                        m.CProductId,
+                        m.CProduct,
+                    })
+                });
+
+                return Json(new
+                {
+                    forProduct = table.ToList(),
+                    forCombo = homePageCombe.ToList()
+                }) ;
+            }
+
+            return Json(new
+            {
+                forProduct = table.ToList(),
+                forCombo ="0",
+            });
         }
 
         public JsonResult getBottomList()  
@@ -426,6 +460,8 @@ namespace BuyFood_Template.Controllers
 
             var lastProducts = db.TProducts.OrderByDescending(n => n.CProductId).Select(n => n).Take(6);
 
+
+
             #endregion
 
             #region //好評商品
@@ -446,21 +482,24 @@ namespace BuyFood_Template.Controllers
 
             #endregion
 
-            #region //熱評商品
+            #region //最常購買
 
-            var review = (from od in db.TOrderDetails
-                          where od.CReview != null
-                          group od by od.CProductId into g
-                          select new
-                          {
-                              g.Key,
-                              ReviewCounts = g.Count()
-                          }).OrderByDescending(n => n.ReviewCounts).Select(n => n.Key).ToList().Take(6);
-
-            List<TProduct> ReviewProducts = new List<TProduct>();
-            foreach (var p in review)
+            var ReviewProducts = db.TOrderDetails.OrderByDescending(n => n.COrder.COrderDate).Select(n => new
             {
-                ReviewProducts.Add(db.TProducts.Where(n => n.CProductId == p).Select(n => n).FirstOrDefault());
+                n.CProductId,
+                product = n.CProduct
+            }).Take(100)
+            .GroupBy(n => n.CProductId).Select(n => new
+            {
+                n.Key,
+                product = new List<TProduct>(),
+                count = n.Count()
+            }).OrderByDescending(n => n.count).Take(6).ToList();
+
+            foreach (var item in ReviewProducts)
+            {
+                TProduct product = db.TProducts.FirstOrDefault(n => n.CProductId == item.Key);
+                item.product.Add(product);
             }
 
             #endregion

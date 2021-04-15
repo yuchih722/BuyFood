@@ -56,5 +56,7 @@ namespace BuyFood_Template.ViewModel
         public string? code { get; set; }
         public int? CReferrerID { get { return iv_CreateMember.CReferrerId; } set { iv_CreateMember.CReferrerId = value; } }
         public DateTime? CRegisteredTime { get { return iv_CreateMember.CRegisteredTime; } set { iv_CreateMember.CRegisteredTime = value; } }
+        public int? COpenMember { get { return iv_CreateMember.COpenMember; } set { iv_CreateMember.COpenMember = value; } }
+
     }
 }

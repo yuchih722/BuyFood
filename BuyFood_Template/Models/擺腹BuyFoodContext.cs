@@ -399,6 +399,8 @@ namespace BuyFood_Template.Models
                     .HasMaxLength(50)
                     .HasColumnName("cName");
 
+                entity.Property(e => e.COpenMember).HasColumnName("cOpenMember");
+
                 entity.Property(e => e.CPassword)
                     .HasMaxLength(50)
                     .HasColumnName("cPassword");

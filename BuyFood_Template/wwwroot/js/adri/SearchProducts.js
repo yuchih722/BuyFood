@@ -65,7 +65,7 @@ $("#searchBtn").on("click", function () {
         },
         type: "POST",
         success: function (data) {
-            console.log(data)
+            console.log(data[1])
 
             var itemPerPage = 8;
             var HowManyPages = (data.length / itemPerPage);//40/8 =5頁;
@@ -89,14 +89,14 @@ $("#searchBtn").on("click", function () {
                 label += `
                                         <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
                                         <div class="featured__item">
-                                        <div class="featured__item__pic set-bg" style="background-image: url(${data[i].products.cPicture.replace("~", "")})">
+                                        <div class="featured__item__pic set-bg" style="background-image: url(${data[i].tProduct.cPicture.replace("~", "")})">
                                         <ul class="featured__item__pic__hover">
                                          <li><a href = "#" ><i class="fa fa-heart"></i></a></li>
                                          <li><a href = "#" ><i class="fa fa-retweet"></i></a></li>
-                                         <li><a href="javascript: void(0)" onclick="addCart(pdtItem[${i}].products)"><i class="fa fa-shopping-cart"></i></a></li>
+                                         <li><a href="javascript: void(0)" onclick="addCart(pdtItem[${i}].tProduct)"><i class="fa fa-shopping-cart"></i></a></li>
                                          </ul>
                                                <ul class="start_for_homepage">`
-                let Average_message_adri = data[i].coun <= 0 ? 0 : parseInt(data[i].sum / data[i].coun)
+                let Average_message_adri = data[i].count <= 0 ? 0 : parseInt(data[i].sum / data[i].count)
                 for (let x = 0; x < Average_message_adri; x++) {
                     label += `<li><span class="fa fa-star checked" style="color: orange;"></span></li>`
                 }
@@ -104,13 +104,13 @@ $("#searchBtn").on("click", function () {
                     label += `<li><span class="fa fa-star checked" style="color: #d5d3cf;"></span></li>`
                 }
                 label += ` </ul>
-                                                <span class="product_time_yu">製作時間：${data[i].products.cFinishedTime}分鐘</span> `
+                                                <span class="product_time_yu">製作時間：${data[i].tProduct.cFinishedTime}分鐘</span> `
 
                 label+=`</div>
                                          <div class="featured__item__text">
-                                         <h6><a href="/ProductDetail/ProductData?id=${data[i].products.cProductId}">${data[i].products.cProductName}</a></h6>
-                                         <h5>$${data[i].products.cPrice}</h5>
-                                         <h6>庫存量 ${data[i].products.cQuantity} </h6>
+                                         <h6><a href="/ProductDetail/ProductData?id=${data[i].tProduct.cProductId}">${data[i].tProduct.cProductName}</a></h6>
+                                         <h5>$${data[i].tProduct.cPrice}</h5>
+                                         <h6>庫存量 ${data[i].tProduct.cQuantity} </h6>
                                          </div>
                                          </div>
                                          </div>`;

@@ -11,8 +11,9 @@ namespace BuyFood_Template.Controllers
     public class admChat : Controller
     {
         擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-        public IActionResult admChatView()
+        public IActionResult admChatView(int? id)
         {
+            TempData["get_chat_id"] = id;
             return View();
         }
         public JsonResult getChatRooms()
