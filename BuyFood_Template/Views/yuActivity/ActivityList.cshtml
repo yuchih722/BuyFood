@@ -55,14 +55,14 @@
                     <div class="status_name bg_color_purple">今年活動量</div>
                 </div>
             </div>
-            </a>
+        </a>
     </div>
 </div>
 
 <div class="box-module">
     <div class="box-title">
         活動列表
-        <a style="margin-left:30px;" asp-action="ActivityCreat" class="btn btn-primary  btn-rounded" onclick="">新增活動</a>
+        <a style="margin-left:30px;" asp-action="ActivityCreat" class="btn btn-primary  btn-rounded" >新增活動</a>
         <div id="warning" style="background-color: #ffd800;float:left;width:400px;margin-left:40px;display:none;float:right">已開啟操作功能 ，請小心使用。</div>
     </div>
 
@@ -77,10 +77,12 @@
 
 <div id="OK_delete"> 已完成刪除 </div>
 <div id="deletemore">確定要刪除多筆資料嗎 ？ </div>
+
+<script src="~/YUYUYU/JS/layer-v3.3.0/layer/layer.js"></script>
+
 <script>
     var get_btn_id;
     $(window).load(
-
 
         $("#OK_delete").dialog({
             autoOpen: false,
@@ -94,7 +96,7 @@
 
         $("#test_dialog").dialog({
             autoOpen: false,
-            modal:true,
+            modal: true,
             buttons: {
                 "Ok": function () {
                     $(this).dialog("close");
@@ -126,7 +128,7 @@
                         $Array.push(data);
                     }
                     $(this).dialog("close");
-                      //全選刪除
+                    //全選刪除
                     $.ajax({
                         type: "POST",
                         contentType: "application/json;charset=utf-8",
@@ -134,7 +136,7 @@
                         data: JSON.stringify($Array),
                         success: function (data) {
                             for (let i = 0; i < checked.length; i++) {
-                                checked[i].parentNode.parentNode.parentNode.remove();  
+                                checked[i].parentNode.parentNode.parentNode.remove();
                             }
                             $("#btndelete").hide();
                             updateTOP();
@@ -151,16 +153,16 @@
 </script>
 
 <script>
-        //進入此頁面執行
+    //進入此頁面執行
     var mystr = "All"
     $(Activity(mystr), updateTOP());
     $("#All").click(function () { mystr = "All"; Activity(mystr) })
     $("#Going").click(function () { mystr = "Going"; Activity(mystr) })
     $("#Close").click(function () { mystr = "Close"; Activity(mystr) })
 
-   function updateTOP() {
+    function updateTOP() {
         $.ajax({
-            url:"/yuActivity/ActivityupdateTOP",
+            url: "/yuActivity/ActivityupdateTOP",
             type: "get",
             success: function (data) {
                 $("#All .status_amount").html(data.all)
