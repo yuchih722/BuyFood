@@ -46,6 +46,7 @@
     <div class="page-preloader">Loading</div>
 </div>
 <!-- END PAGA BACKDROPS-->
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
 
 <script>
     function Activity() {
@@ -86,7 +87,7 @@
                 for (let i = 0; i <= data.length - 1; i++) {
                     count++
 
-                    if (data[i].cIsBreakFast==1) {
+                    if (data[i].cIsBreakFast == 1) {
                         Break = `<button class="btn btn-green" onclick="p產品販售早(${data[i].cProductId})" >販售</button>`
                     }
                     else {
@@ -250,7 +251,9 @@
 
 
 <script>
-    
+    "use strict"
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+    connection.start();
     //產品販售狀態
     function p產品販售狀態(PrId, PrTimeId) {
         $.ajax({
@@ -260,79 +263,78 @@
             success: function (data) {
                 console.log(data);
                 if (data == 1) {
-                    cStatusName = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId+1})">正常</button>`
+                    cStatusName = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId + 1})">正常</button>`
                 }
                 else if (data == 2) {
-                  
-                    cStatusName = `<button  class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId+1})">售完</button>`
-           
+
+                    cStatusName = `<button  class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId + 1})">售完</button>`
+
                 }
-                else if (data==3)
-                {
-                    cStatusName = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId=0})">下架</button>`
-               
+                else if (data == 3) {
+                    cStatusName = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId = 0})">下架</button>`
+                    connection.invoke("updateCombo");
+
+
                 }
                 $(`#p產品狀態${PrId}`).html(`<td style="vertical-align: middle" id="p產品狀態${PrId}">${cStatusName}`);
-           }
+            }
         });
-        
-        
+
+
     }
 
     //產品販售時段早
     function p產品販售早(id) {
         $.ajax({
-            url: "/cProduct/changeProductBreakFast?id="+id,
+            url: "/cProduct/changeProductBreakFast?id=" + id,
             type: "Get",
             success: function (data) {
                 console.log(data);
                 if (data == true) {
-                    
+
                     $("#p販售早" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售早(${id})" style="vertical-align: middle">販售</button>`);
                 }
                 else {
                     $("#p販售早" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售早(${id})" style="vertical-align: middle")">不販售</button>`);
                 }
-              
+
             }
         });
-        
+
     }
     //產品販售時段午
     function p產品販售午(id) {
         $.ajax({
-            url: "/cProduct/changeProductLunch?id="+id,
+            url: "/cProduct/changeProductLunch?id=" + id,
             type: "Get",
             success: function (data) {
                 if (data == true) {
                     $("#p販售午" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售午(${id})" style="vertical-align: middle">販售</button>`);
                 }
-                else
-                {
+                else {
                     $("#p販售午" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售午(${id})" style="vertical-align: middle")">不販售</button>`);
                 }
-              
+
             }
         });
-       
+
     }
     //產品販售時段晚
     function p產品販售晚(id) {
         $.ajax({
-            url: "/cProduct/changeProductDinner?id="+id,
+            url: "/cProduct/changeProductDinner?id=" + id,
             type: "Get",
             success: function (data) {
                 if (data == true) {
                     $("#p販售晚" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售晚(${id})" style="vertical-align: middle">販售</button>`);
                 }
-                else
-                {
+                else {
                     $("#p販售晚" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售晚(${id})" style="vertical-align: middle")">不販售</button>`);
                 }
-              
+
             }
         });
-       
+
     }
 </script>
 
