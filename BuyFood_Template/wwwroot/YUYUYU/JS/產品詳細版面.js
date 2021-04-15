@@ -112,10 +112,10 @@
             var productQuantity = data.table.cQuantity <= 0 ? `<span style="color:#ff0000">已售完</span>` : `<span>${data.table.cQuantity}</span>`
             var productdetail=""
             if (data.table.cQuantity <= 0) {
-                productdetail += `<input type = "button" class="btn_enable_style"  value = "此商品已完售" disabled>`
+                productdetail += `<input type = "button" class="btn_enable_style"  value = "此商品已完售" disabled><input id="goto_botton" type = "button" style="margin-left:50px" class="btn btn-info btn-lg" value="尋找同類型商品"></button>`
                 $("#btu_check_stock").hide();
             } else if (data.table.cIsOnSaleId == 3) {
-                productdetail += `<input type = "button" class="btn_enable_style"  value = "此商品暫停販售" disabled>`
+                productdetail += `<input type = "button" class="btn_enable_style"  value = "此商品暫停販售" disabled><input id="goto_botton" type = "button" style="margin-left:50px" class="btn btn-info btn-lg" value="尋找同類型商品"></button>`
                 $("#btu_check_stock").hide();
             } else
                 productdetail += `<input type = "button" class="primary-btn" onclick = "addCart(${data.table.cProductId})"  value = "加入購物車" >`
@@ -142,6 +142,10 @@
                 $("#tagfood").append(` <a href="javascript:void(0)" class="btn btn - outline - primary">晚</a> `)
             }
 
+            $("#goto_botton").click(function () {
+                console.log("00")
+                $('html, body').animate({ scrollTop: $('#maybe_like').offset().top }, 500);
+            })
         }
     })
 
@@ -150,11 +154,11 @@
         url: "/ProductDetail/gethotproduct?id="+id,
         type: "get",
         success: function (data) {
-            console.log(data);
+            //console.log(data);
             var hot = "";
             pdtItem = data;
             for (let i = 0; i < data.length; i++) {
-
+                if (data[i].product.cIsOnSaleId != 1) continue;
                 hot += `<div class="col-lg-3 col-md-4 col-sm-6">
                                             <div class="product__item">
                                                 <div class="product__item__pic set-bg" style="background-image: url(${data[i].product.cPicture.replace("~", "")})">
@@ -187,5 +191,8 @@
     })
     //$.ajax
 //<li><a href="#"><i class="fa fa-heart"></i></a></li>
-//<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+    //<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+
 })
+
+    
