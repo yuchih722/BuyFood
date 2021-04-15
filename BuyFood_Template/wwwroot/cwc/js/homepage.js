@@ -19,6 +19,7 @@ function checkLogin(goto,location) {
 
 }
 
+
 //$.ajax({
 //    url:`/Combo/`,
 //    success: function (homeCombodata) {
