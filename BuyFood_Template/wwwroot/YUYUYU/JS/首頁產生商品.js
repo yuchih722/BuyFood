@@ -1,22 +1,11 @@
 ﻿
 $(function () {
-
     $.ajax({
         url: "/HomePage/get_categorysname",
         type: "GET",
         success: function (dataForHomePage) {
             console.log(dataForHomePage)
-            //首頁套餐
-            const forCombo = dataForHomePage.forCombo;
-            if (forCombo != 0 && forCombo.length > 0) {
-                $("#cwc_howManyCombo").html(forCombo.length);
-                var cwc_pageCombo = "";
-                for (var i = 0; i < forCombo.length; i++) {
-                    cwc_pageCombo += `<div style="display:inline-block">${forCombo[i].cComboName}</div><button class="btn btn-success btn-sm">訂購</button>`
-                }
-                $("#cwc_div_homePageCombo").html(cwc_pageCombo);
 
-            }
 
             //首頁商品
             var category_li =
