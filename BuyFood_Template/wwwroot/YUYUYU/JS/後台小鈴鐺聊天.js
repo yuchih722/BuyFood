@@ -1,5 +1,5 @@
 ﻿function needtoReply() {
-    console.log("0")
+
 $.ajax({
     url:"/AdmHome/ger_chat_new",
     type: "get",
@@ -38,7 +38,7 @@ $.ajax({
 })
 }
 let time_chat_yu = window.setInterval("needtoReply()", 2000)
-
+let time_chat_adri = window.setInterval("OrderMessageReplay()", 2000)
 $("#goto_click_num_chat_yu").click(function() {
     window.clearInterval(time_chat_yu);
     $("#yu_forzerothemessage").html("0"),
@@ -54,3 +54,55 @@ function btn_to_chatroom(id) {
         url: "/AdmHome/click_num_chat?id=" + id,
         type: "get",
     })}
+
+$("#goto_click_num_chat_adri").click(function () {
+    window.clearInterval(time_chat_adri);
+    $("#adri_forzerothemessage").html("0"),
+
+        $.ajax({
+            url: "/Order/clearAllnewOrderMessage/",
+            type:"get",
+
+        })
+})
+
+function OrderMessageReplay() {
+    $.ajax({
+        url: "/Order/newOrdersSignalR/",
+        type: "POST",
+        success: function (dataOrder) {
+
+            $("[name='num_New_Order']").html(dataOrder.length);
+            var txt_adri_newOderMes = "";
+            for (let i = 0; i<dataOrder.length; i++) {
+
+                let h_time_adri = dataOrder[i].time.value.hours;
+                let m_time_adri = dataOrder[i].time.value.minutes;
+                let show_time_adri = '';
+                if (h_time_adri != 0) {
+                    show_time_adri += `${h_time_adri} 小時 ${m_time_adri} 分鐘前`
+                } else {
+                    show_time_adri += `${m_time_adri} 分鐘前`
+                }
+                txt_adri_newOderMes +=`<li class="list-group list-group-divider scroller" data-height="240px" data-color="#71808f">
+                <div>
+                    <a class="list-group-item">
+                        <div class="media">
+                            <div class="media-img">
+                                <span class="badge badge-default badge-big"><i class="fa fa-shopping-basket"></i></span>
+                            </div>
+                            <div class="media-body">
+                                <div class="font-13">${dataOrder[i].cUserName} ${dataOrder[i].cMessageOrder}</div><small class="text-muted">${show_time_adri}</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </li>`;
+
+            }
+            $("#oder_message").html(txt_adri_newOderMes);
+        }
+
+    })
+
+}

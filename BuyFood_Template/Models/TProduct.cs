@@ -29,6 +29,7 @@ namespace BuyFood_Template.Models
         public int? CIsLunch { get; set; }
         public int? CIsDinner { get; set; }
         public int? CProductTagId { get; set; }
+        public int? CQuantityControl { get; set; }
 
         public virtual TProductCategory CCategory { get; set; }
         public virtual TProductTag CProductTag { get; set; }

@@ -285,6 +285,15 @@ function SendOrderMessage(ChannelID) {
     var messageOrder = '下了1筆訂單';
     var adrfotoOrder = $("#user_foto").val();
     var adrMemberIDForOrder = 101;
+    $.ajax({
+        url: "/Order/saveTheNewOrders/",
+        type: "POST",
+        data: { "userName": userName, "OrderMessage": messageOrder },
+        success: function (data) {
+
+        }
+
+    });
     connection.invoke("SendMessageToOrder", groupNameOrder, userName, messageOrder, adrfotoOrder, adrMemberIDForOrder).catch(function (err) {
         return console.log(err.toString());
     });
