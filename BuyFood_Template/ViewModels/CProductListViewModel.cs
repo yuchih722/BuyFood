@@ -58,7 +58,12 @@ namespace BuyFood_Template.ViewModels
         public int? CIsLunch { get { return iv_product.CIsLunch; } set { iv_product.CIsLunch = value; } }
         [DisplayName("販售時段晚")]
         public int? CIsDinner { get { return iv_product.CIsDinner; } set { iv_product.CIsDinner = value; } }
-        [DisplayName("產品類別")]
+        [DisplayName("產品標籤")]
+        public int? CProductTagId { get { return iv_product.CProductTagId; } set { iv_product.CProductTagId = value; } }
+        [DisplayName("庫存保險量")]
+        public int? CQuantityControl { get {return iv_product.CQuantityControl; } set {iv_product.CQuantityControl=value; } }
+
+      [DisplayName("產品類別")]
         public string CCategoryName { get {return iv_productCategory.CCategoryName; } set {iv_productCategory.CCategoryName=value; } }
         public string CStatusName { get {return iv_isOnSale.CStatusName; } set {iv_isOnSale.CStatusName=value; } }
     }

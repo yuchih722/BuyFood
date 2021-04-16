@@ -24,6 +24,10 @@ namespace BuyFood_Template.Controllers
                 ViewBag.USERPHOTO = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);
                 ViewBag.USERUSERID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);
             }
+            ViewBag.num_todo = "";
+            if (TempData[CDictionary.REDIRECT_FROM_WHERE] != null) { 
+            ViewBag.num_todo= TempData[CDictionary.REDIRECT_FROM_WHERE].ToString();
+            }
             return View();
         }
 
@@ -229,6 +233,12 @@ namespace BuyFood_Template.Controllers
                 }
                 else if(check密碼.CPassword == pwd解密)
                 {
+                    if(check密碼.COpenMember == 0)
+                    {
+                        return Json("notOpen");
+                    }
+                    else
+                    {
                     HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, check密碼.CName);
                     HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, check密碼.CPicture);
                     HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, check密碼.CMemberId.ToString());
@@ -237,6 +247,7 @@ namespace BuyFood_Template.Controllers
                     db.SaveChanges();
 
                     return Json("loginSuccess");
+                    }
                 }
                 else
                 {
@@ -259,18 +270,64 @@ namespace BuyFood_Template.Controllers
                 return Json("noEmail");
             }
         }
-        public bool facebookLogin(string id, string name)
+
+        public JsonResult forgetMemberCheck([FromBody] CForgetPasswordViewModel forgetPwdMember)
         {
-            var test = id + name;
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            var check信箱 = from n in db.TMembers
+                          select n.CEmail;
+
+            if (check信箱.Any(n => n == forgetPwdMember.CEmail) == true)
+            {
+                TMember checkPhone = (from n in db.TMembers
+                                      where n.CEmail == forgetPwdMember.CEmail
+                                      select n).FirstOrDefault();
+
+                if(checkPhone.CPhone == forgetPwdMember.CPhone)
+                {
+                    SHA1 sha1 = SHA1.Create();
+                    string RandomPwd = shareFun.產生亂數(16);
+                    string ReplacementPwd = shareFun.GetHash(sha1, RandomPwd);
+                    checkPhone.CPassword = ReplacementPwd;
+                    db.SaveChanges();
+
+                    string val信件內容 = "您的密碼已被修改成 : " + RandomPwd + " , 請登入後自行修改密碼";
+
+                    shareFun.sendEmail(checkPhone.CEmail, checkPhone.CName, "BuyFood帳號開通認證信", val信件內容);
+
+
+                    return Json("EditSuccess");
+                }
+                else
+                {
+                    return Json("wrongPhone");
+                }
+            }
+            else
+            {
+                return Json("noEmail");
+            }
+        }
+            public bool facebookLogin(string id, string name)
+        {
 
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            //檢查是否用此帳號登入過
 
+            //檢查是否用此帳號登入過
             var checkID = from n in db.TMembers
                           select n.CFacebookId;
 
             if (checkID.Any(n => n == id) == true)
             {
+                var loginFacebookMember = (from n in db.TMembers
+                                           where n.CFacebookId == id
+                                           select n).FirstOrDefault();
+
+                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, loginFacebookMember.CName);
+                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, loginFacebookMember.CPicture);
+                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, loginFacebookMember.CMemberId.ToString());
+                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_FACEBOOK, "FacebookMember");
+
                 return true;
             }
             else
@@ -283,16 +340,20 @@ namespace BuyFood_Template.Controllers
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)))
             {
-                return Json(false);
+                return Json(new { member = false, memberID =HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID) });
             }
             else if (int.Parse(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)) == 16)
             {
-                return Json("isAdm");
+                return Json(new { member = "isAdm", memberID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID) });
             }
             else
             {
-                return Json(true);
+                return Json(new { member = true, memberID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID) });
             }
+        }
+        public IActionResult forgetPwd()
+        {
+            return PartialView();
         }
         public string SLogout()
         {
@@ -341,17 +402,27 @@ namespace BuyFood_Template.Controllers
         }
         public JsonResult get_categorysname() //抓取所有商品顯示在首頁
         {
+
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var table = db.TProductCategories.Select(n => new {n.CProductCategoryId,n.CCategoryName,
-                tProducts = n.TProducts.Select(m => new 
+            var table = db.TProductCategories.Select(n => new
+            {
+                n.CProductCategoryId,
+                n.CCategoryName,
+                tProducts = n.TProducts.Select(m => new
                 {
-                    tProducts=m,
-                    coun=m.TOrderDetails.Count(b=>b.CFeedBackStatus==1&&b.CScores!=null),
-                    sum=m.TOrderDetails.Where(m=>m.CFeedBackStatus == 1 && m.CScores != null).Sum(m=>m.CScores)
+                    tProducts = m,
+                    coun = m.TOrderDetails.Count(b => b.CFeedBackStatus == 1 && b.CScores != null),
+                    sum = m.TOrderDetails.Where(m => m.CFeedBackStatus == 1 && m.CScores != null).Sum(m => m.CScores)
                 })
             });
 
-            return Json(table);
+
+
+            return Json(new
+            {
+                forProduct = table.ToList(),
+            });
+
         }
 
         public JsonResult getBottomList()  

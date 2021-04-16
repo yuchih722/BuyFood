@@ -161,7 +161,7 @@
                     </div>
 
                     <div class="text-right p-t-8 p-b-31">
-                        <a href="#">
+                        <a href="/HomePage/forgetPwd">
                             忘記密碼?
                         </a>
                     </div>
@@ -183,6 +183,7 @@
                     </div>
 
                     <div class="txt1 text-center p-t-54 p-b-20">
+
                         <span>
                             Or Sign Up Using
                         </span>
@@ -206,7 +207,9 @@
                         </a>
 
                         @*<div class="fb-login-button" data-width="" data-size="small" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false"></div>*@
+                    @*<div>
                         <input type="button" onclick="FB.logout(function(response) {});" value="登出" class="btn btn-primary" />
+                    </div>*@
 
 
 
@@ -289,6 +292,9 @@
                     else if (data == "noEmail") {
                         alert("無此帳號 請重新輸入");
                     }
+                    else if (data == "notOpen") {
+                        alert("此帳號尚未開通 請先開通帳號");
+                    }
                     else if (data == "loginSuccess") {
                         alert("登入成功 將導回首頁");
                         window.location.assign("/HomePage/Home");
@@ -336,19 +342,13 @@
                 success: function (data) {
                     if (data == true) {
                         window.alert("登入成功,將轉回首頁")
+                        window.location.assign(`/HomePage/Home`);
 
                     }
                     else {
-                        //$.ajax({
-                        //    url: "/Customer/CreateFacebookMember",
-                        //    data: { "id": response.id, "name": response.name },
-                        //    type: "GET",
-                        //    success: function (data) {
+                        window.alert("初次登入 請輸入基本資料");
 
-
-                        //    }
-                        //})
-                        //window.location.assign("/Customer/CreateFacebookMember")
+                        window.location.assign(`/Customer/CreateFacebookMember?id=${response.id}&name=${response.name}`);
 
                     }
                 }

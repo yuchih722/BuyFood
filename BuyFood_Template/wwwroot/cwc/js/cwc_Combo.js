@@ -1,8 +1,9 @@
 ﻿function cwc_showCombo(memberID) {
     $.ajax({
-        url: "/Combo/getCombo?id=" + memberID,
+        url: "/Combo/getCombo",
         type: "GET",
         success: function (data) {
+            console.log(data);
             cwc_ComboDetails = data;
             if (data.length == 0) {
                 var txt = `<div style="width:100%;height:100%;position:relative;display:flex;align-items:center;text-align:center">
@@ -27,14 +28,14 @@
                                         <td>${data[i].cComboName}${issue}
                                         <td>${data[i].comboDetails.length}
                                         <td>${data[i].comboSum}
-                                        <td><div class="btn btn-success btn-sm" onclick="cwc_addCombotoCart(cwc_ComboDetails[${i}].comboDetails)">加入購物車</div>
+                                        <td><div class="btn btn-success btn-sm" onclick="cwc_addCombotoCart(cwc_ComboDetails[${i}])">加入購物車</div>
                                         <td><div class="btn btn-success btn-sm" onclick="cwc_EditCombo(${data[i].cComboId},'${data[i].cComboName}',${memberID})">修改</div>
                                         <td><div class="btn btn-danger btn-sm" onclick="cwc_deleteCombo(${data[i].cComboId},${memberID})">刪除</div>
                                     <tr id="cwc_comboDetail_tr_${data[i].cComboId}">
                                         <td class="hiddenRow" colspan="5">
                                             <div class="accordian-body collapse" data-parent="#mycombo" id="cwc_comboDetail_div_${data[i].cComboId}">
                                                 <table class="table table-success table-sm" style="text-align:center">
-                                                    <thead><tr><td>餐點<td>數量<td>單價
+                                                    <thead><tr><td>餐點<td>數量<td>單價<td>點餐
                                                     <tbody>`;
                 var comboDetail = new Array();
                 for (var q = 0; q < data[i].comboDetails.length; q++) {
@@ -65,7 +66,11 @@
 
                 for (var p = 0; p < comboDetail.length; p++) {
                     var issue = comboDetail[p].cProduct.cIsOnSaleId == 3 ? `(停止販售)` : ``
-                    txt += `<tr><td>${comboDetail[p].cProduct.cProductName}${issue}<td>${comboDetail[p].Count}<td>${comboDetail[p].cProduct.cPrice}`;
+                    txt += `<tr><td>${comboDetail[p].cProduct.cProductName}${issue}
+                                        <td>${comboDetail[p].Count}
+                                        <td>${comboDetail[p].cProduct.cPrice}
+                                        <td><div class="btn btn-success btn-sm" onclick="cwc_addProducttoCart(cwc_ComboDetails[${i}].comboDetails[${p}].cProduct)">加入購物車</div>
+                                        `;
                 }
                 txt += `</tbody></thead></table></div>`;
             }
@@ -76,13 +81,7 @@
         }
     });
 }
-function cwc_addCombotoCart(comboDetails) {
-    console.log(comboDetails);
-    for (var i = 0; i < comboDetails.length; i++) {
-        addCart(comboDetails[i].cProduct);
-    }
-    window.alert("已加入購物車");
-}
+
 
 function cwc_EditCombo(comboID, comboName, memberID) {
 
@@ -147,13 +146,13 @@ function cwc_EditCombo(comboID, comboName, memberID) {
 }
 
 function cwc_deleteCombo(comboID, memberID) {
-
     $(`#cwc_combo_tr_${comboID}`).remove();
     $(`#cwc_comboDetail_tr_${comboID}`).remove();
     $.ajax({
         url: `/Combo/deleteCombo?id=${comboID}`,
         success: function (data) {
             updateData(memberID);
+            updateLayoutCombo();
         }
     });
 }
@@ -290,6 +289,7 @@ function cwc_saveCombo(comboID, memberID, comboName) {
                 success: function () {
                     cwc_showCombo(memberID);
                     updateData(memberID);
+                    updateLayoutCombo();
                 }
             });
         }
@@ -303,6 +303,7 @@ function cwc_saveCombo(comboID, memberID, comboName) {
             success: function (data) {
                 cwc_showCombo(memberID);
                 updateData(memberID);
+                updateLayoutCombo();
             }
         });
     }

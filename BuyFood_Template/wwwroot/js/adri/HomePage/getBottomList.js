@@ -3,18 +3,14 @@
     console.log(adrMemberIDIsLogin);
     if (!isNaN(adrMemberIDIsLogin))
     {
-        console.log("是數字");
+
         DidLoginBotton();
     }
     else
     {
-        console.log("不是數字");
+
         NonLoginBotton(adrMemberIDIsLogin);
     }
-
-
-
-
 });
 
 
@@ -24,7 +20,7 @@ function NonLoginBotton() {
         type: "get",
         success: function (data) {
 
-            //console.log(data);
+            //console.log(data.lastProducts);
 
             var textForReviewsP = `<div class="col-lg-4 col-md-6">
                                                         <div class="latest-product__text">
@@ -144,24 +140,23 @@ function DidLoginBotton(memberID) {
         data: { "MemberID": memberID},
         type: "get",
         success: function (data) {
-
-            console.log(data);
+            console.log(data.reviewProducts);
 
             var textForReviewsP = `<div class="col-lg-4 col-md-6">
                                                         <div class="latest-product__text">
-                                                        <h4>熱評商品</h4>
+                                                        <h4>最常購買</h4>
                                                         <div class="latest-product__slider owl-carousel">`
             var countForReview = 1;
             for (let a = 0; a < 2; a++) {
                 textForReviewsP += `<div class="latest-prdouct__slider__item">`;
                 for (let b = (3 * (countForReview - 1)); b < (3 * countForReview); b++) {
-                    textForReviewsP += ` <a href="/ProductDetail/ProductData?id=${data.reviewProducts[b].cProductId}" class="latest-product__item">
+                    textForReviewsP += ` <a href="/ProductDetail/ProductData?id=${data.reviewProducts[b].product[0].cProductId}" class="latest-product__item">
                                                                     <div class="latest-product__item__pic">
-                                                                        <img src="${data.reviewProducts[b].cPicture.replace("~", "")}" style="width:100px;height:105.86px;" alt="">
+                                                                        <img src="${data.reviewProducts[b].product[0].cPicture.replace("~", "")}" style="width:100px;height:105.86px;" alt="">
                                                                     </div>
                                                                     <div class="latest-product__item__text">
-                                                                        <h6>${data.reviewProducts[b].cProductName}</h6>
-                                                                        <span>$${data.reviewProducts[b].cPrice}</span>
+                                                                        <h6>${data.reviewProducts[b].product[0].cProductName}</h6>
+                                                                        <span>$${data.reviewProducts[b].product[0].cPrice}</span>
                                                                     </div>
                                                                 </a>`;
                 }

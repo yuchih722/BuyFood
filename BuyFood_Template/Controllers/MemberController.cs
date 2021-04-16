@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using BuyFood_Template.Hubs;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModels;
 using Grpc.Core;
@@ -20,27 +21,36 @@ namespace BuyFood_Template.Controllers
 {
     public class MemberController : Controller
     {
-        public void test()
+        public JsonResult test()
         {
-            (new ShareFunction()).sendGrid("always0537@gmail.com", "hihi", "訂單成功", "check your account");
-            
 
+            //(new ShareFunction()).sendGrid("always0537@gmail.com", "hihi", "訂單成功", "check your account");
+
+           //(new ChatHub()).test();
+
+
+           return Json("aa");
         }
-        public string checkLogin()
+        public string checkLogin(string id)
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
+            {
+                if(id!="0")
+                    TempData[CDictionary.REDIRECT_FROM_WHERE] = id;
                 return "1";
+            }
+                
             return "0";
         }
         public IActionResult MemberCenter()
         {
-
-            int test = 555;
+           
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
             {
                 ViewBag.userName = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
                 ViewBag.userPhoto = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);
                 ViewBag.memberID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);
+                ViewBag.facebook = string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_FACEBOOK)) ? "0" : "1";
                 擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
                 TMember data = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)));
 
@@ -83,21 +93,19 @@ namespace BuyFood_Template.Controllers
         [HttpPost]
         public string savePassword([FromBody]changePassword data)
         {
-            //擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
-            //TMember reviseTarget = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(data.memberID));
+            擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
+            TMember reviseTarget = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(data.memberID));
 
-            //ShareFunction sf = new ShareFunction();
-            //SHA1 sha1 = SHA1.Create();
-            //string SHAoPassword = sf.GetHash(sha1, data.oPassword);
-            ////string SHAoPassword = data.oPassword;
-            //string SHAnPassword = sf.GetHash(sha1, data.nPassword);
+            ShareFunction sf = new ShareFunction();
+            SHA1 sha1 = SHA1.Create();
+            string SHAoPassword = sf.GetHash(sha1, data.oPassword);
+            //string SHAoPassword = data.oPassword;
+            string SHAnPassword = sf.GetHash(sha1, data.nPassword);
 
-            //if (SHAoPassword != reviseTarget.CPassword)
-            //    return "1";
-            //reviseTarget.CPassword = SHAnPassword;
-            //dbcontext.SaveChanges();
-            //return "0";
-
+            if (SHAoPassword != reviseTarget.CPassword)
+                return "1";
+            reviseTarget.CPassword = SHAnPassword;
+            dbcontext.SaveChanges();
             return "0";
         }
 
