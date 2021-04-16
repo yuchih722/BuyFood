@@ -17,6 +17,7 @@ namespace BuyFood_Template.Models
         {
         }
 
+        public virtual DbSet<RandomVieww> RandomViewws { get; set; }
         public virtual DbSet<TActivity> TActivities { get; set; }
         public virtual DbSet<TBoard> TBoards { get; set; }
         public virtual DbSet<TChatRoom> TChatRooms { get; set; }
@@ -29,6 +30,7 @@ namespace BuyFood_Template.Models
         public virtual DbSet<TIsOnSale> TIsOnSales { get; set; }
         public virtual DbSet<TLoginRecord> TLoginRecords { get; set; }
         public virtual DbSet<TMember> TMembers { get; set; }
+        public virtual DbSet<TMessageOrder> TMessageOrders { get; set; }
         public virtual DbSet<TNotifyList> TNotifyLists { get; set; }
         public virtual DbSet<TOrder> TOrders { get; set; }
         public virtual DbSet<TOrderDetail> TOrderDetails { get; set; }
@@ -50,6 +52,15 @@ namespace BuyFood_Template.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Chinese_Taiwan_Stroke_CI_AS");
+
+            modelBuilder.Entity<RandomVieww>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("RandomVieww");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+            });
 
             modelBuilder.Entity<TActivity>(entity =>
             {
@@ -399,6 +410,8 @@ namespace BuyFood_Template.Models
                     .HasMaxLength(50)
                     .HasColumnName("cName");
 
+                entity.Property(e => e.COpenMember).HasColumnName("cOpenMember");
+
                 entity.Property(e => e.CPassword)
                     .HasMaxLength(50)
                     .HasColumnName("cPassword");
@@ -420,6 +433,31 @@ namespace BuyFood_Template.Models
                 entity.Property(e => e.CRegisteredTime)
                     .HasColumnType("datetime")
                     .HasColumnName("cRegisteredTime");
+            });
+
+            modelBuilder.Entity<TMessageOrder>(entity =>
+            {
+                entity.HasKey(e => e.CMessageOrderId);
+
+                entity.ToTable("tMessageOrder");
+
+                entity.Property(e => e.CMessageOrderId).HasColumnName("cMessageOrderID");
+
+                entity.Property(e => e.CIsRead).HasColumnName("cIsRead");
+
+                entity.Property(e => e.CMessageOrder)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("cMessageOrder");
+
+                entity.Property(e => e.CSaveTime)
+                    .HasColumnType("datetime")
+                    .HasColumnName("cSaveTime");
+
+                entity.Property(e => e.CUserName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("cUserName");
             });
 
             modelBuilder.Entity<TNotifyList>(entity =>
@@ -604,6 +642,8 @@ namespace BuyFood_Template.Models
                 entity.Property(e => e.CProductTagId).HasColumnName("cProductTagID");
 
                 entity.Property(e => e.CQuantity).HasColumnName("cQuantity");
+
+                entity.Property(e => e.CQuantityControl).HasColumnName("cQuantityControl");
 
                 entity.HasOne(d => d.CCategory)
                     .WithMany(p => p.TProducts)

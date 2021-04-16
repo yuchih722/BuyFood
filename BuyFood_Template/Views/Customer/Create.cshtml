@@ -6,6 +6,20 @@
 
 <!DOCTYPE html>
 
+@{ 
+    string ReferrerCode = "";
+
+    if (ViewBag.ReferrerCode == "0")
+    {
+        ReferrerCode = "0";
+    }
+    else
+    {
+        ReferrerCode = ViewBag.ReferrerCode;
+    }
+
+}
+
 
 <head>
     <meta charset="UTF-8">
@@ -62,6 +76,7 @@
             <img src="images/signup-img.jpg" alt="">
         </div>*@
     <div class="signup-form" style="margin-left:210px; width:100%; box-shadow:4px 4px 8px 8px #cccccc;">
+        <input type="text" id="Iwannagetthiscfodeforregistplzzzz" value="@ReferrerCode" style="display:none;" />
         <form asp-action="Create" enctype="multipart/form-data" method="post" class="register-form" id="register-form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <h2>註冊</h2>
@@ -153,9 +168,9 @@
 
 
             <div class="form-row">
-                <div class="form-group">
-                    <label for="code">邀請碼 :</label>
-                    <input type="text" name="code" id="code" />
+                <div class="form-group" id="ReferrerCode">
+                    @*<label for="code">邀請碼 :</label>*@
+                    @*<input type="text" name="code" id="code" value="@ViewBag.ReferrerCode" readonly/>*@
                 </div>
             </div>
 
@@ -177,12 +192,12 @@
                 <input type="button" value="Demo" class="btn btn-primary"
                        onclick='(function () {
     document.getElementById("name").value = "joruno";
-    document.getElementById("CEmail").value = "joruno@Gmail.com";
+    document.getElementById("CEmail").value = "s92115c@Gmail.com";
     document.getElementById("password").value = "321321q";
     document.getElementById("checkPassword").value = "321321q";
     document.getElementById("inlineRadio1").value = "男";
     document.getElementById("address").value = "台北市復興南路一段390號2樓";
-    document.getElementById("phone").value = "0912345678";
+    document.getElementById("phone").value = "0952675073";
     allPass();
                             })()' />
             </div>
@@ -204,7 +219,44 @@
     })
 </script>
 
+<script>
+    let codeForTheRegisterReffer = $("#Iwannagetthiscfodeforregistplzzzz").val();
+    console.log(codeForTheRegisterReffer);
 
+    if (codeForTheRegisterReffer == "0") {
+        var noReferrerTxt = `<label for="code">邀請碼 :</label>
+                                               <input type="text" name="code" id="code" />`
+        $("#ReferrerCode").html(noReferrerTxt);
+    }
+    else {
+
+
+        console.log(codeForTheRegisterReffer);
+        var yesReferrerTxt = `<label for="code">邀請碼 :</label>
+                                                <input type="text" name="code" id="code" value="${codeForTheRegisterReffer}" readonly/>`
+
+            $("#ReferrerCode").html(yesReferrerTxt);
+
+    }
+
+        @*$(function checkReferrerCode() {
+        var noReferrerTxt = `<input type="text" name="code" id="code" />`
+        $("#ReferrerCode").html(noReferrerTxt);
+
+
+        if ( @ReferrerCode == "") {
+            var noReferrerTxt = `<input type="text" name="code" id="code" />`
+
+            $("#ReferrerCode").html(noReferrerTxt);
+        }
+        else {
+            var yesReferrerTxt = `<input type="text" name="code" id="code" value="@ReferrerCode" readonly/>`
+
+            $("#ReferrerCode").html(yesReferrerTxt);
+        }
+    })*@
+
+</script>
 <script>
     document.getElementById("password").onblur = checkPwd;
     document.getElementById("checkPassword").onblur = checkCheckPassword;
@@ -413,7 +465,7 @@
 
                     doImgUpload();
 
-                    alert("註冊成功 將返回登入頁面");
+                    alert("資料輸入成功 已寄出帳號認證信 請點擊信件內的網址開通帳號 將返回登入頁面");
                     window.location.assign("/HomePage/登入");
                 }
                 else {
@@ -426,7 +478,7 @@
     function doImgUpload() {
         const formdata = new FormData();
         formdata.append('photo', $('input[type=file]')[0].files[0]);
-        formdata.append('CEmail', $("#CEmail").val())
+        formdata.append('CPhone', $("#phone").val())
         fetch('/Customer/UploadImage', {
             method: 'POST',
             body: formdata

@@ -19,7 +19,6 @@
     <None Include="Views\cOrderDetails\List.cshtml" />
     <None Include="Views\cProduct\Create.cshtml" />
     <None Include="Views\cProduct\Edit.cshtml" />
-    <None Include="Views\cProduct\List.cshtml" />
     <None Include="Views\cSalesAnalysis\List.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\ProductDetail\ProductData.cshtml" />
@@ -85,6 +84,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="SendGrid" Version="9.22.0" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\cwc\css\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties libman_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

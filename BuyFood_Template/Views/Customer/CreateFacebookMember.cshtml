@@ -53,15 +53,21 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <h2>註冊</h2>
             <div class="form-group">
-                <input asp-for="CMemberID" class="form-control" style="display:none" value="@ViewBag.FBUSERID" />
-                <span asp-validation-for="CMemberID" class="text-danger"></span>
+                <input asp-for="CFacebookID" class="form-control" style="display:none" id="CFacebookID" value="@ViewBag.FBUSERID" readonly />
+                <span asp-validation-for="CFacebookID" class="text-danger"></span>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label asp-for="CName" for="name">*姓名 :</label>
-                    <input asp-for="CName" id="name" required value="@ViewBag.FBUSERNAME" />
+                    <input asp-for="CName" id="name" required value="@ViewBag.FBUSERNAME" readonly />
                     <span asp-validation-for="CName" class="text-danger" id="spname"></span>
                 </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="CEmail" for="email" style="position:relative">*Email(帳號) :</label>
+                <input asp-for="CEmail" id="CEmail" required />
+                <span asp-validation-for="CEmail" class="text-danger" id="spemail"></span>
+                <label style="color:red" id="WrongEmail"></label>
             </div>
             <div class="form-radio">
                 <label asp-for="CGender" for="gender" style="padding-right:20px;">*性別 :</label>
@@ -69,14 +75,6 @@
                     @*暫時替代*@
                     <input asp-for="CGender" id="inlineRadio1">
                 </div>
-                @*<div class="form-check form-check-inline">
-                <input asp-for="CGender" type="radio" id="inlineRadio1" value="male">
-                <label class="form-check-label" for="inlineRadio1">男</label>
-            </div>*@
-                @*<div class="form-check form-check-inline">
-                <input  asp-for="CGender" type="radio" id="inlineRadio2" value="female">
-                <label class="form-check-label" for="inlineRadio2">女</label>
-            </div>*@
             </div>
             <div class="form-row">
                 <div class="form-group">
@@ -109,20 +107,22 @@
             </div>
 
             <div class="form-submit">
-                <input type="submit" value="Reset All" class="submit" name="reset" id="reset" />
-                <input type="submit" value="確認註冊" class="submit" name="submit" id="submit" onclick="return confirm('確定要註冊嗎?')" />
+                <input type="button" value="Reset All" class="submit" name="reset" id="reset" onclick='(function () {
+    document.getElementById("inlineRadio1").value = "";
+    document.getElementById("address").value = "";
+    document.getElementById("phone").value = "";
+        document.getElementById("code").value = "";
+                            })()' />
+                <input type="button" value="確認註冊" class="submit" name="submit" id="submit" onclick="submitData()" />
             </div>
 
             <div class="form-submit">
                 <input type="button" value="Demo" class="btn btn-primary"
                        onclick='(function () {
-    document.getElementById("name").value = "jojo";
-    document.getElementById("email").value = "jojo@Gmail.com";
-    document.getElementById("password").value = "123";
-    document.getElementById("checkPassword").value = "123";
     document.getElementById("inlineRadio1").value = "男";
-    document.getElementById("address").value = "Japan";
-    document.getElementById("phone").value = "0912345678";
+    document.getElementById("address").value = "台北市復興南路一段390號2樓";
+    document.getElementById("phone").value = "0971364875";
+    allPass();
                             })()' />
             </div>
 
@@ -143,54 +143,159 @@
     })
 </script>
 
-@{
-    string o = "@";
-}
+
 <script>
-    document.getElementById("password").onblur = checkPwd
-    document.getElementById("email").onblur = checkEmail
-    document.getElementById("phone").onblur = checkPhone
-    document.getElementById("submit").onblur = checkAll
+    document.getElementById("address").onblur = checkAddress;
+    document.getElementById("phone").onblur = checkPhone;
+    document.getElementById("age").onblur = checkAge;
+    document.getElementById("inlineRadio1").onblur = checkGender;
+    document.getElementById("CEmail").onblur = checkEmail;
 
-    function checkPwd() {
-        let pwdObj = document.getElementById("password");
-        let pwdObjVal = pwdObj.value;
-        let spObj = document.getElementById("Wrongpassword");
-        let pwdObjValLen = pwdObjVal.length;
-        let flag1 = false, flag2 = false, flag3 = false;
+    flagCheckAge = false, flagCheckAddress = false, flagCheckGender = false, flagCheckPhone = false, flagCheckEmail = false;
 
-        console.log(pwdObjVal);
-
-        if (pwdObjValLen <= 6) {
-            spObj.innerHTML = "密碼必須大於6個字"
-        }
-        if (pwdObjValLen > 6) {
-            for (let i; i < pwdObjValLen; i++) {
-                let ch = pwdObjVal.charAt(i).toUpperCase();
-                let chc = pwdObjVal.charCodeAt(i);
-                if (ch >= "A" && ch <= "Z")
-                    flag1 = true;
-                else if (ch >= "0" && ch <= "9")
-                    flag2 = true;
-                else if (ch >= "!" && ch <= "/")
-                    flag3 = true;
-                else if (ch >= ":" && ch <= "@o")
-                    flag3 = true;
-                else if (ch >= "[" && ch <= "`")
-                    flag3 = true;
-                else if (ch >= "{" && ch <= "~")
-                    flag3 = true;
-
-                if (flag1 && flag2 && flag3)
-                    break;
-            }
-            if (flag1 && flag2 && flag3)
-                spObj.innerHTML = "密碼格式正確"
-            else
-                spObj.innerHTML = "密碼格式錯誤"
-        }
-
+    function allPass() {
+        flagCheckAge = true, flagCheckAddress = true, flagCheckGender = true, flagCheckPhone = true, flagCheckEmail = true;
     }
 
-    
+    function checkEmail() {
+        let emailVal = document.getElementById("CEmail").value;
+        let spObj = document.getElementById("WrongEmail");
+
+        if (emailVal == "") {
+            spObj.innerHTML = "不可空白";
+            flagCheckEmail = false;
+        }
+        else {
+            spObj.innerHTML = "";
+            flagCheckEmail = true;
+        }
+    }
+
+    function checkGender() {
+        let genderVal = document.getElementById("inlineRadio1").value;
+        let spObj = document.getElementById("WrongGender");
+
+        if (genderVal == "") {
+            spObj.innerHTML = "不可空白";
+            flagCheckGender = false;
+        }
+        else {
+            spObj.innerHTML = "";
+            flagCheckGender = true;
+        }
+    }
+
+    function checkAddress() {
+        let addressVal = document.getElementById("address").value;
+        let spObj = document.getElementById("WrongAddress");
+
+        if (addressVal == "") {
+            spObj.innerHTML = "不可空白";
+            flagCheckAddress = false;
+        }
+        else {
+            spObj.innerHTML = "";
+            flagCheckAddress = true;
+        }
+    }
+
+    function checkPhone() {
+        let phoneVal = document.getElementById("phone").value;
+        let spObj = document.getElementById("WrongPhone");
+
+        if (phoneVal == "") {
+            spObj.innerHTML = "不可空白";
+            flagCheckPhone = false;
+        }
+        else {
+            spObj.innerHTML = "";
+            flagCheckPhone = true;
+        }
+    }
+
+    function checkAge() {
+        let ageVal = document.getElementById("age").value;
+        let spObj = document.getElementById("WrongAge");
+
+        if (ageVal == "") {
+            spObj.innerHTML = "不可空白";
+            flagCheckAge = false;
+        }
+        else {
+            spObj.innerHTML = "";
+            flagCheckAge = true;
+        }
+    }
+
+    function submitData() {
+        var msg = "確定註冊?";
+
+        if (confirm(msg) == true) {
+            if (flagCheckAddress == true && flagCheckAge == true && flagCheckGender == true && flagCheckPhone == true && flagCheckEmail == true) {
+                checkAll();
+            }
+            else {
+                alert("請檢察必填資料是否正確")
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    function checkAll() {
+        var newMember = {};
+
+        newMember.CFacebookID = $("#CFacebookID").val();
+        newMember.CAddress = $("#address").val();
+        newMember.CPhone = $("#phone").val();
+        newMember.CGender = $("#inlineRadio1").val();
+        newMember.CAge = $("#age").val();
+        newMember.CName = $("#name").val();
+        newMember.code = $("#code").val();
+        newMember.CEmail = $("#CEmail").val();
+
+        $.ajax({
+            url: "/Customer/CreateNewFacebookMember",
+            type: "POST",
+            data: JSON.stringify(newMember),
+            dataType: "Json",
+            processData: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log(newMember);
+
+               if (data == "PhoneRepeat") {
+                    alert("此手機已被註冊");
+                }
+               else if (data == "EmailRepeat") {
+                   alert("此Email已被註冊");
+               }
+                else if (data == true) {
+
+                    doImgUpload();
+
+                    alert("資料輸入成功 將返回登入頁面");
+                    window.location.assign("/HomePage/登入");
+                }
+                else {
+                    alert("不知道哪裡錯ㄌ 請聯絡客服人員");
+                }
+            }
+        });
+    }
+
+    function doImgUpload() {
+        const formdata = new FormData();
+        formdata.append('photo', $('input[type=file]')[0].files[0]);
+        formdata.append('CPhone', $("#phone").val())
+        fetch('/Customer/UploadImage', {
+            method: 'POST',
+            body: formdata
+        }).then(function (response) {
+            return response.json();
+        });
+    }
+
 </script>

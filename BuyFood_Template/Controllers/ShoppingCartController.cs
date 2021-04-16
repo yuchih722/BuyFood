@@ -15,6 +15,14 @@ namespace BuyFood_Template.Controllers
     {
         public IActionResult CurrentCartItem()
         {
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
+            {
+                ViewBag.USERNAME = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
+                ViewBag.USERPHOTO = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);
+                ViewBag.USERUSERID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);
+            }
+
+
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
             {
                 return RedirectToAction("登入", "HomePage");
@@ -78,6 +86,30 @@ namespace BuyFood_Template.Controllers
                 return Json("0");
             }
             return Json(result);
+        }
+        //搜尋該會員最常購買的商品
+        [HttpPost]
+        public JsonResult GetMemberFavoriteItem([FromBody] int MemberID)
+        {
+            擺腹BuyFoodContext BuyFoodDB = new 擺腹BuyFoodContext();
+            var result = from i in BuyFoodDB.TOrderDetails
+                         join x in BuyFoodDB.TProducts
+                         on i.CProductId equals x.CProductId
+                         where i.COrder.CMemberId == MemberID
+                         select new
+                         {
+                             i.CProductId,
+                             x.CProductTagId
+                         };
+            var GroupResult = (from u in result
+                               group u by u.CProductId into g
+                               orderby g.Count() descending
+                               select new
+                               {
+                                   g.Key,
+                                   OrderCount = g.Count()
+                               }).ToList();
+            return Json(GroupResult);
         }
     }
 }
