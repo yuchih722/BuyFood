@@ -18,6 +18,7 @@ namespace BuyFood_Template.Controllers
             擺腹BuyFoodContext dbcontext = (new 擺腹BuyFoodContext());
             var datanew = dbcontext.TCombos.Where(n => n.CMemberId == memberID).Select(n => new
             {
+                memberID=memberID,
                 n.CComboId,
                 n.CComboName,
                 comboCount = n.TComboDetails.Count(),
