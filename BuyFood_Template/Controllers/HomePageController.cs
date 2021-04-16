@@ -24,6 +24,7 @@ namespace BuyFood_Template.Controllers
                 ViewBag.USERPHOTO = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);
                 ViewBag.USERUSERID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);
             }
+            ViewBag.num_todo = "";
             if (TempData[CDictionary.REDIRECT_FROM_WHERE] != null) { 
             ViewBag.num_todo= TempData[CDictionary.REDIRECT_FROM_WHERE].ToString();
             }
@@ -339,15 +340,15 @@ namespace BuyFood_Template.Controllers
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)))
             {
-                return Json(false);
+                return Json(new { member = false, memberID =HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID) });
             }
             else if (int.Parse(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)) == 16)
             {
-                return Json("isAdm");
+                return Json(new { member = "isAdm", memberID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID) });
             }
             else
             {
-                return Json(true);
+                return Json(new { member = true, memberID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID) });
             }
         }
         public IActionResult forgetPwd()

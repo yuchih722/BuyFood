@@ -230,6 +230,7 @@ $("#search_address").click(
                 if (distance_inline > cityCircle.radius) {
                     window.alert("輸入的位置超過可外送的距離，請重新再設定一次");
                     $("#cover_page").css({ "display": "none" });   //取消遮罩效果
+                    $("#current_address").html("目前輸入的地點為:無");      //顯示目前輸入的地址
                     return;
                 }
 
@@ -285,6 +286,15 @@ function SendOrderMessage(ChannelID) {
     var messageOrder = '下了1筆訂單';
     var adrfotoOrder = $("#user_foto").val();
     var adrMemberIDForOrder = 101;
+    $.ajax({
+        url: "/Order/saveTheNewOrders/",
+        type: "POST",
+        data: { "userName": userName, "OrderMessage": messageOrder },
+        success: function (data) {
+
+        }
+
+    });
     connection.invoke("SendMessageToOrder", groupNameOrder, userName, messageOrder, adrfotoOrder, adrMemberIDForOrder).catch(function (err) {
         return console.log(err.toString());
     });

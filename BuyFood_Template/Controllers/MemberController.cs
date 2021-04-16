@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using BuyFood_Template.Hubs;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModels;
 using Grpc.Core;
@@ -25,32 +26,10 @@ namespace BuyFood_Template.Controllers
 
             //(new ShareFunction()).sendGrid("always0537@gmail.com", "hihi", "訂單成功", "check your account");
 
-            //擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            //var products = db.TProducts.ToList();
-            //var bbb = db.TOrderDetails.OrderByDescending(n => n.COrder.COrderDate).Select(n => new
-            //{
-            //    n.CProductId,
-            //    product = n.CProduct
-            //}).Take(100)
-            //.GroupBy(n => n.CProductId).Select(n => new
-            //{
-            //    n.Key,
-            //    count = n.Count()
-            //}).OrderByDescending(n => n.count).Take(6).ToList();
+           //(new ChatHub()).test();
 
-            //var ccc=bbb.Select(n => new
-            //{
-            //    n.Key,
-            //    n.count,
-            //    product = products.First(m => m.CProductId == n.Key)
-            //});
 
-            //foreach (var item in bbb)
-            //{
-            //    TProduct product = db.TProducts.FirstOrDefault(n => n.CProductId == item.Key);
-            //    item.product.Add(product);
-            //}
-            return Json("aaa");
+           return Json("aa");
         }
         public string checkLogin(string id)
         {
@@ -65,8 +44,7 @@ namespace BuyFood_Template.Controllers
         }
         public IActionResult MemberCenter()
         {
-
-            int test = 555;
+           
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
             {
                 ViewBag.userName = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);

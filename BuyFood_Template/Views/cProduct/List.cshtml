@@ -1,339 +1,420 @@
 ﻿@model IEnumerable<BuyFood_Template.ViewModels.CProductViewModel>
 
-<link href="~/assets/NEW CSS/NEWCSS.css" rel="stylesheet" />
-<link href="~/assets/NEW CSS/page.css" rel="stylesheet" />
-<link href="~/assets/css/mycss/cProduct.css" rel="stylesheet" />
-<script src="~/assets/js/myjs/ProductList.js"></script>
+    <link href="~/assets/NEW CSS/NEWCSS.css" rel="stylesheet" />
+    <link href="~/assets/NEW CSS/page.css" rel="stylesheet" />
+    <link href="~/assets/css/mycss/cProduct.css" rel="stylesheet" />
+    <script src="~/assets/js/myjs/ProductList.js"></script>
 
-@{
-    Layout = "_LayoutAd";
-}
+    @{
+        Layout = "_LayoutAd";
+    }
 
 
-<div class="box-module">
-    <h2>產品檢視</h2>
-</div>
-<div class="box-module">
-    <div class="box-title">
-        產品列表
-        <a style="margin-left:30px;" asp-action="Create" class="btn btn-primary  btn-rounded" onclick="">新增產品</a>
-        <a style="margin-left:30px;" asp-controller="cCategory" asp-action="CategoryList" class="btn btn-primary  btn-rounded" onclick="">新增類別</a>
+
+
+    <div class="box-module">
+        <h2>產品檢視</h2>
+        <div class="box-content padding15">
+
+            <a href="javascript: void(0)" id="product販售">
+                <div class="clearfix col-xs-6 col-sm-2 padding5">
+                    <div class="statusbox bg-green">
+                        <div class="status_amount"> </div>
+                        <div class="status_name bg_color_green">販售中的產品</div>
+                    </div>
+                </div>
+            </a>
+            <a href="javascript: void(0)" id="product低於庫存">
+                <div class="clearfix col-xs-6 col-sm-2 padding5">
+                    <div class="statusbox bg-deep-blue">
+                        <div class="status_amount"> </div>
+                        <div class="status_name bg_color_red">低於安全庫存</div>
+                    </div>
+                </div>
+            </a>
+            <a href="javascript: void(0)" id="product售完">
+                <div class="clearfix col-xs-6 col-sm-2 padding5">
+                    <div class="statusbox bg-red">
+                        <div class="status_amount"> </div>
+                        <div class="status_name bg_color_red">售完的產品</div>
+                    </div>
+                </div>
+            </a>
+            <a href="javascript: void(0)" id="product下架">
+                <div class="clearfix col-xs-6 col-sm-2 padding5">
+                    <div class="statusbox bg-gray">
+                        <div class="status_amount"> </div>
+                        <div class="status_name bg_color_bule">下架的產品</div>
+                    </div>
+                </div>
+            </a>
+            <a href="javascript: void(0)" id="product全產品">
+                <div class="clearfix col-xs-6 col-sm-2 padding5">
+                    <div class="statusbox bg-purple">
+                        <div class="status_amount"> </div>
+                        <div class="status_name bg_color_purple">全部產品</div>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
 
-    <div id="yuActivityt">
+
+    <div class="box-module">
+        <div class="box-title">
+            產品列表
+            <a style="margin-left:30px;" asp-action="Create" class="btn btn-primary  btn-rounded" onclick="">新增產品</a>
+            <a style="margin-left:30px;" asp-controller="cCategory" asp-action="CategoryList" class="btn btn-success btn-rounded" onclick="">新增類別</a>
+        </div>
+
+        <div id="yuActivityt">
 
 
 
+        </div>
     </div>
-</div>
 
-@*左側選單*@
-<div id="mwt_mwt_slider_scroll">
-    <div id="mwt_fb_tab">
-        <p>商品種類</p>
+    @*左側選單*@
+    <div id="mwt_mwt_slider_scroll">
+        <div id="mwt_fb_tab">
+            <p>商品種類</p>
+        </div>
+        <div class="d-grid gap-2" id="mwt_slider_content"></div>
     </div>
-    <div class="d-grid gap-2" id="mwt_slider_content"></div>
-</div>
 
 
-@*`<div class="input-group mb-3">
-        <div class="l_f clearfix" style="padding-left:20px;"><button type="button" class="btn button_btn btn-danger" onclick="deletemore();">刪除選中</button></div>
-        <span class="sumQuantity">合計數量：<em id="quantity">${data.length}</em>條</span>
-    </div>*@
-<!-- BEGIN PAGA BACKDROPS-->
-<div class="sidenav-backdrop backdrop"></div>
-<div class="preloader-backdrop">
-    <div class="page-preloader">Loading</div>
-</div>
-<!-- END PAGA BACKDROPS-->
-
-<script>
-    function Activity() {
-        $.ajax({
-            url: "/cProduct/ProductListJson",
-            type: "GET",
-            success: function (data) {
-                /*console.log(data)*/
-                var txttable = "";
-
-                txttable +=
-                    `<div id="orderlist">
-                            <table class="table table-hover table_striped table-bordered border" id="myTable">
-                            <thead>
-                            <tr>
-                            <th width="50px" style="text-align:center">
-                            <label class="ui-checkbox">
-                            <input type="checkbox" id="chElt" onclick="checkOrCancelAll();" value="">
-                            <span class="input-span"></span>
-                            </label>
-                            </th>
-                             <th class="align">序</>
-                             <th class="align"  >產品類別</th>
-                             <th class="align"  >產品名稱</th>
-                             <th class="align"  >產品價格</th>
-                             <th class="align"  >庫存數量</th>
-                             <th class="align" height="50" width="15%">產品描述</th>
-                             <th class="align"  >販售時段早</th>
-                             <th class="align"  >販售時段中</th>
-                             <th class="align"  >販售時段晚</th>
-                             <th class="align"  >販售狀態</th>
-                             <th class="align" width="25%">產品圖片</th>
-                              <th width="15%" class="align">操作</th>
-                             </tr>
-                             </thead>
-                             <tbody id="yuActivitytbody">`
-                var count = 0;
-                for (let i = 0; i <= data.length - 1; i++) {
-                    count++
-
-                    if (data[i].cIsBreakFast==1) {
-                        Break = `<button class="btn btn-green" onclick="p產品販售早(${data[i].cProductId})" >販售</button>`
-                    }
-                    else {
-                        Break = `<button  class="btn btn-gray" onclick="p產品販售早(${data[i].cProductId})" >不販售</button>`
-                    }
-                    if (data[i].cIsLunch == 1) {
-                        Lunch = `<button  class=" btn btn-green"  onclick="p產品販售午(${data[i].cProductId})">販售 </button>`
-                    }
-                    else {
-                        Lunch = `<button  class="btn btn-gray" onclick="p產品販售午(${data[i].cProductId})">不販售 </button>`
-                    }
-                    if (data[i].cIsDinner == 1) {
-                        Dinner = `<button  class=" btn btn-green" onclick="p產品販售晚(${data[i].cProductId})">販售 </button>`
-                    }
-                    else {
-                        Dinner = `<button  class="btn btn-gray"  onclick="p產品販售晚(${data[i].cProductId})">不販售 </button>`
-                    }
-                    if (data[i].cQuantity == 0) {
-                        cQuantity = `<p class="btn btn-danger" style="vertical-align: middle" >請補充庫存</p>`
-                    }
-                    else {
-                        cQuantity = data[i].cQuantity;
-                    }
-                    if (data[i].cIsOnSaleId == 3) {
-                        cStatusName = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${data[i].cProductId}, ${data[i].cIsOnSaleId})">下架 </button>`
-                    }
-                    else if (data[i].cIsOnSaleId == 2) {
-                        cStatusName = `<button  class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${data[i].cProductId}, ${data[i].cIsOnSaleId})">售完 </button>`
-                    }
-                    else if (data[i].cIsOnSaleId == 1) {
-                        cStatusName = `<button  class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${data[i].cProductId}, ${data[i].cIsOnSaleId})">正常 </button>`
-                    }
-
-
-                    txttable += `<tr style="text-align:center"><td style="vertical-align: middle;"><label class="ui-checkbox"><input id="checkdelete" value="${data[i].cProductId}" type="checkbox" name="interest"><span class="input-span">
-                                <td style="vertical-align: middle">${count}
-                                <td style="vertical-align: middle">${data[i].cCategoryName}
-                                <td style="vertical-align: middle">${data[i].cProductName}
-                                <td style="vertical-align: middle">${data[i].cPrice}
-                                <td style="vertical-align: middle">${cQuantity}
-                                <td style="vertical-align: middle">${data[i].cDescription}
-                                <td style="vertical-align: middle" id="p販售早${data[i].cProductId}">${Break}
-                                <td style="vertical-align: middle" id="p販售午${data[i].cProductId}">${Lunch}
-                                <td style="vertical-align: middle" id="p販售晚${data[i].cProductId}">${Dinner}
-                                <td style="vertical-align: middle" id="p產品狀態${data[i].cProductId}">${cStatusName}
-                                <td style="vertical-align: middle"><img src="${data[i].cPicture.replace("~", "")}" alt="your image" width="180" height="150" />
-
-                                <td style="vertical-align: middle">
-                                <a  class="btn btn-Success btn-xs m-r-5" href="/cProduct/Edit?id=${data[i].cProductId}"style="background-color:##00ff21"><i class="fa fa-pencil font-18">編輯
-                                <a  class="btn btn-Danger btn-xs" href="/cProduct/Delete?id=${data[i].cProductId}" style="background-color:#ff0000"><i class="fa fa-trash font-18">刪除`
+    @*`<div class="input-group mb-3">
+            <div class="l_f clearfix" style="padding-left:20px;"><button type="button" class="btn button_btn btn-danger" onclick="deletemore();">刪除選中</button></div>
+            <span class="sumQuantity">合計數量：<em id="quantity">${data.length}</em>條</span>
+        </div>*@
+    <!-- BEGIN PAGA BACKDROPS-->
+    <div class="sidenav-backdrop backdrop"></div>
+    <div class="preloader-backdrop">
+        <div class="page-preloader">Loading</div>
+    </div>
+    <!-- END PAGA BACKDROPS-->
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script>
+        //進入此頁面執行
+        var what_int = 0;
+        $(Activity(what_int), productStatusNum());
+        $("#product販售").click(function () { what_int = 1; Activity(what_int) })
+        $("#product售完").click(function () { what_int = 2; Activity(what_int) })
+        $("#product下架").click(function () { what_int = 3; Activity(what_int) })
+        $("#product低於庫存").click(function () { what_int = 10; Activity(what_int) })
+        $("#product全產品").click(function () { what_int = 0; Activity(what_int) })
+        function productStatusNum() {
+            $.ajax({
+                url: "/cProduct/productStatusNum",
+                type: "get",
+                success: function (data) {
+                    $("#product販售 .status_amount").html(data.p販售中數)
+                    $("#product售完 .status_amount").html(data.p販完數)
+                    $("#product下架 .status_amount").html(data.p下架數)
+                    $("#product低於庫存 .status_amount").html(data.p低於保險庫存)
+                    $("#product全產品 .status_amount").html(data.p全部數)
                 }
-                txttable += ` </tbody>
-                                </table>
-                                </div>`
+            })
+        }
 
-                $("#yuActivityt").html(txttable);
-                $('#myTable').DataTable({
-                    language: {
-                        "emptyTable": "無資料...",
-                        "processing": "處理中...",
-                        "loadingRecords": "載入中...",
-                        "lengthMenu": "每頁 _MENU_ 資料",
-                        "zeroRecords": "無搜尋結果",
-                        "info": "_START_ 至 _END_ / 共 _TOTAL_ 筆",
-                        "infoEmpty": "尚無資料",
-                        "infoFiltered": "(從 _MAX_ 筆資料過濾)",
-                        "infoPostFix": "",
-                        "search": "搜尋字串:",
-                        "paginate": {
-                            "first": "首頁",
-                            "last": "末頁",
-                            "next": "下頁",
-                            "previous": "前頁"
-                        },
-                        "aria": {
-                            "sortAscending": ": 升冪",
-                            "sortDescending": ": 降冪"
+
+        function Activity(id) {
+            $.ajax({
+                url: "/cProduct/ProductListJson?id=" + id,
+                type: "GET",
+                success: function (data) {
+                    console.log(data)
+                    var txttable = "";
+
+                    txttable +=
+                        `<div id="orderlist">
+                                <table class="table table-hover table_striped table-bordered border" id="myTable">
+                                <thead>
+                                <tr>
+                                <th width="50px" style="text-align:center">
+                                <label class="ui-checkbox">
+                                <input type="checkbox" id="chElt" onclick="checkOrCancelAll();" value="">
+                                <span class="input-span"></span>
+                                </label>
+                                </th>
+                                 <th class="align">序</>
+                                 <th class="align"  >產品類別</th>
+                                 <th class="align"  >產品名稱</th>
+                                 <th class="align"  >產品價格</th>
+                                 <th class="align"  >庫存數量/保險庫存</th>
+                                 <th class="align" height="50" width="15%">產品描述</th>
+                                 <th width="5%" class="align"  >產品標籤</th>
+                                 <th class="align"  >販售時段早</th>
+                                 <th class="align"  >販售時段中</th>
+                                 <th class="align"  >販售時段晚</th>
+                                 <th class="align"  >販售狀態</th>
+                                 <th width="5%" class="align"  >調理時間(分鐘)</th>
+                                 <th class="align" width="25%">產品圖片</th>
+                                  <th width="15%" class="align">操作</th>
+                                 </tr>
+                                 </thead>
+                                 <tbody id="yuActivitytbody">`
+                    var count = 0;
+                    for (let i = 0; i <= data.length - 1; i++) {
+                        count++
+
+                        if (data[i].cIsBreakFast == 1) {
+                            Break = `<button class="btn btn-green" onclick="p產品販售早(${data[i].cProductId})" >販售</button>`
                         }
+                        else {
+                            Break = `<button  class="btn btn-gray" onclick="p產品販售早(${data[i].cProductId})" >不販售</button>`
+                        }
+                        if (data[i].cIsLunch == 1) {
+                            Lunch = `<button  class=" btn btn-green"  onclick="p產品販售午(${data[i].cProductId})">販售 </button>`
+                        }
+                        else {
+                            Lunch = `<button  class="btn btn-gray" onclick="p產品販售午(${data[i].cProductId})">不販售 </button>`
+                        }
+                        if (data[i].cIsDinner == 1) {
+                            Dinner = `<button  class=" btn btn-green" onclick="p產品販售晚(${data[i].cProductId})">販售 </button>`
+                        }
+                        else {
+                            Dinner = `<button  class="btn btn-gray"  onclick="p產品販售晚(${data[i].cProductId})">不販售 </button>`
+                        }
+                        if (data[i].cQuantity == 0) {
+                            cQuantity = `<p class="btn btn-danger" style="vertical-align: middle" >請補充庫存</p>`
+                        }
+                        else {
+                            cQuantity = data[i].cQuantity;
+                        }
+                        if (data[i].cIsOnSaleId == 3) {
+                            cStatusName = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${data[i].cProductId}, ${data[i].cIsOnSaleId})">下架 </button>`
+                        }
+                        else if (data[i].cIsOnSaleId == 2) {
+                            cStatusName = `<button  class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${data[i].cProductId}, ${data[i].cIsOnSaleId})">售完 </button>`
+                        }
+                        else if (data[i].cIsOnSaleId == 1) {
+                            cStatusName = `<button  class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${data[i].cProductId}, ${data[i].cIsOnSaleId})">正常 </button>`
+                        }
+
+
+                        txttable += `<tr style="text-align:center"><td style="vertical-align: middle;"><label class="ui-checkbox"><input id="checkdelete" value="${data[i].cProductId}" type="checkbox" name="interest"><span class="input-span">
+                                    <td style="vertical-align: middle">${count}
+                                    <td style="vertical-align: middle">${data[i].cCategoryName}
+                                    <td style="vertical-align: middle">${data[i].cProductName}
+                                    <td style="vertical-align: middle">${data[i].cPrice}
+                                    <td style="vertical-align: middle">${cQuantity}/${data[i].cQuantityControl}
+                                    <td style="vertical-align: middle">${data[i].cDescription}
+                                    <td style="vertical-align: middle">${data[i].cProductTagName}
+                                    <td style="vertical-align: middle" id="p販售早${data[i].cProductId}">${Break}
+                                    <td style="vertical-align: middle" id="p販售午${data[i].cProductId}">${Lunch}
+                                    <td style="vertical-align: middle" id="p販售晚${data[i].cProductId}">${Dinner}
+                                    <td style="vertical-align: middle" id="p產品狀態${data[i].cProductId}">${cStatusName}
+                                    <td style="vertical-align: middle">${data[i].cFinishedTime}
+                                    <td style="vertical-align: middle"><img src="${data[i].cPicture.replace("~", "")}" alt="your image" width="180" height="150" />
+
+                                    <td style="vertical-align: middle">
+                                    <a  class="btn btn-Success btn-xs m-r-5" href="/cProduct/Edit?id=${data[i].cProductId}"style="background-color:##00ff21"><i class="fa fa-pencil font-18">編輯
+                                    <a  class="btn btn-Danger btn-xs" href="/cProduct/Delete?id=${data[i].cProductId}" style="background-color:#ff0000"><i class="fa fa-trash font-18">刪除`
+                    }
+                    txttable += ` </tbody>
+                                    </table>
+                                    </div>`
+
+                    $("#yuActivityt").html(txttable);
+                    $('#myTable').DataTable({
+                        language: {
+                            "emptyTable": "無資料...",
+                            "processing": "處理中...",
+                            "loadingRecords": "載入中...",
+                            "lengthMenu": "每頁 _MENU_ 資料",
+                            "zeroRecords": "無搜尋結果",
+                            "info": "_START_ 至 _END_ / 共 _TOTAL_ 筆",
+                            "infoEmpty": "尚無資料",
+                            "infoFiltered": "(從 _MAX_ 筆資料過濾)",
+                            "infoPostFix": "",
+                            "search": "搜尋字串:",
+                            "paginate": {
+                                "first": "首頁",
+                                "last": "末頁",
+                                "next": "下頁",
+                                "previous": "前頁"
+                            },
+                            "aria": {
+                                "sortAscending": ": 升冪",
+                                "sortDescending": ": 降冪"
+                            }
+                        }
+                    });
+
+                    $("#myTable_length").append(`<label id="btndelete" style = "display:none"><button type="button" class="btn button_btn btn-danger" onclick="deletemore();">刪除選中</button></label>`);
+
+
+
+
+                    $("#myTable input[name = interest]").change(function Submit() {
+                        var SelectFalse = false; //用于判断是否被选择条件
+                        var CheckBox = $('input[name = interest]');//得到所的复选框
+                        var ccbb = "#myTable input[type=checkbox]:checked";
+                        for (var i = 0; i < CheckBox.length; i++) {
+                            if (CheckBox[i].checked) {
+                                SelectFalse = true;
+                            }
+                        }
+
+                        if (SelectFalse) {
+                            $("#btndelete").show();
+                        } else {
+                            $("#btndelete").hide();
+                        }
+                    })
+
+                }
+            });
+        };
+
+
+
+
+        function checkOrCancelAll() {
+            //1.獲取checkbo的元素對象
+            var chElt = document.getElementById("chElt");
+            //2.獲取選中狀態
+            var checkedElt = chElt.checked;
+            console.log(checkedElt)
+            //3.若checked=true,將所有的復選框選中,checked=false,將所有的復選框取消
+            var allCheck = document.getElementsByName("interest");
+            //4.循環遍歷取出每一個復選框中的元素
+            //var mySpan=document.getElementById("mySpan");
+            if (checkedElt) {
+                //全選
+                for (var i = 0; i < allCheck.length; i++) {
+                    //設置復選框的選中狀態
+                    allCheck[i].checked = true;
+                }
+                $("#btndelete").show();
+                //mySpan.innerHTML="取消全選";
+            } else {
+                //取消全選
+                for (var i = 0; i < allCheck.length; i++) {
+                    allCheck[i].checked = false;
+                }
+                $("#btndelete").hide();
+                //mySpan.innerHTML="全選";
+            }
+        };
+
+        //全選刪除
+        function deletemore() {
+            var checked = $("#myTable input[type=checkbox]:checked");
+            for (let i = 0; i < checked.length; i++) {
+                /*     console.log(checked[i].value);*/
+                $.ajax({
+                    url: "/cProduct/Delete?id=" + checked[i].value,
+                    type: "GET",
+                    success: function () {   //請求成功後執行的操作
+                        window.location.reload();
                     }
                 });
-
-                $("#myTable_length").append(`<label id="btndelete" style = "display:none"><button type="button" class="btn button_btn btn-danger" onclick="deletemore();">刪除選中</button></label>`);
-
-
-
-
-                $("#myTable input[name = interest]").change(function Submit() {
-                    var SelectFalse = false; //用于判断是否被选择条件
-                    var CheckBox = $('input[name = interest]');//得到所的复选框
-                    var ccbb = "#myTable input[type=checkbox]:checked";
-                    for (var i = 0; i < CheckBox.length; i++) {
-                        if (CheckBox[i].checked) {
-                            SelectFalse = true;
-                        }
-                    }
-
-                    if (SelectFalse) {
-                        $("#btndelete").show();
-                    } else {
-                        $("#btndelete").hide();
-                    }
-                })
-
             }
-        });
-    };
-
-
-
-
-    function checkOrCancelAll() {
-        //1.獲取checkbo的元素對象
-        var chElt = document.getElementById("chElt");
-        //2.獲取選中狀態
-        var checkedElt = chElt.checked;
-        console.log(checkedElt)
-        //3.若checked=true,將所有的復選框選中,checked=false,將所有的復選框取消
-        var allCheck = document.getElementsByName("interest");
-        //4.循環遍歷取出每一個復選框中的元素
-        //var mySpan=document.getElementById("mySpan");
-        if (checkedElt) {
-            //全選
-            for (var i = 0; i < allCheck.length; i++) {
-                //設置復選框的選中狀態
-                allCheck[i].checked = true;
-            }
-            $("#btndelete").show();
-            //mySpan.innerHTML="取消全選";
-        } else {
-            //取消全選
-            for (var i = 0; i < allCheck.length; i++) {
-                allCheck[i].checked = false;
-            }
-            $("#btndelete").hide();
-            //mySpan.innerHTML="全選";
         }
-    };
 
-    //全選刪除
-    function deletemore() {
-        var checked = $("#myTable input[type=checkbox]:checked");
-        for (let i = 0; i < checked.length; i++) {
-            console.log(checked[i].value);
+        //進入此頁面執行
+        $(Activity());
+
+    </script>
+
+
+
+
+
+    <script>
+
+        //產品販售狀態
+        function p產品販售狀態(PrId, PrTimeId) {
             $.ajax({
-                url: "/cProduct/Delete?id=" + checked[i].value,
-                type: "GET",
-                success: function () {   //請求成功後執行的操作
-                    window.location.reload();
+                url: "/cProduct/changeSaleonoff",
+                type: "Get",
+                data: { "PrId": PrId, "PrTimeId": PrTimeId },
+                success: function (data) {
+                    /*       console.log(data);*/
+                    if (data == 1) {
+                        cStatusName = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId + 1})">正常</button>`
+                        $(productStatusNum());
+                    }
+                    else if (data == 2) {
+
+                        cStatusName = `<button  class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId + 1})">售完</button>`
+                        $(productStatusNum());
+                    }
+                    else if (data == 3) {
+                        cStatusName = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId = 0})">下架</button>`
+                        $(productStatusNum());
+                    }
+                    $(`#p產品狀態${PrId}`).html(`<td style="vertical-align: middle" id="p產品狀態${PrId}">${cStatusName}`);
+                    $(productStatusNum());
+                    connection.invoke("updateCombo");
+                }
+            });
+
+
+        }
+
+        //產品販售時段早
+        function p產品販售早(id) {
+            $.ajax({
+                url: "/cProduct/changeProductBreakFast?id=" + id,
+                type: "Get",
+                success: function (data) {
+                    console.log(data);
+                    if (data == true) {
+
+                        $("#p販售早" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售早(${id})">販售</button>`);
+                        $(productStatusNum());
+                    }
+                    else {
+                        $("#p販售早" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售早(${id})">不販售</button>`);
+                        $(productStatusNum());
+                    }
+
+                }
+            });
+
+        }
+        //產品販售時段午
+        function p產品販售午(id) {
+            $.ajax({
+                url: "/cProduct/changeProductLunch?id=" + id,
+                type: "Get",
+                success: function (data) {
+                    if (data == true) {
+                        $("#p販售午" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售午(${id})">販售</button>`);
+                        $(productStatusNum());
+                    }
+                    else {
+                        $("#p販售午" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售午(${id})">不販售</button>`);
+                        $(productStatusNum());
+                    }
+
+                }
+            });
+
+        }
+        //產品販售時段晚
+        function p產品販售晚(id) {
+            $.ajax({
+                url: "/cProduct/changeProductDinner?id=" + id,
+                type: "Get",
+                success: function (data) {
+                    if (data == true) {
+                        $("#p販售晚" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售晚(${id})">販售</button>`);
+                        $(productStatusNum());
+                    }
+                    else {
+                        $("#p販售晚" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售晚(${id})">不販售</button>`);
+                        $(productStatusNum());
+                    }
+
                 }
             });
         }
-    }
-
-    //進入此頁面執行
-    $(Activity());
-
-</script>
 
 
-
-
-
-<script>
-    
-    //產品販售狀態
-    function p產品販售狀態(PrId, PrTimeId) {
-        $.ajax({
-            url: "/cProduct/changeSaleonoff",
-            type: "Get",
-            data: { "PrId": PrId, "PrTimeId": PrTimeId },
-            success: function (data) {
-                console.log(data);
-                if (data == 1) {
-                    cStatusName = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId+1})">正常</button>`
-                }
-                else if (data == 2) {
-                  
-                    cStatusName = `<button  class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId+1})">售完</button>`
-           
-                }
-                else if (data==3)
-                {
-                    cStatusName = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId=0})">下架</button>`
-               
-                }
-                $(`#p產品狀態${PrId}`).html(`<td style="vertical-align: middle" id="p產品狀態${PrId}">${cStatusName}`);
-           }
-        });
-        
-        
-    }
-
-    //產品販售時段早
-    function p產品販售早(id) {
-        $.ajax({
-            url: "/cProduct/changeProductBreakFast?id="+id,
-            type: "Get",
-            success: function (data) {
-                console.log(data);
-                if (data == true) {
-                    
-                    $("#p販售早" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售早(${id})" style="vertical-align: middle">販售</button>`);
-                }
-                else {
-                    $("#p販售早" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售早(${id})" style="vertical-align: middle")">不販售</button>`);
-                }
-              
-            }
-        });
-        
-    }
-    //產品販售時段午
-    function p產品販售午(id) {
-        $.ajax({
-            url: "/cProduct/changeProductLunch?id="+id,
-            type: "Get",
-            success: function (data) {
-                if (data == true) {
-                    $("#p販售午" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售午(${id})" style="vertical-align: middle">販售</button>`);
-                }
-                else
-                {
-                    $("#p販售午" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售午(${id})" style="vertical-align: middle")">不販售</button>`);
-                }
-              
-            }
-        });
-       
-    }
-    //產品販售時段晚
-    function p產品販售晚(id) {
-        $.ajax({
-            url: "/cProduct/changeProductDinner?id="+id,
-            type: "Get",
-            success: function (data) {
-                if (data == true) {
-                    $("#p販售晚" + id).html(`<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售晚(${id})" style="vertical-align: middle">販售</button>`);
-                }
-                else
-                {
-                    $("#p販售晚" + id).html(`<button class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售晚(${id})" style="vertical-align: middle")">不販售</button>`);
-                }
-              
-            }
-        });
-       
-    }
-</script>
+    </script>
 
 
