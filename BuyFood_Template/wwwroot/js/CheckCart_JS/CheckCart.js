@@ -230,6 +230,7 @@ $("#search_address").click(
                 if (distance_inline > cityCircle.radius) {
                     window.alert("輸入的位置超過可外送的距離，請重新再設定一次");
                     $("#cover_page").css({ "display": "none" });   //取消遮罩效果
+                    $("#current_address").html("目前輸入的地點為:無");      //顯示目前輸入的地址
                     return;
                 }
 
