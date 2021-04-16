@@ -62,8 +62,6 @@ function cwc_showChangPassword(facebook) {
             $("#cwc_i_div_wholeDiv").css("height", "950px");
             cwc_bool_showchangePassword = true;
         }
-
-
         else {
             $("#aaa").css("display", "none");
             $("#cwc_i_div_bodyLeft").css("height", "650px");
@@ -75,7 +73,8 @@ function cwc_showChangPassword(facebook) {
             cwc_bool_showchangePassword = false;
         }
     }
-    window.open("www.facebook.com");
+    else
+        window.open("https://www.facebook.com/");
 }
 
 function cwc_savePassword(memberID, meth) {

@@ -18,6 +18,8 @@ namespace BuyFood_Template.Controllers
 
         public IActionResult Home()
         {
+            ViewBag.LOCALWEBSITES = CDictionary.LOCAL_WEBSITES;
+
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
             {
                 ViewBag.USERNAME = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
