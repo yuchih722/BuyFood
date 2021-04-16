@@ -150,7 +150,7 @@ namespace BuyFood_Template.Controllers
                     add密碼雜湊.CPassword = 雜湊密碼;
                     db.SaveChanges();
 
-                    string val信件內容 = "歡迎加入BuyFood,請點擊以下連結以開通帳號 \n https://localhost:44398/Customer/memberConfirm?ID=" + add密碼雜湊.CMemberId;
+                    string val信件內容 = "歡迎加入BuyFood,請點擊以下連結以開通帳號 \n"+CDictionary.LOCAL_WEBSITES+"/Customer/memberConfirm?ID=" + add密碼雜湊.CMemberId;
 
                     shareFun.sendEmail(add密碼雜湊.CEmail, add密碼雜湊.CName, "BuyFood帳號開通認證信", val信件內容);
 

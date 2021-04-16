@@ -160,10 +160,10 @@
             if (data.length > 8) {
                 fadasi_yu=8
             } else
-                fadasi_yu=data.length
+                fadasi_yu = data.length
             for (let i = 0; i < fadasi_yu ; i++) {
                 if (data[i].product.cIsOnSaleId != 1) continue;
-                hot += `<div class="col-lg-3 col-md-4 col-sm-6">
+                hot += `<div class="col-lg-3 col-md-4 col-sm-6" style="float:left">
                                             <div class="product__item">
                                                 <div class="product__item__pic set-bg" style="background-image: url(${data[i].product.cPicture.replace("~", "")})">
                                                  <ul class="product__item__pic__hover" style="text-align: right;">
@@ -191,6 +191,7 @@
                                         </div>`
             }
             $("#hot_product").html(hot);
+
         }
     })
     //$.ajax
