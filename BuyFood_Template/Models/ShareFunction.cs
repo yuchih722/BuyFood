@@ -45,32 +45,32 @@ namespace BuyFood_Template.Models
 
 
         }
-        public void sendEmail(string mailtoAddress,string mailtoName, string subject, string body)
-        {
-            var fromAddress = new MailAddress("sunfengmsit129@gmail.com", "擺腹buyfood");
-            var toAddress = new MailAddress(mailtoAddress, mailtoName);
-            const string fromPassword = "@MSIT129";
-            //const string subject = "Subject";
-            //const string body = "Body";
+        //public void sendEmail(string mailtoAddress,string mailtoName, string subject, string body)
+        //{
+        //    var fromAddress = new MailAddress("sunfengmsit129@gmail.com", "擺腹buyfood");
+        //    var toAddress = new MailAddress(mailtoAddress, mailtoName);
+        //    const string fromPassword = "@MSIT129";
+        //    //const string subject = "Subject";
+        //    //const string body = "Body";
 
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-            using (var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body
-            })
-            {
-                smtp.Send(message);
-            }
-        }
+        //    var smtp = new SmtpClient
+        //    {
+        //        Host = "smtp.gmail.com",
+        //        Port = 587,
+        //        EnableSsl = true,
+        //        DeliveryMethod = SmtpDeliveryMethod.Network,
+        //        UseDefaultCredentials = false,
+        //        Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+        //    };
+        //    using (var message = new MailMessage(fromAddress, toAddress)
+        //    {
+        //        Subject = subject,
+        //        Body = body
+        //    })
+        //    {
+        //        smtp.Send(message);
+        //    }
+        //}
         //hashAlgorithm = 加密方法 SHA1 SHA256等等
         //input = 欲加密字串
         public string GetHash(HashAlgorithm hashAlgorithm, string input)

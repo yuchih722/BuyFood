@@ -152,7 +152,7 @@ namespace BuyFood_Template.Controllers
 
                     string val信件內容 = "歡迎加入BuyFood,請點擊以下連結以開通帳號 \n"+CDictionary.LOCAL_WEBSITES+"/Customer/memberConfirm?ID=" + add密碼雜湊.CMemberId;
 
-                    shareFun.sendEmail(add密碼雜湊.CEmail, add密碼雜湊.CName, "BuyFood帳號開通認證信", val信件內容);
+                    shareFun.sendGrid(add密碼雜湊.CEmail, add密碼雜湊.CName, "BuyFood帳號開通認證信", val信件內容);
 
                     return Json(true);
                 }
@@ -201,6 +201,10 @@ namespace BuyFood_Template.Controllers
 
             openMember.COpenMember = 1;
             db.SaveChanges();
+
+            HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, openMember.CName);
+            HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, openMember.CPicture);
+            HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, openMember.CMemberId.ToString());
 
             return Redirect("~/HomePage/Home");
         }

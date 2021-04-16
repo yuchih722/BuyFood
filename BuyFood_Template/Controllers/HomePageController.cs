@@ -295,7 +295,7 @@ namespace BuyFood_Template.Controllers
 
                     string val信件內容 = "您的密碼已被修改成 : " + RandomPwd + " , 請登入後自行修改密碼";
 
-                    shareFun.sendEmail(checkPhone.CEmail, checkPhone.CName, "BuyFood帳號開通認證信", val信件內容);
+                    shareFun.sendGrid(checkPhone.CEmail, checkPhone.CName, "BuyFood帳號開通認證信", val信件內容);
 
 
                     return Json("EditSuccess");

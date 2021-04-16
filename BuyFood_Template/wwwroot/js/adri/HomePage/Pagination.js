@@ -15,8 +15,6 @@ function isExist(id) {
 var pdtItem = null;
 //將商品加入到購物車內
 function addCart(obj_product) {
-    //如果是黑名單的話購物功能會被鎖定
-
 
     //如果沒有登入則跳到登入畫面
     if (member_No == "") {

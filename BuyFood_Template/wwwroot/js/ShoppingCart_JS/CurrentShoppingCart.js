@@ -202,6 +202,7 @@ function GetDiscountTotalPrice() {
     sum_price = total_price - discount_price;
     $("#off_price").html('$' + discount_price);
     $("#cart_total_price").html('$' + sum_price);
+    $("#itemMoney").html('$' + sum_price);
 }
 //讀取會員擁有的優惠券
 $(function () {
