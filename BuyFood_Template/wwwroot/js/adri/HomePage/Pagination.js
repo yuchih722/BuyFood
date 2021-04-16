@@ -15,6 +15,7 @@ function isExist(id) {
 var pdtItem = null;
 //將商品加入到購物車內
 function addCart(obj_product) {
+
     //如果沒有登入則跳到登入畫面
     if (member_No == "") {
         window.alert("請先登入會員");
