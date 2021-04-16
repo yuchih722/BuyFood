@@ -19,7 +19,6 @@
     <None Include="Views\cOrderDetails\List.cshtml" />
     <None Include="Views\cProduct\Create.cshtml" />
     <None Include="Views\cProduct\Edit.cshtml" />
-    <None Include="Views\cProduct\List.cshtml" />
     <None Include="Views\cSalesAnalysis\List.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\ProductDetail\ProductData.cshtml" />
