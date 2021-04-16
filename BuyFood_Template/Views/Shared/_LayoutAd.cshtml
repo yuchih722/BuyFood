@@ -139,12 +139,15 @@
                             <span class="nav-label">訂單管理</span><i class="fa fa-angle-left arrow"></i>
                         </a>
                         <ul class="nav-2-level collapse">
-                            <li>
+                            @*<li>
                                 <a asp-controller="cOrderDetails" asp-action="list">訂單列表</a>
+                            </li>*@
+                            <li>
+                                <a asp-controller="cOrderDetails" asp-action="allorderIdList">訂單列表</a>
                             </li>
                             @*<li>
-                                    <a asp-controller="#" asp-action="#">發貨管理</a>
-                                </li>*@
+            <a asp-controller="#" asp-action="#">發貨管理</a>
+        </li>*@
                         </ul>
                     </li>
                     <li>

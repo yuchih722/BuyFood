@@ -1,5 +1,4 @@
-﻿console.log("load")
-function cwc_addProducttoCart(product) {
+﻿function cwc_addProducttoCart(product) {
     cwc_addCart(product);
     window.alert("已加入購物車");
 }
@@ -28,7 +27,7 @@ function cwc_addCombotoCart(cwc_combo) {
 
 var cwc_cart = [];
 //判斷購物車內是否有商品
-function isExist(id) {
+function cwc_isExist(id) {
     cwc_cart = JSON.parse(localStorage.getItem(users_cart_No));
     for (let i = 0; i < cwc_cart.length; i++) {
         if (cwc_cart[i].cProductId === id) {
@@ -76,8 +75,8 @@ function cwc_addCart(obj_product) {
         }
     }
     if (localStorage.getItem(users_cart_No)) {
-        let pdtindex = isExist(obj_product.cProductId);
-        if (pdtindex == -1) {
+        let cwc_pdtItem = cwc_isExist(obj_product.cProductId);
+        if (cwc_pdtItem == -1) {
             cwc_addItemInCart(obj_product);
         }
     } else {

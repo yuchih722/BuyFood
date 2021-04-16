@@ -60,7 +60,6 @@ $("#confirm_order").click(function () {
         for (let i = 0; i < pdtcart.length; i++) {
             product_item += "#" + pdtcart[i].cProductName + " X " + pdtcart[i].QuantityInCart;
         }
-        let web_host = window.location.host;
         console.log(web_host);
         $("#backUrl").val("https://"+ web_host + "/HomePage/Home");
         var NowDate = new Date();

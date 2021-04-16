@@ -53,24 +53,28 @@ function checkCheckPassword() {
 
 var cwc_bool_showchangePassword = false;
 
-function cwc_showChangPassword() {
-    if (!cwc_bool_showchangePassword) {
-        $("#aaa").css("display", "block");
-        $("#cwc_i_div_bodyLeft").css("height", "800px");
-        $("#content_cwc").css("height", "800px");
-        $("#cwc_i_div_wholeDiv").css("height", "950px");
-        cwc_bool_showchangePassword = true;
+function cwc_showChangPassword(facebook) {
+    if (facebook == "0") {
+        if (!cwc_bool_showchangePassword) {
+            $("#aaa").css("display", "block");
+            $("#cwc_i_div_bodyLeft").css("height", "800px");
+            $("#content_cwc").css("height", "800px");
+            $("#cwc_i_div_wholeDiv").css("height", "950px");
+            cwc_bool_showchangePassword = true;
+        }
+        else {
+            $("#aaa").css("display", "none");
+            $("#cwc_i_div_bodyLeft").css("height", "650px");
+            $("#content_cwc").css("height", "650px");
+            $("#cwc_i_div_wholeDiv").css("height", "800px");
+            $("#cwc_orP")[0].value = "";
+            $("#password")[0].value = "";
+            $("#checkPassword")[0].value = "";
+            cwc_bool_showchangePassword = false;
+        }
     }
-    else {
-        $("#aaa").css("display", "none");
-        $("#cwc_i_div_bodyLeft").css("height", "650px");
-        $("#content_cwc").css("height", "650px");
-        $("#cwc_i_div_wholeDiv").css("height", "800px");
-        $("#cwc_orP")[0].value = "";
-        $("#password")[0].value = "";
-        $("#checkPassword")[0].value = "";
-        cwc_bool_showchangePassword = false;
-    }
+    else
+        window.open("https://www.facebook.com/");
 }
 
 function cwc_savePassword(memberID, meth) {
@@ -90,12 +94,12 @@ function cwc_savePassword(memberID, meth) {
             success: function (data) {
                 if (data == "1")
                     return alert("密碼錯誤，請重新輸入。");
-                cwc_showChangPassword()
+                cwc_showChangPassword("0")
                 alert("變更成功");
             }
         })
     }
     else {
-        cwc_showChangPassword()
+        cwc_showChangPassword("0")
     }
 }

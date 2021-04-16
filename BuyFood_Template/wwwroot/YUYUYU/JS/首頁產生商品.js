@@ -4,7 +4,7 @@ $(function () {
         url: "/HomePage/get_categorysname",
         type: "GET",
         success: function (dataForHomePage) {
-
+           
             //首頁商品
             var category_li =
                 `<ul><li class="active"  id="FirstCate" data-filter=".categoryid_${dataForHomePage.forProduct[0].cProductCategoryId}">${dataForHomePage.forProduct[0].cCategoryName}</li>`;
@@ -41,7 +41,10 @@ $(function () {
                                                     <h6><a href="/ProductDetail/ProductData?id=${dataForHomePage.forProduct[i].tProducts[y].tProducts.cProductId}">${dataForHomePage.forProduct[i].tProducts[y].tProducts.cProductName}</a></h6>
                                                     <h5>$${dataForHomePage.forProduct[i].tProducts[y].tProducts.cPrice}</h5>`
                     if (dataForHomePage.forProduct[i].tProducts[y].tProducts.cIsOnSaleId == 1) {
-                        products += `<h6> 庫存量 ${dataForHomePage.forProduct[i].tProducts[y].tProducts.cQuantity} </h6 >`
+                        if (dataForHomePage.forProduct[i].tProducts[y].tProducts.cQuantity < 50) {
+                            products +=`<h6 style="color:red" id=""> 庫存量 ${dataForHomePage.forProduct[i].tProducts[y].tProducts.cQuantity} </h6 >`
+                        }else
+                        products += `<h6 class="get_num_cQuantity">庫存量 ${dataForHomePage.forProduct[i].tProducts[y].tProducts.cQuantity} </h6 >`
                     } else {
                         products += `<h6>此商品暫停販售 </h6>`
                     }
@@ -50,8 +53,10 @@ $(function () {
                                         </div>`
                 }
                 $("#many_products").append(products);
+        
             }
-
+        var xxx = $(".get_num_cQuantity")
+                console.log(xxx)
             $('.featured__controls li').on('click', function () {
 
                 $('.featured__controls li').removeClass('active');
@@ -64,7 +69,12 @@ $(function () {
             $("#FirstCate").click();
         }
     })
-})
 
+
+
+})
+$(window).load(function () {
+    
+})
     //< li > <a href="#"><i class="fa fa-heart"></i></a></li >
     //    <li><a href="#"><i class="fa fa-retweet"></i></a></li>

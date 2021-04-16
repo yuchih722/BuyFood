@@ -112,10 +112,10 @@
             var productQuantity = data.table.cQuantity <= 0 ? `<span style="color:#ff0000">已售完</span>` : `<span>${data.table.cQuantity}</span>`
             var productdetail=""
             if (data.table.cQuantity <= 0) {
-                productdetail += `<input type = "button" class="btn_enable_style"  value = "此商品已完售" disabled><input id="goto_botton" type = "button" style="margin-left:50px" class="btn btn-info btn-lg" value="尋找同類型商品"></button>`
+                productdetail += `<input type = "button" class="btn_enable_style"  value = "此商品已完售" disabled><input id="goto_botton" type = "button" style="margin-left:50px" class="btn btn-info btn-lg" value="尋找同類型商品">`
                 $("#btu_check_stock").hide();
             } else if (data.table.cIsOnSaleId == 3) {
-                productdetail += `<input type = "button" class="btn_enable_style"  value = "此商品暫停販售" disabled><input id="goto_botton" type = "button" style="margin-left:50px" class="btn btn-info btn-lg" value="尋找同類型商品"></button>`
+                productdetail += `<input type = "button" class="btn_enable_style"  value = "此商品暫停販售" disabled><input id="goto_botton" type = "button" style="margin-left:50px" class="btn btn-info btn-lg" value="尋找同類型商品">`
                 $("#btu_check_stock").hide();
             } else
                 productdetail += `<input type = "button" class="primary-btn" onclick = "addCart(${data.table.cProductId})"  value = "加入購物車" >`
@@ -157,11 +157,13 @@
             //console.log(data);
             var hot = "";
             pdtItem = data;
-
-            for (let i = 0; i <data.length ; i++) {
+            if (data.length > 8) {
+                fadasi_yu=8
+            } else
+                fadasi_yu = data.length
+            for (let i = 0; i < fadasi_yu ; i++) {
                 if (data[i].product.cIsOnSaleId != 1) continue;
-                if (data.length > 8) return ;
-                hot += `<div class="col-lg-3 col-md-4 col-sm-6">
+                hot += `<div class="col-lg-3 col-md-4 col-sm-6" style="float:left">
                                             <div class="product__item">
                                                 <div class="product__item__pic set-bg" style="background-image: url(${data[i].product.cPicture.replace("~", "")})">
                                                  <ul class="product__item__pic__hover" style="text-align: right;">
@@ -189,6 +191,7 @@
                                         </div>`
             }
             $("#hot_product").html(hot);
+
         }
     })
     //$.ajax
