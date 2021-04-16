@@ -26,30 +26,104 @@ namespace BuyFood_Template.Controllers
             //ViewBag.All = (new 擺腹BuyFoodContext()).TProducts.Select(n => n).Count();
             return View();
         }
-
-        public JsonResult ProductListJson(/*string str*/)
+        //產品販售狀況數
+        public JsonResult productStatusNum()
         {
-            var table = from product in db.TProducts
-                        join productca in db.TProductCategories on product.CCategoryId equals productca.CProductCategoryId
-                        join productsale in db.TIsOnSales on product.CIsOnSaleId equals productsale.CIsOnSaleId
-                        select new
-                        {
-                            product.CProductId,
-                            product.CProductName,
-                            product.CPrice,
-                            product.CQuantity,
-                            product.CDescription,
-                            product.CIsBreakFast,
-                            product.CIsLunch,
-                            product.CIsDinner,
-                            product.CIsOnSaleId,
-                            product.CPicture,
-                            productsale.CStatusName,
-                            productca.CCategoryName,
-                        };
-      
-        
-            return Json(table.ToList());
+            int p販售中數 = db.TProducts.Where(n => n.CIsOnSaleId == 1).Count();
+            int p販完數 = db.TProducts.Where(n => n.CIsOnSaleId == 2).Count();
+            int p下架數 = db.TProducts.Where(n => n.CIsOnSaleId == 3).Count();
+            int p低於保險庫存 = db.TProducts.Where(n => n.CQuantity < n.CQuantityControl && n.CQuantity > 1 && n.CIsOnSaleId !=3).Count();
+            int p全部數 = db.TProducts.Where(n => n.CIsOnSaleId == 1 || n.CIsOnSaleId == 2 || n.CIsOnSaleId == 3).Count();
+
+            var product數 = new { p販售中數 = p販售中數, p販完數 = p販完數, p下架數 = p下架數, p低於保險庫存= p低於保險庫存, p全部數 = p全部數 };
+
+            return Json(product數);
+        }
+
+        //產品列表
+        public JsonResult ProductListJson(int id)
+        {
+            if (id == 0) {
+                var table = from product in db.TProducts
+                            join productca in db.TProductCategories on product.CCategoryId equals productca.CProductCategoryId
+                            join productsale in db.TIsOnSales on product.CIsOnSaleId equals productsale.CIsOnSaleId
+                            join producttag in db.TProductTags on product.CProductTagId equals producttag.CProductTagId
+                            select new
+                            {
+                                product.CProductId,
+                                product.CProductName,
+                                product.CPrice,
+                                product.CQuantity,
+                                product.CDescription,
+                                product.CIsBreakFast,
+                                product.CFinishedTime,
+                                product.CIsLunch,
+                                product.CIsDinner,
+                                product.CIsOnSaleId,
+                                product.CPicture,
+                                product.CQuantityControl,
+                                producttag.CProductTagName,
+                                productsale.CStatusName,
+                                productca.CCategoryName,
+                            };
+                return Json(table.ToList());
+            }
+            else if (id ==10)
+            {
+                var table = from product in db.TProducts
+                            join productca in db.TProductCategories on product.CCategoryId equals productca.CProductCategoryId
+                            join productsale in db.TIsOnSales on product.CIsOnSaleId equals productsale.CIsOnSaleId
+                            join producttag in db.TProductTags on product.CProductTagId equals producttag.CProductTagId
+                            where product.CQuantity<product.CQuantityControl&&product.CQuantity>0&&product.CIsOnSaleId!=3
+                            select new
+                            {
+                                product.CProductId,
+                                product.CProductName,
+                                product.CPrice,
+                                product.CQuantity,
+                                product.CDescription,
+                                product.CIsBreakFast,
+                                product.CFinishedTime,
+                                product.CIsLunch,
+                                product.CIsDinner,
+                                product.CIsOnSaleId,
+                                product.CPicture,
+                                product.CQuantityControl,
+                                producttag.CProductTagName,
+                                productsale.CStatusName,
+                                productca.CCategoryName,
+                            };
+                return Json(table.ToList());
+            }
+            else
+            {
+
+
+                var table = from product in db.TProducts
+                            join productca in db.TProductCategories on product.CCategoryId equals productca.CProductCategoryId
+                            join productsale in db.TIsOnSales on product.CIsOnSaleId equals productsale.CIsOnSaleId
+                            join producttag in db.TProductTags on product.CProductTagId equals producttag.CProductTagId
+                            where product.CIsOnSaleId == id
+                            select new
+                            {
+                                product.CProductId,
+                                product.CProductName,
+                                product.CPrice,
+                                product.CQuantity,
+                                product.CDescription,
+                                product.CIsBreakFast,
+                                product.CFinishedTime,
+                                product.CIsLunch,
+                                product.CIsDinner,
+                                product.CIsOnSaleId,
+                                product.CPicture,
+                                product.CQuantityControl,
+                                producttag.CProductTagName,
+                                productsale.CStatusName,
+                                productca.CCategoryName,
+                            };
+                return Json(table.ToList());
+            }
         }
 
         //[HttpPost]
@@ -206,20 +280,24 @@ namespace BuyFood_Template.Controllers
                 var table = from product in db.TProducts
                             join productca in db.TProductCategories on product.CCategoryId equals productca.CProductCategoryId
                             join productsale in db.TIsOnSales on product.CIsOnSaleId equals productsale.CIsOnSaleId
+                            join producttage in db.TProductTags on product.CProductTagId equals producttage.CProductTagId
                             select new
                             {
                                 product.CProductId,
                                 product.CProductName,
                                 product.CPrice,
                                 product.CQuantity,
+                                product.CQuantityControl,
                                 product.CDescription,
+                                product.CFinishedTime,
                                 product.CIsBreakFast,
                                 product.CIsLunch,
                                 product.CIsDinner,
                                 product.CIsOnSaleId,
                                 product.CPicture,
                                 productsale.CStatusName,
-                                productca.CCategoryName
+                                productca.CCategoryName,
+                                producttage.CProductTagName
                             };
                 return Json(table.ToList());
               
@@ -228,6 +306,7 @@ namespace BuyFood_Template.Controllers
                 var table = from product in db.TProducts
                             join productca in db.TProductCategories on product.CCategoryId equals productca.CProductCategoryId
                             join productsale in db.TIsOnSales on product.CIsOnSaleId equals productsale.CIsOnSaleId
+                            join producttage in db.TProductTags on product.CProductTagId equals producttage.CProductTagId
                             where product.CCategoryId == catNameId
                             select new
                             {
@@ -235,14 +314,17 @@ namespace BuyFood_Template.Controllers
                                 product.CProductName,
                                 product.CPrice,
                                 product.CQuantity,
+                                product.CQuantityControl,
                                 product.CDescription,
                                 product.CIsBreakFast,
+                                product.CFinishedTime,
                                 product.CIsLunch,
                                 product.CIsDinner,
                                 product.CIsOnSaleId,
                                 product.CPicture,
                                 productsale.CStatusName,
-                                productca.CCategoryName
+                                productca.CCategoryName,
+                                producttage.CProductTagName
                             };
                 return Json(table.ToList());
             }
@@ -270,6 +352,15 @@ namespace BuyFood_Template.Controllers
             //return Json(list);
            
         }
+        public JsonResult getAllProductTag()
+        {
+            var table = from ptag in db.TProductTags
+                        select ptag;
+            return Json(table.ToList());
+        }
+
+
+
 
 
         public IActionResult CategoryList()
@@ -463,7 +554,7 @@ namespace BuyFood_Template.Controllers
             return RedirectToAction("List");
 
         }
-        //todo
+      
         [HttpPost]
         public IActionResult Edit(CProductViewModel p_產品修改)
         {
@@ -499,12 +590,15 @@ namespace BuyFood_Template.Controllers
                 p_產品修改.CPicture = p_照片最後路徑;
                 l_product被修改.CProductName = p_產品修改.CProductName;
                 l_product被修改.CQuantity = p_產品修改.CQuantity;
+                l_product被修改.CQuantityControl = p_產品修改.CQuantityControl;
                 l_product被修改.CPrice = p_產品修改.CPrice;
                 l_product被修改.CDescription = p_產品修改.CDescription;
+                l_product被修改.CProductTagId = p_產品修改.CProductTagId;
                 l_product被修改.CPicture = p_產品修改.CPicture;
                 l_product被修改.CCategoryId = p_產品修改.CCategoryId;
                 l_product被修改.CIsOnSaleId = p_產品修改.CIsOnSaleId;
                 l_product被修改.CEatTimeId = p_產品修改.CEatTimeId;
+                l_product被修改.CFinishedTime = p_產品修改.CFinishedTime;
                 l_product被修改.CFinishedTime = p_產品修改.CFinishedTime;
                 l_product被修改.CIsBreakFast = p_產品修改.CIsBreakFast;
                 l_product被修改.CIsLunch = p_產品修改.CIsLunch;
