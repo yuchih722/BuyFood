@@ -591,7 +591,7 @@
         connection.start().then(function () {
             document.getElementById("sendButtonMessage").disabled = false;
             //
-            if (window.location.href == "https://localhost:44398/Member/MemberCenter") {
+            if (window.location.href == "@ViewBag.LOCALWEBSITES/Member/MemberCenter") {
                 connection.on("receiveComboQty", function () {
                     updateData(@ViewBag.memberID);
                     updateLayoutCombo();
@@ -782,7 +782,7 @@
                 type: "POST",
                 success : function(data) {
                     window.alert(data);
-                    window.location.assign("https://localhost:44398/");
+                    window.location.assign("@ViewBag.LOCALWEBSITES");
                 }
             })
         }
