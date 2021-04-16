@@ -590,10 +590,20 @@
 
         connection.start().then(function () {
             document.getElementById("sendButtonMessage").disabled = false;
-
+            //
+            if (window.location.href == "https://localhost:44398/Member/MemberCenter") {
+                connection.on("receiveComboQty", function () {
+                    updateData(@ViewBag.memberID);
+                    updateLayoutCombo();
+                    if ($("#mycombo").length > 0) {
+                        cwc_showCombo(@ViewBag.memberID);
+                    };
+                });
+            }
         }).catch(function (err) {
             return console.error(err.toString());
         });
+
     </script>
 
     <script>
@@ -695,13 +705,14 @@
             async: false,
             success: function (data) {
                 const cwc_layoutSet = new Promise(function (result, fail) {
-                    if (data == true) {
+                    console.log(data);
+                    if (data.member == true) {
                     @*var aa = "@UserLoginImgForPage";
                     aa.replace('~', '');
                     console.log(aa);
                     UserImg = `<img width="20" height="20" src="${aa}" alt="">`*@
 
-                    @*var thispicForMember = @UserLoginImgForPage;
+                        @*var thispicForMember = @UserLoginImgForPage;
                     console.log(thispicForMember)
                     console.log(thispicForMember.replace('~', ''))
                  //var UserImg=`<img width="20" height="20" src="${thispicForMember.replace('~', '')}" alt="">`;
@@ -711,16 +722,16 @@
                         //$("divUserImg").html(UserImg);
                         $("#divLogin").html(LogInTxt);
                         $("#divLogOut").html(LogOutTxt);
-                        result("1");
+                        result(data.memberID);
                     }
-                    else if (data == "isAdm") {
+                    else if (data.member == "isAdm") {
                         LogInTxt = `<a href="/Member/MemberCenter" id="getLoginName"><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
                         LogOutTxt = `<input type="button" class="btn btn-light"  onclick="登出();" id="sendButton" style="padding:0;height:100%" value="登出" />`
                         AdmTxt = `<a href="/Home/Index"><i class="fa fa-user"></i> 後台管理</a>`
                         $("#divLogin").html(LogInTxt);
                         $("#divLogOut").html(LogOutTxt);
                         $("#admOnly").html(AdmTxt);
-                        result("9");
+                        result(data.memberID);
                     }
                     else {
                         LogInTxt = `<a href="/HomePage/登入" id="getLoginName "><i class="fa fa-user"></i>@UserLoginNameForPage</a>`
@@ -731,33 +742,36 @@
                         result("0");
                     }
                 })
-                      cwc_layoutSet.then(function (getResult) {
-                          if (getResult != "0") {
-                              $.ajax({
-                                  url: `/Combo/getCombo`,
-                                  success: function (homeCombodata) {
-                                      const forCombo = homeCombodata;
-                                      cwc_ComboDetails = homeCombodata;
-                                      if (forCombo != 0 && forCombo.length > 0) {
-                                          $("#cwc_howManyCombo").html(forCombo.length);
-                                          var cwc_pageCombo = "";
-                                          for (var i = 0; i < forCombo.length; i++) {
-                                              cwc_pageCombo += `<div style="width:100px;text-align:center;display:inline-block">${forCombo[i].cComboName}</div>
-                                                                                        <button class="btn btn-success btn-sm" onclick="cwc_addCombotoCart(cwc_ComboDetails[${i}])">訂購</button>`
-                                          }
-                                          $("#cwc_div_homePageCombo").html(cwc_pageCombo)
-                                      }
-                                  }
-
-                              })
-                          }
-
-                      })
-
+                cwc_layoutSet.then(function (getResult) {
+                    if (getResult != "0") {
+                        updateLayoutCombo();
+                        return (getResult)
+                    }
+                    return ("0")
+                })
+            
             }
-
-
         });
+
+        function updateLayoutCombo() {
+            console.log("1")
+            $.ajax({
+                url: `/Combo/getCombo`,
+                success: function (homeCombodata) {
+                    const forCombo = homeCombodata;
+                    cwc_ComboDetails = homeCombodata;
+                    if (forCombo != 0 && forCombo.length > 0) {
+                        $("#cwc_howManyCombo").html(forCombo.length);
+                        var cwc_pageCombo = "";
+                        for (var i = 0; i < forCombo.length; i++) {
+                            cwc_pageCombo += `<div style="width:100px;text-align:center;display:inline-block">${forCombo[i].cComboName}</div>
+                                                                                        <button class="btn btn-success btn-sm" onclick="cwc_addCombotoCart(cwc_ComboDetails[${i}])">訂購</button>`
+                        }
+                        $("#cwc_div_homePageCombo").html(cwc_pageCombo);
+                    }
+                }
+            })
+        }
 
     </script>
     <script>
@@ -766,12 +780,16 @@
             $.ajax({
                 url: "/HomePage/SLogout",
                 type: "POST",
-                success: function (data) {
+                success : function(data) {
                     window.alert(data);
                     window.location.assign("Home");
                 }
             })
         }
+    </script>
+    <script>
+        
+
     </script>
 
 

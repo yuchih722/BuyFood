@@ -146,13 +146,13 @@ function cwc_EditCombo(comboID, comboName, memberID) {
 }
 
 function cwc_deleteCombo(comboID, memberID) {
-
     $(`#cwc_combo_tr_${comboID}`).remove();
     $(`#cwc_comboDetail_tr_${comboID}`).remove();
     $.ajax({
         url: `/Combo/deleteCombo?id=${comboID}`,
         success: function (data) {
             updateData(memberID);
+            updateLayoutCombo();
         }
     });
 }
@@ -289,6 +289,7 @@ function cwc_saveCombo(comboID, memberID, comboName) {
                 success: function () {
                     cwc_showCombo(memberID);
                     updateData(memberID);
+                    updateLayoutCombo();
                 }
             });
         }
@@ -302,6 +303,7 @@ function cwc_saveCombo(comboID, memberID, comboName) {
             success: function (data) {
                 cwc_showCombo(memberID);
                 updateData(memberID);
+                updateLayoutCombo();
             }
         });
     }
