@@ -252,6 +252,20 @@ $(function () {
         window.location.assign("/CheckCart/OrderData");
     })
 })
+//搜尋該會員購買最多的產品風格
+$(function () {
+    $.ajax({
+        url: "/ShoppingCart/GetMemberFavoriteItem",
+        type: "POST",
+        data: JSON.stringify(parseInt(member_NoCSC)),
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            console.log(data)
+            //console.log(data);
+        }
+    })
+    $("#wu_youmaybelike").append()
+})
 
 //離開頁面時儲存當前的商品及數量
 $(window).bind('beforeunload', function () {
