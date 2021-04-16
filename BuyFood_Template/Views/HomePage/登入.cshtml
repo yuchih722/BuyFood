@@ -207,9 +207,9 @@
                         </a>
 
                         @*<div class="fb-login-button" data-width="" data-size="small" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false"></div>*@
-                    <div>
+                    @*<div>
                         <input type="button" onclick="FB.logout(function(response) {});" value="登出" class="btn btn-primary" />
-                    </div>
+                    </div>*@
 
 
 
@@ -292,6 +292,9 @@
                     else if (data == "noEmail") {
                         alert("無此帳號 請重新輸入");
                     }
+                    else if (data == "notOpen") {
+                        alert("此帳號尚未開通 請先開通帳號");
+                    }
                     else if (data == "loginSuccess") {
                         alert("登入成功 將導回首頁");
                         window.location.assign("/HomePage/Home");
@@ -339,19 +342,13 @@
                 success: function (data) {
                     if (data == true) {
                         window.alert("登入成功,將轉回首頁")
+                        window.location.assign(`/HomePage/Home`);
 
                     }
                     else {
-                        //$.ajax({
-                        //    url: "/Customer/CreateFacebookMember",
-                        //    data: { "id": response.id, "name": response.name },
-                        //    type: "GET",
-                        //    success: function (data) {
+                        window.alert("初次登入 請輸入基本資料");
 
-
-                        //    }
-                        //})
-                        //window.location.assign("/Customer/CreateFacebookMember")
+                        window.location.assign(`/Customer/CreateFacebookMember?id=${response.id}&name=${response.name}`);
 
                     }
                 }
