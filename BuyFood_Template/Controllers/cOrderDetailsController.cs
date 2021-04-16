@@ -11,18 +11,241 @@ namespace BuyFood_Template.Controllers
     {
 
         擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-        public IActionResult List()
+
+        public IActionResult allorderIdList()
         {
             return View();
         }
-        public JsonResult cOrderDetailsJson()
+        //產品販售狀況數量
+        public JsonResult orderSelectStateNum()
+        {
+            int order運送中數 = db.TOrders.Where(n => n.COrderStatusId == 1).Count();
+            int order到達數 = db.TOrders.Where(n => n.COrderStatusId == 4).Count();
+            int order取消數 = db.TOrders.Where(n => n.COrderStatusId == 3).Count();
+            int order完成數 = db.TOrders.Where(n => n.COrderStatusId == 2).Count();
+            int order訂單總數 = db.TOrders.Where(n => n.COrderStatusId == 1 || n.COrderStatusId == 2||n.COrderStatusId==3||n.COrderStatusId==4).Count();
+
+
+            var orderstate數 = new { order到達數 = order到達數, order取消數 = order取消數, order完成數 = order完成數, order運送中數 = order運送中數, order訂單總數= order訂單總數 };
+            return Json(orderstate數);
+        }
+
+        public JsonResult orderIdListAndTotalPrice(string str)
+        {
+
+            if (str == "order到達") {
+                var table = from o in db.TOrders
+                            join od in db.TOrderDetails on o.COrderId equals od.COrderId
+                            where o.COrderStatusId ==4
+                            group od by od.COrderId into g
+                            orderby g.Key descending
+                            select new { COrderId = g.Key, cTotalPrice = g.Sum(n => (n.CQuantity * n.CPriceAtTheTime)) };
+                return Json(table.ToList());
+            }
+            else if (str=="orfer取消") {
+
+                var table = from o in db.TOrders
+                            join od in db.TOrderDetails on o.COrderId equals od.COrderId
+                            where o.COrderStatusId==3
+                            group od by od.COrderId into g
+                            orderby g.Key descending
+                            select new { COrderId = g.Key, cTotalPrice = g.Sum(n => (n.CQuantity * n.CPriceAtTheTime)) };
+
+                return Json(table.ToList());
+            }
+            else if(str=="order完成")
+            {
+                var table = from o in db.TOrders
+                            join od in db.TOrderDetails on o.COrderId equals od.COrderId
+                            where o.COrderStatusId == 2
+                            group od by od.COrderId into g
+                            orderby g.Key descending
+                            select new { COrderId = g.Key, cTotalPrice = g.Sum(n => (n.CQuantity * n.CPriceAtTheTime)) };
+                return Json(table.ToList());
+            }
+            else if (str== "order運送")
+            {
+                var table = from o in db.TOrders
+                            join od in db.TOrderDetails on o.COrderId equals od.COrderId
+                            where o.COrderStatusId==1
+                            group od by od.COrderId into g
+                            orderby g.Key descending
+                            select new { COrderId = g.Key, cTotalPrice = g.Sum(n => (n.CQuantity * n.CPriceAtTheTime)) };
+                return Json(table.ToList());
+            }
+            else
+            {
+                var table = from o in db.TOrders
+                            join od in db.TOrderDetails on o.COrderId equals od.COrderId
+                            group od by od.COrderId into g
+                            orderby g.Key descending
+                            select new { COrderId = g.Key, cTotalPrice = g.Sum(n => (n.CQuantity * n.CPriceAtTheTime)) };
+                return Json(table.ToList());
+            }
+        }
+        //public JsonResult orderIdListAndTotalPrice()
+        //{
+
+        //    var table = from o in db.TOrders
+        //                       join od in db.TOrderDetails on o.COrderId equals od.COrderId
+        //                       group od by od.COrderId into g
+        //                       orderby g.Key descending
+        //                select new { COrderId = g.Key, cTotalPrice = g.Sum(n => (n.CQuantity * n.CPriceAtTheTime)) };
+
+
+        //    return Json(table.ToList());
+        //}
+
+        public JsonResult orderIdList(string str)
+        {
+
+            if(str== "order到達")
+            {
+                var table = from allorid in db.TOrders
+                            join cname in db.TMembers on allorid.CMemberId equals cname.CMemberId
+                            join oderst in db.TOrderStatuses on allorid.COrderStatusId equals oderst.COrderStatusId
+                            join orderdetail in db.TOrderDetails on allorid.COrderId equals orderdetail.COrderId
+                            where allorid.COrderStatusId == 4
+                            orderby allorid.COrderId descending
+
+                            select new
+                            {
+                                allorid.COrderId,
+                                allorid.COrderDate,
+                                allorid.CMemberId,
+                                cname.CName,
+                                oderst.COrderStatusName
+                            };
+                //消除orderdetail重複的orderid
+                var distinctID = table.Distinct().OrderByDescending(n => n.COrderId);
+
+                return Json(distinctID.ToList());
+            }
+            else if (str == "orfer取消")
+            {
+                var table = from allorid in db.TOrders
+                            join cname in db.TMembers on allorid.CMemberId equals cname.CMemberId
+                            join oderst in db.TOrderStatuses on allorid.COrderStatusId equals oderst.COrderStatusId
+                            join orderdetail in db.TOrderDetails on allorid.COrderId equals orderdetail.COrderId
+                            where allorid.COrderStatusId == 3
+                            orderby allorid.COrderId descending
+
+                            select new
+                            {
+                                allorid.COrderId,
+                                allorid.COrderDate,
+                                allorid.CMemberId,
+                                cname.CName,
+                                oderst.COrderStatusName
+                            };
+                //消除orderdetail重複的orderid
+                var distinctID = table.Distinct().OrderByDescending(n => n.COrderId);
+
+                return Json(distinctID.ToList());
+            }
+            else if (str == "order完成")
+            {
+                var table = from allorid in db.TOrders
+                            join cname in db.TMembers on allorid.CMemberId equals cname.CMemberId
+                            join oderst in db.TOrderStatuses on allorid.COrderStatusId equals oderst.COrderStatusId
+                            join orderdetail in db.TOrderDetails on allorid.COrderId equals orderdetail.COrderId
+                            where allorid.COrderStatusId == 2
+                            orderby allorid.COrderId descending
+
+                            select new
+                            {
+                                allorid.COrderId,
+                                allorid.COrderDate,
+                                allorid.CMemberId,
+                                cname.CName,
+                                oderst.COrderStatusName
+                            };
+                //消除orderdetail重複的orderid
+                var distinctID = table.Distinct().OrderByDescending(n => n.COrderId);
+
+                return Json(distinctID.ToList());
+            }
+            else if (str== "order運送")
+            {
+                var table = from allorid in db.TOrders
+                            join cname in db.TMembers on allorid.CMemberId equals cname.CMemberId
+                            join oderst in db.TOrderStatuses on allorid.COrderStatusId equals oderst.COrderStatusId
+                            join orderdetail in db.TOrderDetails on allorid.COrderId equals orderdetail.COrderId
+                            where allorid.COrderStatusId==1
+                            orderby allorid.COrderId descending
+
+                            select new
+                            {
+                                allorid.COrderId,
+                                allorid.COrderDate,
+                                allorid.CMemberId,
+                                cname.CName,
+                                oderst.COrderStatusName
+                            };
+                //消除orderdetail重複的orderid
+                var distinctID = table.Distinct().OrderByDescending(n => n.COrderId);
+
+                return Json(distinctID.ToList());
+            }
+            else 
+            {
+                var table = from allorid in db.TOrders
+                            join cname in db.TMembers on allorid.CMemberId equals cname.CMemberId
+                            join oderst in db.TOrderStatuses on allorid.COrderStatusId equals oderst.COrderStatusId
+                            join orderdetail in db.TOrderDetails on allorid.COrderId equals orderdetail.COrderId
+                            orderby allorid.COrderId descending
+
+                            select new
+                            {
+                                allorid.COrderId,
+                                allorid.COrderDate,
+                                allorid.CMemberId,
+                                cname.CName,
+                                oderst.COrderStatusName
+                            };
+                //消除orderdetail重複的orderid
+                var distinctID = table.Distinct().OrderByDescending(n => n.COrderId);
+
+                return Json(distinctID.ToList());
+            }
+
+
+        }
+
+
+        //public JsonResult orderIdList()
+        //{
+        //    var table = from allorid in db.TOrders
+        //                join cname in db.TMembers on allorid.CMemberId equals cname.CMemberId
+        //                join oderst in db.TOrderStatuses on allorid.COrderStatusId equals oderst.COrderStatusId
+        //                join orderdetail in db.TOrderDetails on allorid.COrderId equals orderdetail.COrderId
+        //                orderby allorid.COrderId descending
+
+        //                select new
+        //                {
+        //                    allorid.COrderId,
+        //                    allorid.COrderDate,
+        //                    allorid.CMemberId,
+        //                    cname.CName,
+        //                    oderst.COrderStatusName
+        //                };
+        //    //消除orderdetail重複的orderid
+        //    var distinctID = table.Distinct().OrderByDescending(n=>n.COrderId);
+
+        //    return Json(distinctID.ToList());
+        //}
+
+
+
+        public JsonResult cOrderDetailsJson(int? id)
         {
             var table = from orderdetail in db.TOrderDetails
+                        where orderdetail.COrderId==id
                         join order in db.TOrders on orderdetail.COrderId equals order.COrderId
                         join member in db.TMembers on order.CMemberId equals member.CMemberId
                         join prname in db.TProducts on orderdetail.CProductId equals prname.CProductId
                         join orderstauts in db.TOrderStatuses on order.COrderStatusId equals orderstauts.COrderStatusId
-                        select new 
+                        select new
                         {
                             orderdetail.COrderId,
                             orderdetail.COrderDetailId,
@@ -31,7 +254,7 @@ namespace BuyFood_Template.Controllers
                             prname.CProductName,
                             orderdetail.CPriceAtTheTime,
                             orderdetail.CQuantity,
-                           orderstauts.COrderStatusId,
+                            orderstauts.COrderStatusId,
                             orderstauts.COrderStatusName
                         };
 
@@ -52,7 +275,7 @@ namespace BuyFood_Template.Controllers
                 IEnumerable<TOrderDetail> table = null;
                 table = db.TOrderDetails.Where(n => n.COrderId == id);
 
-                List<TOrderDetail>list = new List<TOrderDetail>();
+                List<TOrderDetail> list = new List<TOrderDetail>();
                 foreach (var item in table)
                 {
                     list.Add(item);
@@ -73,7 +296,7 @@ namespace BuyFood_Template.Controllers
                     TProduct l_product被修改 = db.TProducts.FirstOrDefault(n => n.CProductId == pID);
                     l_product被修改.CQuantity += p數量;
 
-                   
+
                 }
 
                 if (l_order被修改.CPayTypeId.Value == 1)
@@ -90,18 +313,22 @@ namespace BuyFood_Template.Controllers
                         l_order被修改.COrderStatusId = 3;
                         l_member被修改.CDeposit += (p總價 - p折扣金額.CCutPrice.Value);
                         l_cupon被修改.CBeUsed = 0;
-                       
+
                     }
                 }
-            db.SaveChanges();
+                else
+                {
+                    l_order被修改.COrderStatusId = 3;
+                }
+                db.SaveChanges();
             }
-          
+
 
         }
         public IActionResult ordercomplete(int? id)
         {
             TOrder l_order被修改 = db.TOrders.FirstOrDefault(n => n.COrderId == id);
-            if(id != null)
+            if (id != null)
             {
                 l_order被修改.COrderStatusId = 2;
                 db.SaveChanges();
