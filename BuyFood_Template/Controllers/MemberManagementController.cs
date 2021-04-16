@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Hosting; //圖片
 using System.IO;
 using System.Net.Mail;
 using System.Net;
+using System.Text;
+using ClosedXML.Excel;
+
 
 namespace BuyFood_Template.Controllers
 {
@@ -22,11 +25,10 @@ namespace BuyFood_Template.Controllers
             ViewBag.All = db.TMembers.Where(n=>n.CMemberId!=16).Select(n => n).Count();
             ViewBag.male = db.TMembers.Where(n => n.CGender == "男").Select(n => n).Count();
             ViewBag.female = db.TMembers.Where(n => n.CGender == "女").Select(n => n).Count();
-            ViewBag.deposit = db.TMembers.Where(n => n.CDeposit > 0).Select(n => n).Count();//未儲值
-            ViewBag.Undeposited = db.TMembers.Where(n => n.CDeposit == 0).Select(n => n).Count();//已儲值
+            ViewBag.deposit = db.TMembers.Where(n => n.CDeposit > 0).Select(n => n).Count();
+            ViewBag.Undeposited = db.TMembers.Where(n => n.CDeposit == 0).Select(n => n).Count();
             return View();
         }
-
 
         public JsonResult jsonList(string str)
         {       
@@ -158,9 +160,9 @@ namespace BuyFood_Template.Controllers
                                c.CFreezeCount
                            };
                 return Json(table);
-            }
-            
+            }          
         }
+
         //以上新增圖片
         private IHostingEnvironment iv_host;
         public MemberManagementController(IHostingEnvironment p)
@@ -280,21 +282,68 @@ namespace BuyFood_Template.Controllers
             bool 狀態 = false;
             if (l_凍結修改!=null)
             {
-                if (l_凍結修改.CFreezeCount==1)
+                if (l_凍結修改.CFreezeCount==4)
                 {
                     l_凍結修改.CFreezeCount = 0;
                 }
                 else
                 {
-                    l_凍結修改.CFreezeCount = 1;
+                    l_凍結修改.CFreezeCount = 4;
                     狀態 = true;
                 }                    
             }
             db.SaveChanges();
             return 狀態;
         }
-        
 
+        public IActionResult downloadExcelDocument()
+        {
+            var table = from m in (new 擺腹BuyFoodContext()).TMembers where m.CMemberId!=16
+                        select m;
+            List<MemberManagementViewModel> exldata = new List<MemberManagementViewModel>();
+            foreach (TMember t in table)
+            {
+                exldata.Add(new MemberManagementViewModel(t));
+            }
+            string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            string fileName = "會員資料表.xlsx";
+            try
+            {
+                using (var workbook = new XLWorkbook())
+                {
+                    IXLWorksheet worksheet = workbook.Worksheets.Add("會員列表");
+                    worksheet.Cell(1, 1).Value = "編號";
+                    worksheet.Cell(1, 2).Value = "姓名";
+                    worksheet.Cell(1, 3).Value = "姓別";
+                    worksheet.Cell(1, 4).Value = "E-mail帳號";
+                    worksheet.Cell(1, 5).Value = "生日";
+                    worksheet.Cell(1, 6).Value = "電話";
+                    worksheet.Cell(1, 7).Value = "地址";
+                    worksheet.Cell(1, 8).Value = "儲值餘額";
+                    for (int index = 1; index <= exldata.Count; index++)
+                    {
+                        worksheet.Cell(index + 1, 1).Value = exldata[index - 1].CMemberId;
+                        worksheet.Cell(index + 1, 2).Value = exldata[index - 1].CName;
+                        worksheet.Cell(index + 1, 3).Value = exldata[index - 1].CGender;
+                        worksheet.Cell(index + 1, 4).Value = exldata[index - 1].CEmail;
+                        worksheet.Cell(index + 1, 5).Value = exldata[index - 1].CAge;
+                        worksheet.Cell(index + 1, 6).Value = exldata[index - 1].CPhone;
+                        worksheet.Cell(index + 1, 7).Value = exldata[index - 1].CAddress;
+                        worksheet.Cell(index + 1, 8).Value = exldata[index - 1].CDeposit;
+                    }
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+                        return File(content, contentType, fileName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return View(ex);// error()
+            }
+        }
 
 
         public void abc()
