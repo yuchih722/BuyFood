@@ -14,5 +14,7 @@ namespace BuyFood_Template.Controllers
         public static readonly string REDIRECT_FROM_WHERE = "REDIRECT_FROM_WHERE";
         public static readonly string CURRENT_LOGINED_FACEBOOK = "CURRENT_LOGINED_FACEBOOK";
 
+        public static readonly string LOCAL_WEBSITES = "https://buyfood.azurewebsites.net";
+
     }
 }
