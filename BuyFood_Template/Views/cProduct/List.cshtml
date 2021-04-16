@@ -313,7 +313,7 @@
                 });
             }
         }
-
+        
         //進入此頁面執行
         $(Activity());
 
@@ -324,7 +324,8 @@
 
 
     <script>
-
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+        connection.start();
         //產品販售狀態
         function p產品販售狀態(PrId, PrTimeId) {
             $.ajax({
@@ -332,22 +333,22 @@
                 type: "Get",
                 data: { "PrId": PrId, "PrTimeId": PrTimeId },
                 success: function (data) {
-                    /*       console.log(data);*/
+                           console.log(data);
                     if (data == 1) {
-                        cStatusName = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId + 1})">正常</button>`
+                        cStatusName = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${data})">正常</button>`
                         $(productStatusNum());
-                        connection.invoke("updateCombo");
                     }
                     else if (data == 2) {
-                        cStatusName = `<button  class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId + 1})">售完</button>`
+                        cStatusName = `<button  class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${data})">售完</button>`
                         $(productStatusNum());
-                        connection.invoke("updateCombo");
                     }
                     else if (data == 3) {
-                        cStatusName = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId = 0})">下架</button>`
+                        cStatusName = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${data})">下架</button>`
                         $(productStatusNum());
-                        connection.invoke("updateCombo");
                     }
+                    $(`#p產品狀態${PrId}`).html(`<td style="vertical-align: middle" id="p產品狀態${PrId}">${cStatusName}`);
+                    $(productStatusNum());
+                    connection.invoke("updateCombo");
                 }
               });
            
