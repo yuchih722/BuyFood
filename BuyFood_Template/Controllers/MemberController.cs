@@ -50,6 +50,7 @@ namespace BuyFood_Template.Controllers
                 ViewBag.userName = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
                 ViewBag.userPhoto = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);
                 ViewBag.memberID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);
+                ViewBag.facebook = string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_FACEBOOK)) ? "0" : "1";
                 擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
                 TMember data = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)));
 

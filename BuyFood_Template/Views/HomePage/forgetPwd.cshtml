@@ -181,34 +181,28 @@
     </script>
 
     <script>
-        function memberLogin() {
-            var loginMember = {};
+        function memberForgetPwd() {
+            var forgetPwdMember = {};
 
-            loginMember.CEmail = $("#iddemo").val();
-            loginMember.CPassword = $("#passdemo").val();
+            forgetPwdMember.CEmail = $("#iddemo").val();
+            forgetPwdMember.CPhone = $("#passdemo").val();
 
             $.ajax({
-                url: "/HomePage/loginCheck",
+                url: "/HomePage/forgetMemberCheck",
                 type: "POST",
-                data: JSON.stringify(loginMember),
+                data: JSON.stringify(forgetPwdMember),
                 dataType: "Json",
                 processData: false,
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    if (data == "memberFrozed") {
-                        alert("此帳號已被凍結 請聯絡客服人員");
+                    if (data == "noEmail") {
+                        alert("無此註冊信箱 請重新輸入");
                     }
-                    else if (data == "FrozeComplete") {
-                        alert("輸入密碼錯誤超過3次 凍結此帳號");
+                    else if (data == "wrongPhone") {
+                        alert("註冊手機輸入錯誤 請重新輸入");
                     }
-                    else if (data == "FrozeCountPlus") {
-                        alert("密碼輸入錯誤 錯誤累計超過3次將凍結帳號");
-                    }
-                    else if (data == "noEmail") {
-                        alert("無此帳號 請重新輸入");
-                    }
-                    else if (data == "loginSuccess") {
-                        alert("登入成功 將導回首頁");
+                    else if (data == "EditSuccess") {
+                        alert("已將確認信寄出 密碼已被修改成信內的暫時密碼");
                         window.location.assign("/HomePage/Home");
                     }
                     else {

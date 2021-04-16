@@ -102,7 +102,7 @@
                         <button id="cwc_Coupon" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showCoupon(@Model.CMemberId)">優惠券</button>
                         <button id="cwc_Review" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showReport(@Model.CMemberId)">個人消費報表檢視</button>
                         <button id="cwc_QRcode" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showQRcode(@Model.CMemberId)">邀請好友</button>
-                        <button id="cwc_Password" class="list-group-item list-group-item-action" onclick="cwc_showChangPassword()">修改密碼</button>
+                        <button id="cwc_Password" class="list-group-item list-group-item-action" onclick="cwc_showChangPassword(@ViewBag.facebook)">修改密碼</button>
                         <div id="aaa" style="display: none ; transition: all .5s">
                             <div style="margin:10px">
                                 <lable style="margin-left:20px; font-size:15px">原始密碼 :</lable><input id="cwc_orP" type="password" style="margin-left:36px; font-size:13px">

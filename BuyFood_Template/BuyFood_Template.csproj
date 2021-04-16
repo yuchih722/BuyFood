@@ -19,7 +19,6 @@
     <None Include="Views\cOrderDetails\List.cshtml" />
     <None Include="Views\cProduct\Create.cshtml" />
     <None Include="Views\cProduct\Edit.cshtml" />
-    <None Include="Views\cProduct\List.cshtml" />
     <None Include="Views\cSalesAnalysis\List.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\ProductDetail\ProductData.cshtml" />
@@ -73,6 +72,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.95.4" />
     <PackageReference Include="Grpc.Core" Version="2.37.0" />
     <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="5.0.24" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />

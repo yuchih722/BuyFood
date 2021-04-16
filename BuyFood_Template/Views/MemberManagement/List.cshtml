@@ -60,7 +60,8 @@
 <div class="box-module">
     <div class="box-title" style="margin-bottom:10px">
         會員列表<a style="margin-left:30px;background-color:#8E8E8E" asp-action="Create" class="btn btn-primary">新增會員</a>
-        <button id="btnsendmail" onclick="showvalue()" style="margin-left:30px;background-color:#8E8E8E" class="btn btn-primary">寄信</button>
+        <button onclick="sendeMail()" class="btn btn-primary">寄信</button>
+        <a asp-action="downloadExcelDocument" class="btn btn-primary">下載EXCEL檔</a>
     </div>
     <div id="member">
 
@@ -75,7 +76,6 @@
     <div class="page-preloader">Loading</div>
 </div>
 <!-- END PAGA BACKDROPS-->
-
 
 <script>
     function Member(str) {
@@ -120,18 +120,18 @@
                         Blackliang = `<button class="btn btn-secondary" onclick="blacklist(${data[i].cMemberId})">解鎖黑名單</button>`
                     }
 
-                    if (data[i].cFreezeCount == 0) {
-                        var freezecountliang = `<button class="btn btn-green" onclick="freeze(${data[i].cMemberId})">凍結</button>`
+                    if (data[i].cFreezeCount == 4) {
+                        var freezecountliang = `<button class="btn btn-secondary" onclick="freeze(${data[i].cMemberId})">解凍</button>`
                     }
                     else {
-                        freezecountliang = `<button class="btn btn-secondary" onclick="freeze(${data[i].cMemberId})">解凍</button>`
+                        freezecountliang = `<button class="btn btn-green" onclick="freeze(${data[i].cMemberId})">凍結</button>`
                     }
 
                     txttableAdmMemberList +=
-                        `<tr style="text-align:center">
+                        `<tr id="getTr${data[i].cMemberId}" style="text-align:center">
                             <td style="vertical-align: middle;">
                                 <label class="ui-checkbox">
-                                    <input id="test" value="${data[i].cMemberId}" type="checkbox" name="選中內框"></input>
+                                    <input value="${data[i].cMemberId}" type="checkbox" name="選中內框"></input>
                                     <span class="input-span"></span>
                                 </label>
                             </td>
@@ -139,7 +139,7 @@
                             <td><img src="${data[i].cPicture}" /></td>
                             <td style="vertical-align: middle;">${data[i].cName}</td>
                             <td style="vertical-align: middle;">${data[i].cGender}</td>
-                            <td id="test2" style="vertical-align: middle;">${data[i].cBirthday}</td>
+                            <td style="vertical-align: middle;">${data[i].cBirthday}</td>
                             <td style="vertical-align: middle;">${data[i].cAge}</td>
                             <td style="vertical-align: middle;">${data[i].cAddress}</td>
                             <td style="vertical-align: middle;">${data[i].cPhone}</td>
@@ -185,18 +185,21 @@
                     }
                 });
 
-                //$("#myTable_length").append(`<label id="btndelete" style = "display:none"><button type="button" class="btn button_btn btn-danger" onclick="deletemore();">刪除選中</button></label>`);
-
+                //$("#myTable_length").append(`<label id="btndelete" style = "display:none"><button class="btn button_btn btn-danger" onclick="deletemore();">刪除選中</button></label>`);            
                 $("#myTable input[name=選中內框]").change(function Submit() {
-                    var selectFalse = false; //用于判断是否被选择条件
-                    var checkBox = $('input[name=選中內框]'); //得到所有的復選框
+                    var val = $(this).val();
+                    //console.log(val);
+
+                    //var selectFalse = false; //用于判断是否被选择条件                    
+                    //var checkBox = $('input[name=選中內框]'); //得到所有的復選框               
                     //for (var i = 0; i < checkBox.length; i++) {
-                    //    if (CheckBox[i].checked) {
+
+                    //    if (checkBox[i].checked) {
                     //        selectFalse = true;
                     //    }
                     //}
-                    console.log($('input[name=選中內框]'));
-                    //if (SelectFalse) {
+                                                      
+                    //if (selectFalse) {
                     //    $("#btndelete").show();
                     //} else {
                     //    $("#btndelete").hide();
@@ -207,16 +210,16 @@
             }
         })
     }
+    
     //↓checkBox全選功能
     function checkOrCancelAll() {
         //1.獲取checkbo的元素對象
         var chElt = document.getElementById("chElt");
         //2.獲取選中狀態
-        var checkedElt = chElt.checked;
-        console.log(checkedElt)
+        var checkedElt = chElt.checked;   
         //3.若checked=true,將所有的復選框選中,checked=false,將所有的復選框取消
         var allCheck = document.getElementsByName("選中內框");
-        //4.循環遍歷取出每一個復選框中的元素
+        //4.循環遍歷取出每一個復選框中的元素        
         //var mySpan=document.getElementById("mySpan");
         if (checkedElt) {
             //全選
@@ -249,8 +252,28 @@
     //        });
     //    }
     //}
+    function sendeMail() {
+        var checked = $("#myTable input[type=checkbox]:checked");
+        for (let i = 0; i < checked.lenght; i++) {
+            console.log(checked[i].value);
+            $.ajax({
+                url: "/MemberManagement/sendEmail",
+                data: { mailtoAddress: checked[i].cEmail, mailtoName: checked[i].cName, subject: "測試信", body:"test" },
+                type: "POST",                
+                success: function (data) {
+                    console.log("發信成功");                    
+                    $("#").html(data);
+                },
+                error: function (message) {
+                    alert("error" + message);
+                }
+
+            })
+        }    
+    }
+
+
     /*進入此頁面執行*/
-  
     $(Member("All"));
 </script>
 <script>
@@ -288,20 +311,13 @@
         })
     }
 
-    //function showvalue() {
-    //    var aa = document.getElementById("test").nodeValue.nodeValue
-    //    var bb = document.getElementById("test2")
-    //    console.log(aa);
-    //    console.log(bb);
-    //}
-
     function order(str) {
         $.ajax({
             url: `/MemberManagement/detail?id=${str}`,
             type: "POST",
             success: function (data) {
-                var txttable = "";
-                txttable +=
+                var txtOrdertable = "";
+                txtOrdertable +=
                     `<div>
                     <table class="table table-hover table_striped table-bordered border" id="table">
                         <thead>
@@ -316,7 +332,7 @@
                         <tbody>`
 
                 for (let i = 0; i <= data.length - 1; i++) {
-                    txttable +=
+                    txtOrdertable +=
                         `<tr>
                         <td>${data[i].cName}</td>
                         <td>${data[i].cOrderId}</td>
@@ -325,11 +341,11 @@
                         <td>${data[i].cTransportMinute}</td>
                         </tr>`
                 }
-                txttable +=
+                txtOrdertable +=
                     `</tbody>
                 </table>
              </div>`
-                $("#member").html(txttable);
+                $("#member").html(txtOrdertable);
                 $('#table').DataTable({
                     language: {
                         "emptyTable": "無資料...",
