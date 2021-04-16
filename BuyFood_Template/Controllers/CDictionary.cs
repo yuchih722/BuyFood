@@ -12,6 +12,7 @@ namespace BuyFood_Template.Controllers
         public static readonly string CURRENT_LOGINED_USERPHOTO = "CURRENT_LOGINED_USERPHOTO";
         public static readonly string CURRENT_LOGINED_USERID = "CURRENT_LOGINED_USERID";
         public static readonly string REDIRECT_FROM_WHERE = "REDIRECT_FROM_WHERE";
+        public static readonly string CURRENT_LOGINED_FACEBOOK = "CURRENT_LOGINED_FACEBOOK";
 
     }
 }
