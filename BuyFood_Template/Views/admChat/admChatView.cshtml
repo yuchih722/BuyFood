@@ -231,8 +231,8 @@
     </style>
 </head>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
-<input type="text" id="thisIsForHideChannelID" value="" style="display:none;" />
 <div class="adrContainerForadmChat" style="margin-top:100px">
+    <input type="text" id="thisIsForHideChannelID" value="123" style="display:none;" />
     <h3 class=" text-center">客服中心</h3>
     <div class="messaging" style="margin-top:10px">
         <div class="inbox_msg">
@@ -273,7 +273,7 @@
         success: function (chatRooms) {
             console.log(chatRooms);
             for (let i = 0; i < chatRooms.length; i++) {
-                adrTxtForAdmChatRoom += `<a onclick="switchToThisChannel(${chatRooms[i].cChannelID})">
+                adrTxtForAdmChatRoom += `<a  onclick="switchToThisChannel(${chatRooms[i].cChannelID})">
                                             <div class="chat_list" id="adrActiveChat${chatRooms[i].cChannelID}">
                                                 <div class="chat_people">
                                                     <div class="chat_img"> <img src="${chatRooms[i].cFoto}"> </div>
@@ -294,6 +294,7 @@
     })
 
     function switchToThisChannel(ChannelID) {
+        
         let adrLastGroupID = $("#thisIsForHideChannelID").val();
         if (adrLastGroupID != "") {
             admRemoveFromGroup(adrLastGroupID)
@@ -388,6 +389,9 @@
         var encodedMsg = /*user + " says " +*/ '<p>' + msg + '<span class="chat_message_time">' + when + '</span></p>';
         var li = document.createElement("li");
         li.innerHTML = encodedMsg;
+        document.getElementById("typeMessageOnAdmChat").value = "";
+
+
         let adradmHidechannelid = parseInt($("#thisIsForHideChannelID").val());
         console.log('這個是：'+adradmHidechannelid);//頻道為4
         $.ajax({
@@ -398,7 +402,7 @@
         });
 
         var PictureForMessage = adrfoto;
-        
+
 
         if (msg == '') { return; }
         //如果是自己，放右邊
@@ -471,6 +475,7 @@
     function admAddToGroup(ChannelID) {
         console.log(ChannelID + '已加入群組');
         document.getElementById("thisIsForHideChannelID").value = ChannelID;
+        console.log($("#thisIsForHideChannelID").val() + '的value已變成' + ChannelID);
         var groupName = ChannelID.toString();
         let userName = '管理員';
         connection.invoke("AddGroup", groupName, userName).catch(function (err) {
@@ -490,6 +495,7 @@
     //離開群組
     // 群組訊息Button事件
     document.getElementById("summitButtonAdmChat").addEventListener("click", function (e) {
+        console.log('頻道名稱為：'+$("#thisIsForHideChannelID").val())
         if ($("#thisIsForHideChannelID").val()=="")
         {
             window.alert('請先選擇會員');
@@ -499,6 +505,11 @@
         var message = document.getElementById("typeMessageOnAdmChat").value;
         var adrfoto = '/img/adrChatRoom/adm2.jpg';
         var adrMemberIDForChat = 16;
+        console.log(message);
+        if (message == null) {
+            window.alert('請輸入內容');
+            return;
+        }
         console.log("傳送成功");
         connection.invoke("SendMessageToGroup", groupName, username, message, adrfoto, adrMemberIDForChat).catch(function (err) {
             console.log("傳送失敗")
@@ -507,5 +518,5 @@
     });
     // 群組訊息Button事件
 
-    
+
 </script>

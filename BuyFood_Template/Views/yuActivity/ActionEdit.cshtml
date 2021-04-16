@@ -16,17 +16,25 @@
             <input type="file" id="editimg" class="addfile-btn" accept="image/gif, image/jpeg, image/png" style="display:none" onchange="readURL(this)" name="img" />
         </div>
         <div class="form-group" style="text-align: center;"><textarea asp-for="CDescription" name="CDescription" id="memo1" cols="70" rows="6" style="font-size:16px" placeholder="活動內容" required></textarea></div>
-        <div class="form-group" style="text-align: center;"><input style="font-size: 16px;width: 600px;" placeholder="活動連結" required asp-for="CLink" name="CLink" /></div>
-
         <div class="form-group" style="text-align: center;">
-            <label>活動狀態：</label><select name="CStatus"><option value="0" style="padding-left:20px"> 活動關閉</option><option value="1">活動啟動</option></select>
-        </div>
+            <select asp-for="CLink" name="CLink">
+                <option style="display:none">請選擇活動位置</option>
+                <option value="/yuActivity/goto_where_page_todo?todopage=1">會員中心 - 儲值</option>
+                <option value="/yuActivity/goto_where_page_todo?todopage=2">會員中心 - 套餐</option>
+                <option value="/yuActivity/goto_where_page_todo?todopage=3">首頁點餐 - 點餐</option>
+                <option value="/yuActivity/goto_where_page_todo?todopage=4">會員註冊 - 註冊</option>
+                <option value="/yuActivity/goto_where_page_todo?todopage=5">活動一覽 - 活動</option>
+            </select>
+            </div>
+            <div class="form-group" style="text-align: center;">
+                <select asp-for="CStatus" name="CStatus"><option value="0" style="padding-left:20px"> 活動關閉</option><option value="1">活動啟動</option></select>
+            </div>
 
-        <div class="form-group" style="text-align: center;margin:10px">
-            <input style="margin:10px" type="submit" value="修改" class="btn btn-primary  btn-rounded btn-lg" />
-            <input style="margin:10px" class="btn btn-Silver  btn-rounded btn-lg" type="button" onclick="javascript:window.history.go(-1);" value="返回上一頁">
-        </div>
-    </form>
+            <div class="form-group" style="text-align: center;margin:10px">
+                <input style="margin:10px" type="submit" value="修改" class="btn btn-primary  btn-rounded btn-lg" />
+                <input style="margin:10px" class="btn btn-Silver  btn-rounded btn-lg" type="button" onclick="javascript:window.history.go(-1);" value="返回上一頁">
+            </div>
+</form>
     <div style="text-align: center;margin:10px">
         <button style="margin:10px" class="btn btn-warning  btn-rounded btn-lg" onclick="rrreset()">重新設定</button>
     </div>
@@ -50,4 +58,6 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+
+
 </script>

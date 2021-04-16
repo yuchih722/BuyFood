@@ -10,11 +10,10 @@ namespace BuyFood_Template.ViewModels
     {
         private TMember iv_member = null;
         int iv_issueComboCount = 0;
-        public MemberCenterViewModel(TMember p_member)
+        public MemberCenterViewModel(TMember p_member,string p_goWhere)
         {
             iv_member = p_member;
-
-
+            goWhere = p_goWhere;
         }
         public MemberCenterViewModel()
         {
@@ -29,6 +28,7 @@ namespace BuyFood_Template.ViewModels
         public vCombo Combos { get { return new vCombo(); } }
         public int isssueComboCount { get { return iv_issueComboCount; } }
 
+        public string goWhere { get; set; }
         public int CMemberId
         {
             get { return iv_member.CMemberId; }

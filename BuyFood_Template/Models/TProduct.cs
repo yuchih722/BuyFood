@@ -11,6 +11,7 @@ namespace BuyFood_Template.Models
         {
             TBoards = new HashSet<TBoard>();
             TComboDetails = new HashSet<TComboDetail>();
+            TNotifyLists = new HashSet<TNotifyList>();
             TOrderDetails = new HashSet<TOrderDetail>();
         }
 
@@ -27,12 +28,14 @@ namespace BuyFood_Template.Models
         public int? CIsBreakFast { get; set; }
         public int? CIsLunch { get; set; }
         public int? CIsDinner { get; set; }
+        public int? CProductTagId { get; set; }
+        public int? CQuantityControl { get; set; }
 
         public virtual TProductCategory CCategory { get; set; }
-        public virtual TEatPeriod CEatTime { get; set; }
-        public virtual TIsOnSale CIsOnSale { get; set; }
+        public virtual TProductTag CProductTag { get; set; }
         public virtual ICollection<TBoard> TBoards { get; set; }
         public virtual ICollection<TComboDetail> TComboDetails { get; set; }
+        public virtual ICollection<TNotifyList> TNotifyLists { get; set; }
         public virtual ICollection<TOrderDetail> TOrderDetails { get; set; }
     }
 }

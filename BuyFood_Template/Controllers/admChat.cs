@@ -11,8 +11,9 @@ namespace BuyFood_Template.Controllers
     public class admChat : Controller
     {
         擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-        public IActionResult admChatView()
+        public IActionResult admChatView(int? id)
         {
+            TempData["get_chat_id"] = id;
             return View();
         }
         public JsonResult getChatRooms()
@@ -47,6 +48,10 @@ namespace BuyFood_Template.Controllers
         }
         public void saveContext(string MemberName,string Content,string MessageTime,string foto,int userID,int difChatRoomID)
         {
+            if (userID != 16 || difChatRoomID == 16)
+            {
+                return;
+            }
             DateTime theSaveTime = DateTime.Now;
 
 
@@ -57,7 +62,8 @@ namespace BuyFood_Template.Controllers
                 CSaveTime = theSaveTime,
                 CMemberId = userID,
                 CPhoto = foto,
-                CDifRoomId = difChatRoomID
+                CDifRoomId = difChatRoomID,
+                CReview=1
             };
             db.TChatRooms.Add(cr);
             db.SaveChanges();

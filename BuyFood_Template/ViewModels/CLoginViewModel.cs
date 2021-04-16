@@ -31,9 +31,9 @@ namespace BuyFood_Template.ViewModel
         [DisplayName("密碼")]
         public string CPassword { get; set; }
 
-        [Required(ErrorMessage = "請輸入認證碼")]
-        [DisplayName("認證碼")]
-        public string txtCode { get; set; }
+        //[Required(ErrorMessage = "請輸入認證碼")]
+        //[DisplayName("認證碼")]
+        //public string txtCode { get; set; }
 
     }
 }

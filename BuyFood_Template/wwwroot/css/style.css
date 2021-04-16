@@ -853,9 +853,9 @@ ol {
 	margin-bottom: 50px;
 }
 
-.featured__item:hover .featured__item__pic .featured__item__pic__hover {
-	bottom: 20px;
-}
+	.featured__item:hover .featured__item__pic .featured__item__pic__hover {
+		bottom: 27px;
+	}
 
 .featured__item__pic {
 	height: 270px;
@@ -866,10 +866,11 @@ ol {
 
 .featured__item__pic__hover {
 	position: absolute;
-	left: 0;
+/*	left: 0;*/
+/*	right:0;*/
 	bottom: -50px;
 	width: 100%;
-	text-align: center;
+	text-align: right;
 	-webkit-transition: all, 0.5s;
 	-moz-transition: all, 0.5s;
 	-ms-transition: all, 0.5s;

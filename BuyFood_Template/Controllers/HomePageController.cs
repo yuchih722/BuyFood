@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using BuyFood_Template.Models;
 using BuyFood_Template.ViewModel;
+using BuyFood_Template.ViewModels;
 using LinqKit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +14,8 @@ namespace BuyFood_Template.Controllers
 {
     public class HomePageController : Controller
     {
+        ShareFunction shareFun = new ShareFunction();
+
         public IActionResult Home()
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
@@ -19,6 +23,10 @@ namespace BuyFood_Template.Controllers
                 ViewBag.USERNAME = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
                 ViewBag.USERPHOTO = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);
                 ViewBag.USERUSERID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);
+            }
+            ViewBag.num_todo = "";
+            if (TempData[CDictionary.REDIRECT_FROM_WHERE] != null) { 
+            ViewBag.num_todo= TempData[CDictionary.REDIRECT_FROM_WHERE].ToString();
             }
             return View();
         }
@@ -29,13 +37,21 @@ namespace BuyFood_Template.Controllers
 
             List<TProduct> list = new List<TProduct>();
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var result = db.TProducts.AsEnumerable().Select(n => n);
             double getMin = Convert.ToDouble(Min);
             double getMax = Convert.ToDouble(Max);
             int getBreakFast = 0;
             int getLunch = 0;
             int getDinner = 0;
             int CategoryID = db.TProductCategories.Where(n => n.CCategoryName == Category).Select(n => n.CProductCategoryId).FirstOrDefault();
+
+            var rowdata = db.TProducts.Select(n => new cTProduct
+            {
+                TProduct = n,
+                count = n.TOrderDetails.Count(x => x.CFeedBackStatus == 1 && x.CScores != null),
+                sum = n.TOrderDetails.Where(x => x.CFeedBackStatus == 1 && x.CScores != null).Sum(m => m.CScores)
+            });
+
+            var result = rowdata.AsEnumerable().Select(n => n);
 
             if (BreakFast == "早餐")
                 getBreakFast = 1;
@@ -59,12 +75,12 @@ namespace BuyFood_Template.Controllers
             {
                 if (Category == "全部")
                 {
-                    result=db.TProducts.AsEnumerable().Where(m=> (double)m.CPrice >= getMin && (double)m.CPrice <= getMax );
+                    result=rowdata.AsEnumerable().Where(m=> (double)m.TProduct.CPrice >= getMin && (double)m.TProduct.CPrice <= getMax );
                 }
                 else
                 {
-                    result = db.TProducts.AsEnumerable().Where(m => m.CCategoryId == CategoryID &&
-                       (double)m.CPrice >= getMin && (double)m.CPrice <= getMax);
+                    result = rowdata.AsEnumerable().Where(m => m.TProduct.CCategoryId == CategoryID &&
+                       (double)m.TProduct.CPrice >= getMin && (double)m.TProduct.CPrice <= getMax);
 
                 }
             }
@@ -74,28 +90,41 @@ namespace BuyFood_Template.Controllers
 
                 if (Category=="全部")
                 {
-                    result=db.TProducts.AsEnumerable().Where(m=>m.CProductName.Any(n=>m.CProductName.Contains(key)) &&
-                          (double)m.CPrice >= getMin && (double)m.CPrice <= getMax);
+                    result=rowdata.AsEnumerable().Where(m=>m.TProduct.CProductName.Any(n=>m.TProduct.CProductName.Contains(key)) &&
+                          (double)m.TProduct.CPrice >= getMin && (double)m.TProduct.CPrice <= getMax);
                 }
 
                 else
                 {
 
-                    result = db.TProducts.AsEnumerable().Where(m => m.CProductName.Any(n => m.CProductName.Contains(key)) &&
-                      m.CCategoryId == CategoryID && (double)m.CPrice >= getMin && (double)m.CPrice <= getMax);
+                    result = rowdata.AsEnumerable().Where(m => m.TProduct.CProductName.Any(n => m.TProduct.CProductName.Contains(key)) &&
+                      m.TProduct.CCategoryId == CategoryID && (double)m.TProduct.CPrice >= getMin && (double)m.TProduct.CPrice <= getMax);
 
                 }
             }
             //時段判斷
             var product = db.TProducts.AsQueryable();
-            var predicate = PredicateBuilder.False<TProduct>();
+            var predicate = PredicateBuilder.False<cTProduct>();
             if (getBreakFast == 1)
-                predicate = predicate.Or(n => n.CIsBreakFast == getBreakFast);
+                predicate = predicate.Or(n => n.TProduct.CIsBreakFast == getBreakFast);
             if (getLunch == 1)
-                predicate = predicate.Or(n => n.CIsLunch == getLunch);
+                predicate = predicate.Or(n => n.TProduct.CIsLunch == getLunch);
             if (getDinner == 1)
-                predicate = predicate.Or(n => n.CIsDinner == getDinner);
-            var resultOfTime = result.AsQueryable().AsExpandable().Where(c => predicate.Invoke(c));
+                predicate = predicate.Or(n => n.TProduct.CIsDinner == getDinner);
+
+            var resultOfTime = result.Where(c => predicate.Invoke(c));
+
+            //var aaa = db.TOrders.Where(n => n.CMemberId == 1).OrderByDescending(n => n.COrderDate).Take(6).GroupBy(n => n.TOrderDetails.);
+            //var bbb = db.TOrderDetails.OrderByDescending(n => n.COrder.COrderDate).Select(n=>new { 
+            //    n.CProductId,
+            //    product = n.CProduct
+            //}).Take(100).GroupBy(n => n.CProductId).Select(n => new
+            //{
+            //    n.Key,
+            //    n,
+            //    count = n.Count()
+            //}).OrderByDescending(n => n.count).Take(6);
+
             //return Json(result.ToList());
             //return Json(result.Where(n=>n.CIsBreakFast==getBreakFast&&n.CIsLunch==getLunch&&n.CIsDinner==getDinner));
             return Json(resultOfTime.ToList());
@@ -151,33 +180,89 @@ namespace BuyFood_Template.Controllers
             //ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
             return PartialView();
         }
+        //[HttpPost]
+        //public IActionResult 登入(CLoginViewModel loginMember)
+        //{
+        //    //if (loginMember.txtCode == null)
+        //    //{
+        //    //    loginMember.txtCode = "";
+        //    //}
+        //    //if (!loginMember.txtCode.Equals(HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE)))
+        //    //{
+        //    //    ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
+        //    //    return View();
+        //    //}
+
+        //    TMember CheckMember = (new 擺腹BuyFoodContext()).TMembers.FirstOrDefault(p => p.CEmail.Equals(loginMember.CEmail) && p.CPassword.Equals(loginMember.CPassword));
+
+        //    if (CheckMember != null)
+        //    {
+        //        HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, CheckMember.CName);
+        //        HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, CheckMember.CPicture);
+        //        HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, CheckMember.CMemberId.ToString());
+
+        //        return RedirectToAction("Home");
+        //    }
+        //    //ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
+        //    return PartialView();
+        //}
         [HttpPost]
-        public IActionResult 登入(CLoginViewModel loginMember)
+        public JsonResult loginCheck([FromBody] CLoginViewModel loginMember)
         {
-            //if (loginMember.txtCode == null)
-            //{
-            //    loginMember.txtCode = "";
-            //}
-            //if (!loginMember.txtCode.Equals(HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE)))
-            //{
-            //    ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
-            //    return View();
-            //}
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            var check信箱 = from n in db.TMembers
+                          select n.CEmail;
 
-            TMember CheckMember = (new 擺腹BuyFoodContext()).TMembers.FirstOrDefault(p => p.CEmail.Equals(loginMember.CEmail) && p.CPassword.Equals(loginMember.CPassword));
-
-            if (CheckMember != null)
+            if(check信箱.Any(n => n == loginMember.CEmail) == true)
             {
-                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, CheckMember.CName);
-                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, CheckMember.CPicture);
-                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, CheckMember.CMemberId.ToString());
+                TMember freezeCheck = (from n in db.TMembers
+                                       where n.CEmail == loginMember.CEmail
+                                       select n).FirstOrDefault();
 
-                return RedirectToAction("Home");
+                var check密碼 = (from n in db.TMembers
+                              where n.CEmail == loginMember.CEmail
+                              select n).FirstOrDefault();
+
+                SHA1 sha1 = SHA1.Create();
+
+                string pwd解密 = shareFun.GetHash(sha1, loginMember.CPassword);
+
+                if (check密碼.CFreezeCount >=4)
+                {
+                    return Json("memberFrozed");
+                }
+                else if(check密碼.CPassword == pwd解密)
+                {
+                    HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, check密碼.CName);
+                    HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, check密碼.CPicture);
+                    HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, check密碼.CMemberId.ToString());
+
+                    freezeCheck.CFreezeCount = 0;
+                    db.SaveChanges();
+
+                    return Json("loginSuccess");
+                }
+                else
+                {
+                    if (check密碼.CFreezeCount == 3)
+                    {
+                    freezeCheck.CFreezeCount += 1;
+                    db.SaveChanges();
+                    return Json("FrozeComplete");
+                    }
+                    else
+                    {
+                        freezeCheck.CFreezeCount += 1;
+                        db.SaveChanges();
+                        return Json("FrozeCountPlus");
+                    }
+                }
             }
-            //ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
-            return PartialView();
+            else
+            {
+                return Json("noEmail");
+            }
         }
-
         public bool facebookLogin(string id, string name)
         {
             var test = id + name;
@@ -198,16 +283,24 @@ namespace BuyFood_Template.Controllers
             }
         }
 
-        public bool BCheckLogin()
+        public JsonResult BCheckLogin()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)))
             {
-                return false;
+                return Json(new { member = false, memberID =HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID) });
+            }
+            else if (int.Parse(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)) == 16)
+            {
+                return Json(new { member = "isAdm", memberID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID) });
             }
             else
             {
-                return true;
+                return Json(new { member = true, memberID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID) });
             }
+        }
+        public IActionResult forgetPwd()
+        {
+            return PartialView();
         }
         public string SLogout()
         {
@@ -256,12 +349,29 @@ namespace BuyFood_Template.Controllers
         }
         public JsonResult get_categorysname() //抓取所有商品顯示在首頁
         {
-            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            var table = db.TProductCategories.Select(n => new {n.CProductCategoryId,n.CCategoryName, n.TProducts});
 
-            return Json(table);
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            var table = db.TProductCategories.Select(n => new
+            {
+                n.CProductCategoryId,
+                n.CCategoryName,
+                tProducts = n.TProducts.Select(m => new
+                {
+                    tProducts = m,
+                    coun = m.TOrderDetails.Count(b => b.CFeedBackStatus == 1 && b.CScores != null),
+                    sum = m.TOrderDetails.Where(m => m.CFeedBackStatus == 1 && m.CScores != null).Sum(m => m.CScores)
+                })
+            });
+
+
+
+            return Json(new
+            {
+                forProduct = table.ToList(),
+            });
+
         }
-       
+
         public JsonResult getBottomList()  
         { 
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
@@ -312,6 +422,76 @@ namespace BuyFood_Template.Controllers
             var table = new { lastProducts = lastProducts, topProducts = topProducts, ReviewProducts = ReviewProducts };
             return Json(table);
         }
-       
+        public JsonResult getSideBar_CateNums()
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+
+            var CategoryGroupBy = db.TProductCategories.Select(n => new
+            {
+                n.CProductCategoryId,
+                n.CCategoryName,
+                n.TProducts
+            });
+
+
+            return Json(CategoryGroupBy.ToList());
+
+        }
+        public JsonResult DidLogingetBottomList(int MemberID)
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            #region 最新商品
+
+            var lastProducts = db.TProducts.OrderByDescending(n => n.CProductId).Select(n => n).Take(6);
+
+
+
+            #endregion
+
+            #region //好評商品
+
+            var gettopProducts = (from tp in db.TOrderDetails
+                                  group tp by tp.CProductId into g
+                                  select new
+                                  {
+                                      g.Key,
+                                      AvgScore = g.Sum(n => n.CScores) / g.Count()
+                                  }).OrderByDescending(n => n.AvgScore).Select(n => n.Key).ToList().Take(6);
+
+            List<TProduct> topProducts = new List<TProduct>();
+            foreach (var p in gettopProducts)
+            {
+                topProducts.Add(db.TProducts.Where(n => n.CProductId == p).Select(n => n).FirstOrDefault());
+            }
+
+            #endregion
+
+            #region //最常購買
+
+            var ReviewProducts = db.TOrderDetails.OrderByDescending(n => n.COrder.COrderDate).Select(n => new
+            {
+                n.CProductId,
+                product = n.CProduct
+            }).Take(100)
+            .GroupBy(n => n.CProductId).Select(n => new
+            {
+                n.Key,
+                product = new List<TProduct>(),
+                count = n.Count()
+            }).OrderByDescending(n => n.count).Take(6).ToList();
+
+            foreach (var item in ReviewProducts)
+            {
+                TProduct product = db.TProducts.FirstOrDefault(n => n.CProductId == item.Key);
+                item.product.Add(product);
+            }
+
+            #endregion
+
+
+            var table = new { lastProducts = lastProducts, topProducts = topProducts, ReviewProducts = ReviewProducts };
+            return Json(table);
+        }
+
     }
 }

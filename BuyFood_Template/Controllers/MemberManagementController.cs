@@ -9,6 +9,8 @@ using BuyFood_Template.ViewModels;
 using BuyFood_Template.ViewModel;
 using Microsoft.AspNetCore.Hosting; //圖片
 using System.IO;
+using System.Net.Mail;
+using System.Net;
 
 namespace BuyFood_Template.Controllers
 {
@@ -17,7 +19,7 @@ namespace BuyFood_Template.Controllers
         private 擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
         public IActionResult List()
         {
-            ViewBag.All = db.TMembers.Select(n => n).Count();
+            ViewBag.All = db.TMembers.Where(n=>n.CMemberId!=16).Select(n => n).Count();
             ViewBag.male = db.TMembers.Where(n => n.CGender == "男").Select(n => n).Count();
             ViewBag.female = db.TMembers.Where(n => n.CGender == "女").Select(n => n).Count();
             ViewBag.deposit = db.TMembers.Where(n => n.CDeposit > 0).Select(n => n).Count();//未儲值
@@ -25,25 +27,29 @@ namespace BuyFood_Template.Controllers
             return View();
         }
 
+
         public JsonResult jsonList(string str)
         {       
             if (str == "All")
             {
                 var table = from c in db.TMembers
                             orderby c.CMemberId descending
+                            where c.CMemberId !=16
                             select new
                             {
                                 c.CMemberId,
                                 c.CPicture,
                                 c.CName,
                                 c.CGender,
-                                cAge = c.CAge.ToString("yyyy/MM/dd"),
+                                cBirthday = c.CAge.ToString("yyyy/MM/dd"),
+                                cAge = DateTime.Now.Year-c.CAge.Year,
                                 c.CAddress,
                                 c.CPhone,
                                 c.CEmail,
                                 c.CPassword,
                                 c.CBlackList,
                                 c.CDeposit,
+                                c.CFreezeCount
                             };
                 return Json(table);
             }
@@ -56,13 +62,15 @@ namespace BuyFood_Template.Controllers
                                 c.CPicture,
                                 c.CName,
                                 c.CGender,
-                                cAge = c.CAge.ToString("yyyy/MM/dd"),
+                                cBirthday = c.CAge.ToString("yyyy/MM/dd"),
+                                cAge = DateTime.Now.Year - c.CAge.Year,
                                 c.CAddress,
                                 c.CPhone,
                                 c.CEmail,
                                 c.CPassword,
                                 c.CBlackList,
                                 c.CDeposit,
+                                c.CFreezeCount
                             };
                 return Json(table);
             }
@@ -75,13 +83,15 @@ namespace BuyFood_Template.Controllers
                                  c.CPicture,
                                  c.CName,
                                  c.CGender,
-                                 cAge = c.CAge.ToString("yyyy/MM/dd"),
+                                 cBirthday = c.CAge.ToString("yyyy/MM/dd"),
+                                 cAge = DateTime.Now.Year - c.CAge.Year,
                                  c.CAddress,
                                  c.CPhone,
                                  c.CEmail,
                                  c.CPassword,
                                  c.CBlackList,
                                  c.CDeposit,
+                                 c.CFreezeCount
                              };
                 return Json(table);
             }
@@ -94,13 +104,15 @@ namespace BuyFood_Template.Controllers
                                  c.CPicture,
                                  c.CName,
                                  c.CGender,
-                                 cAge = c.CAge.ToString("yyyy/MM/dd"),
+                                 cBirthday = c.CAge.ToString("yyyy/MM/dd"),
+                                 cAge = DateTime.Now.Year - c.CAge.Year,
                                  c.CAddress,
                                  c.CPhone,
                                  c.CEmail,
                                  c.CPassword,
                                  c.CBlackList,
                                  c.CDeposit,
+                                 c.CFreezeCount
                              };
                 return Json(table);
             }
@@ -113,13 +125,15 @@ namespace BuyFood_Template.Controllers
                                c.CPicture,
                                c.CName,
                                c.CGender,
-                               cAge = c.CAge.ToString("yyyy/MM/dd"),
+                               cBirthday = c.CAge.ToString("yyyy/MM/dd"),
+                               cAge = DateTime.Now.Year - c.CAge.Year,
                                c.CAddress,
                                c.CPhone,
                                c.CEmail,
                                c.CPassword,
                                c.CBlackList,
                                c.CDeposit,
+                               c.CFreezeCount
                            };
                 return Json(table);
             }
@@ -133,13 +147,15 @@ namespace BuyFood_Template.Controllers
                                c.CPicture,
                                c.CName,
                                c.CGender,
-                               cAge = c.CAge.ToString("yyyy/MM/dd"),
+                               cBirthday = c.CAge.ToString("yyyy/MM/dd"),
+                               cAge = DateTime.Now.Year - c.CAge.Year,
                                c.CAddress,
                                c.CPhone,
                                c.CEmail,
                                c.CPassword,
                                c.CBlackList,
                                c.CDeposit,
+                               c.CFreezeCount
                            };
                 return Json(table);
             }
@@ -239,19 +255,108 @@ namespace BuyFood_Template.Controllers
             return Json(table);
         }
 
-
-        public ActionResult GetImage(int? id)
+        public bool changeblacklist(int? id)
         {
-            //參考網址 https://kevintsengtw.blogspot.com/2013/10/aspnet-mvc-image.html
-            var mberImage = db.TMembers.FirstOrDefault(m => m.CMemberId == id);
-            if(mberImage!=null && mberImage.CPicture != null)
+            TMember l_黑名單修改 = db.TMembers.FirstOrDefault(n => n.CMemberId == id);
+            bool 狀態 = false;
+            if (l_黑名單修改 != null)
             {
-                using(MemoryStream ms=new MemoryStream())
+                if (l_黑名單修改.CBlackList == 1)
                 {
-                    
+                    l_黑名單修改.CBlackList = 0;                   
+                }
+                else
+                {
+                    l_黑名單修改.CBlackList = 1;
+                    狀態 = true;
                 }
             }
-            return new EmptyResult();               
+            db.SaveChanges();
+            return 狀態;
+        }
+        public bool changefreeze(int? id)
+        {
+            TMember l_凍結修改 = db.TMembers.FirstOrDefault(n => n.CMemberId == id);
+            bool 狀態 = false;
+            if (l_凍結修改!=null)
+            {
+                if (l_凍結修改.CFreezeCount==1)
+                {
+                    l_凍結修改.CFreezeCount = 0;
+                }
+                else
+                {
+                    l_凍結修改.CFreezeCount = 1;
+                    狀態 = true;
+                }                    
+            }
+            db.SaveChanges();
+            return 狀態;
+        }
+        
+
+
+
+        public void abc()
+        {
+            sendEmail("s736828@gmail.com","亮","123","test");
+        }
+
+        public void sendEmail(string mailtoAddress, string mailtoName, string subject, string body)
+        {
+            var fromAddress = new MailAddress("sunfengmsit129@gmail.com", "擺腹buyfood");//寄件地址，寄件人
+            var toAddress = new MailAddress(mailtoAddress, mailtoName);
+            const string fromPassword = "@MSIT129";
+            //const string subject = "Subject";
+            //const string body = "Body";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
+        }
+
+        public JsonResult getmemberid(int? id)
+        {
+            var q = db.TMembers.Where(n => n.CMemberId.Equals(id));
+            return Json(q);
+        }
+
+
+
+        public void Email(int? id)
+        {
+            MailMessage msg = new MailMessage();
+            msg.To.Add("s736828@gmail.com");
+            msg.From = new MailAddress("s736828@gmail.com", "小亮", System.Text.Encoding.UTF8);//發件人
+            msg.Subject = "測試標題";
+            msg.SubjectEncoding = System.Text.Encoding.UTF8; //郵件標題編碼
+            msg.Body = "郵件內容測試";
+            msg.BodyEncoding = System.Text.Encoding.UTF8;//郵件內容編碼
+            msg.Attachments.Add(new Attachment(@"D:\吳亮均.pdf"));//附件
+            msg.IsBodyHtml = true;
+
+            SmtpClient client = new SmtpClient();
+            client.Credentials = new System.Net.NetworkCredential("s736828@gmail.com", "okdlnrynb1219");
+            client.Host = "smtp.gmail.com";
+            client.Port = 25;
+            client.EnableSsl = true;
+            client.Send(msg);
+            client.Dispose();
+            msg.Dispose();                     
         }
 
     }

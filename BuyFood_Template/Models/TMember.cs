@@ -11,6 +11,7 @@ namespace BuyFood_Template.Models
         {
             TBoards = new HashSet<TBoard>();
             TChatRooms = new HashSet<TChatRoom>();
+            TCombos = new HashSet<TCombo>();
             TCupons = new HashSet<TCupon>();
             TDeposits = new HashSet<TDeposit>();
             TLoginRecords = new HashSet<TLoginRecord>();
@@ -33,9 +34,11 @@ namespace BuyFood_Template.Models
         public int? CReferrerId { get; set; }
         public string CFacebookId { get; set; }
         public DateTime? CRegisteredTime { get; set; }
+        public int? COpenMember { get; set; }
 
         public virtual ICollection<TBoard> TBoards { get; set; }
         public virtual ICollection<TChatRoom> TChatRooms { get; set; }
+        public virtual ICollection<TCombo> TCombos { get; set; }
         public virtual ICollection<TCupon> TCupons { get; set; }
         public virtual ICollection<TDeposit> TDeposits { get; set; }
         public virtual ICollection<TLoginRecord> TLoginRecords { get; set; }
