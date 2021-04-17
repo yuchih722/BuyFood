@@ -1,8 +1,13 @@
 ﻿.picsize {
-    width: 100px;
-    height: 100px;
+    width: 170px;
+    height: 170px;
+    border-radius: 20px;
 }
-
+/*.picsize:hover {
+    width: 190px;
+    height: 190px;
+    transition:0.3s;
+}*/
 .hoverstyle:hover {
     color: #593fa5;
     border: 1px solid aliceblue;
@@ -108,5 +113,26 @@
     background-color: #ebebeb;
     border: 2px solid #ebebeb;
     border-radius: 8px;
+}
+/*顯示喜好商品div樣式*/
+.div_inline {
+    float: left;
+    width:20%;
+    text-align:center;
+}
+    .div_inline:hover {
+        background-color: #f4ebc8;
+        border: 2px solid #f3d094;
+        box-shadow: 0px 0px 5px 5px #cccccc;
+        border-radius: 20px;
+        transition: 0.3s;
+    }
+/*外框形式*/
+.border_color_style {
+    border: 2px dotted #7da3de;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #ebebeb;
+    height:350px;
 }
 
