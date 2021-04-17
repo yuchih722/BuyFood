@@ -117,11 +117,12 @@ namespace BuyFood_Template.Controllers
                     if (邀請人ID[0] != null)
                     {
 
-                        TCupon 新增邀請人折價卷 = new TCupon
-                        {
+                    TCupon 新增邀請人折價卷 = new TCupon
+                    {
                             CCuponCategoryId = 2,
                             CMenberId = (int)邀請人ID[0],
                             CBeUsed = 0,
+                            CDiscountCode = shareFun.產生亂數(6),
                             CReceivedTime = DateTime.Now,
                             CValidDate = DateTime.Now.AddDays(60)
                         };
@@ -130,6 +131,7 @@ namespace BuyFood_Template.Controllers
                             CCuponCategoryId = 3,
                             CMenberId = newMember.CMemberID,
                             CBeUsed = 0,
+                            CDiscountCode= shareFun.產生亂數(6),
                             CReceivedTime = DateTime.Now,
                             CValidDate = DateTime.Now.AddDays(60)
                         };

@@ -760,7 +760,6 @@
         });
 
         function updateLayoutCombo() {
-            console.log("1")
             $.ajax({
                 url: `/Combo/getCombo`,
                 success: function (homeCombodata) {
@@ -774,6 +773,10 @@
                                                                                         <button class="btn btn-success btn-sm" onclick="cwc_addCombotoCart(cwc_ComboDetails[${i}])">訂購</button>`
                         }
                         $("#cwc_div_homePageCombo").html(cwc_pageCombo);
+                    }
+                    else {
+                        $("#cwc_howManyCombo").html("0");
+                        $("#cwc_div_homePageCombo").html("");
                     }
                 }
             })
