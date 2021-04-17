@@ -94,12 +94,12 @@ function cwc_savePassword(memberID, meth) {
             success: function (data) {
                 if (data == "1")
                     return alert("密碼錯誤，請重新輸入。");
-                cwc_showChangPassword()
+                cwc_showChangPassword("0")
                 alert("變更成功");
             }
         })
     }
     else {
-        cwc_showChangPassword()
+        cwc_showChangPassword("0")
     }
 }

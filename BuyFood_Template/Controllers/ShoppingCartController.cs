@@ -101,15 +101,24 @@ namespace BuyFood_Template.Controllers
                              i.CProductId,
                              x.CProductTagId
                          };
+            //依產品風格統計曾經購買的數量
             var GroupResult = (from u in result
-                               group u by u.CProductId into g
+                               group u by u.CProductTagId into g
                                orderby g.Count() descending
                                select new
                                {
                                    g.Key,
-                                   OrderCount = g.Count()
-                               }).ToList();
-            return Json(GroupResult);
+                                   OrderCount = g.Count(),
+                               }).Take(1).FirstOrDefault();
+            //將該會員購買最多次的商品風格作為選擇條件、選取出來.Take(1).FirstOrDefault()
+            var FavorItem = BuyFoodDB.TProducts.Where(x => x.CProductTagId == GroupResult.Key && x.CIsOnSaleId == 1).
+                OrderBy(x => Guid.NewGuid()).Select(x => x).ToList().Take(5);
+            if (FavorItem.Count() <= 2)
+            {
+
+                return Json("");
+            }
+            return Json(FavorItem);
         }
     }
 }

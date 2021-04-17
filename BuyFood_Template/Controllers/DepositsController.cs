@@ -92,7 +92,7 @@ namespace BuyFood_Template.Controllers
             string EmailContent = returnData.RtnCode == 1 ?
                 $"已成功於{now.ToString("yyyy/MM/dd")}加值共{returnData.TradeAmt}擺腹幣" :
                 $"加值失敗，請重新加值並確認付款內容。";
-            (new ShareFunction()).sendEmail(changeTarget.CEmail, changeTarget.CName, "通知-加值結果", EmailContent);
+            (new ShareFunction()).sendGrid(changeTarget.CEmail, changeTarget.CName, "通知-加值結果", EmailContent);
         }
 
         public JsonResult buildOrderDeposit(string id, string set)

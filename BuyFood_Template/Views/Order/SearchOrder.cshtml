@@ -69,7 +69,8 @@
                         console.log("changed");
                     }
                 })
-                ListOrderJS("@ViewBag.USERNAME");
+                var adr_UserID = parseInt($("#user_member").val());
+                ListOrderJS(adr_UserID);
             </script>
 
         </div>
