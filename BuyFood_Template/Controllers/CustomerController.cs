@@ -117,11 +117,12 @@ namespace BuyFood_Template.Controllers
                     if (邀請人ID[0] != null)
                     {
 
-                        TCupon 新增邀請人折價卷 = new TCupon
-                        {
+                    TCupon 新增邀請人折價卷 = new TCupon
+                    {
                             CCuponCategoryId = 2,
                             CMenberId = (int)邀請人ID[0],
                             CBeUsed = 0,
+                            CDiscountCode = shareFun.產生亂數(6),
                             CReceivedTime = DateTime.Now,
                             CValidDate = DateTime.Now.AddDays(60)
                         };
@@ -130,6 +131,7 @@ namespace BuyFood_Template.Controllers
                             CCuponCategoryId = 3,
                             CMenberId = newMember.CMemberID,
                             CBeUsed = 0,
+                            CDiscountCode= shareFun.產生亂數(6),
                             CReceivedTime = DateTime.Now,
                             CValidDate = DateTime.Now.AddDays(60)
                         };
@@ -152,7 +154,7 @@ namespace BuyFood_Template.Controllers
 
                     string val信件內容 = "歡迎加入BuyFood,請點擊以下連結以開通帳號 \n"+CDictionary.LOCAL_WEBSITES+"/Customer/memberConfirm?ID=" + add密碼雜湊.CMemberId;
 
-                    shareFun.sendEmail(add密碼雜湊.CEmail, add密碼雜湊.CName, "BuyFood帳號開通認證信", val信件內容);
+                    shareFun.sendGrid(add密碼雜湊.CEmail, add密碼雜湊.CName, "BuyFood帳號開通認證信", val信件內容);
 
                     return Json(true);
                 }
@@ -201,6 +203,10 @@ namespace BuyFood_Template.Controllers
 
             openMember.COpenMember = 1;
             db.SaveChanges();
+
+            HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, openMember.CName);
+            HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, openMember.CPicture);
+            HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, openMember.CMemberId.ToString());
 
             return Redirect("~/HomePage/Home");
         }
