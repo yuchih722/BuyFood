@@ -1,5 +1,5 @@
-﻿function ListOrderJS(memberName) {
-
+﻿function ListOrderJS(UserID) {
+    console.log("UserID=" + UserID)
 
     var AdricountLO = 1;
     var AdritextForLO = "";
@@ -9,18 +9,18 @@
         url: "/Order/ListOrder",
         type: "POST",
         async: false,
-        data: { MemberName: memberName },
+        data: { "memberID": UserID },
         success: function (data) {
-
+            console.log(data);
             $.ajax({
                 url: "/Order/OrderStatusDate",
                 type: "POST",
-                data: { MemberName: memberName },
+                data: { "memberID": UserID },
                 success: function (response) {
 
                     console.log(response);
                     for (let i = 0; i < response.length; i++) {
-                        /*                    console.log(data[i].cOrderID + data[i].cTotalPrice + response[i].cOrderStatus + response[i].cOrderDate)*/
+
                         AdritextForLO += ` <tr>
                                                    <th scope="row">${AdricountLO}</th>
                                                    <td>${data[i].cOrderID}</td>
@@ -46,12 +46,12 @@
         $.ajax({
             url: "/Order/ListOrderOnGoing",
             type: "POST",
-            data: { MemberName: memberName },
+            data: { "memberID": UserID },
             success: function (data) {
                 $.ajax({
                     url: "/Order/OrderStatusDateOnGoing",
                     type: "POST",
-                    data: { MemberName: memberName },
+                    data: { "memberID": UserID },
                     success: function (response) {
                         for (let i = 0; i < response.length; i++) {
                             textOnGoing += ` <tr>
@@ -80,16 +80,16 @@
         $.ajax({
             url: "/Order/ListOrder",
             type: "POST",
-            data: { MemberName: memberName },
+            data: { "memberID": UserID },
             success: function (data) {
                 $.ajax({
                     url: "/Order/OrderStatusDate",
                     type: "POST",
-                    data: { MemberName: memberName },
+                    data: { "memberID": UserID },
                     success: function (response) {
-                        console.log(response);
+
                         for (let i = 0; i < response.length; i++) {
-                            console.log(data[i].cOrderID + data[i].cTotalPrice + response[i].cOrderStatus + response[i].cOrderDate)
+
                             AdritextAll += ` <tr>
                                                    <th scope="row">${AdricountAll}</th>
                                                    <td>${data[i].cOrderID}</td>
@@ -115,13 +115,13 @@
         $.ajax({
             url: "/Order/ListOrderFinished",
             type: "POST",
-            data: { MemberName: memberName },
+            data: { "memberID": UserID },
             success: function (data) {
 
                 $.ajax({
                     url: "/Order/OrderStatusDateFinished",
                     type: "POST",
-                    data: { MemberName: memberName },
+                    data: { "memberID": UserID },
                     success: function (response) {
 
                         for (let i = 0; i < response.length; i++) {
