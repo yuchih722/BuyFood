@@ -57,9 +57,9 @@ function cwc_showChangPassword(facebook) {
     if (facebook == "0") {
         if (!cwc_bool_showchangePassword) {
             $("#aaa").css("display", "block");
-            $("#cwc_i_div_bodyLeft").css("height", "800px");
-            $("#content_cwc").css("height", "800px");
-            $("#cwc_i_div_wholeDiv").css("height", "950px");
+            $("#cwc_i_div_bodyLeft").css("height", "900px");
+            $("#content_cwc").css("height", "900px");
+            $("#cwc_i_div_wholeDiv").css("height", "1050px");
             cwc_bool_showchangePassword = true;
         }
         else {
