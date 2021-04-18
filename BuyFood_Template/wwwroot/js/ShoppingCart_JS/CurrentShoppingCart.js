@@ -107,7 +107,13 @@ $(function () {
                 if (data == "0") {
                     window.alert("輸入的代碼有誤或此優惠券已被使用");
 
-                } else {
+                } else {                                       
+                    total_price = parseInt($("#origin_price").text().replace('$', "")); 
+                    //若折扣金額高於總額則不予計算
+                    if ((total_price - data.cCutPrice) <= 0) {
+                        window.alert("購物車金額不可低於折扣金額")
+                        return;
+                    }
                     discount_price = data.cCutPrice;
                     couponId = data.cCuponId;
                     let text = "目前優惠券的折價金額為: $" + discount_price;
@@ -171,7 +177,7 @@ $(function () {
         }
         let cart_total_price = parseInt($("#cart_total_price").text().replace('$', ''));
         if (cart_total_price <= 0) {
-            window.alert("購物車總計不可低於折扣金額");
+            window.alert("購物車金額不可低於折扣金額");
             return;
         }
         window.location.assign("/CheckCart/OrderData");
