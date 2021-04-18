@@ -57,7 +57,7 @@ namespace BuyFood_Template.Controllers
 
             var OrderStatusDate = (from o in db.TOrders
                                    where o.CMemberId == memberID
-                                   select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate, cOID = o.COrderId }).OrderByDescending(n => n.cOID).Take(10);
+                                   select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate,cCutPrice=o.CCupon.CCuponCategory.CCutPrice, cOID = o.COrderId }).OrderByDescending(n => n.cOID).Take(10);
 
 
             return Json(OrderStatusDate.ToList());
@@ -85,7 +85,7 @@ namespace BuyFood_Template.Controllers
 
             var OrderStatusDate = from o in db.TOrders
                                   where o.CMemberId == memberID && o.COrderStatus.COrderStatusId == 1
-                                  select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate };
+                                  select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate, cCutPrice = o.CCupon.CCuponCategory.CCutPrice };
 
 
             return Json(OrderStatusDate.ToList());
@@ -112,7 +112,7 @@ namespace BuyFood_Template.Controllers
 
             var OrderStatusDate = (from o in db.TOrders
                                    where o.CMemberId == memberID && o.COrderStatus.COrderStatusId == 2
-                                   select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate, cOID = o.COrderId }).OrderByDescending(n => n.cOID).Take(10);
+                                   select new { cOrderStatus = o.COrderStatus.COrderStatusName, cOrderDate = o.COrderDate, cCutPrice = o.CCupon.CCuponCategory.CCutPrice, cOID = o.COrderId }).OrderByDescending(n => n.cOID).Take(10);
 
 
             return Json(OrderStatusDate.ToList());
