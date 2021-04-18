@@ -453,7 +453,7 @@ namespace BuyFood_Template.Controllers
             }
 
             #endregion
-
+            
             #region //熱評商品
 
             var review = (from od in db.TOrderDetails
@@ -520,7 +520,7 @@ namespace BuyFood_Template.Controllers
             }
 
             #endregion
-
+            HttpContext.Session.SetObject<List<TProduct>>("TopItem", topProducts);
             #region //最常購買
 
             var ReviewProducts = db.TOrderDetails.OrderByDescending(n => n.COrder.COrderDate).Select(n => new

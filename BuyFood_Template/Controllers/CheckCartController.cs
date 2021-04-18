@@ -27,6 +27,7 @@ namespace BuyFood_Template.Controllers
             }
             return View();
         }
+        //取得商品的製作時間
         [HttpPost]
         public JsonResult ProductFinishTime([FromBody] List<int> IdList)
         {
@@ -39,6 +40,7 @@ namespace BuyFood_Template.Controllers
             }
             return Json(pdtTimeList);
         }
+        //歐付寶交易成功後將信件寄出
         [HttpPost]
         public void GetOpayOrder(OPay OpayData)
         {
@@ -47,6 +49,7 @@ namespace BuyFood_Template.Controllers
                 (new ShareFunction()).sendGrid("fg2216875@gmail.com", "hihi", "訂單成功", "查看詳細");
             }
         }
+        //將訂單存入資料庫中
         [HttpPost]
         public string InsertOrderToDB([FromBody] CartOrderJson CartOrder)
         {
