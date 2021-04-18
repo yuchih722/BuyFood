@@ -24,7 +24,7 @@
                         AdritextForLO += ` <tr>
                                                    <th scope="row">${AdricountLO}</th>
                                                    <td>${data[i].cOrderID}</td>
-                                                    <td>$${data[i].cTotalPrice}</td>
+                                                    <td>$${data[i].cTotalPrice - response[i].cCutPrice}</td>
                                                     <td>${response[i].cOrderStatus}</td>
                                                     <td><a href="/OrderDetail/ShowOrderDetail/${data[i].cOrderID}"><button type="button" class="btn btn-outline-success">訂單詳細</button></a></td>
                                                     <td>${response[i].cOrderDate}</td>
@@ -57,7 +57,7 @@
                             textOnGoing += ` <tr>
                                                    <th scope="row">${countOnGoing}</th>
                                                    <td>${data[i].cOrderID}</td>
-                                                    <td>$${data[i].cTotalPrice}</td>
+                                                    <td>$${data[i].cTotalPrice - response[i].cCutPrice}</td>
                                                     <td>${response[i].cOrderStatus}</td>
                                                     <td><a href="/OrderDetail/ShowOrderDetail/${data[i].cOrderID}"><button type="button" class="btn btn-outline-success">訂單詳細</button></a></td>
                                                     <td>${response[i].cOrderDate}</td>
@@ -93,7 +93,7 @@
                             AdritextAll += ` <tr>
                                                    <th scope="row">${AdricountAll}</th>
                                                    <td>${data[i].cOrderID}</td>
-                                                    <td>$${data[i].cTotalPrice}</td>
+                                                    <td>$${data[i].cTotalPrice - response[i].cCutPrice}</td>
                                                     <td>${response[i].cOrderStatus}</td>
                                                     <td><a href="/OrderDetail/ShowOrderDetail/${data[i].cOrderID}"><button type="button" class="btn btn-outline-success">訂單詳細</button></a></td>
                                                     <td>${response[i].cOrderDate}</td>
@@ -128,7 +128,7 @@
                             AdritextFinished += ` <tr>
                                                    <th scope="row">${AdricountFinished}</th>
                                                    <td>${data[i].cOrderID}</td>
-                                                    <td>$${data[i].cTotalPrice}</td>
+                                                    <td>$${data[i].cTotalPrice - response[i].cCutPrice}</td>
                                                     <td>${response[i].cOrderStatus}</td>
                                                     <td><a href="/OrderDetail/ShowOrderDetail/${data[i].cOrderID}"><button type="button" class="btn btn-outline-success">訂單詳細</button></a></td>
                                                     <td>${response[i].cOrderDate}</td>
