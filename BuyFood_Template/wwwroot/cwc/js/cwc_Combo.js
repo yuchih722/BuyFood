@@ -62,14 +62,15 @@
                         comboDetail.push(newdata);
                     }
                 }
-
+                var moveIndex = 0;
                 for (var p = 0; p < comboDetail.length; p++) {
                     var issue = comboDetail[p].cProduct.cIsOnSaleId == 3 ? `(停止販售)` : ``
                     txt += `<tr><td>${comboDetail[p].cProduct.cProductName}${issue}
                                         <td>${comboDetail[p].Count}
                                         <td>${comboDetail[p].cProduct.cPrice}
-                                        <td><div class="btn btn-success btn-sm" onclick="cwc_addProducttoCart(cwc_ComboDetails[${i}].comboDetails[${p}].cProduct)">加入購物車</div>
+                                        <td><div class="btn btn-success btn-sm" onclick="cwc_addProducttoCart(cwc_ComboDetails[${i}].comboDetails[${moveIndex}].cProduct)">加入購物車</div>
                                         `;
+                    moveIndex += comboDetail[p].Count;
                 }
                 txt += `</tbody></thead></table></div>`;
             }
@@ -147,15 +148,27 @@ function cwc_EditCombo(comboID, comboName, memberID) {
 function cwc_deleteCombo(comboID, memberID) {
     $(`#cwc_combo_tr_${comboID}`).remove();
     $(`#cwc_comboDetail_tr_${comboID}`).remove();
-    var comboCount = $("#mycombo").length - 1;
+    var comboCount = $("#mycombo")[0].childNodes[1].childNodes.length == 0 ? 0 :
+        $("#mycombo")[0].childNodes[1].childNodes.length / 2;
+    $(`#cwc_howManyCombo`).html(comboCount)
+
+    if (comboCount== 0) {
+        var txt = `<div style="width:100%;height:100%;position:relative;display:flex;align-items:center;text-align:center">
+                                        <div style="width:100%">
+                                            <h1>自訂專屬自己的套餐</h1>
+                                            <button class="btn btn-success" style="font-size:50px;width:250px;height:100" onclick="cwc_EditCombo(0,'套餐${comboCount + 1}',${memberID})">自訂套餐</button>
+                                         </div>
+                                  </div>`;
+        $("#head_cwc").html("");
+        $("#content_cwc").html(txt);
+    }
+
     $("#cwc_btn_addCombo").attr("onclick", `cwc_EditCombo(0,'套餐${comboCount + 1}',${memberID})`)
     $.ajax({
         url: `/Combo/deleteCombo?id=${comboID}`,
         success: function (data) {
             updateData(memberID);
             updateLayoutCombo();
-            if (comboCount == 0)
-                cwc_showCombo(memberID);
         }
     });
 }
