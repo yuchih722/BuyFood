@@ -39,6 +39,7 @@ function cwc_addCombotoCart(cwc_combo) {
     var timeCheck = [cb, cl, cd];
     var doubleOrder = 0;
 
+    var addItems = 0;
     if (timeCheck[tcIndex] != "0") {
         var txt_inCart = "";
         for (var i = 0; i < cwc_combo.comboDetails.length; i++) {
@@ -50,6 +51,7 @@ function cwc_addCombotoCart(cwc_combo) {
             }
             else {
                 cwc_addCart(cwc_combo.comboDetails[i].cProduct);
+                addItems++;
                 doubleOrder = cwc_combo.comboDetails[i].cProduct.cProductId;
                 if (double == "0") {
                     txt_inCart += txt_inCart == "" ? `${cwc_combo.comboDetails[i].cProduct.cProductName}` :
@@ -57,7 +59,8 @@ function cwc_addCombotoCart(cwc_combo) {
                 }
             }
         }
-        window.alert(`${txt_inCart}已加入購物車`);
+        if (addItems>0)
+            window.alert(`${txt_inCart}已加入購物車`);
     }
     else window.alert("套餐內容包含此時段不供應餐點，請耐心等待");
 
