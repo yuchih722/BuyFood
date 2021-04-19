@@ -22,15 +22,107 @@ namespace BuyFood_Template.Controllers
 {
     public class MemberController : Controller
     {
-        public JsonResult test()
+        public string usecoupon()
         {
+            Random r = new Random();
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            var orders = db.TOrders.Select(n => new
+            {
+                n.COrderId,
+                sum = n.TOrderDetails.Sum(m => m.CPriceAtTheTime * m.CQuantity)
+            }).Where(n=>n.sum >400).ToList();
 
-            //(new ShareFunction()).sendGrid("always0537@gmail.com", "hihi", "訂單成功", "check your account");
+            foreach(var order in orders)
+            {
+                var target = db.TOrders.First(n => n.COrderId == order.COrderId);
+                target.CCuponId = r.Next(1, 5);
+            }
+            db.SaveChanges();
+            return ("done");
+        }
+        
+        public JsonResult newOrder()
+        {
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            int[] memberBox = new int[]
+            {
+                11,17,21,30,31
+            };
+            string[] addressBox = new string[]
+            {
+                "106台北市大安區復興南路一段303號9樓",
+                "106台北市大安區信義路三段147巷11弄1號1樓",
+                "106台北市大安區瑞安街31巷1號",
+                "106台北市大安區通安街115號",
+                "106台北市大安區新生南路二段50號",
+                "105台北市松山區敦化北路199號",
+                "106台北市大安區忠孝東路四段77巷28號",
+                "104台北市中山區市民大道三段143號",
+                "106台北市大安區安和路二段92號B1F",
+                "106台北市大安區復興南路二段102號",
+                "106台北市大安區仁愛路三段26-5號",
+                "106台北市大安區建國南路二段231號",
+                "106台北市大安區通安街115號",
+                "106台北市大安區新生南路二段50號",
+                "105台北市松山區敦化北路199號",
+                "110台北市信義區信義路五段1號",
+                "106台北市大安區光復南路180巷11號",
+            };
+            string[] dateBox = new string[]
+            {
+                "2021/01/01 10:10:10",
+                "2021/02/01 10:10:10",
+                "2021/03/01 10:10:10",
+                "2021/04/01 10:10:10",
+                "2020/01/01 10:10:10",
+                "2020/02/01 10:10:10",
+                "2020/03/01 10:10:10",
+                "2020/04/01 10:10:10",
+                "2020/05/01 10:10:10",
+                "2020/06/01 10:10:10",
+                "2020/07/01 10:10:10",
+                "2020/08/01 10:10:10",
+                "2020/09/01 10:10:10",
+                "2020/10/01 10:10:10",
+                "2020/11/01 10:10:10",
+                "2020/12/01 10:10:10",
+            };
 
-            //(new ChatHub()).test();
+            Random random = new Random();
+            var productBox = db.TProducts.ToList();
 
+            for (int i = 0; i < 2000; i++)
+            {
+                TOrder order = new TOrder()
+                {
+                    CMemberId = memberBox[random.Next(0, 3)],
+                    COrderStatusId = 2,
+                    CCuponId = 1,
+                    CArrivedAddress = addressBox[random.Next(0, 8)],
+                    CPayTypeId = 1,
+                    COrderDate = dateBox[random.Next(0, dateBox.Count())],
+                    CTransportMinute = random.Next(5, 30)
+                };
+                db.TOrders.Add(order);
+                db.SaveChanges();
 
-            return Json("aa");
+                var orderdetailCount = random.Next(1,6);
+                for (int p = 0; p < orderdetailCount; p++)
+                {
+                    var productID = productBox[random.Next(0, productBox.Count())].CProductId;
+                    TOrderDetail od = new TOrderDetail()
+                    {
+                        CProductId = productID,
+                        COrderId = order.COrderId,
+                        CQuantity = random.Next(1, 4),
+                        CPriceAtTheTime = productBox.First(n => n.CProductId == productID).CPrice,
+                    };
+                    db.TOrderDetails.Add(od);
+                }
+            }
+            db.SaveChanges();
+
+            return Json("done");
         }
         public string checkLogin(string id)
         {
