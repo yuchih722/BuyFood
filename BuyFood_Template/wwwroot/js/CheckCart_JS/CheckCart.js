@@ -101,11 +101,12 @@ $("#search_address").click(
                 ))
                 //規劃路線後Circle會消失，故再生成一次
                 const cityCircle = new google.maps.Circle({
-                    strokeColor: "#FF0000",
+                    strokeColor: "#00BBFF",
                     strokeOpacity: 0.3,
                     strokeWeight: 2,
-                    fillColor: "#FF0000",
+                    fillColor: "#00BBFF",
                     fillOpacity: 0.2,
+                    clickable: true,
                     map,
                     center: { lat: 25.033942297235797, lng: 121.54340761133165 },
                     radius: 3500,
@@ -117,15 +118,21 @@ $("#search_address").click(
                     $("#current_address").html("目前輸入的地點為:無");      //顯示目前輸入的地址
                     return;
                 }
-
                 //console.log(response);
                 //console.log(response.rows[0].elements[0].duration.text);
                 input_location = response.destinationAddresses[0];
-                let duration_time = Math.round((response.rows[0].elements[0].duration.value) / 60);
+                let duration_time = Math.round((response.rows[0].elements[0].duration.value) / 60);                
                 sum_total_time = duration_time + pdtcart_obj.finishTime    //將路程與製作時間相加
-                let text = "路程時間:" + duration_time + "鐘、製作時間:" + pdtcart_obj.finishTime + "鐘。 總計:" + sum_total_time + "鐘";
+
+                let datetime_now = new Date();    //存放目前的標準時間
+                let datetime_last = new Date(datetime_now);  //儲存加總後的標準時間
+                datetime_last.setMinutes(datetime_now.getMinutes() + sum_total_time);
+
+                let text = `路程時間:${duration_time}鐘、製作時間:${pdtcart_obj.finishTime}鐘。 總計:${sum_total_time}鐘`;
+                let time_text = "預估時間為:" + datetime_last.toLocaleString();
                 let text_address = "目前輸入的地點為:" + input_location;
-                $("#estimate_time").html(text);                //將預估時間顯示在畫面上
+                $("#estimate_time").html(text);          //將預估時間顯示在畫面上
+                $("#wu_display_time").html(time_text);   //顯示估計後的標準時間
                 $("#confirm_order").prop('disabled', false);   //啟用'確認購買'的按鈕
                 $("#current_address").html(text_address);      //顯示目前輸入的地址
                 $("#confirm_order").css('background-color', '#7FAD39');

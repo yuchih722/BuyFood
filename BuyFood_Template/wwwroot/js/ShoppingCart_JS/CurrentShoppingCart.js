@@ -114,7 +114,7 @@ $(function () {
                         window.alert("購物車金額不可低於折扣金額")
                         return;
                     }
-                    discount_price = data.cCutPrice;
+                    discount_price = data.cCutPrice;   //將目前優惠券金額存入變數中
                     couponId = data.cCuponId;
                     let text = "目前優惠券的折價金額為: $" + discount_price;
                     $("#coupon_discount").html(text);
@@ -139,7 +139,7 @@ $(function () {
             $("#coupon_discount").html("目前無使用優惠券");
             $("#input_coupon_code").prop('disabled', true);
             $("#search_coupon_enable").prop('disabled', true);
-            //隱藏顯示的優惠券列表
+            //隱藏優惠券列表
             $("#show_coupon_list").css('display', 'none');
             $("#show_coupon_list").removeClass("coupon_display");
             GetDiscountTotalPrice();
@@ -166,7 +166,6 @@ $("#search_coupon_enable").click(function () {
         $("#show_coupon_list").css('display', 'initial');       
     }  
 })
-
 
 //跳轉至最後確認結帳頁面
 $(function () {
@@ -344,8 +343,10 @@ function getFavorItem() {
             console.log(data)
             let favorItem = "";
             for (let i = 0; i < data.length; i++) {
-                favorItem += `<div class="div_inline" ><img class="picsize" src="${data[i].cPicture.replace('~', '')}">
-                                <div class="text_center_postion">${data[i].cProductName}</div>
+                favorItem += `<div class="div_inline" >
+                                <a href="/ProductDetail/ProductData/${data[i].cProductId}">
+                                <img class="picsize" src="${data[i].cPicture.replace('~', '')}">
+                                <div class="text_center_postion">${data[i].cProductName}</div></a>
                                 <div class="text_center_postion">$${data[i].cPrice}</div>
                                 <input class="btn_check_coupon" type="button" value="加入購物車" onclick="AddtoCart(favor_item_list[${i}])">
                               </div>`;
