@@ -64,11 +64,14 @@ namespace BuyFood_Template.ViewModels
             get { return iv_member.CBlackList; }
             set { iv_member.CBlackList = value; }
         }
+
+        
         public decimal? CDeposit
         {
             get { return iv_member.CDeposit; }
             set { iv_member.CDeposit = value; }
         }
+
         public string CPhone
         {
             get { return iv_member.CPhone; }

@@ -295,7 +295,7 @@ namespace BuyFood_Template.Controllers
 
                     string val信件內容 = "您的密碼已被修改成 : " + RandomPwd + " , 請登入後自行修改密碼";
 
-                    shareFun.sendEmail(checkPhone.CEmail, checkPhone.CName, "BuyFood帳號開通認證信", val信件內容);
+                    shareFun.sendGrid(checkPhone.CEmail, checkPhone.CName, "BuyFood帳號開通認證信", val信件內容);
 
 
                     return Json("EditSuccess");
@@ -453,7 +453,7 @@ namespace BuyFood_Template.Controllers
             }
 
             #endregion
-
+            
             #region //熱評商品
 
             var review = (from od in db.TOrderDetails
@@ -520,7 +520,7 @@ namespace BuyFood_Template.Controllers
             }
 
             #endregion
-
+            HttpContext.Session.SetObject<List<TProduct>>("TopItem", topProducts);
             #region //最常購買
 
             var ReviewProducts = db.TOrderDetails.OrderByDescending(n => n.COrder.COrderDate).Select(n => new

@@ -57,9 +57,9 @@ function cwc_showChangPassword(facebook) {
     if (facebook == "0") {
         if (!cwc_bool_showchangePassword) {
             $("#aaa").css("display", "block");
-            $("#cwc_i_div_bodyLeft").css("height", "800px");
-            $("#content_cwc").css("height", "800px");
-            $("#cwc_i_div_wholeDiv").css("height", "950px");
+            $("#cwc_i_div_bodyLeft").css("height", "900px");
+            $("#content_cwc").css("height", "900px");
+            $("#cwc_i_div_wholeDiv").css("height", "1050px");
             cwc_bool_showchangePassword = true;
         }
         else {
@@ -94,12 +94,12 @@ function cwc_savePassword(memberID, meth) {
             success: function (data) {
                 if (data == "1")
                     return alert("密碼錯誤，請重新輸入。");
-                cwc_showChangPassword()
+                cwc_showChangPassword("0")
                 alert("變更成功");
             }
         })
     }
     else {
-        cwc_showChangPassword()
+        cwc_showChangPassword("0")
     }
 }

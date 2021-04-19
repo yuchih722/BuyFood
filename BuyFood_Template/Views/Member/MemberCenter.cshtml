@@ -17,7 +17,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    
+    <script src=https://d3js.org/d3.v3.min.js charset="utf-8"></script>
+
+
+
+
+
     @*照片功能*@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" rel="stylesheet" />
@@ -52,6 +57,58 @@
         .inlinrB {
             display: inline-block;
         }
+
+        path {
+            stroke: #fff;
+        }
+
+            path:hover {
+                opacity: 0.9;
+            }
+
+        rect:hover {
+            fill: blue;
+        }
+
+        .axis {
+            font: 15px sans-serif;
+        }
+
+        .legend tr {
+            border-bottom: 1px solid grey;
+        }
+
+            .legend tr:first-child {
+                border-top: 1px solid grey;
+            }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+        .x.axis path {
+            display: none;
+        }
+
+        .legend {
+/*            margin-bottom: 76px;
+*/            display: inline-block;
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+
+            .legend td {
+                padding: 4px 5px;
+                vertical-align: bottom;
+            }
+
+        .legendFreq, .legendPerc {
+            align: right;
+            width: 50px;
+        }
     </style>
 
 </head>
@@ -61,10 +118,11 @@
     @*<div id="preloder">
             <div class="loader"></div>
         </div>*@
+
     <div id="cwc_i_div_wholeDiv" style="width:100%; height :800px;transition:all 1s;text-align:center">
         <div id="cwc_i_div_body" style="width:350px;height:inherit;transition:all 1s;display:inline-block">
 
-            <div id="cwc_i_div_bodyLeft" class="container" style=" width: 350px; height: 650px; background-color: #F3F6FA; margin-top: 50px; float: left; transition: all .5s">
+            <div id="cwc_i_div_bodyLeft" class="container" style=" width: 350px; height: 650px; background-color: #F3F6FA; margin-top: 80px; float: left; transition: all .5s">
 
                 <div id="cwc_div_ProfilePhoto" class="row justify-content-center" style="width:inherit; padding-right:0px">
                     <img id="cwc_img_ProfilePhoto" style="border-radius: 50%;width:200px;height:200px;margin-top:20px;margin-bottom:10px" src="@ViewBag.userPhoto" alt="圓形圖" />
@@ -85,14 +143,14 @@
                 </div>
                 <div class="row" style="width:inherit;">
                     <div class="list-group" style="width:inherit;padding-right:0px;">
-                        <div class="list-group-item" style="text-align:left;">
-                            <div class="col inline" style="width:30%; text-align:left;">餘額 :</div>
-                            <div class="col inline" style="width:60%; text-align:center">@Model.CDeposit</div>
-                            <div id="cwc_div_deposit" class="col inline btn btn-success cwc_c_btn_showRight" style="width:auto;" onclick="cwc_showWallet(@Model.CMemberId)">儲值</div>
+                        <div class="list-group-item" style="text-align:left; position:relative">
+                            <div class="col" style="display:inline-block ; width:30%; height:38px;line-height:38px ;text-align:left;">擺腹幣 :</div>
+                            <div class="col" style="display: inline-block; width:auto; height:38px;line-height:38px ;font-size: 15px; text-align: left; padding: 0px">@string.Format("{0:0,0}", Model.CDeposit)</div>
+                            <div id="cwc_div_deposit" class="col inline btn btn-success cwc_c_btn_showRight" style="position:absolute;right:8px; width:auto;" onclick="cwc_showWallet(@Model.CMemberId)">儲值</div>
                         </div>
                         <div class="list-group-item" style="text-align:left;">
-                            <div class="col inline" style="width:30%; text-align:left">信箱 :</div>
-                            <div class="col inline" style="width:auto; text-align:center;">@Model.CEmail</div>
+                            <div class="col" style="display: inline-block ; width:30%;height:38px;line-height:38px ; text-align: left">信箱 :</div>
+                            <div class="col" style="display: inline-block ; font-size:15px; width: auto;height:38px;line-height:38px ; text-align: left; padding: 0px;">@Model.CEmail</div>
                         </div>
                     </div>
                 </div>
@@ -100,7 +158,7 @@
                     <div class="list-group" style="width: inherit; padding-right: 0px;">
                         <button id="cwc_MyCombo" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showCombo(@Model.CMemberId)">我的套餐</button>
                         <button id="cwc_Coupon" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showCoupon(@Model.CMemberId)">優惠券</button>
-                        <button id="cwc_Review" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showReport(@Model.CMemberId)">個人消費報表檢視</button>
+                        <button id="cwc_Review" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showReport()">個人消費報表檢視</button>
                         <button id="cwc_QRcode" class="list-group-item list-group-item-action cwc_c_btn_showRight" onclick="cwc_showQRcode(@Model.CMemberId)">邀請好友</button>
                         <button id="cwc_Password" class="list-group-item list-group-item-action" onclick="cwc_showChangPassword(@ViewBag.facebook)">修改密碼</button>
                         <div id="aaa" style="display: none ; transition: all .5s">
@@ -124,14 +182,14 @@
                             <button id="cwc_i_btn_pscCancel" class="btn btn-success btn-sm" style="margin:10px" onclick="cwc_savePassword(@Model.CMemberId,0)">取消</button>
                         </div>
                         <button id="cwc_logout" class="list-group-item list-group-item-action" style="display:inline;" onclick="cwc_logout()">登出</button>
-                        <button class="list-group-item list-group-item-action cwc_c_btn_showRight" style="display:none;" onclick="test()">測試</button>
-                        <button class="list-group-item list-group-item-action cwc_c_btn_showRight" style="display:none;" onclick="test2()">測試2</button>
+                        <button class="list-group-item list-group-item-action cwc_c_btn_showRight" style="display:none;" onclick="">測試</button>
+                        <button class="list-group-item list-group-item-action cwc_c_btn_showRight" style="display:none" onclick="">測試2</button>
 
                     </div>
                 </div>
             </div>
 
-            <div id="head_cwc" class="cwc_c_div_show" style="width: 0; height: 50px; overflow: hidden; transition: all .5s;position:relative">
+            <div id="head_cwc" class="cwc_c_div_show" style="width: 0; height: 80px; overflow: hidden; transition: all .5s;position:relative">
 
             </div>
 
@@ -170,8 +228,8 @@
     <script type="text/javascript" src="~/cwc/js/cwc_Deposit.js"></script>
     <script type="text/javascript" src="~/cwc/js/cwc_Profile.js"></script>
     <script type="text/javascript" src="~/cwc/js/CheckPassword.js"></script>
+    <script type="text/javascript" src="~/cwc/js/cwc_d3report.js"></script>
     <script type="text/javascript" src="~/cwc/js/cwc_addComboInCart.js"></script>
-
 
     <script>
         $(function () {
@@ -234,17 +292,6 @@
 
 
     <script>
-        function test() {
-                window.location.href ="/api/SendGrid/SendNotification"
-        }
-        function test2() {
-            $.ajax({
-                url: `/Member/test`,
-                success: function (data) {
-                    console.log(data);
-                }
-                });
-        }
 
         function updateData(memberID) {
             $.ajax({

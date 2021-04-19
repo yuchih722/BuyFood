@@ -437,33 +437,6 @@ function p產品販售狀態(PrId, PrTimeId) {
 
 }
 
-//產品販售狀態
-function p產品販售狀態(PrId, PrTimeId) {
-    $.ajax({
-        url: "/cProduct/changeSaleonoff",
-        type: "Get",
-        data: { "PrId": PrId, "PrTimeId": PrTimeId },
-        success: function (data) {
-            console.log(data);
-            if (data == 1) {
-                cStatusName = `<button class=" btn btn-green" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId + 1})">正常</button>`
-                $(productStatusNum());
-            }
-            else if (data == 2) {
-
-                cStatusName = `<button  class="btn btn-danger" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId + 1})">售完</button>`
-                $(productStatusNum());
-            }
-            else if (data == 3) {
-                cStatusName = `<button  class="btn btn-gray" style="vertical-align: middle" onclick="p產品販售狀態(${PrId},${PrTimeId = 0})">下架</button>`
-                $(productStatusNum());
-            }
-            $(`#p產品狀態${PrId}`).html(`<td style="vertical-align: middle" id="p產品狀態${PrId}">${cStatusName}`);
-        }
-    });
-
-
-}
 
 //產品販售時段早
 function p產品販售早(id) {
@@ -529,5 +502,5 @@ function p產品販售晚(id) {
 
 
 
-//進入此頁面執行
-$(Activity());
+////進入此頁面執行
+//$(Activity());
