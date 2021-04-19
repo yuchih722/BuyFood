@@ -93,10 +93,10 @@ function cwc_EditCombo(comboID, comboName, memberID) {
                                             <div style="width:50%; height:inherit; float:left">
                                                 <div style="height:50px">
                                                     <span>餐點類型</span>
-                                                    <select class="inline" id="cwc_select_Category"></select>
-                                                    <label><input id="cwc_checkbox_b" class="inline" type="checkbox" />7:00~10:30
-                                                    <label><input id="cwc_checkbox_l" class="inline" type="checkbox"  />10:30~14:30
-                                                    <label><input id="cwc_checkbox_d" class="inline" type="checkbox" />14:30~21:00
+                                                    <select class="inline" id="cwc_select_Category"></select></br>
+                                                    <label><input id="cwc_checkbox_b" class="inline" type="checkbox" />5:00~10:00
+                                                    <label><input id="cwc_checkbox_l" class="inline" type="checkbox"  />10:00~17:00
+                                                    <label><input id="cwc_checkbox_d" class="inline" type="checkbox" />17:00~5:00
                                                 </div>
 
                                              </div>`;

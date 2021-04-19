@@ -345,68 +345,16 @@ namespace BuyFood_Template.Controllers
             }
         }
 
-
-        public void abc()
-        {
-            sendEmail("s736828@gmail.com","亮","123","test");
-        }
-
+        [HttpPost]
         public void sendEmail(string mailtoAddress, string mailtoName, string subject, string body)
         {
-            var fromAddress = new MailAddress("sunfengmsit129@gmail.com", "擺腹buyfood");//寄件地址，寄件人
-            var toAddress = new MailAddress(mailtoAddress, mailtoName);
-            const string fromPassword = "@MSIT129";
-            //const string subject = "Subject";
-            //const string body = "Body";
-
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-            using (var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body
-            })
-            {
-                smtp.Send(message);
-            }
+            (new ShareFunction()).sendGrid(mailtoAddress, mailtoName, subject, body);         
         }
 
-        public JsonResult getmemberid(int? id)
-        {
-            var q = db.TMembers.Where(n => n.CMemberId.Equals(id));
-            return Json(q);
-        }
-
-
-
-        public void Email(int? id)
-        {
-            MailMessage msg = new MailMessage();
-            msg.To.Add("s736828@gmail.com");
-            msg.From = new MailAddress("s736828@gmail.com", "小亮", System.Text.Encoding.UTF8);//發件人
-            msg.Subject = "測試標題";
-            msg.SubjectEncoding = System.Text.Encoding.UTF8; //郵件標題編碼
-            msg.Body = "郵件內容測試";
-            msg.BodyEncoding = System.Text.Encoding.UTF8;//郵件內容編碼
-            msg.Attachments.Add(new Attachment(@"D:\吳亮均.pdf"));//附件
-            msg.IsBodyHtml = true;
-
-            SmtpClient client = new SmtpClient();
-            client.Credentials = new System.Net.NetworkCredential("s736828@gmail.com", "okdlnrynb1219");
-            client.Host = "smtp.gmail.com";
-            client.Port = 25;
-            client.EnableSsl = true;
-            client.Send(msg);
-            client.Dispose();
-            msg.Dispose();                     
-        }
+        //public void test123()
+        //{
+        //    (new ShareFunction()).sendGrid("s736828@gmail.com", "小亮", "寄信測試", "testBody");
+        //}
 
     }
 }
