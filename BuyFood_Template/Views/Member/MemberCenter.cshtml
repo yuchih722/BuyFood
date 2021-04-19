@@ -182,7 +182,7 @@
                             <button id="cwc_i_btn_pscCancel" class="btn btn-success btn-sm" style="margin:10px" onclick="cwc_savePassword(@Model.CMemberId,0)">取消</button>
                         </div>
                         <button id="cwc_logout" class="list-group-item list-group-item-action" style="display:inline;" onclick="cwc_logout()">登出</button>
-                        <button class="list-group-item list-group-item-action cwc_c_btn_showRight" style="display:none;" onclick="">測試</button>
+                        <button class="list-group-item list-group-item-action cwc_c_btn_showRight" style="display: none" onclick="test()">測試</button>
                         <button class="list-group-item list-group-item-action cwc_c_btn_showRight" style="display:none" onclick="">測試2</button>
 
                     </div>
@@ -292,6 +292,15 @@
 
 
     <script>
+        function test() {
+            $.ajax({
+                url: `/Member/usecoupon`,
+                success: function (data) {
+                    console.log(data);
+                }
+            })
+        }
+
 
         function updateData(memberID) {
             $.ajax({
