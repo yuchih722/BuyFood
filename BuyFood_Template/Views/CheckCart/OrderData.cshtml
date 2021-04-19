@@ -80,6 +80,7 @@
                             <h6 id="current_address">目前輸入的地點為:無</h6>
                             <input class="site-btn" style="margin-bottom:30px" type="button" id="search_address" value="確認地址位置" />
                             <div class="text_inline" id="estimate_time"></div>   @*顯示車程時間*@
+                            <div class="text_local_time" id="wu_display_time"></div>  @*顯示預估後的localstring*@
                             <div class="map_size" id="map"></div>   @*生成地圖*@
                             <script>
                                 function initMap() {
@@ -94,11 +95,12 @@
                                     });
                                     //在地圖中劃出圓形半徑
                                     const cityCircle = new google.maps.Circle({
-                                        strokeColor: "#FF0000",
+                                        strokeColor: "#00BBFF",
                                         strokeOpacity: 0.4,
                                         strokeWeight: 2,
-                                        fillColor: "#FF0000",
+                                        fillColor: "#00BBFF",
                                         fillOpacity: 0.2,
+                                        clickable: true,
                                         map,
                                         center: { lat: 25.033942297235797, lng: 121.54340761133165 },
                                         radius: 3500,

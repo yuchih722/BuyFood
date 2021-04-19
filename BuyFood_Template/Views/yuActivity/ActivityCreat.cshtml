@@ -5,13 +5,13 @@
 
 <div style="background-color:#ffffff ;margin:auto;margin-top:100px;width:1000px">
 
-    <h1 align=" center">新增活動</h1>
+    <h1 align=" center" id="demo_yu_click">新增活動</h1>
     <hr />
 
     <form asp-action="ActivityCreat" method="post" enctype="multipart/form-data">
         <div class="form-group" style="text-align: center;"><input style="font-size: 25px;padding: 5px;width:600px" placeholder="活動名稱" required name="CActivityName" /></div>
         <div class="form-group" style="text-align: center;" id="_imgClick">
-            <img class="upload" id="_imgCgang" src="#" width="600" height="300" onclick="go()" alt="請點擊輸入圖片" />
+            <img class="upload" id="_imgCgang" src="~/img/尚未新增圖片.png" width="600" height="300" onclick="go()" />
             <input type="file" id="abc" class="addfile-btn" accept="image/gif, image/jpeg, image/png" style="display:none" onchange="readURL(this)" name="img" />
         </div>
         <div class="form-group" style="text-align: center;"><textarea name="CDescription" cols="70" rows="6" style="font-size:16px" placeholder="活動內容" required></textarea></div>
@@ -59,4 +59,8 @@
         $("#_imgCgang").src = "#";
     }
 
+    $("#demo_yu_click").click(function () {
+        $("input[name='CActivityName']").val("儲值滿額贈");
+        $("textarea[name='CDescription']").val("即日起 儲值滿一千送五十 滿兩千送兩百 買五千送五百");
+    })
 </script>
