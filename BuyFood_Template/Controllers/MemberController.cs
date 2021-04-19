@@ -44,12 +44,13 @@ namespace BuyFood_Template.Controllers
         }
         public IActionResult MemberCenter()
         {
-           
+            ViewBag.LOCALWEBSITES = CDictionary.LOCAL_WEBSITES;
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
             {
                 ViewBag.userName = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
                 ViewBag.userPhoto = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERPHOTO);
                 ViewBag.memberID = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID);
+                ViewBag.facebook = string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_FACEBOOK)) ? "0" : "1";
                 擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
                 TMember data = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERID)));
 
@@ -131,7 +132,7 @@ namespace BuyFood_Template.Controllers
             擺腹BuyFoodContext dbcontext = new 擺腹BuyFoodContext();
             TMember targetMember = dbcontext.TMembers.FirstOrDefault(n => n.CMemberId == int.Parse(id));
             string head = $"<h1>推薦碼 : {targetMember.CReferrerCode}</h1>";
-            string contenxt = $"https://msit129cwwebapp.azurewebsites.net/Customer/Create?id={targetMember.CReferrerCode}";
+            string contenxt = CDictionary.LOCAL_WEBSITES+$"/Customer/Create?id={targetMember.CReferrerCode}";
             List<string> data = new List<string>();
             data.Add(head);
             data.Add(contenxt);

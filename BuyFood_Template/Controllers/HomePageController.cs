@@ -18,6 +18,8 @@ namespace BuyFood_Template.Controllers
 
         public IActionResult Home()
         {
+            ViewBag.LOCALWEBSITES = CDictionary.LOCAL_WEBSITES;
+
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
             {
                 ViewBag.USERNAME = HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME);
@@ -233,6 +235,12 @@ namespace BuyFood_Template.Controllers
                 }
                 else if(check密碼.CPassword == pwd解密)
                 {
+                    if(check密碼.COpenMember == 0)
+                    {
+                        return Json("notOpen");
+                    }
+                    else
+                    {
                     HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, check密碼.CName);
                     HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, check密碼.CPicture);
                     HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, check密碼.CMemberId.ToString());
@@ -241,6 +249,7 @@ namespace BuyFood_Template.Controllers
                     db.SaveChanges();
 
                     return Json("loginSuccess");
+                    }
                 }
                 else
                 {
@@ -263,18 +272,64 @@ namespace BuyFood_Template.Controllers
                 return Json("noEmail");
             }
         }
-        public bool facebookLogin(string id, string name)
+
+        public JsonResult forgetMemberCheck([FromBody] CForgetPasswordViewModel forgetPwdMember)
         {
-            var test = id + name;
+            擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
+            var check信箱 = from n in db.TMembers
+                          select n.CEmail;
+
+            if (check信箱.Any(n => n == forgetPwdMember.CEmail) == true)
+            {
+                TMember checkPhone = (from n in db.TMembers
+                                      where n.CEmail == forgetPwdMember.CEmail
+                                      select n).FirstOrDefault();
+
+                if(checkPhone.CPhone == forgetPwdMember.CPhone)
+                {
+                    SHA1 sha1 = SHA1.Create();
+                    string RandomPwd = shareFun.產生亂數(16);
+                    string ReplacementPwd = shareFun.GetHash(sha1, RandomPwd);
+                    checkPhone.CPassword = ReplacementPwd;
+                    db.SaveChanges();
+
+                    string val信件內容 = "您的密碼已被修改成 : " + RandomPwd + " , 請登入後自行修改密碼";
+
+                    shareFun.sendEmail(checkPhone.CEmail, checkPhone.CName, "BuyFood帳號開通認證信", val信件內容);
+
+
+                    return Json("EditSuccess");
+                }
+                else
+                {
+                    return Json("wrongPhone");
+                }
+            }
+            else
+            {
+                return Json("noEmail");
+            }
+        }
+            public bool facebookLogin(string id, string name)
+        {
 
             擺腹BuyFoodContext db = new 擺腹BuyFoodContext();
-            //檢查是否用此帳號登入過
 
+            //檢查是否用此帳號登入過
             var checkID = from n in db.TMembers
                           select n.CFacebookId;
 
             if (checkID.Any(n => n == id) == true)
             {
+                var loginFacebookMember = (from n in db.TMembers
+                                           where n.CFacebookId == id
+                                           select n).FirstOrDefault();
+
+                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERNAME, loginFacebookMember.CName);
+                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERPHOTO, loginFacebookMember.CPicture);
+                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_USERID, loginFacebookMember.CMemberId.ToString());
+                HttpContext.Session.SetString(CDictionary.CURRENT_LOGINED_FACEBOOK, "FacebookMember");
+
                 return true;
             }
             else

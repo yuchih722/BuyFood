@@ -3,7 +3,6 @@
         url: "/Combo/getCombo",
         type: "GET",
         success: function (data) {
-            console.log(data);
             cwc_ComboDetails = data;
             if (data.length == 0) {
                 var txt = `<div style="width:100%;height:100%;position:relative;display:flex;align-items:center;text-align:center">
@@ -16,7 +15,7 @@
                 $("#content_cwc").html(txt);
                 return;
             }
-            var txthead = `<span style="font-size:30px; line-height:50px;position:absolute;left:30px">我的套餐</span><span class="btn btn-success" style="position:absolute;right:30px" onclick="cwc_EditCombo(0,'套餐${data.length + 1}',${memberID})">新增套餐</span>`
+            var txthead = `<span style="font-size:30px; line-height:50px;position:absolute;left:30px">我的套餐</span><span id="cwc_btn_addCombo" class="btn btn-success" style="position:absolute;right:30px" onclick="cwc_EditCombo(0,'套餐${data.length + 1}',${memberID})">新增套餐</span>`
 
             var txt = `<table class="table accordion" id="mycombo"><thead><tr><td>套餐名稱<td>餐點數量<td>套餐總額<td>點餐<td>修改<td>刪除<tbody>`;
             for (var i = 0; i < data.length; i++) {
@@ -148,11 +147,15 @@ function cwc_EditCombo(comboID, comboName, memberID) {
 function cwc_deleteCombo(comboID, memberID) {
     $(`#cwc_combo_tr_${comboID}`).remove();
     $(`#cwc_comboDetail_tr_${comboID}`).remove();
+    var comboCount = $("#mycombo").length - 1;
+    $("#cwc_btn_addCombo").attr("onclick", `cwc_EditCombo(0,'套餐${comboCount + 1}',${memberID})`)
     $.ajax({
         url: `/Combo/deleteCombo?id=${comboID}`,
         success: function (data) {
             updateData(memberID);
             updateLayoutCombo();
+            if (comboCount == 0)
+                cwc_showCombo(memberID);
         }
     });
 }
