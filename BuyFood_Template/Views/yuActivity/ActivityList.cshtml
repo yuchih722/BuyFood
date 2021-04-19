@@ -332,8 +332,8 @@
             url: "/yuActivity/ActionUpDelete?id=" + id,
             type: "get",
             success: function () {
-                $(Activity(mystr));
-
+                Activity(mystr);
+                updateTOP();
             }
         })
     }
