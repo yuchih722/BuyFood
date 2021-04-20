@@ -180,6 +180,12 @@ namespace BuyFood_Template.Controllers
             //}
 
             //ViewData[CDictionary.LOGIN_AUTHTICATION_CODE] = HttpContext.Session.GetString(CDictionary.LOGIN_AUTHTICATION_CODE);
+
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString(CDictionary.CURRENT_LOGINED_USERNAME)))
+            {
+                return RedirectToAction("Home");
+            }
+
             return PartialView();
         }
         //[HttpPost]
