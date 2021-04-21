@@ -225,7 +225,6 @@ namespace BuyFood_Template.Controllers
                 {
                     table.CName = p.CName;
                     table.CEmail = p.CEmail;
-                    table.CPassword = p.CPassword;
                     table.CPhone = p.CPhone;
                     table.CGender = p.CGender;
                     table.CAddress = p.CAddress;
