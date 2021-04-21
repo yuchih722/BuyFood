@@ -122,20 +122,6 @@ namespace BuyFood_Template.Controllers
                 OrderBy(x => Guid.NewGuid()).Select(x => x).ToList().Take(5);
             return Json(FavorItem);
         }
-        public int CheckTimeNow(DateTime DateNow)
-        {
-            if(DateNow.Hour <=10 && DateNow.Hour >= 3)
-            {
-                return 1;
-            }else if(DateNow.Hour <= 17 && DateNow.Hour >= 10)
-            {
-                return 2;
-            }
-            else
-            {
-                return 3;
-            }
-            
-        }
+
     }
 }
