@@ -75,7 +75,7 @@ namespace BuyFood_Template.Controllers
         public JsonResult SearchCouponCanUse([FromBody] int MemberID)
         {
             var result = from i in new 擺腹BuyFoodContext().TCupons
-                         where i.CMenberId == MemberID && i.CBeUsed == 0
+                         where i.CMenberId == MemberID && i.CBeUsed == 0 && i.CValidDate >= DateTime.Today
                          select new
                          {
                              CouponName = i.CCuponCategory.CategoryName,
